@@ -1,0 +1,4 @@
+interface:
+  display_name: "/fw:work"
+  short_description: "Execute work with grounded validation"
+  default_prompt: "Use $fw-work to execute this plan or work request with task tracking, repo-grounded checks, and shipping discipline."

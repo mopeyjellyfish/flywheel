@@ -1,0 +1,35 @@
+{
+  "id": "flywheel",
+  "skill": "flywheel",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_stage",
+    "expected_handoff",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Stage Selection",
+    "Workflow Coherence",
+    "Shortcut Discipline",
+    "Handoff Quality",
+    "Repo Grounding",
+    "End-State Awareness"
+  ],
+  "criticalDimensions": [
+    "Stage Selection",
+    "Workflow Coherence",
+    "Handoff Quality"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "idea_to_brainstorm",
+    "requirements_to_plan",
+    "plan_to_work",
+    "code_to_review",
+    "done_to_spin"
+  ]
+}

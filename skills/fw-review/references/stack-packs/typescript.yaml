@@ -1,0 +1,29 @@
+version: 1
+
+id: typescript
+description: TypeScript review extension with tsconfig-aware soundness checks.
+
+match:
+  changed_files:
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.mts"
+    - "**/*.cts"
+    - "tsconfig*.json"
+  manifests:
+    - "package.json"
+    - "pnpm-workspace.yaml"
+  repo_signals:
+    - "typescript"
+    - "@typescript-eslint"
+
+add_reviewers:
+  - typescript-reviewer
+
+references:
+  - references/stack-packs/typescript-review-basis.md
+
+selection_notes:
+  - Read the nearest `tsconfig` chain before judging strictness or module-shape issues.
+  - Do not activate from prose mentions of TypeScript or from generated outputs alone.
+  - When React component or hook code is in scope, load the React pack alongside this one.

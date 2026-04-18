@@ -1,0 +1,64 @@
+version: 1
+
+loading_contract:
+  always_read_first:
+    - references/reviewer-registry.yaml
+    - references/persona-loading.md
+  rule: >
+    Do not load every persona file by default. Read the registry first, then the
+    loading guide, then only the selected persona files.
+
+groups:
+  always_on:
+    - coherence
+    - feasibility
+  conditionals:
+    - product-lens
+    - design-lens
+    - security-lens
+    - scope-guardian
+    - adversarial-document
+
+personas:
+  coherence:
+    path: references/personas/coherence.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: always_on
+    select_when: every document review
+  feasibility:
+    path: references/personas/feasibility.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: always_on
+    select_when: every document review
+  product-lens:
+    path: references/personas/product-lens.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: conditionals
+    select_when: product value, prioritization, or success claims are materially debatable
+  design-lens:
+    path: references/personas/design-lens.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: conditionals
+    select_when: UI, UX, interaction, accessibility, or user flow behavior is in scope
+  security-lens:
+    path: references/personas/security-lens.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: conditionals
+    select_when: auth, permissions, trust boundaries, PII, payments, or public integrations are in scope
+  scope-guardian:
+    path: references/personas/scope-guardian.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: conditionals
+    select_when: scope is layered, broad, weakly bounded, or poorly aligned to the stated objective
+  adversarial-document:
+    path: references/personas/adversarial-document.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: conditionals
+    select_when: the document is strategic, high-risk, unusually large, or optimistic enough to merit a skeptical pass

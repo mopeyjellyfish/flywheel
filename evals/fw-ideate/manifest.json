@@ -1,0 +1,38 @@
+{
+  "id": "fw-ideate",
+  "skill": "fw-ideate",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_mode",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Mode Classification",
+    "Grounding Quality",
+    "Structure Compliance",
+    "Candidate Quality",
+    "Filtering Quality",
+    "Workflow Routing",
+    "Constraint Obedience",
+    "Restraint"
+  ],
+  "criticalDimensions": [
+    "Mode Classification",
+    "Grounding Quality",
+    "Structure Compliance",
+    "Workflow Routing",
+    "Constraint Obedience"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "repo_quick_shortlist",
+    "outside_repo_software",
+    "universal_non_software",
+    "no_external_research"
+  ]
+}

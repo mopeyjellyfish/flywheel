@@ -1,0 +1,27 @@
+version: 1
+
+id: rust
+description: Rust review extension with ownership, API, and safety checks.
+
+match:
+  changed_files:
+    - "**/*.rs"
+    - "Cargo.toml"
+    - "Cargo.lock"
+  manifests:
+    - "Cargo.toml"
+    - "rust-toolchain.toml"
+  repo_signals:
+    - "clippy"
+    - "rustfmt"
+
+add_reviewers:
+  - rust-reviewer
+
+references:
+  - references/stack-packs/rust-review-basis.md
+
+selection_notes:
+  - Read the nearest `Cargo.toml` first for edition, features, and lint posture.
+  - Distinguish public library APIs from private binary internals before escalating.
+  - Do not activate from prose-only mentions of Rust.

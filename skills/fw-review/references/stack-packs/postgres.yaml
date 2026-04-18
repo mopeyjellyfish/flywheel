@@ -1,0 +1,29 @@
+version: 1
+
+id: postgres
+description: PostgreSQL review extension for SQL, plans, transactions, and migrations.
+
+match:
+  changed_files:
+    - "**/*.sql"
+    - "sqlc.yaml"
+    - "db/**/*.sql"
+    - "**/migrations/*.sql"
+  manifests:
+    - "sqlc.yaml"
+  repo_signals:
+    - "postgresql"
+    - "pgx"
+    - "psql"
+    - "jdbc:postgresql"
+
+add_reviewers:
+  - postgres-reviewer
+
+references:
+  - references/stack-packs/postgres-review-basis.md
+
+selection_notes:
+  - Require real PostgreSQL evidence; plain SQL alone is not enough.
+  - Read schema and migration context before making plan or locking claims.
+  - If the diff only changes generic application data access with no Postgres-specific signal, keep this pack dormant.

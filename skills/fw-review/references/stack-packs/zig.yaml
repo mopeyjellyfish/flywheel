@@ -1,0 +1,27 @@
+version: 1
+
+id: zig
+description: Zig review extension for allocator ownership, cleanup, and explicit error handling.
+
+match:
+  changed_files:
+    - "**/*.zig"
+    - "build.zig"
+    - "build.zig.zon"
+  manifests:
+    - "build.zig"
+    - "build.zig.zon"
+  repo_signals:
+    - "zig test"
+    - "zig fmt"
+
+add_reviewers:
+  - zig-reviewer
+
+references:
+  - references/stack-packs/zig-review-basis.md
+
+selection_notes:
+  - Read build files first so version, target, and allocator expectations are visible.
+  - Prefer docs for the project's Zig version when it is pinned.
+  - Do not activate from prose references to Zig alone.

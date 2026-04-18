@@ -1,0 +1,27 @@
+version: 1
+
+id: react
+description: React review extension for components, hooks, effects, and state identity.
+
+match:
+  changed_files:
+    - "**/*.jsx"
+    - "**/*.tsx"
+  manifests:
+    - "package.json"
+    - "pnpm-workspace.yaml"
+  repo_signals:
+    - "react"
+    - "react-dom"
+    - "eslint-plugin-react-hooks"
+
+add_reviewers:
+  - react-reviewer
+
+references:
+  - references/stack-packs/react-review-basis.md
+
+selection_notes:
+  - Require actual React repo evidence; JSX alone is not enough.
+  - Load alongside the TypeScript pack when TSX or typed hooks are in scope.
+  - Do not activate from docs or examples that merely mention React.

@@ -1,0 +1,245 @@
+# Documentation schema for learnings written by fw:spin
+# Treat this as the canonical frontmatter contract for docs/solutions/.
+#
+# The schema has two tracks based on problem_type:
+#   Bug track  — problem_type is a defect, failure, regression, or incident
+#   Knowledge track — problem_type is guidance, workflow learning, or practice
+
+tracks:
+  bug:
+    description: "Defects, failures, regressions, and operational issues that were diagnosed and fixed"
+    problem_types:
+      - build_error
+      - test_failure
+      - runtime_error
+      - performance_issue
+      - database_issue
+      - security_issue
+      - api_contract_issue
+      - integration_issue
+      - logic_error
+  knowledge:
+    description: "Practices, workflow improvements, patterns, and durable guidance"
+    problem_types:
+      - best_practice
+      - documentation_gap
+      - workflow_issue
+      - developer_experience
+      - operational_guidance
+
+required_fields:
+  title:
+    type: string
+    description: "Clear, searchable title for the learning"
+
+  category:
+    type: enum
+    values:
+      - build-errors
+      - test-failures
+      - runtime-errors
+      - performance-issues
+      - database-issues
+      - security-issues
+      - api-contract-issues
+      - integration-issues
+      - logic-errors
+      - best-practices
+      - documentation-gaps
+      - workflow-issues
+      - developer-experience
+      - operational-guidance
+    description: "Directory slug chosen from category mapping, not a full path"
+
+  module:
+    type: string
+    description: "Module, subsystem, package, or area affected"
+
+  date:
+    type: string
+    pattern: '^\d{4}-\d{2}-\d{2}$'
+    description: "Date documented (YYYY-MM-DD)"
+
+  problem_type:
+    type: enum
+    values:
+      - build_error
+      - test_failure
+      - runtime_error
+      - performance_issue
+      - database_issue
+      - security_issue
+      - api_contract_issue
+      - integration_issue
+      - logic_error
+      - best_practice
+      - documentation_gap
+      - workflow_issue
+      - developer_experience
+      - operational_guidance
+    description: "Primary category that determines bug vs knowledge track"
+
+  component:
+    type: enum
+    values:
+      - backend
+      - frontend
+      - api
+      - cli
+      - database
+      - cache
+      - queue
+      - messaging
+      - auth
+      - payments
+      - build_system
+      - ci_cd
+      - infrastructure
+      - deployment
+      - data_pipeline
+      - test_harness
+      - developer_workflow
+      - documentation
+      - tooling
+      - library
+      - service_integration
+    description: "Primary component involved"
+
+  severity:
+    type: enum
+    values:
+      - critical
+      - high
+      - medium
+      - low
+    description: "Impact severity"
+
+track_rules:
+  bug:
+    required:
+      symptoms:
+        type: array[string]
+        min_items: 1
+        max_items: 5
+        description: "Observable symptoms such as errors or broken behavior"
+      root_cause:
+        type: enum
+        values:
+          - wrong_api_assumption
+          - contract_mismatch
+          - config_error
+          - build_configuration
+          - dependency_mismatch
+          - serialization_issue
+          - data_shape_mismatch
+          - missing_validation
+          - missing_permission
+          - missing_index
+          - state_management_issue
+          - concurrency_issue
+          - retry_timeout_misuse
+          - cache_invalidation
+          - test_isolation
+          - workflow_gap
+          - stale_documentation
+          - incomplete_setup
+          - logic_error
+        description: "Fundamental technical cause of the problem"
+      resolution_type:
+        type: enum
+        values:
+          - code_fix
+          - config_change
+          - dependency_update
+          - migration
+          - test_fix
+          - infrastructure_change
+          - observability_update
+          - workflow_improvement
+          - documentation_update
+          - tooling_addition
+        description: "Type of fix applied"
+
+  knowledge:
+    optional:
+      applies_when:
+        type: array[string]
+        max_items: 5
+        description: "Conditions or situations where this guidance applies"
+      symptoms:
+        type: array[string]
+        max_items: 5
+        description: "Observable friction or gaps that prompted the learning"
+      root_cause:
+        type: enum
+        values:
+          - wrong_api_assumption
+          - contract_mismatch
+          - config_error
+          - build_configuration
+          - dependency_mismatch
+          - serialization_issue
+          - data_shape_mismatch
+          - missing_validation
+          - missing_permission
+          - missing_index
+          - state_management_issue
+          - concurrency_issue
+          - retry_timeout_misuse
+          - cache_invalidation
+          - test_isolation
+          - workflow_gap
+          - stale_documentation
+          - incomplete_setup
+          - logic_error
+        description: "Underlying cause, if there is a specific one"
+      resolution_type:
+        type: enum
+        values:
+          - code_fix
+          - config_change
+          - dependency_update
+          - migration
+          - test_fix
+          - infrastructure_change
+          - observability_update
+          - workflow_improvement
+          - documentation_update
+          - tooling_addition
+        description: "Type of change, if applicable"
+
+optional_fields:
+  related_components:
+    type: array[string]
+    description: "Other components involved"
+
+  files_touched:
+    type: array[string]
+    description: "Repo-relative files or directories most relevant to the learning"
+
+  tags:
+    type: array[string]
+    max_items: 8
+    description: "Search keywords, lowercase and hyphen-separated"
+
+  related_issues:
+    type: array[string]
+    description: "Issue numbers, PRs, or doc references related to this learning"
+
+  last_updated:
+    type: string
+    pattern: '^\d{4}-\d{2}-\d{2}$'
+    description: "Date the existing doc was refreshed"
+
+validation_rules:
+  - "Determine track from problem_type using the tracks section above"
+  - "All shared required_fields must be present"
+  - "Bug-track required fields (symptoms, root_cause, resolution_type) must be present on bug-track docs"
+  - "Knowledge-track docs have no additional required fields beyond the shared ones"
+  - "Track-specific optional fields may be included but are not required"
+  - "Enum fields must match allowed values exactly"
+  - "category must match the mapped directory slug for the selected problem_type"
+  - "Array fields must respect min_items/max_items when specified"
+  - "date and last_updated, if present, must match YYYY-MM-DD format"
+  - "files_touched must use repo-relative paths when present"
+  - "tags should be lowercase and hyphen-separated"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "/fw:plan"
+  short_description: "Turn requirements into technical plans"
+  default_prompt: "Use $fw-plan to turn this requirements doc or idea into a technical plan that agents or humans can execute."

@@ -1,0 +1,145 @@
+version: 1
+
+detection_order:
+  - changed_files
+  - nearest_manifests_or_tooling
+  - repo_root_manifests
+  - applicable_project_instructions
+
+selection_rules:
+  - Activate a pack only when repo evidence supports it.
+  - Packs may add reviewers; they never remove always-on reviewers.
+  - When multiple packs match, load only the specific pack files that apply to
+    the current diff.
+  - Matching packs are additive. Union their reviewer IDs and references, then
+    run one merged review pass.
+  - Pack files should name reviewer IDs from reviewer-registry.yaml.
+
+packs:
+  - id: go
+    path: references/stack-packs/go.yaml
+    detects:
+      changed_files:
+        - "**/*.go"
+        - "go.mod"
+        - "go.sum"
+      manifests:
+        - "go.mod"
+  - id: typescript
+    path: references/stack-packs/typescript.yaml
+    detects:
+      changed_files:
+        - "**/*.ts"
+        - "**/*.tsx"
+        - "**/*.mts"
+        - "**/*.cts"
+        - "tsconfig*.json"
+      manifests:
+        - "package.json"
+        - "pnpm-workspace.yaml"
+  - id: react
+    path: references/stack-packs/react.yaml
+    detects:
+      changed_files:
+        - "**/*.jsx"
+        - "**/*.tsx"
+      manifests:
+        - "package.json"
+        - "pnpm-workspace.yaml"
+      repo_signals:
+        - "react"
+        - "react-dom"
+  - id: rust
+    path: references/stack-packs/rust.yaml
+    detects:
+      changed_files:
+        - "**/*.rs"
+        - "Cargo.toml"
+        - "Cargo.lock"
+      manifests:
+        - "Cargo.toml"
+        - "rust-toolchain.toml"
+  - id: zig
+    path: references/stack-packs/zig.yaml
+    detects:
+      changed_files:
+        - "**/*.zig"
+        - "build.zig"
+        - "build.zig.zon"
+      manifests:
+        - "build.zig"
+        - "build.zig.zon"
+  - id: java
+    path: references/stack-packs/java.yaml
+    detects:
+      changed_files:
+        - "**/*.java"
+        - "pom.xml"
+        - "build.gradle"
+        - "build.gradle.kts"
+        - "settings.gradle"
+        - "settings.gradle.kts"
+      manifests:
+        - "pom.xml"
+        - "build.gradle"
+        - "build.gradle.kts"
+  - id: postgres
+    path: references/stack-packs/postgres.yaml
+    detects:
+      changed_files:
+        - "**/*.sql"
+        - "sqlc.yaml"
+        - "db/**/*.sql"
+        - "**/migrations/*.sql"
+      manifests:
+        - "sqlc.yaml"
+      repo_signals:
+        - "postgresql"
+        - "pgx"
+        - "psql"
+  - id: kafka
+    path: references/stack-packs/kafka.yaml
+    detects:
+      repo_signals:
+        - "kafka-clients"
+        - "spring-kafka"
+        - "kafka-go"
+        - "sarama"
+        - "franz-go"
+        - "confluent-kafka"
+        - "rdkafka"
+      diff_signals:
+        - "producer"
+        - "consumer"
+        - "topic"
+        - "offset"
+        - "schema registry"
+        - "kafka"
+  - id: redis
+    path: references/stack-packs/redis.yaml
+    detects:
+      repo_signals:
+        - "redis"
+        - "ioredis"
+        - "go-redis"
+        - "jedis"
+        - "lettuce"
+      diff_signals:
+        - "ttl"
+        - "expire"
+        - "cache"
+        - "watch"
+        - "scan"
+        - "redis"
+
+notes:
+  - Add new stack-pack files here as the review library grows.
+  - Keep pack membership data in YAML so stack expansion stays append-only.
+  - Keep the core registry language-agnostic; use stack packs only for
+    genuinely stack-specific specialists.
+  - Pack files should stay small and evidence-driven so hosts load only what the
+    current diff actually needs.
+  - Integration packs such as Kafka and Redis should require both repo evidence
+    and concrete diff relevance before activation.
+  - Common combinations such as TypeScript plus React should compose naturally
+    without duplicating synthesis.

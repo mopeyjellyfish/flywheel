@@ -1,0 +1,214 @@
+version: 1
+
+loading_contract:
+  always_read_first:
+    - references/reviewer-registry.yaml
+    - references/persona-loading.md
+  optional_extension_index:
+    - references/stack-packs/index.yaml
+  rule: >
+    Do not load every persona file by default. Read the registry first, then the
+    loading guide, then any matching stack-pack files, then only the selected
+    persona files.
+
+groups:
+  always_on_structured:
+    - correctness
+    - testing
+    - maintainability
+    - project-standards
+  always_on_agents:
+    - agent-native
+    - learnings-researcher
+  cross_cutting_conditionals:
+    - architecture
+    - simplicity
+    - security
+    - performance
+    - data-access
+    - api-contract
+    - data-migrations
+    - reliability
+    - adversarial
+    - cli-readiness
+    - previous-comments
+  flywheel_conditionals:
+    - schema-drift-detector
+    - deployment-verification
+
+extension_points:
+  stack_packs:
+    index: references/stack-packs/index.yaml
+    rule: >
+      Stack packs may add reviewers when repo and diff evidence support them.
+      Packs never remove always-on reviewers.
+
+personas:
+  correctness:
+    path: references/personas/correctness.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: always_on_structured
+    select_when: every review
+  testing:
+    path: references/personas/testing.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: always_on_structured
+    select_when: every review
+  maintainability:
+    path: references/personas/maintainability.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: always_on_structured
+    select_when: every review
+  project-standards:
+    path: references/personas/project-standards.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: always_on_structured
+    select_when: every review
+  agent-native:
+    path: references/personas/agent-native.md
+    dispatch_type: advisory_agent
+    output_mode: notes
+    default_group: always_on_agents
+    select_when: every review
+  learnings-researcher:
+    path: references/personas/learnings-researcher.md
+    dispatch_type: advisory_agent
+    output_mode: notes
+    default_group: always_on_agents
+    select_when: every review
+  security:
+    path: references/personas/security.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: auth, permissions, secrets, trust boundaries, or public input handling
+  architecture:
+    path: references/personas/architecture.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: module boundaries, ownership, dependency direction, layering, or new abstraction seams are materially changing
+  simplicity:
+    path: references/personas/simplicity.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: the diff adds wrappers, helpers, abstractions, orchestration, or multi-file complexity that may be reducible
+  performance:
+    path: references/personas/performance.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: query-heavy, high-volume, async, caching, or transform-heavy work
+  data-access:
+    path: references/personas/data-access.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: SQL, ORM or query-builder logic, transactions, persistent writes, locking, consistency, or storage-facing state changes are in scope
+  api-contract:
+    path: references/personas/api-contract.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: public interface, schema, route, event, exported signature, or CLI contract changes
+  data-migrations:
+    path: references/personas/data-migrations.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: migrations, backfills, schema-state changes, or persistent data rewrites
+  reliability:
+    path: references/personas/reliability.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: retries, timeouts, background work, idempotency, or recovery behavior
+  adversarial:
+    path: references/personas/adversarial.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: high-risk domains or substantial executable-code changes
+  cli-readiness:
+    path: references/personas/cli-readiness.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: command definitions, argument parsing, command handlers, or shell-facing workflows
+  previous-comments:
+    path: references/personas/previous-comments.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: PR reviews with existing comments or threads
+  go-reviewer:
+    path: references/personas/go-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies Go source, module, or package-facing review work
+  typescript-reviewer:
+    path: references/personas/typescript-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies TypeScript source, config, or package-facing review work
+  react-reviewer:
+    path: references/personas/react-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies React component, hook, or state-management review work
+  rust-reviewer:
+    path: references/personas/rust-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies Rust crate, module, or public API review work
+  zig-reviewer:
+    path: references/personas/zig-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies Zig source, allocator, or build-system review work
+  java-reviewer:
+    path: references/personas/java-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies Java source, build, or library-facing review work
+  postgres-reviewer:
+    path: references/personas/postgres-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies PostgreSQL schema, query, migration, or transaction review work
+  kafka-reviewer:
+    path: references/personas/kafka-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies Kafka producer, consumer, stream, topic, or message-contract review work
+  redis-reviewer:
+    path: references/personas/redis-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies Redis keyspace, cache, script, stream, or TTL-sensitive review work
+  schema-drift-detector:
+    path: references/personas/schema-drift-detector.md
+    dispatch_type: advisory_agent
+    output_mode: notes
+    default_group: flywheel_conditionals
+    select_when: migrations or schema-state changes are in scope
+  deployment-verification:
+    path: references/personas/deployment-verification.md
+    dispatch_type: advisory_agent
+    output_mode: notes
+    default_group: flywheel_conditionals
+    select_when: rollout-sensitive, migration-heavy, or operationally risky changes are in scope

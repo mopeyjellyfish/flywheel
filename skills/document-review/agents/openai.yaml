@@ -1,0 +1,4 @@
+interface:
+  display_name: "Document Review"
+  short_description: "Review docs with ranked, confidence-scored findings"
+  default_prompt: "Use $document-review to review this requirements or plan document and return a ranked fix queue."
