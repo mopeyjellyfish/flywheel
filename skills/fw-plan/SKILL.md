@@ -31,6 +31,10 @@ numbered options in chat and wait for the user's reply.
 Ask one question at a time. Prefer concise single-select choices when natural
 options exist.
 
+When multiple implementation or reliability postures are viable, present a
+short predicted option list with the recommended option first and a `Custom`
+option last.
+
 ## Reference Loading Map
 
 Do not load every reference file by default. Load only what the current phase
@@ -86,6 +90,10 @@ inline instead of weakening the plan.
    belong to the host project's instructions or `/fw:work`, not the plan. When
    TDD fits, each material hypothesis should map to a concrete red signal and a
    green completion signal.
+9. **Make runtime tradeoffs explicit** — when a plan changes retries,
+   fallbacks, queue behavior, health checks, or other operationally meaningful
+   boundaries, present the current repo truth, likely failure modes, blast
+   radius, viable options, and the recommended posture.
 
 ## Plan Quality Bar
 
@@ -108,6 +116,9 @@ Every plan should contain:
   event, or integration behavior
 - enumerated test scenarios for each feature-bearing unit
 - clear dependencies and sequencing
+- for runtime-risky work, an explicit decision surface covering current
+  behavior, top failure modes, blast radius, viable options, and the chosen
+  recommendation
 - enough detail that the next agent or human can start without rediscovering
   the project's testing posture or file-level patterns
 
@@ -875,7 +886,8 @@ Two deepening modes exist:
 The confidence check and `document-review` are different:
 
 - `document-review` checks coherence, feasibility, scope alignment,
-  simplification pressure, and role-specific document quality
+  simplification pressure, observability/supportability gaps, and role-specific
+  document quality
 - the confidence check strengthens rationale, sequencing, risk treatment, and
   system-wide thinking when the plan is structurally sound but still thin
 

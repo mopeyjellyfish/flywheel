@@ -15,8 +15,8 @@ The confidence check and document-review are complementary:
 - the confidence check strengthens rationale, sequencing, risk treatment, and
   grounding
 - document-review checks coherence, feasibility, scope alignment,
-  simplification pressure, and returns a confidence-aware, stack-ranked fix
-  queue
+  simplification pressure, observability/supportability gaps, and returns a
+  confidence-aware, stack-ranked fix queue
 
 If document-review auto-applied fixes, note them briefly when presenting handoff
 options.
@@ -29,6 +29,15 @@ If document-review flags architecture or implementation shape that appears
 heavier than the plan's stated goal requires, call that out explicitly when
 presenting handoff so the user can choose whether to proceed with that carrying
 cost or simplify first.
+
+If document-review flags runtime observability or operational validation blind
+spots, call that out explicitly when presenting handoff so the user can decide
+whether to tighten the rollout and support story before implementation.
+
+If document-review flags unresolved runtime tradeoffs such as retries,
+fallbacks, degraded modes, queue handling, or blast-radius concerns, call that
+out explicitly when presenting handoff so the user can decide whether to lock
+that posture down before implementation.
 
 When document-review returns `Review complete`, proceed to final checks.
 

@@ -32,6 +32,9 @@ numbered options in chat and wait for the user's reply.
 Ask one question at a time. Prefer concise single-select choices when natural
 options exist.
 
+When runtime tradeoffs are real, present a short predicted option list with the
+recommended option first and a `Custom` option last.
+
 In automated or non-interactive contexts, skip approval prompts once ambiguity
 is low enough to proceed responsibly.
 
@@ -160,6 +163,16 @@ Build a short **ground-truth ledger** from the repo:
   - typechecking or static analysis
   - audit, security, or policy checks when relevant
   - app boot or dev server commands when relevant to manual validation
+- Identify the repo's observability surfaces when the work changes runtime
+  behavior, for example:
+  - logging wrappers or event helpers
+  - tracing or correlation libraries
+  - metrics, dashboards, or alert references
+  - error trackers or saved log queries
+- For runtime-risky work, capture the current behavior on the affected path and
+  the likely blast radius if the change is wrong. Prefer concrete boundaries
+  such as single request, single tenant, queue, worker pool, node, region, or
+  data-correctness impact over generic "high risk" labels.
 - Read nearby implementation and test files to confirm local code and test
   idioms.
 - Prefer facts backed by files over hypotheses from the plan. If a plan names a
@@ -168,8 +181,28 @@ Build a short **ground-truth ledger** from the repo:
 - If a needed validation command cannot be established from repo evidence, ask
   now or explicitly mark the gap before proceeding.
 
+When runtime-facing work depends on telemetry design or log quality, load
+`/observability` and `/logging` instead of improvising a new instrumentation
+shape from memory.
+
 Use that ledger throughout execution. The ledger should answer: "What commands
 or artifacts will tell me whether the plan's hypothesis is actually true?"
+
+For runtime-facing work, the ledger should also answer: "What logs, traces,
+metrics, dashboards, or queries will tell me this change is healthy or broken?"
+
+For runtime-risky work, the ledger should also answer: "What does this path do
+today, what failure modes matter most, and how far can a mistake spread?"
+
+If the repo truth reveals multiple viable reliability postures, such as retry
+vs fail-fast or fail-open vs fail-closed, present the user with a concise
+choice surface before editing:
+
+- current repo truth
+- top failure modes
+- likely blast radius
+- 2-3 viable options at most
+- recommendation and proof hooks
 
 If a relevant `docs/solutions/` entry exists and the current work would
 contradict it, update the plan of attack immediately instead of plowing ahead
@@ -334,9 +367,16 @@ while (tasks remain):
   - Find existing test files for implementation files being changed
   - Implement following existing conventions
   - Add, update, or remove tests to match implementation changes
+  - When runtime behavior changes, assess whether logs, traces, metrics, or
+    operational validation need to be added or updated
+  - Use `/observability` or `/logging` when the repo's runtime support story
+    needs deliberate design, not just a quick local guess
+  - When runtime behavior changes meaningfully, confirm the chosen reliability
+    posture still matches the current code, failure modes, and blast radius
   - Run the relevant ground-truth checks from the Touch Grass ledger
   - Run tests after changes
   - Assess testing coverage: if behavior changed, were tests added or updated?
+  - Apply verification-before-completion discipline before claiming the task is done
   - Mark task as completed
   - Evaluate for an incremental commit
 ```

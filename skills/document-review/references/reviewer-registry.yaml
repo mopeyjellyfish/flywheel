@@ -16,6 +16,7 @@ groups:
     - product-lens
     - design-lens
     - security-lens
+    - observability-lens
     - document-simplicity
     - scope-guardian
     - adversarial-document
@@ -51,6 +52,12 @@ personas:
     output_mode: schema_json
     default_group: conditionals
     select_when: auth, permissions, trust boundaries, PII, payments, or public integrations are in scope
+  observability-lens:
+    path: references/personas/observability-lens.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: conditionals
+    select_when: runtime behavior, jobs, queues, integrations, migrations, or operationally meaningful failures are in scope and the document needs explicit support and validation signals
   document-simplicity:
     path: references/personas/document-simplicity.md
     dispatch_type: structured

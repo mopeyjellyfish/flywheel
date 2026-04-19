@@ -19,9 +19,10 @@ Always follow this sequence:
    - start with every `always_on_structured` and `always_on_agents` reviewer in
      the registry
    - add any relevant `cross_cutting_conditionals`
-   - if stack extensions are enabled, read `references/stack-packs/index.yaml`,
-     then only the matching pack files, then only the reference files named by
-     those packs, then add the persona IDs named by those packs
+   - if stack or platform extensions are enabled, read
+     `references/stack-packs/index.yaml`, then only the matching pack files,
+     then only the reference files named by those packs, then add the persona
+     IDs named by those packs
    - add any relevant `flywheel_conditionals`
 4. Union and deduplicate the selected reviewer IDs across all matching packs and
    conditional sources.
@@ -51,8 +52,8 @@ Do not bulk-load every file under `references/personas/` or
   files, nearby manifests, tool configs, or explicit project instructions.
 - When multiple packs match, load only the pack files that actually apply to
   the current diff.
-- Pack files may name stack-specific reference files. Load only the references
-  listed by packs that actually matched.
+- Pack files may name stack-, integration-, or platform-specific reference
+  files. Load only the references listed by packs that actually matched.
 - When multiple packs match, their reviewers are additive. Deduplicate reviewer
   IDs, then dispatch the final reviewer set in one batch where the host allows
   parallel review work.
@@ -65,7 +66,8 @@ When adding a new reviewer:
 
 1. add a persona file under `references/personas/`
 2. add the reviewer ID and path to `references/reviewer-registry.yaml`
-3. if it is stack-specific, add or update a pack file under
+3. if it is stack-, integration-, or platform-specific, add or update a pack
+   file under
    `references/stack-packs/`
 4. keep `SKILL.md` orchestration generic; do not hardcode every new reviewer
    into the main workflow body

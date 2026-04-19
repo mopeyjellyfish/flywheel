@@ -131,15 +131,51 @@ packs:
         - "watch"
         - "scan"
         - "redis"
+  - id: otel
+    path: references/stack-packs/otel.yaml
+    detects:
+      changed_files:
+        - "**/*otel*"
+        - "**/*opentelemetry*"
+        - "**/*otlp*"
+        - "otel*.yaml"
+        - "otel*.yml"
+        - "otel*.json"
+        - "**/collector*.yaml"
+        - "**/collector*.yml"
+      repo_signals:
+        - "@opentelemetry/"
+        - "opentelemetry"
+        - "otel"
+        - "OTEL_"
+  - id: datadog
+    path: references/stack-packs/datadog.yaml
+    detects:
+      repo_signals:
+        - "dd-trace"
+        - "datadog"
+        - "DD_SERVICE"
+        - "DD_ENV"
+        - "DD_VERSION"
+      diff_signals:
+        - "Datadog"
+        - "dd-trace"
+        - "DD_SERVICE"
+        - "DD_ENV"
+        - "DD_VERSION"
+        - "monitor"
+        - "dashboard"
 
 notes:
   - Add new stack-pack files here as the review library grows.
   - Keep pack membership data in YAML so stack expansion stays append-only.
   - Keep the core registry language-agnostic; use stack packs only for
-    genuinely stack-specific specialists.
+    genuinely stack-, integration-, or platform-specific specialists.
   - Pack files should stay small and evidence-driven so hosts load only what the
     current diff actually needs.
   - Integration packs such as Kafka and Redis should require both repo evidence
     and concrete diff relevance before activation.
   - Common combinations such as TypeScript plus React should compose naturally
     without duplicating synthesis.
+  - Observability packs should prefer the repo's real telemetry path over
+    duplicating instrumentation just because multiple tools are present.

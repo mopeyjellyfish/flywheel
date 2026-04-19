@@ -175,8 +175,8 @@ Routing rules:
 ## Reviewer Catalog
 
 The initial Flywheel reviewer catalog is intentionally cross-cutting and
-language-agnostic. The core workflow does not depend on stack-specific
-reviewers being hardcoded into `SKILL.md`.
+language-agnostic. The core workflow does not depend on stack- or
+platform-specific reviewers being hardcoded into `SKILL.md`.
 
 Every review uses:
 
@@ -193,7 +193,7 @@ files instead.
 
 The registry plus persona files are the extension surface. Keep `SKILL.md`
 generic, append new reviewers in the registry, and use stack packs only when a
-specialist truly depends on repo or stack evidence.
+specialist truly depends on repo, stack, or platform evidence.
 
 This deterministic loading order is mandatory. Do not skip straight to persona
 files or hardcode reviewer choices in the orchestrator body.
@@ -350,7 +350,8 @@ it. This is agent judgment, not keyword matching.
 More reviewers is not automatically better. Prefer the smallest set that gives
 clear coverage of the actual risks in the diff.
 
-If the repo and diff suggest stack-specific review would be useful:
+If the repo and diff suggest stack- or platform-specific review would be
+useful:
 
 - read `references/stack-packs/index.yaml`
 - detect matching stack packs from changed files, nearby manifests, repo-root
@@ -367,6 +368,8 @@ reviewer set. Typical combinations include:
 - language pack + `postgres` when app code and PostgreSQL behavior both change
 - language pack + `kafka` or `redis` only when the diff clearly touches those
   integrations
+- language pack + `otel` or `datadog` when the diff changes telemetry,
+  correlation, monitors, or runtime validation surfaces
 
 Do not split synthesis by pack. Pack selection determines who reviews; the
 selected reviewers still flow through one shared dispatch, merge, and verdict
@@ -463,7 +466,8 @@ Each structured reviewer receives:
 5. intent summary, file list, and diff
 6. run ID and reviewer name
 7. standards-paths for `project-standards` only
-8. stack-pack reference files only for stack-specific reviewers selected by a
+8. stack-pack reference files only for stack- or platform-specific reviewers
+   selected by a
    matching pack
 
 Reviewer passes are read-only with respect to project code. The one permitted

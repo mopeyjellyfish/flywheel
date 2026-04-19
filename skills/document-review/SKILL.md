@@ -96,6 +96,9 @@ Activate conditional personas when relevant:
   behavior, accessibility, or interaction design
 - `security-lens` when the document touches auth, permissions, tokens,
   PII, public APIs, trust boundaries, payments, or third-party integrations
+- `observability-lens` when the document changes runtime behavior, jobs,
+  integrations, migrations, or other operationally meaningful paths and needs
+  explicit support or validation signals
 - `document-simplicity` when the document introduces architecture layers,
   abstractions, extensibility points, orchestration, or verification shape
   that may be heavier than the current goal requires

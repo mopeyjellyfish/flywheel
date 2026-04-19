@@ -391,6 +391,10 @@ looks heavier than the stated goal requires, call that out explicitly before
 offering handoff options so the user can choose whether to keep or simplify the
 documented shape.
 
+When document-review surfaces runtime observability or validation blind spots,
+call that out explicitly before offering handoff options so the user can decide
+whether to sharpen the support story before planning.
+
 When document review is complete, proceed to Phase 4.
 
 ### Phase 4: Handoff

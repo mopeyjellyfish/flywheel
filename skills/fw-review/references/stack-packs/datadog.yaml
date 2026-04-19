@@ -1,0 +1,32 @@
+version: 1
+
+id: datadog
+description: Datadog review extension for service tagging, monitorability, and query stability.
+
+match:
+  repo_signals:
+    - "dd-trace"
+    - "datadog"
+    - "DD_SERVICE"
+    - "DD_ENV"
+    - "DD_VERSION"
+    - "datadog-ci"
+  diff_signals:
+    - "Datadog"
+    - "dd-trace"
+    - "DD_SERVICE"
+    - "DD_ENV"
+    - "DD_VERSION"
+    - "monitor"
+    - "dashboard"
+
+add_reviewers:
+  - datadog-reviewer
+
+references:
+  - references/stack-packs/datadog-review-basis.md
+
+selection_notes:
+  - If the repo uses OTel to feed Datadog, use both packs when the diff touches
+    both instrumentation and Datadog-facing validation.
+  - Do not activate the pack from generic monitoring prose alone.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "/observability"
+  short_description: "Map runtime failure modes, telemetry, and rollout validation"
+  default_prompt: "Use $observability to ground in repo truth, identify the runtime surface, surface failure modes and blast radius, present predicted options plus Custom when tradeoffs are real, and return a concrete logs/metrics/traces/validation plan."

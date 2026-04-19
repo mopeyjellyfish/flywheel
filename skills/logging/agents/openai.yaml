@@ -1,0 +1,4 @@
+interface:
+  display_name: "/logging"
+  short_description: "Design structured logging that explains live behavior"
+  default_prompt: "Use $logging to inspect existing logging truth, choose the right event shape, present predicted options plus Custom when tradeoffs are real, and return a concrete logging design, audit, or migration sketch."

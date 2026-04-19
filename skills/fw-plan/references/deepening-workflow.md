@@ -55,6 +55,10 @@ If the plan already has a `deepened:` date:
 - rationale does not explain tradeoffs or rejected alternatives
 - the decision does not connect back to scope, requirements, or origin context
 - an obvious design fork exists but the plan never explains why one path won
+- runtime-risky decisions do not state what adjacent code currently does before
+  recommending a new posture
+- the plan names a reliability-sensitive decision but never compares the viable
+  options or explains the recommendation
 
 **Testing Strategy**
 
@@ -139,6 +143,13 @@ If the plan already has a `deepened:` date:
 - risks are listed without mitigation
 - rollout, monitoring, migration, or support implications are missing when
   warranted
+- runtime-facing work names risks but not their likely blast radius
+- runtime-facing work does not name the logs, metrics, traces, dashboards, or
+  search terms that would validate health after release
+- async, queue, retry, or integration changes do not name the correlation or
+  debugging signals needed once the code is live
+- retries, fallbacks, degraded modes, health checks, or backlog behavior are in
+  scope but the plan never presents the user with grounded options
 - external dependency assumptions are weak or unstated
 - security, privacy, performance, or data risks are absent where they obviously
   apply
@@ -177,6 +188,8 @@ Typical section-to-pass mapping:
 - **System-Wide Impact** — cross-boundary effect analysis
 - **Risks & Dependencies / Operational Notes** — specialist review aligned to the
   actual risk
+- **Operational Notes with runtime impact** — `observability` for telemetry,
+  validation surfaces, and post-deploy signal design
 
 If delegated passes are unavailable, do the equivalent reasoning directly.
 

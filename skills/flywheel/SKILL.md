@@ -27,10 +27,12 @@ Route to the right stage as soon as the intent is clear:
 2. `/fw:plan` for turning that requirements plan, or a detailed idea, into a
    technical implementation plan.
 3. `/fw:work` for carrying out the plan with traceability.
-4. `/fw:review` for pre-merge code review and risk finding.
-5. `/fw:spin` for capturing what should change so the next cycle is easier.
-6. `repeat` by starting the next task with better stored context than before.
-7. `/fw:ideate` as an optional force multiplier when the job is to surface the
+4. `/fw:debug` for bug investigation that must prove the hypothesis before a
+   fix or redesign.
+5. `/fw:review` for pre-merge code review and risk finding.
+6. `/fw:spin` for capturing what should change so the next cycle is easier.
+7. `repeat` by starting the next task with better stored context than before.
+8. `/fw:ideate` as an optional force multiplier when the job is to surface the
    best next ideas before entering the main loop.
 
 Do not force every request through every stage. Route to the earliest missing
@@ -46,12 +48,21 @@ stage, then carry forward the artifacts from there.
   before entering the main loop, use `../fw-ideate/SKILL.md`.
 - If a plan exists or the user wants implementation now, use
   `../fw-work/SKILL.md`.
+- If the user is dealing with a failing test, regression, stack trace, or
+  broken behavior and the immediate job is root-cause analysis, use
+  `../fw-debug/SKILL.md`.
 - If code already changed and the job is to find bugs, regressions, or missing
   tests, use `../fw-review/SKILL.md`.
 - If the work is done and the value should be preserved in docs, scripts,
   skills, or checklists, use `../fw-spin/SKILL.md`.
 - If the user wants help choosing or validating a commit message, or a workflow
   is about to commit, use `../conventional-commit/SKILL.md`.
+- If the work is about telemetry, dashboards, traces, metrics, or operational
+  validation, use `../observability/SKILL.md`.
+- If the work is specifically about structured application logs and event
+  design, use `../logging/SKILL.md`.
+- If the user is about to claim completion and the main need is evidence for
+  that claim, use `../verification-before-completion/SKILL.md`.
 
 Apply these routing heuristics before doing repo exploration:
 
@@ -61,6 +72,8 @@ Apply these routing heuristics before doing repo exploration:
   requirements doc, route to `../fw-plan/SKILL.md`
 - if the input explicitly points at `docs/plans/` or asks to implement a plan,
   route to `../fw-work/SKILL.md`
+- if the input is a bug, regression, test failure, or stack trace, route to
+  `../fw-debug/SKILL.md`
 - if the input says the code already changed or asks for pre-merge bug finding,
   route to `../fw-review/SKILL.md`
 - if the input says the work is done and the goal is preserving lessons or
@@ -117,6 +130,8 @@ Preferred stage-to-handoff wording:
   `/fw:work`
 - `fw-work` -> produce implemented, validated changes -> then move through
   `/fw:review` and shipping, then offer `/fw:spin`
+- `fw-debug` -> produce a proved causal chain and either a red-to-green fix or
+  a handoff back to `/fw:brainstorm` or `/fw:plan`
 - `fw-review` -> produce findings and fix decisions -> then update the branch,
   push, or create/update the PR
 - `fw-spin` -> produce or update a `docs/solutions/` entry -> then start the
@@ -138,6 +153,10 @@ Use these patterns to keep routing answers stable across frontier models:
 - **Work route:** "This is ready for `fw-work` because the scope is already
   concrete enough to execute. The output should be implemented, validated
   changes. After that, run `/fw:review`, ship, and offer `/fw:spin`."
+- **Debug route:** "This belongs in `fw-debug` because the immediate job is to
+  prove why the bug happens before changing code. The output should be a causal
+  chain plus either a red-to-green fix or a routing decision back into
+  brainstorming or planning."
 - **Review route:** "This belongs in `fw-review` because code already changed
   and the immediate job is risk finding before merge. The output should be a
   review verdict and concrete findings. After that, update the branch or PR."
@@ -166,6 +185,8 @@ Use these patterns to keep routing answers stable across frontier models:
 - `brainstorm`: a requirements plan with only as much Q&A as the task needs.
 - `plan`: a technical execution plan with validation and risk notes.
 - `work`: implemented changes, task progress, and checks run.
+- `debug`: a proved causal chain and a red signal for the bug, then either a
+  minimal fix or a redesign handoff.
 - `review`: findings first, with severity and file references.
 - `spin`: a new or updated `docs/solutions/` entry that reduces repeated
   future effort.

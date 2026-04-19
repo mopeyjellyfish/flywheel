@@ -23,6 +23,7 @@ groups:
   cross_cutting_conditionals:
     - architecture
     - simplicity
+    - observability
     - security
     - performance
     - data-access
@@ -98,6 +99,12 @@ personas:
     output_mode: schema_json
     default_group: cross_cutting_conditionals
     select_when: the diff adds wrappers, helpers, abstractions, orchestration, or multi-file complexity that may be reducible
+  observability:
+    path: references/personas/observability.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: runtime-facing behavior, jobs, queues, external calls, retries, user-visible failures, or rollout-sensitive operational changes are in scope
   performance:
     path: references/personas/performance.md
     dispatch_type: structured
@@ -200,6 +207,18 @@ personas:
     output_mode: schema_json
     default_group: stack_pack
     select_when: a selected stack pack identifies Redis keyspace, cache, script, stream, or TTL-sensitive review work
+  otel-reviewer:
+    path: references/personas/otel-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies OpenTelemetry instrumentation, correlation, or collector-facing review work
+  datadog-reviewer:
+    path: references/personas/datadog-reviewer.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: stack_pack
+    select_when: a selected stack pack identifies Datadog-visible instrumentation, tagging, or validation review work
   schema-drift-detector:
     path: references/personas/schema-drift-detector.md
     dispatch_type: advisory_agent

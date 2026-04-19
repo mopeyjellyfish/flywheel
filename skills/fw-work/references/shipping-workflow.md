@@ -73,6 +73,10 @@ Include concrete:
 - failure signals and the rollback or mitigation trigger
 - validation window and owner
 
+When the repo already has observability conventions, prefer the actual event
+names, fields, trace filters, dashboards, or monitor surfaces discovered during
+Touch Grass instead of generic placeholders.
+
 If there is truly no production or runtime impact, still include the section
 with `No additional operational monitoring required` and a one-line reason.
 
