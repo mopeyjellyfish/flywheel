@@ -35,6 +35,10 @@ The `problem_type` determines which **track** applies.
   `developer_workflow`, `documentation`, `tooling`, `library`,
   `service_integration`
 - **severity**: one of `critical`, `high`, `medium`, `low`
+- **doc_status**: `active` for current guidance, `superseded` for historical
+  docs that should not be used as the first answer
+- **files_touched**: one or more repo-relative files or directories
+- **tags**: 2-8 lowercase, hyphen-separated search keywords
 
 ## Bug Track Fields
 
@@ -46,10 +50,13 @@ Required:
 
 ## Knowledge Track Fields
 
-No additional required fields beyond the shared ones. These are optional when
-useful:
+Required:
 
-- **applies_when**
+- **applies_when**: at least one concrete condition that says when this
+  guidance applies
+
+Optional when useful:
+
 - **symptoms**
 - **root_cause**
 - **resolution_type**
@@ -57,10 +64,10 @@ useful:
 ## Optional Fields
 
 - **related_components**: other components involved
-- **files_touched**: repo-relative files or directories relevant to the
-  learning
-- **tags**: lowercase, hyphen-separated search keywords
 - **related_issues**: issue, PR, or doc references
+- **related_docs**: repo-relative paths to neighboring solution docs
+- **supersedes**: repo-relative docs this entry replaces as the current answer
+- **superseded_by**: repo-relative doc that replaces this entry
 - **last_updated**: ISO date for refreshed docs
 
 ## Category Mapping
@@ -85,6 +92,12 @@ useful:
 Future Flywheel stages should search `docs/solutions/` by frontmatter before
 opening full files.
 
+Filter rules before ranking:
+
+1. prefer docs with `doc_status: active`
+2. if a strong hit has `superseded_by`, follow that path first and treat the
+   current doc as historical context only
+
 Recommended order:
 
 1. `files_touched` or path fragments
@@ -101,11 +114,12 @@ Read frontmatter first. Fully read only the strongest hits.
 1. Determine the track from `problem_type`.
 2. All shared required fields must be present.
 3. Bug-track required fields must be present on bug-track docs.
-4. Knowledge-track docs have no additional required fields beyond the shared
-   ones.
+4. Knowledge-track docs must include `applies_when`.
 5. Enum fields must match the allowed values exactly.
 6. `category` must match the mapped directory slug for the chosen `problem_type`.
 7. Array fields must respect min and max item counts.
 8. `date` and `last_updated`, when present, must match `YYYY-MM-DD`.
-9. `files_touched` must be repo-relative when present.
+9. `files_touched` must be repo-relative.
 10. `tags` should be lowercase and hyphen-separated.
+11. New or refreshed canonical docs should use `doc_status: active`.
+12. `doc_status: superseded` docs should set `superseded_by`.

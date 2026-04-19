@@ -20,6 +20,7 @@ module: [Module or area]
 problem_type: [schema enum]
 component: [schema enum]
 severity: [schema enum]
+doc_status: active
 files_touched:
   - [repo-relative path or directory]
 symptoms:
@@ -29,6 +30,8 @@ resolution_type: [schema enum]
 tags:
   - [keyword-one]
   - [keyword-two]
+supersedes:
+  - [optional repo-relative doc path this entry replaces]
 ---
 
 # [Clear problem title]
@@ -73,6 +76,7 @@ module: [Module or area]
 problem_type: [schema enum]
 component: [schema enum]
 severity: [schema enum]
+doc_status: active
 files_touched:
   - [repo-relative path or directory]
 applies_when:
@@ -80,6 +84,8 @@ applies_when:
 tags:
   - [keyword-one]
   - [keyword-two]
+supersedes:
+  - [optional repo-relative doc path this entry replaces]
 ---
 
 # [Clear, descriptive title]

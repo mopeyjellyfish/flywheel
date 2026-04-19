@@ -298,7 +298,8 @@ Always do local research:
   tests
 - read relevant `docs/solutions/` or other durable learnings when they exist;
   search solution frontmatter by `files_touched`, `module`, `tags`,
-  `problem_type`, `component`, and title before reading full docs
+  `problem_type`, `component`, and title before reading full docs. Prefer
+  `doc_status: active` and follow `superseded_by` when present
 
 When the platform supports delegated or parallel bounded research **and** policy
 allows it, you may split local research into small focused passes, for example:

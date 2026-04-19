@@ -298,6 +298,7 @@ ideation, brainstorming, planning, work, review, and debugging sessions.
 Each solution doc uses YAML frontmatter so agents can search cheaply before
 opening the full file. Common retrieval fields include:
 
+- `doc_status`
 - `title`
 - `module`
 - `files_touched`
@@ -305,6 +306,11 @@ opening the full file. Common retrieval fields include:
 - `component`
 - `tags`
 - `severity`
+- `supersedes`
+- `superseded_by`
+
+Prefer docs with `doc_status: active`. If a strong hit has `superseded_by`,
+follow that path first and treat the older doc as historical context.
 
 ## Eval harness
 
@@ -317,6 +323,7 @@ node scripts/flywheel-eval.js list
 node scripts/flywheel-eval.js validate
 node scripts/flywheel-eval.js prepare flywheel
 node scripts/flywheel-eval.js prepare fw-review
+node scripts/flywheel-eval.js prepare fw-spin
 ```
 
 For local live comparisons between Codex and Claude Code, use the isolated

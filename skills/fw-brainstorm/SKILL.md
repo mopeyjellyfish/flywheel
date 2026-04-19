@@ -201,7 +201,8 @@ on.
 artifact if one exists (brainstorm, plan, spec, skill, feature doc, or
 `docs/solutions/` entry). When `docs/solutions/` exists, search frontmatter by
 `files_touched`, `module`, `tags`, `problem_type`, `component`, and title
-before opening full docs. Skim adjacent examples covering similar behavior.
+before opening full docs. Prefer `doc_status: active` and follow
+`superseded_by` when present. Skim adjacent examples covering similar behavior.
 
 If nothing obvious appears after a short scan, say so and continue. Two rules
 govern technical depth during the scan:

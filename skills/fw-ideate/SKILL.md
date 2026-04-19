@@ -165,7 +165,8 @@ Gather grounding before generating ideas. Match the grounding to the mode:
    - nearby `docs/brainstorms/`, `docs/plans/`, or `docs/solutions/` artifacts
    - adjacent files or tests that reveal the current shape of the area
    - when `docs/solutions/` exists, search it by `files_touched`, `module`,
-     `tags`, `problem_type`, `component`, and title before reading full docs
+     `tags`, `problem_type`, `component`, and title before reading full docs;
+     prefer `doc_status: active` and follow `superseded_by` when present
 3. Verify any claim about current capabilities, missing pieces, or repo
    boundaries against actual files before using it as grounding.
 4. If the user explicitly asked for issue, bug, or feedback themes, gather them

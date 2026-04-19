@@ -16,7 +16,8 @@ cheaper and faster.
 `docs/solutions/` is the Flywheel knowledge store for solved problems and
 durable practices. When a stage touches an area that may already be documented,
 search that store by frontmatter before assuming the current session is the
-first time the problem has appeared.
+first time the problem has appeared. Prefer docs with `doc_status: active`, and
+if a strong hit has `superseded_by`, follow that path first.
 
 ## Flow Map
 

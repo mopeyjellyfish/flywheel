@@ -146,6 +146,7 @@ Build a short **ground-truth ledger** from the repo:
 - When `docs/solutions/` exists, search it for the target area before editing.
   Prefer frontmatter-first lookup by `files_touched`, `module`, `tags`,
   `problem_type`, `component`, and title, then read only the strongest hits.
+  Prefer `doc_status: active` and follow `superseded_by` when present.
 - Inspect the nearest project manifests and automation surfaces that can prove
   how the repo wants work validated. Depending on stack, this may include
   `package.json`, `pyproject.toml`, `Gemfile`, `go.mod`, `Makefile`,

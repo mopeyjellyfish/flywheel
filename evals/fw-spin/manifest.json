@@ -1,0 +1,32 @@
+{
+  "id": "fw-spin",
+  "skill": "fw-spin",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Capture Discipline",
+    "Retrieval Contract",
+    "Canonicalization",
+    "Housekeeping Discipline",
+    "Workflow Fit"
+  ],
+  "criticalDimensions": [
+    "Capture Discipline",
+    "Retrieval Contract",
+    "Canonicalization",
+    "Housekeeping Discipline"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "direct_bug_capture",
+    "supersede_stale_guidance",
+    "blank_candidate_selection"
+  ]
+}

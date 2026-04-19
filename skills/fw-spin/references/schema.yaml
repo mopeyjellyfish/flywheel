@@ -114,6 +114,24 @@ required_fields:
       - low
     description: "Impact severity"
 
+  doc_status:
+    type: enum
+    values:
+      - active
+      - superseded
+    description: "Whether this doc is current guidance or kept only as historical context"
+
+  files_touched:
+    type: array[string]
+    min_items: 1
+    description: "Repo-relative files or directories most relevant to the learning"
+
+  tags:
+    type: array[string]
+    min_items: 2
+    max_items: 8
+    description: "Search keywords, lowercase and hyphen-separated"
+
 track_rules:
   bug:
     required:
@@ -161,11 +179,13 @@ track_rules:
         description: "Type of fix applied"
 
   knowledge:
-    optional:
+    required:
       applies_when:
         type: array[string]
+        min_items: 1
         max_items: 5
         description: "Conditions or situations where this guidance applies"
+    optional:
       symptoms:
         type: array[string]
         max_items: 5
@@ -213,18 +233,21 @@ optional_fields:
     type: array[string]
     description: "Other components involved"
 
-  files_touched:
-    type: array[string]
-    description: "Repo-relative files or directories most relevant to the learning"
-
-  tags:
-    type: array[string]
-    max_items: 8
-    description: "Search keywords, lowercase and hyphen-separated"
-
   related_issues:
     type: array[string]
     description: "Issue numbers, PRs, or doc references related to this learning"
+
+  related_docs:
+    type: array[string]
+    description: "Repo-relative paths to neighboring solution docs worth cross-reading"
+
+  supersedes:
+    type: array[string]
+    description: "Repo-relative solution doc paths that this doc replaces as the current guidance"
+
+  superseded_by:
+    type: string
+    description: "Repo-relative solution doc path that replaces this doc"
 
   last_updated:
     type: string
@@ -235,11 +258,13 @@ validation_rules:
   - "Determine track from problem_type using the tracks section above"
   - "All shared required_fields must be present"
   - "Bug-track required fields (symptoms, root_cause, resolution_type) must be present on bug-track docs"
-  - "Knowledge-track docs have no additional required fields beyond the shared ones"
+  - "Knowledge-track required fields (applies_when) must be present on knowledge-track docs"
   - "Track-specific optional fields may be included but are not required"
   - "Enum fields must match allowed values exactly"
   - "category must match the mapped directory slug for the selected problem_type"
   - "Array fields must respect min_items/max_items when specified"
   - "date and last_updated, if present, must match YYYY-MM-DD format"
-  - "files_touched must use repo-relative paths when present"
+  - "files_touched must use repo-relative paths"
   - "tags should be lowercase and hyphen-separated"
+  - "New or refreshed canonical docs should use doc_status: active"
+  - "Docs marked doc_status: superseded should set superseded_by to the replacing doc path"

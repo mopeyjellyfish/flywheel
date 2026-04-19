@@ -6,6 +6,7 @@ const { deterministicOptimize } = require("./fw-optimize.cjs");
 const { deterministicPlan } = require("./fw-plan.cjs");
 const { deterministicReview } = require("./fw-review.cjs");
 const { deterministicShip } = require("./fw-ship.cjs");
+const { deterministicSpin } = require("./fw-spin.cjs");
 const { deterministicWork } = require("./fw-work.cjs");
 
 function getDeterministicSuiteScorer(suiteId) {
@@ -32,6 +33,9 @@ function getDeterministicSuiteScorer(suiteId) {
   }
   if (suiteId === "fw-optimize") {
     return deterministicOptimize;
+  }
+  if (suiteId === "fw-spin") {
+    return deterministicSpin;
   }
   throw new Error(`no scorer registered for suite "${suiteId}"`);
 }

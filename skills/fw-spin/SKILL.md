@@ -59,6 +59,10 @@ Do not preload every support file. Load only what the current phase needs:
    consult them.
 6. **Offer spin, do not force it** - when `spin` is merely being suggested at
    the end of another workflow, get the user's approval before writing docs.
+7. **Every spin includes bounded housekeeping** - refresh nearby discoverability
+   and contradiction markers while the context is fresh.
+8. **Prefer one canonical answer per lesson family** - update, supersede, or
+   cross-link explicitly instead of letting overlapping docs silently compete.
 
 ## Input Hint
 
@@ -91,6 +95,8 @@ stage, **skip candidate rediscovery in Phase 0** and move straight into capture.
 Primary output:
 
 - a new or updated file under `docs/solutions/<category>/`
+- optional bounded housekeeping on the strongest neighboring docs when tags,
+  discoverability, or supersession markers need repair
 
 Default filename for new docs:
 
@@ -107,6 +113,12 @@ The document must use YAML frontmatter and the stable section order from
 
 The Flywheel knowledge store is designed for cheap lookup. Future stages should
 search `docs/solutions/` by frontmatter before reading full docs.
+
+Filter rules before ranking:
+
+1. prefer docs with `doc_status: active`
+2. if a strong hit has `superseded_by`, follow that path first and treat the
+   current doc as historical context only
 
 Search in this order when the current area may already be documented:
 
@@ -166,6 +178,9 @@ Present two capture modes unless the user already specified one:
 If the user explicitly asks for a quick pass, honor lightweight mode. If the
 user explicitly asks for a thorough write-up, honor full mode.
 
+Both modes still perform the bounded housekeeping pass. Lightweight mode only
+shrinks how far that housekeeping reaches.
+
 ### Phase 2: Classify and Search the Knowledge Store
 
 Read `references/schema.yaml` and `references/yaml-schema.md`.
@@ -197,10 +212,46 @@ Use this decision rule:
 | Overlap | Action |
 | --- | --- |
 | **High** - same problem, same cause, same fix or guidance | Update the existing doc instead of creating a duplicate |
+| **Replacement** - newer lesson materially replaces older guidance | Write or refresh the new canonical doc, mark the older doc `doc_status: superseded`, and set `superseded_by` |
 | **Moderate** - same area, different angle or remedy | Create a new doc and link the related one |
 | **Low or none** | Create a new doc |
 
-### Phase 3: Assemble the Solution Doc
+When classifying the target doc, assume:
+
+- new or refreshed canonical docs should use `doc_status: active`
+- docs kept only as historical context should use `doc_status: superseded`
+- knowledge-track docs should always say **when** the guidance applies
+- every doc should have strong `files_touched` and `tags`, since later stages
+  search those first
+
+### Phase 3: Canonicalize and Housekeep the Neighborhood
+
+Every spin includes a bounded housekeeping pass.
+
+This pass is intentionally local:
+
+- inspect only the strongest overlapping docs from Phase 2
+- touch the selected doc plus at most **2** neighboring docs unless the user
+  explicitly asks for deeper cleanup
+- prefer metadata and short-note refreshes over full rewrites of neighboring
+  docs
+
+For each neighboring overlap, choose exactly one action:
+
+1. **Leave alone** - still accurate and discoverable
+2. **Refresh discoverability** - improve `tags`, `files_touched`, `module`, or
+   `last_updated`
+3. **Cross-link** - add `related_docs` or Related notes because both docs stay
+   valid
+4. **Supersede** - mark the older doc `doc_status: superseded`, set
+   `superseded_by`, and record the replaced path in the canonical doc's
+   `supersedes`
+
+Do not leave silent contradiction behind. If two docs appear to answer the same
+question differently, resolve that during the spin by updating one, superseding
+one, or narrowing their applicability explicitly.
+
+### Phase 4: Assemble the Solution Doc
 
 Read `assets/resolution-template.md` and preserve its section order unless the
 user explicitly asks for a different structure.
@@ -216,8 +267,10 @@ When creating or refreshing a doc:
 
 1. assemble YAML frontmatter that matches the schema
 2. keep repo-relative paths in `files_touched` and examples
-3. write only what will help future work
-4. avoid vague retrospectives or process theatre
+3. make `tags` and `module` strong enough that a later agent can find the doc
+   cheaply
+4. write only what will help future work
+5. avoid vague retrospectives or process theatre
 
 When updating an existing doc:
 
@@ -226,8 +279,10 @@ When updating an existing doc:
   changed
 - refresh stale examples, prevention notes, and related references
 - add `last_updated: YYYY-MM-DD` to frontmatter if it is not already present
+- add or tighten `related_docs`, `supersedes`, or `superseded_by` when the
+  neighborhood analysis says this doc should now carry that relationship
 
-### Phase 4: Mode-Specific Execution
+### Phase 5: Mode-Specific Execution
 
 #### Full Mode
 
@@ -249,9 +304,13 @@ Do a compact single pass:
 - skip broader cross-referencing unless a related doc is immediately obvious
 
 Lightweight mode is allowed to miss a subtle overlap. That is acceptable when
-speed matters more than exhaustive consolidation.
+speed matters more than exhaustive consolidation, but it must still:
 
-### Phase 5: Discoverability Check
+- avoid obvious duplicates
+- refresh the target doc's own tags and `files_touched`
+- mark clear replacements as superseded when they are encountered
+
+### Phase 6: Discoverability Check
 
 After writing the solution doc, check whether a future agent would discover the
 knowledge store from the repo's main discovery surfaces.
@@ -277,12 +336,13 @@ If not, propose the smallest natural addition and ask before editing when the
 workflow is only offering spin. When the user explicitly asked to improve the
 Flywheel knowledge flow itself, making that small discovery edit is in scope.
 
-### Phase 6: Handoff
+### Phase 7: Handoff
 
 Summarize:
 
 - the file created or updated
 - whether a prior doc was refreshed instead of duplicated
+- any neighboring docs refreshed, cross-linked, or marked superseded
 - the lesson captured
 - what future task should now be easier
 - any additional candidate learnings still worth spinning
