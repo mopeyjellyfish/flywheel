@@ -1,0 +1,32 @@
+{
+  "id": "fw-ship",
+  "skill": "fw-ship",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Shipping Path",
+    "Readiness Gate",
+    "Monitoring Notes",
+    "Browser Proof Discipline",
+    "Branch Safety",
+    "Commit Honesty"
+  ],
+  "criticalDimensions": [
+    "Shipping Path",
+    "Readiness Gate",
+    "Monitoring Notes"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "feature_branch_create_pr",
+    "default_branch_guard",
+    "browser_visible_ship"
+  ]
+}

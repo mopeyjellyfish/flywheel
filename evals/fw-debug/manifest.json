@@ -1,0 +1,32 @@
+{
+  "id": "fw-debug",
+  "skill": "fw-debug",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Issue Intake",
+    "Evidence Discipline",
+    "Causal Chain",
+    "Red Signal",
+    "Upstream Routing",
+    "Verification Discipline"
+  ],
+  "criticalDimensions": [
+    "Evidence Discipline",
+    "Causal Chain",
+    "Red Signal"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "github_issue_debug",
+    "stack_trace_debug",
+    "design_problem_debug"
+  ]
+}

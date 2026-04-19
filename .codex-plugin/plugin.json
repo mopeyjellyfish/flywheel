@@ -1,7 +1,7 @@
 {
   "name": "flywheel",
   "version": "0.1.0",
-  "description": "Standardize a compounding development flow from ideation through execution, review, and learning capture.",
+  "description": "Standardize a compounding development flow from setup and ideation through execution, review, shipping, and learning capture.",
   "license": "UNLICENSED",
   "keywords": [
     "flywheel",
@@ -15,7 +15,7 @@
   "interface": {
     "displayName": "Flywheel",
     "shortDescription": "Compound engineering leverage across the dev loop",
-    "longDescription": "Guide work through ideation, brainstorming, planning, execution, review, and captured learnings so each completed task makes the next one easier.",
+    "longDescription": "Guide work from repo setup, ideation, and measured optimization through brainstorming, planning, execution, review, shipping, and captured learnings so each completed task makes the next one easier.",
     "category": "Coding",
     "capabilities": [
       "Interactive",
@@ -23,9 +23,19 @@
     ],
     "defaultPrompt": [
       "Use $flywheel to take this task from idea to a working PR through the right Flywheel stage.",
+      "Use $fw-setup when you need to prove repo and machine readiness before starting.",
+      "Use $fw-run when one bounded task should be coordinated end to end through the remaining Flywheel stages.",
       "Use $fw-brainstorm to refine an idea before planning.",
+      "Use $document-review to review a requirements doc or plan before execution.",
+      "Use $fw-deepen-plan when an existing plan needs stronger implementation units or verification before work starts.",
       "Use $fw-plan to turn this request into an implementation plan.",
-      "Use $fw-work to execute the plan through review, shipping, and spin."
+      "Use $fw-debug when the immediate job is to prove a bug before fixing it.",
+      "Use $fw-browser-test when browser-visible behavior needs fresh acceptance proof.",
+      "Use $fw-polish when browser-visible behavior needs a live tighten-and-retest loop before review.",
+      "Use $fw-work to execute the plan, validate the implementation, and hand off cleanly into review.",
+      "Use $fw-optimize when the goal is measured latency, throughput, build, or cost improvement.",
+      "Use $fw-ship to finish the branch with commit, push, and PR closure.",
+      "Use $fw-spin when a completed session exposed durable lessons worth capturing for future work."
     ]
   }
 }

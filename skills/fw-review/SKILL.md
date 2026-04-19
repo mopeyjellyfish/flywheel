@@ -67,6 +67,9 @@ Do not preload every reference. Load only what the current phase needs:
   packs should be considered for this diff.
 - After stack-pack selection, read only the matching pack files and only the
   stack-pack reference files those packs explicitly name.
+- Read `../observability/references/service-readiness-matrix.md` only when the
+  diff changes runtime behavior, contracts, state, rollout posture, retries,
+  queues, migrations, or other service-readiness-sensitive boundaries.
 - Read only the selected persona files under `references/personas/` after the
   registry and loading guide identify them.
 - Read `references/diff-scope.md` and `references/findings-schema.json`
@@ -234,8 +237,11 @@ Cannot use `base:` with a PR number or branch target — `base:` implies the cur
 
 **If a PR number or GitHub URL is provided**
 
-- In `mode:report-only` or `mode:headless`, do not run `gh pr checkout` on the
-  shared checkout. Stop unless already in an isolated checkout or worktree.
+- Preflight gate: if `mode:report-only` or `mode:headless` is running on the
+  shared checkout, stop here before any checkout logic. Do not continue to the
+  remaining steps in this section.
+- Only continue to `gh pr checkout` when the run is interactive or autofix, or
+  when the review is already running in an isolated checkout or worktree.
 - Verify the worktree is clean with `git status --porcelain` before switching.
   If it is dirty, stop and ask the user to stash or commit first.
 - Check out the PR branch with:
@@ -258,7 +264,12 @@ Cannot use `base:` with a PR number or branch target — `base:` implies the cur
 
 **If a branch name is provided**
 
-- In `mode:report-only` or `mode:headless`, do not switch the shared checkout.
+- Preflight gate: if `mode:report-only` or `mode:headless` is running on the
+  shared checkout, stop here before any checkout logic. Do not continue to the
+  remaining steps in this section.
+- Only continue to `git checkout <branch>` when the run is interactive or
+  autofix, or when the review is already running in an isolated checkout or
+  worktree.
 - Verify the worktree is clean before switching.
 - Check out the named branch with:
 
@@ -336,6 +347,19 @@ Confidence tagging:
 If a plan is found, read its `Requirements Trace` and `Implementation Units`.
 Do not block the review if no plan is found.
 
+### Stage 2c: Build A Service-Readiness Frame When Needed
+
+If the diff is runtime-risky, read
+`../observability/references/service-readiness-matrix.md` and build a concise
+readiness frame from the dimensions that apply.
+
+Use that frame to sharpen:
+
+- reviewer selection, especially observability, reliability, performance,
+  data-access, api-contract, data-migrations, and deployment verification
+- verdict reasoning
+- any final handoff into `/fw:ship`
+
 ### Stage 3: Select Reviewers
 
 Read the diff and file list from Stage 1, then read
@@ -402,9 +426,9 @@ Pass the resulting path list to the `project-standards` reviewer inside a
 
 ### Stage 4: Execute Reviewer Passes
 
-#### Frontier Model Posture
+#### Execution Notes
 
-This workflow is designed for frontier-model review orchestration:
+This workflow uses model-tiered review orchestration when the host supports it:
 
 - keep the orchestrator on the strongest available model
 - keep reviewer or fixer subagents on a faster capable model when the platform
@@ -415,9 +439,13 @@ This workflow is designed for frontier-model review orchestration:
 If the platform has no model override mechanism, let reviewers inherit the
 default model rather than breaking dispatch.
 
-When overrides are available, use a strong orchestrator and a cheaper capable
-reviewer tier. In practice that usually means `gpt-5.4` or equivalent for the
-orchestrator and `gpt-5.4-mini` or Sonnet-tier for reviewer passes.
+When overrides are available, use a strong orchestrator tier and a cheaper but
+capable reviewer tier. Prefer capability labels over provider branding:
+
+- `strong_orchestrator` for synthesis, policy decisions, and complex merge work
+- `fast_review_worker` for narrow reviewer passes
+
+Map those tiers to host-native model names only at dispatch time.
 
 #### Run ID
 
@@ -492,8 +520,11 @@ Convert multiple reviewer returns into one deduplicated, confidence-gated
 finding set. This is the coalescing step for the whole review, including any
 parallel stack-pack reviewers.
 
-1. **Validate** compact returns against required top-level and per-finding
-   fields. Drop malformed returns or findings and record the drop count.
+1. **Validate** compact returns against the compact-return field set:
+   top-level `reviewer`, `findings`, `residual_risks`, and `testing_gaps`, plus
+   per-finding merge-tier fields only. Do not apply artifact-only requirements
+   such as `why_it_matters` or `evidence` at this stage. Drop malformed returns
+   or findings and record the drop count.
 2. **Confidence gate** findings below `0.60`. Exception: P0 findings at `0.50+`
    survive.
 3. **Deduplicate** using:
@@ -536,10 +567,11 @@ Interactive output should contain:
 6. Pre-existing issues
 7. Learnings and past solutions
 8. Agent-native gaps
-9. Schema drift check, when that agent ran
-10. Deployment notes, when that agent ran
-11. Coverage
-12. Verdict
+9. Service readiness notes, when Stage 2c ran
+10. Schema drift check, when that agent ran
+11. Deployment notes, when that agent ran
+12. Coverage
+13. Verdict
 
 **Requirements completeness**
 
@@ -604,6 +636,9 @@ Learnings & Past Solutions:
 
 Agent-Native Gaps:
 - <gap description>
+
+Service Readiness Notes:
+- <readiness note>
 
 Schema Drift Check:
 - <drift status>
@@ -726,9 +761,13 @@ findings whose final owner is `downstream-resolver`.
 
 Interactive mode only:
 
-- PR mode: offer `Push fixes` or `Exit`
-- Feature-branch mode: offer `Create a PR`, `Continue without PR`, or `Exit`
+- PR mode: offer `/fw:ship` to push and refresh the PR, or `Exit`
+- Feature-branch mode: offer `/fw:ship`, `Continue without shipping`, or `Exit`
 - Base/default-branch mode: offer `Continue` or `Exit`
+- If the diff changes browser-visible behavior and no fresh acceptance proof was
+  captured yet, offer `/fw-browser-test` before `/fw:ship`.
+- If the dominant residual work is performance, throughput, build-time, or
+  cost tuning rather than correctness, offer `/fw:optimize` as the next handoff.
 
 Autofix, report-only, and headless modes stop after report, artifact emission,
 and residual-work handoff.

@@ -17,86 +17,286 @@ momentum across the development loop.
 Each cycle spins the flywheel: brainstorms sharpen plans, plans inform future
 plans, reviews catch more issues, and patterns get documented.
 
-## Workflow
+## What and how Flywheel works
+
+Flywheel is a Codex plugin for taking software work from vague idea to clean
+PR, then capturing what was learned so the next task starts with better context.
+
+It is built for fast, high-quality engineering on real repositories:
+
+- shaping ideas and requirements
+- writing durable implementation plans
+- executing work against repo truth instead of guesswork
+- proving bugs before fixing them
+- reviewing code with structured risk finding
+- shipping with testing and operational validation notes
+- handling browser-proof, observability, logging, and optimization work
+- storing durable lessons in `docs/solutions/`
+
+Flywheel works especially well for services, APIs, web apps, jobs, queues, and
+distributed-system-adjacent codebases, but the core planning and execution flow
+is general-purpose.
+
+Flywheel covers the full development loop, plus the support work that usually
+gets dropped between implementation and merge.
+
+### Core workflow
+
+- `/fw:ideate` surfaces strong next bets when the problem is not chosen yet.
+- `/fw:brainstorm` turns a fuzzy request into a clear requirements direction.
+- `/fw:plan` turns requirements or a feature description into a durable
+  implementation plan.
+- `/fw:work` executes the plan with repo-grounded validation and visible task
+  progress.
+- `/fw:review` finds bugs, regressions, missing tests, and merge risk.
+- `/fw:ship` commits, pushes, creates or refreshes the PR, and adds operational
+  validation notes.
+- `/fw:spin` captures durable lessons in `docs/solutions/`.
+
+### Support workflows
+
+- `/fw:setup` proves repo and machine readiness before work starts.
+- `/fw:debug` investigates bugs by proving the causal chain and getting to a
+  red failing test or reproducer.
+- `/fw:deepen-plan` strengthens an existing plan before implementation starts.
+- `/document-review` reviews requirements docs, plans, ADRs, and other design
+  artifacts before execution.
+- `/fw:worktree` manages isolated checkouts for safer parallel work.
+- `/fw:run` coordinates a bounded task end to end through the remaining stages.
+- `/fw:optimize` runs measurement-first optimization loops.
+- `/fw-browser-test` proves browser-visible behavior with fresh evidence.
+- `/fw-polish` tightens browser-visible behavior in a live test-and-adjust loop.
+- `/observability` designs or audits logs, metrics, traces, blast radius, and
+  post-deploy validation.
+- `/logging` designs or audits structured logging and wide-event shape.
+- `/verification-before-completion` checks completion claims against fresh
+  evidence.
+- `/conventional-commit` drafts conventional commits and asks before using
+  breaking-change markers.
+
+## Install and setup
+
+### Quick start
+
+Use Flywheel as a two-step setup flow:
+
+1. **Install the plugin**
+2. **Run `/fw:setup` inside the repository you want to work on**
+
+That keeps installation separate from repo bootstrap. Flywheel itself gets
+installed once, then `/fw:setup` discovers what this specific repo actually
+needs.
+
+If a later Flywheel update adds a required surface that is missing when a stage
+tries to use it, route back to `/fw:setup` with the relevant focus instead of
+trying to patch the environment ad hoc inside that later stage.
+
+### Install the plugin
+
+Install Flywheel through your normal Codex plugin flow using this repository as
+the plugin source. The installable manifest is:
 
 ```text
-Brainstorm -> Plan -> Work -> Review -> Spin -> Repeat
-    ^
-Ideate (optional -- when you need ideas)
+.codex-plugin/plugin.json
 ```
 
-## Happy Paths
+Flywheel is packaged as a Codex plugin, while the actual workflows live under
+`skills/`.
+
+### Run `/fw:setup`
+
+Once the plugin is installed, open the target repository and run:
+
+```text
+/fw:setup
+```
+
+`/fw:setup` is the repo-local bootstrap pass. It determines:
+
+- what this repo actually requires
+- which commands, CLIs, and surfaces are missing or misconfigured
+- which setup steps are required now vs optional later
+- which host-security posture makes sense here, including trusted MCP use and
+  whether sandboxing or a devcontainer should be preferred
+- whether Flywheel should bootstrap local config such as
+  `.flywheel/config.local.yaml`
+
+It is also the recovery path during upgrades: when `/fw:review`,
+`/fw-browser-test`, `/fw:optimize`, `/fw:ship`, or another later stage finds a
+missing requirement, use `/fw:setup` again with the closest focus rather than
+teaching each stage to do its own environment repair.
+
+### What you need
+
+Required:
+
+- [Codex CLI](https://developers.openai.com/codex/cli) or another Codex surface
+  that supports plugins and skills
+- a Git repository to work in
+
+Optional, depending on the workflow you want:
+
+- `gh` for PR-aware review and shipping
+- `playwright-cli` for browser proof and browser-visible acceptance testing
+- Datadog or OTel/LGTM access for runtime optimization and observability work
+- repo toolchains such as Node, Python, Go, Ruby, Java, Rust, or Zig as needed
+  by the repository itself; `/fw:setup` inspects repo truth and only asks for
+  what this repo actually uses
+- [Claude Code](https://code.claude.com/docs/en/quickstart) if you want to run
+  Flywheel's local eval harness against both Codex and Claude Code
+
+If you want durable local preferences after running `/fw:setup`, copy:
+
+```text
+.flywheel/config.local.example.yaml -> .flywheel/config.local.yaml
+```
+
+Use that local config for browser defaults, optimization preferences, shipping
+preferences, and workflow defaults.
+
+### Workflow-specific setup surfaces
+
+You do not need every optional tool on day one. Set up only what the current
+job needs.
+
+| Surface | Needed for | Typical requirement |
+| --- | --- | --- |
+| Review / ship | PR-aware review, PR creation, PR refresh | `gh` auth |
+| Browser proof | Browser-visible changes | `playwright-cli` |
+| Optimize / observability | Runtime-facing optimization or supportability work | Datadog or OTel/LGTM access |
+| Evals | Local side-by-side CLI testing | `tools/evals/` install + Codex / Claude CLIs |
+| Worktrees | Isolated implementation or review branches | `git worktree` support |
+| Security posture | Sensitive repos, trusted integrations, isolated execution | sandbox/devcontainer readiness + trusted MCP inventory |
+
+## Workflow at a glance
+
+```text
+Setup? -> Ideate? -> Brainstorm -> Plan -> Work -> Review -> Ship -> Spin
+                     \-> Document Review --/
+
+Side paths used when needed:
+- Debug
+- Worktree
+- Browser Test / Polish
+- Observability / Logging
+- Optimize
+- Verification Before Completion
+```
+
+The loop is intentionally short:
+
+1. **Decide what to build**: `/fw:ideate` or `/fw:brainstorm`
+2. **Decide how to build it**: `/fw:plan`
+3. **Build and validate it**: `/fw:work`
+4. **Find risk before merge**: `/fw:review`
+5. **Publish it cleanly**: `/fw:ship`
+6. **Store the useful lesson**: `/fw:spin`
+
+Use the support skills only when the work actually needs them.
+
+## Common paths
 
 ### Idea to PR
 
-1. Start with `/fw:brainstorm` when the problem is still fuzzy.
-2. Move to `/fw:plan` once the behavior and scope are clear.
-3. Run `/fw:work` to implement, validate, review, and ship.
-4. Let the shipping step offer `/fw:spin` for any durable lessons worth
-   preserving.
+1. `/fw:brainstorm`
+2. `/fw:plan`
+3. `/fw:work`
+4. `/fw:review`
+5. `/fw:ship`
+6. optional `/fw:spin`
 
-### Backlog Shaping to PR
+### Backlog shaping to implementation
 
-1. Start with `/fw:ideate` when you want strong next bets instead of refining
-   one preselected idea.
-2. Pick the best survivor and move into `/fw:brainstorm`.
-3. Continue through `/fw:plan` and `/fw:work`.
+1. `/fw:ideate`
+2. `/fw:brainstorm`
+3. `/fw:plan`
+4. `/fw:work`
 
-### Changed Code to Safer Merge
+### Bug to proven fix
 
-1. Run `/fw:review` when code already exists and the immediate job is to find
-   risks, regressions, and missing tests before merge.
-2. If the review is clean or fixes are applied, continue into the shipping
-   path.
+1. `/fw:debug`
+2. `/fw:plan` if the fix reveals a design problem
+3. `/fw:work`
+4. `/fw:review`
+5. `/fw:ship`
 
-The default loop is:
+### Changed code to safer merge
 
-1. `Brainstorm`: refine an idea into a requirements plan through interactive
-   Q&A, and short-circuit automatically when extra ceremony is not needed.
-2. `Plan`: take a requirements doc from brainstorming, or a sufficiently
-   detailed idea, and distill it into a technical plan that agents or humans
-   can execute.
-3. `Work`: execute the plan with visible progress and deliberate validation.
-4. `Review`: check the result for bugs, regressions, and missing tests.
-5. `Spin`: capture what was learned in docs, skills, scripts, or checklists.
-6. `Repeat`: start the next task with more stored energy than before.
+1. `/fw:review`
+2. `/fw-browser-test` or `/verification-before-completion` when relevant
+3. `/fw:ship`
 
-`/fw:brainstorm` is the main entry point into the workflow.
+### Performance or cost problem to measured improvement
 
-`Ideate` sits just before the main loop. Use it less often, when you do not yet
-know what the best next move is, want proactive improvement ideas from the
-codebase, or want to steer the backlog before committing to a concrete problem.
+1. `/fw:setup optimize` if telemetry access is unclear
+2. `/fw:optimize`
+3. `/fw:review`
+4. `/fw:ship`
 
-The key point is that `Spin` is not an afterthought. It is how the cycle stores
-energy. Each pass through the workflow should leave behind better documentation,
-clearer patterns, and less future rediscovery.
+## What is covered
 
-## Command surface
+Flywheel is not just "plan and code." It covers the surrounding engineering
+work that makes changes safer and easier to support.
 
-- `/fw:brainstorm` is the main entry point. It refines ideas into a requirements plan through interactive Q&A and short-circuits when ceremony is unnecessary.
-- `/fw:plan` takes either a requirements doc from brainstorming or a detailed idea and distills it into a technical plan that agents or humans can work from.
-- `/fw:work` executes plans with visible task tracking and optional worktree isolation.
-- `/fw:review` reviews changes before merge with a risk-first posture.
-- `/fw:spin` captures learnings so future work gets easier.
-- `/fw:ideate` is used less often as a force multiplier. It grounds itself in
-  the repo or topic, generates a broad candidate set, and filters it down to a
-  ranked shortlist of strong next bets.
+| Area | Covered by Flywheel |
+| --- | --- |
+| Problem shaping | idea refinement, requirements, scope boundaries, alternatives, YAGNI checks |
+| Technical planning | file-level plans, implementation units, test posture, verification, runtime tradeoffs |
+| Execution | repo-grounded commands, task tracking, TDD-friendly execution, worktree-safe paths |
+| Bug fixing | reproduction, causal chain, red failing test or reproducer before fix |
+| Code review | structured review, reviewer personas, confidence gating, autofix/report/headless modes |
+| Release discipline | conventional commits, branch safety, PR creation, PR refresh, operational validation notes |
+| Browser-visible work | browser proof, smoke checks, changed-path acceptance checks, interactive polish loops |
+| Observability | logs, traces, metrics, validation plans, blast radius, readiness framing |
+| Logging | structured events, correlation fields, logger-shape audits, wide-event design |
+| Optimization | latency, throughput, query cost, build performance, resource usage, measurement contracts |
+| Setup and security | repo-grounded toolchain discovery, trusted MCP posture, sandbox or devcontainer readiness, safe local defaults |
+| Knowledge capture | searchable `docs/solutions/` entries for solved problems and durable practices |
 
-These commands are currently scaffolded as plugin skills, with matching UI-facing
-metadata under each skill's `agents/openai.yaml`.
+## Command guide
 
-The core skills are written to work cleanly in Codex and Claude Code style
-hosts: stable scaffolds first, dynamic input later, repo-grounded validation,
-and reviewer extension through a registry instead of a monolithic prompt body.
+### Routing and planning
 
-## Knowledge Store
+- `/fw:ideate` — generate and rank strong next bets
+- `/fw:brainstorm` — refine a request into requirements
+- `/fw:plan` — write the implementation plan
+- `/fw:deepen-plan` — strengthen an existing plan
+- `/document-review` — review requirements, plans, specs, or ADRs
+- `/fw:run` — coordinate one bounded task through the remaining stages
+
+### Build and debug
+
+- `/fw:work` — execute the plan and validate the result
+- `/fw:debug` — prove the bug before fixing it
+- `/fw:worktree` — create or clean isolated worktrees
+
+### Review, release, and proof
+
+- `/fw:review` — review code changes before merge
+- `/fw:ship` — commit, push, create or refresh the PR
+- `/verification-before-completion` — verify that "done" is actually true
+- `/conventional-commit` — draft or validate commit messages
+
+### Runtime, browser, and performance support
+
+- `/fw-browser-test` — prove browser-visible behavior
+- `/fw-polish` — tighten browser-visible behavior through interactive loops
+- `/observability` — shape operational signals and validation
+- `/logging` — shape structured logs and event models
+- `/fw:optimize` — improve a measured metric with guardrails
+
+### Knowledge capture
+
+- `/fw:spin` — store the lesson so later work can reuse it
+
+## Knowledge store
 
 Flywheel stores solved problems and durable guidance in `docs/solutions/`.
-These entries are written by `/fw:spin` and are meant to be reusable inputs for
-later ideation, brainstorming, planning, implementation, and debugging.
+These entries are written by `/fw:spin` and are meant to be reused by future
+ideation, brainstorming, planning, work, review, and debugging sessions.
 
-Each solution doc uses YAML frontmatter so agents can grep cheaply before
-opening the full file. The main retrieval fields are:
+Each solution doc uses YAML frontmatter so agents can search cheaply before
+opening the full file. Common retrieval fields include:
 
 - `title`
 - `module`
@@ -106,45 +306,41 @@ opening the full file. The main retrieval fields are:
 - `tags`
 - `severity`
 
-## Eval Harness
+## Eval harness
 
-Use the repo-local harness under `scripts/flywheel-eval.js` to validate eval
-packs, stamp repeatable run directories, and summarize scored results.
+Flywheel includes a repo-local harness for repeatable skill evaluation.
+
+Quick checks:
 
 ```bash
 node scripts/flywheel-eval.js list
 node scripts/flywheel-eval.js validate
 node scripts/flywheel-eval.js prepare flywheel
+node scripts/flywheel-eval.js prepare fw-review
 ```
 
-For live local CLI comparisons against Codex and Claude Code without changing
-the plugin runtime surface, use the isolated workspace in `tools/evals/`.
+For local live comparisons between Codex and Claude Code, use the isolated
+workspace in `tools/evals/`:
 
 ```bash
 npm --prefix tools/evals install
 npm --prefix tools/evals run doctor
 npm --prefix tools/evals run compare -- --suite flywheel
+npm --prefix tools/evals run compare -- --suite fw-review
 ```
 
-## Scaffold
+This is optional. You do not need the eval harness to use Flywheel as a plugin.
 
-- `.codex-plugin/plugin.json` defines the plugin manifest and points Codex at `./skills/`.
-- `skills/flywheel/` is the umbrella routing skill for the full development flow.
-- `skills/fw-*/` contains the command-backed workflow skills.
-- `skills/conventional-commit/` is the shared commit-message helper used
-  before Flywheel workflows commit, with an explicit user check for breaking
-  change markers.
-- `docs/solutions/` is the searchable knowledge store for solved problems,
-  practices, and workflow learnings captured by `/fw:spin`.
-- `skills/fw-review/references/reviewer-registry.yaml` is the append-only review
-  registry for generic reviewers and optional stack-pack extensions.
-- `tools/evals/` is the isolated live-eval workspace for local Codex and Claude
-  CLI comparisons.
-- `hooks/` is reserved for automation hooks that support the flow.
-- `scripts/` is reserved for helper scripts used by the plugin.
+## Repository layout
 
-## Next steps
-
-- Tighten the skill instructions as the workflow gets exercised on real tasks.
-- Add hook or script support only when repeated work proves it is needed.
-- Add any product-specific slash-command registration layer if the runtime expects one beyond skill metadata.
+- `.codex-plugin/plugin.json` — plugin manifest
+- `.flywheel/config.local.example.yaml` — local config template
+- `skills/flywheel/` — umbrella routing skill
+- `skills/fw-*/` — command-backed Flywheel workflow skills
+- `skills/document-review/` — design-artifact review before execution
+- `skills/observability/` — signal design, blast radius, and rollout validation
+- `skills/logging/` — structured logging and event-shape guidance
+- `skills/verification-before-completion/` — fresh-proof completion checks
+- `docs/solutions/` — searchable knowledge store captured by `/fw:spin`
+- `scripts/flywheel-eval.js` — repo-local eval helper
+- `tools/evals/` — isolated live-eval workspace

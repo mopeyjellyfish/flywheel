@@ -1,0 +1,45 @@
+# Flywheel local config
+#
+# Copy to:
+#   .flywheel/config.local.yaml
+#
+# This file is intentionally safe to keep mostly commented. Only enable values
+# that are durable for your machine and this repo.
+
+browser:
+  tool: playwright-cli
+  install_strategy: repo-native
+  cli_version: ""
+  install_skills: true
+  mode: headed
+  browser: chrome
+  session_prefix: fw
+  base_url: ""
+  dev_command: ""
+  evidence_dir: .context/flywheel/browser
+  evidence_level: minimal
+  share_payload_evidence_when_clean: true
+  allow_sensitive_evidence: false
+  require_proof_for_browser_visible_changes: true
+
+optimize:
+  preferred_backend: ""
+  preferred_environment: ""
+
+shipping:
+  include_existing_evidence_first: true
+  require_browser_proof_for_browser_visible_changes: true
+
+workflow:
+  prefer_worktrees: true
+  use_setup_ledger: true
+
+worktrees:
+  env_copy_mode: templates-only
+
+security:
+  sensitive_repo_mode: auto
+  prefer_sandbox: true
+  prefer_devcontainer_for_sensitive_repos: true
+  allow_untrusted_mcp: false
+  trusted_mcp_servers: []

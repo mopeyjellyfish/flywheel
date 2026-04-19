@@ -7,8 +7,8 @@ metadata:
 
 # Create Technical Plan
 
-**Note: The current year is 2026.** Use this when dating plans and searching
-for recent documentation.
+Use the actual current date from runtime context when dating plans and
+searching for recent documentation.
 
 `/fw:brainstorm` defines **WHAT** to build. `/fw:plan` defines **HOW** to build
 it. `/fw:work` executes the plan. A prior brainstorm is useful context but not
@@ -52,13 +52,9 @@ needs:
   plan should be strengthened after the first draft is written.
 - Read `references/plan-handoff.md` only after the plan file exists on disk and
   the confidence check is complete.
-
-## Frontier Model Posture
-
-Keep the stable planning scaffold first, keep the task input later, load only
-phase-needed references, and ground repo claims in files rather than memory. If
-delegated research is unavailable or policy-disallowed, do the same research
-inline instead of weakening the plan.
+- Read `../observability/references/service-readiness-matrix.md` only when the
+  work changes runtime behavior, contracts, retries, queues, migrations, or
+  other blast-radius-sensitive service boundaries.
 
 ## Core Principles
 
@@ -119,6 +115,9 @@ Every plan should contain:
 - for runtime-risky work, an explicit decision surface covering current
   behavior, top failure modes, blast radius, viable options, and the chosen
   recommendation
+- for runtime-risky work, explicit coverage of the applicable service-readiness
+  dimensions: contracts, state, failure modes, observability, rollout,
+  recovery, and validation ownership
 - enough detail that the next agent or human can start without rediscovering
   the project's testing posture or file-level patterns
 
@@ -313,6 +312,11 @@ If such delegation is unavailable, do the equivalent work directly.
 **Slack context** is opt-in. If Slack tools exist and the user asked for them,
 gather organizational context. If tools exist but the user did not ask, note
 that Slack context is available on request.
+
+When the work is runtime-risky, read
+`../observability/references/service-readiness-matrix.md` and capture only the
+dimensions that materially apply to this change. Do not force a full matrix
+when the change is local and low-blast-radius.
 
 #### 1.1b Detect Execution Posture Signals
 

@@ -32,9 +32,9 @@ You produce up to two outputs depending on whether a run ID was provided:
    Do not include why_it_matters or evidence in the returned JSON.
    Include reviewer, residual_risks, and testing_gaps at the top level.
 
-The schema below describes the full artifact file format. For the compact
-return, follow the field list above and omit why_it_matters and evidence even
-though the schema marks them as required.
+The schema below includes both output shapes. Use
+`definitions.artifact_output` for the artifact file and
+`definitions.compact_output` for the compact return.
 
 {schema}
 

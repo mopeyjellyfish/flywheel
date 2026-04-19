@@ -108,19 +108,20 @@ If the input document has YAML frontmatter with a `status` field, update it to
 status: active  ->  status: completed
 ```
 
-Load `/conventional-commit` first to choose commit messages for the final
-shipping step. If the best message would use `!` or `BREAKING CHANGE:`, ask the
-user before marking the commit as breaking.
+Choose conventional commit messages for the final shipping step. Prefer
+`/conventional-commit` when available. If the helper is unavailable, draft the
+header directly as `<type>(scope): summary`. If the best message would use `!`
+or `BREAKING CHANGE:`, ask the user before marking the commit as breaking.
 
-Then use the host's commit, push, and PR creation workflow when available. If
-no such helper exists, complete the same steps directly with git and GitHub CLI
-or the repo's standard tooling:
+Then hand off to `/fw:ship` for commit, push, PR creation, or PR refresh. If no
+host helper exists, `/fw:ship` should complete the same steps directly with git
+and GitHub CLI or the repo's standard tooling:
 
 ```bash
 # 1. Stage only the intended files
 git add <files>
 
-# 2. Commit using the message chosen via /conventional-commit
+# 2. Commit using the selected conventional message
 git commit -m "<header>"
 
 # 3. Publish the branch
@@ -142,9 +143,9 @@ When providing PR-description context, include:
 - the Figma design link when applicable
 - the `Post-Deploy Monitoring & Validation` section
 
-If the user prefers to commit without creating a PR, use
-`/conventional-commit` first and then either the host's commit helper or a
-direct `git commit`.
+If the user prefers to commit without creating a PR, `/fw:ship` should still
+choose a conventional message first, prefer `/conventional-commit` when
+available, and then either use the host helper or a direct `git commit`.
 
 ### 3. Notify User
 
@@ -206,6 +207,10 @@ happens.
 with `plan:<path>` when available. Safe fixes are applied automatically;
 residual work surfaces as todos. Always use this tier unless all four Tier 1
 criteria are explicitly confirmed.
+
+If the review verdict is `Not ready`, or unresolved `P0` or `P1` gated/manual
+findings remain, stop the shipping path until those findings are resolved or
+explicitly accepted by the user.
 
 **Tier 1: Inline self-review** — permitted only when all four are true and each
 is stated explicitly before choosing it:

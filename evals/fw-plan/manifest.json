@@ -1,0 +1,32 @@
+{
+  "id": "fw-plan",
+  "skill": "fw-plan",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Planning Discipline",
+    "Repo Grounding",
+    "Test Strategy",
+    "Runtime Awareness",
+    "Workflow Handoff",
+    "Restraint"
+  ],
+  "criticalDimensions": [
+    "Planning Discipline",
+    "Test Strategy",
+    "Workflow Handoff"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "requirements_doc_to_plan",
+    "bug_fix_plan",
+    "runtime_risky_change"
+  ]
+}

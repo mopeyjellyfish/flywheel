@@ -7,7 +7,8 @@ metadata:
 
 # Brainstorm a Feature or Improvement
 
-**Note: The current year is 2026.** Use this when dating requirements documents.
+Use the actual current date from runtime context when dating requirements
+documents.
 
 Brainstorming helps answer **WHAT** to build through collaborative dialogue. It
 precedes `/fw:plan`, which answers **HOW** to build it.
@@ -43,13 +44,6 @@ phase so the working context stays tight.
   comparison easier to understand.
 - Read `references/handoff.md` when Phase 4 begins and the brainstorm is ready
   to hand off, pause, or continue.
-
-## Frontier Model Posture
-
-Keep the static scaffold stable, keep the feature input later in the prompt,
-load references only at the phase that needs them, and ask one question at a
-time. Verify repo-grounded claims before writing them into the requirements
-document.
 
 ## Core Principles
 

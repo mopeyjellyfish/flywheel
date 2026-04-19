@@ -1,0 +1,4 @@
+interface:
+  display_name: "/fw:optimize"
+  short_description: "Run measured optimization loops with Datadog, OTel-native backends, or local proof"
+  default_prompt: "Use $fw-optimize to identify the right measurement source, build a metric and guardrail contract, and run a measured optimization loop instead of speculative tuning."

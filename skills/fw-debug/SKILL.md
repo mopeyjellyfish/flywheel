@@ -50,6 +50,34 @@ Interpret the input as:
 
 ## Workflow
 
+### Phase 0: Intake The Bug Report
+
+If the input includes an issue reference, fetch it before investigating.
+
+GitHub forms to recognize:
+
+- `#123`
+- `owner/repo#123`
+- `https://github.com/<owner>/<repo>/issues/<number>`
+
+When GitHub CLI is available, use `gh issue view` with structured output and
+extract:
+
+- reported symptoms
+- expected behavior
+- reproduction steps
+- labels or severity hints
+- environment notes
+- prior discussion that rules out already-failed ideas
+
+If the input points at another tracker URL or identifier, use whatever local
+tooling or available app surfaces can fetch it. If the issue cannot be fetched,
+ask the user to paste the relevant content rather than pretending the report was
+read.
+
+If the user already says they tried fixes that failed, capture those attempts up
+front so the investigation does not repeat them blindly.
+
 ### Phase 1: Reproduce and Gather Evidence
 
 - reproduce the bug with the real failing test, command, or runtime path when

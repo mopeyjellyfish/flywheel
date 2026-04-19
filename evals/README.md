@@ -15,8 +15,24 @@ From the repo root:
 node scripts/flywheel-eval.js list
 node scripts/flywheel-eval.js validate
 node scripts/flywheel-eval.js prepare flywheel
+node scripts/flywheel-eval.js prepare fw-work
+node scripts/flywheel-eval.js prepare fw-review
 node scripts/flywheel-eval.js summarize flywheel path/to/results.jsonl
 ```
+
+When making model-specific claims, pin the compared models explicitly in the
+live harness runs rather than relying on host defaults.
+
+Current suites:
+
+- `flywheel`
+- `fw-ideate`
+- `fw-plan`
+- `fw-work`
+- `fw-review`
+- `fw-debug`
+- `fw-ship`
+- `fw-optimize`
 
 ## Suite Contract
 

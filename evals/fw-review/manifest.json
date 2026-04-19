@@ -1,0 +1,32 @@
+{
+  "id": "fw-review",
+  "skill": "fw-review",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Mode Handling",
+    "Review Structure",
+    "Risk Focus",
+    "Requirements Completeness",
+    "Browser Proof Handoff",
+    "Shipping Handoff"
+  ],
+  "criticalDimensions": [
+    "Review Structure",
+    "Risk Focus",
+    "Shipping Handoff"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "current_branch_review",
+    "headless_base_review",
+    "browser_visible_diff"
+  ]
+}

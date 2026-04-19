@@ -1,0 +1,32 @@
+{
+  "id": "fw-work",
+  "skill": "fw-work",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Execution Discipline",
+    "Repo Grounding",
+    "Continuous Validation",
+    "Runtime Support Awareness",
+    "Browser Proof Awareness",
+    "Workflow Closure"
+  ],
+  "criticalDimensions": [
+    "Execution Discipline",
+    "Continuous Validation",
+    "Workflow Closure"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "plan_doc_execute",
+    "browser_visible_change",
+    "runtime_risky_change"
+  ]
+}

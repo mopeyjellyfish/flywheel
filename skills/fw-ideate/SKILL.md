@@ -7,7 +7,8 @@ metadata:
 
 # Generate Strong Next Ideas
 
-**Note: The current year is 2026.** Use this when dating ideation documents.
+Use the actual current date from runtime context when dating ideation
+documents.
 
 `/fw:ideate` precedes `/fw:brainstorm`.
 
@@ -58,22 +59,6 @@ Do not load every reference by default. Load only what the current phase needs:
   exists and you are ready to filter, present, save, or hand off the results.
 - Read `references/shortlist-template.md` only when presenting the final
   shortlist or writing `docs/ideation/`.
-
-## Frontier Model Posture
-
-Keep the stable workflow scaffold first, the live topic later, and load
-references only at the phase that needs them. Ground ideas in repo truth,
-explicit user context, and current external signals when they matter.
-
-For GPT-5.4 and Claude Opus 4.6/4.7:
-
-- prefer clear high-level objectives plus hard constraints over trying to
-  script the model's internal reasoning
-- use explicit delimiters for dynamic inputs, intermediate artifacts, and
-  subagent handoffs
-- default to inline execution for narrow ideation tasks
-- delegate only when the work naturally breaks into independent subtasks
-- generate many candidates, critique them hard, and explain only the survivors
 
 ## Working Tags
 

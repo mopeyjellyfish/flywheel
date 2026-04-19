@@ -7,7 +7,7 @@ metadata:
 
 # Add Energy Back to the Flywheel
 
-**Note: The current year is 2026.** Use this when dating solution documents or
+Use the actual current date from runtime context when dating solution documents or
 refreshing older learnings.
 
 `/fw:spin` is the Flywheel knowledge-capture stage. It turns verified session
@@ -42,12 +42,6 @@ Do not preload every support file. Load only what the current phase needs:
   fields.
 - Read `assets/resolution-template.md` only when assembling or refreshing the
   final solution document.
-
-## Frontier Model Posture
-
-Keep the stable capture scaffold first, identify only a small number of real
-solved lessons, search existing `docs/solutions/` entries before writing, and
-prefer updating a clearly overlapping doc over creating a duplicate.
 
 ## Core Principles
 

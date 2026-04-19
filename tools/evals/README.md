@@ -16,10 +16,20 @@ From the repo root:
 npm --prefix tools/evals install
 npm --prefix tools/evals run doctor
 npm --prefix tools/evals run eval -- --suite flywheel --runner claude
+npm --prefix tools/evals run eval -- --suite fw-work --runner codex --judge codex
 npm --prefix tools/evals run eval -- --suite flywheel --case idea_to_brainstorm --runner codex --judge codex
 npm --prefix tools/evals run eval -- --suite flywheel --case requirements_to_plan --runner codex --judge codex --subject-config reasoning_effort='low' --judge-config reasoning_effort='low'
 npm --prefix tools/evals run compare -- --suite fw-ideate
+npm --prefix tools/evals run compare -- --suite fw-review
+npm --prefix tools/evals run compare -- --suite fw-optimize --subject-model gpt-5.4 --judge-model <pinned-judge-model>
 ```
+
+Available suites: `flywheel`, `fw-ideate`, `fw-plan`, `fw-work`,
+`fw-review`, `fw-debug`, `fw-ship`, and `fw-optimize`.
+
+For model-specific comparisons, pin both the subject and judge model names or
+snapshots and keep the harness configuration constant. Do not treat host
+defaults as a stable comparison baseline.
 
 ## Runtime model
 

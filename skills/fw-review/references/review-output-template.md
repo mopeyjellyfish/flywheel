@@ -68,6 +68,10 @@ Use pipe-delimited markdown tables. Do not use ASCII box-drawing characters.
 
 - New export behavior has no agent-usable entry point
 
+### Service Readiness Notes
+
+- Rollout depends on validating queue depth and duplicate-delivery behavior for the new export job
+
 ### Schema Drift Check
 
 - Clean: schema-state changes match the migrations in scope
@@ -129,8 +133,8 @@ blockquote verdict.
 - include Applied Fixes only when a fix phase ran
 - include Residual Actionable Work only when unresolved actionable work remains
 - Pre-existing Issues is a separate table
-- Learnings & Past Solutions, Agent-Native Gaps, Schema Drift Check, and
-  Deployment Notes are conditional sections
+- Learnings & Past Solutions, Agent-Native Gaps, Service Readiness Notes,
+  Schema Drift Check, and Deployment Notes are conditional sections
 - Coverage includes suppressed count, residual risks, testing gaps, and failed
   reviewers
 - use a horizontal rule before the verdict

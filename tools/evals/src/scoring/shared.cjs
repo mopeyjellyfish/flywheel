@@ -16,8 +16,23 @@ function mentionsAny(output, patterns) {
   return patterns.some((pattern) => pattern.test(output));
 }
 
+function countMatchingPatterns(output, patterns) {
+  return patterns.reduce((count, pattern) => count + (pattern.test(output) ? 1 : 0), 0);
+}
+
+function mentionsAll(output, patterns) {
+  return patterns.every((pattern) => pattern.test(output));
+}
+
+function mentionsAtLeast(output, patterns, minimum) {
+  return countMatchingPatterns(output, patterns) >= minimum;
+}
+
 module.exports = {
   hasSection,
   boundedCountScore,
   mentionsAny,
+  countMatchingPatterns,
+  mentionsAll,
+  mentionsAtLeast,
 };

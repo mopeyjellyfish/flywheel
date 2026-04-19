@@ -1,0 +1,35 @@
+{
+  "id": "fw-optimize",
+  "skill": "fw-optimize",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Backend Selection",
+    "Environment Separation",
+    "Metric Contract",
+    "Guardrails",
+    "Attribution Discipline",
+    "Workflow Handoff"
+  ],
+  "criticalDimensions": [
+    "Backend Selection",
+    "Environment Separation",
+    "Metric Contract",
+    "Guardrails",
+    "Attribution Discipline"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "datadog_runtime_latency",
+    "otel_local_stack",
+    "local_build_time",
+    "model_regression_safety"
+  ]
+}

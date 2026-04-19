@@ -7,8 +7,8 @@ metadata:
 
 # Execute Work
 
-**Note: The current year is 2026.** Use this when identifying the latest plan
-document or updating dated execution artifacts.
+Use the actual current date from runtime context when identifying the latest
+plan document or updating dated execution artifacts.
 
 `/fw:work` is the execution stage of Flywheel. It takes a plan, spec, todo
 file, or clear work request and turns it into shipped implementation. The goal
@@ -45,13 +45,9 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `references/shipping-workflow.md` only when all implementation tasks are
   complete and execution transitions from Phase 2 into quality check and
   shipping.
-
-## Frontier Model Posture
-
-Keep the stable execution scaffold first, keep the work input later, default to
-inline execution, and let repo truth override memory. Use Touch Grass to
-discover the real validation commands and project axioms before editing or
-claiming success.
+- Read `../observability/references/service-readiness-matrix.md` only when the
+  work changes runtime behavior, contracts, state, rollout posture, retries,
+  queues, migrations, or other blast-radius-sensitive boundaries.
 
 ## Core Principles
 
@@ -185,6 +181,11 @@ When runtime-facing work depends on telemetry design or log quality, load
 `/observability` and `/logging` instead of improvising a new instrumentation
 shape from memory.
 
+When runtime-risky work changes contracts, state, retries, queueing, or
+cross-service behavior, read
+`../observability/references/service-readiness-matrix.md` and keep the
+applicable dimensions in the ground-truth ledger.
+
 Use that ledger throughout execution. The ledger should answer: "What commands
 or artifacts will tell me whether the plan's hypothesis is actually true?"
 
@@ -214,9 +215,18 @@ Then check the current branch:
 current_branch=$(git branch --show-current)
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
 
-# Fallback if remote HEAD isn't set
+# Safer fallbacks if remote HEAD isn't set
 if [ -z "$default_branch" ]; then
-  default_branch=$(git rev-parse --verify origin/main >/dev/null 2>&1 && echo "main" || echo "master")
+  default_branch=$(git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p' | head -n1)
+fi
+
+if [ -z "$default_branch" ] && command -v gh >/dev/null 2>&1; then
+  default_branch=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name 2>/dev/null)
+fi
+
+if [ -z "$default_branch" ]; then
+  echo "Unable to determine the default branch safely. Ask the user or run /fw:setup worktrees before creating a branch or worktree."
+  exit 1
 fi
 ```
 
@@ -252,8 +262,11 @@ Use a meaningful branch name based on the work, for example
 
 **Option B: Use a worktree** (recommended for parallel development)
 
-- Use the host's worktree workflow if one exists. Otherwise create an isolated
-  worktree directly with git, for example:
+- Prefer `/fw:worktree` when it is available. Use the bundled manager script
+  instead of raw `git worktree add` so ignore hygiene and env-file copying stay
+  consistent.
+- If no manager is available, create an isolated worktree directly with git,
+  for example:
 
   ```bash
   git worktree add ../<worktree-dir> -b <feature-branch-name> <default_branch>
@@ -346,9 +359,10 @@ Give each delegated unit:
 3. If two units touched the same file, commit all non-colliding work first,
    then re-run the colliding units serially for the shared file.
 4. For each completed unit in dependency order, review the diff, run the
-   relevant tests, stage only that unit's files, load
-   `/conventional-commit`, and commit with a message derived from the
-   unit's Goal.
+   relevant tests, stage only that unit's files, choose a conventional commit
+   message, and commit with a message derived from the unit's Goal. Prefer
+   `/conventional-commit` when available; otherwise draft the header directly as
+   `<type>(scope): summary`.
 5. If tests fail after a unit commit, diagnose and fix before committing the
    next unit.
 6. Update task state, then dispatch the next eligible batch.
@@ -371,8 +385,14 @@ while (tasks remain):
     operational validation need to be added or updated
   - Use `/observability` or `/logging` when the repo's runtime support story
     needs deliberate design, not just a quick local guess
+  - When the change is browser-visible, run `/fw-browser-test` before claiming
+    completion unless the repo has a stronger existing browser-proof surface
+    and you can name it explicitly
   - When runtime behavior changes meaningfully, confirm the chosen reliability
     posture still matches the current code, failure modes, and blast radius
+  - For runtime-risky work, run a short service-readiness sweep across the
+    applicable dimensions from
+    `../observability/references/service-readiness-matrix.md`
   - Run the relevant ground-truth checks from the Touch Grass ledger
   - Run tests after changes
   - Assess testing coverage: if behavior changed, were tests added or updated?
@@ -453,7 +473,9 @@ related units may land together.
 # 2. Stage only files related to this logical unit
 git add <files related to this logical unit>
 
-# 3. Load /conventional-commit to choose the header/body/footer
+# 3. Choose a conventional commit header/body/footer
+#    Prefer /conventional-commit when available
+#    If the helper is unavailable, draft the message directly
 #    If the best message would use `!` or `BREAKING CHANGE:`, ask the user first
 
 # 4. Commit with the selected conventional message
@@ -516,7 +538,7 @@ If the work is UI-heavy and the task includes Figma designs:
 
 When all Phase 2 tasks are complete and execution transitions to quality check,
 read `references/shipping-workflow.md` and follow that workflow for final
-validation, review, PR preparation, and notification.
+validation, `/fw:review`, `/fw:ship`, and notification.
 
 ## Common Failure Modes
 

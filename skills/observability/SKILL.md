@@ -61,6 +61,9 @@ Do not load every reference by default. Load only what the current phase needs:
   failure-mode or blast-radius tradeoffs and the user needs grounded options.
 - Read `references/service-survivability.md` when the change affects retries,
   queues, degradation, health checks, or user-visible reliability under stress.
+- Read `references/service-readiness-matrix.md` when the change crosses a
+  service, state, rollout, or blast-radius-sensitive boundary and the user
+  needs a concise readiness frame.
 - Read `references/otel.md` only when the repo shows OpenTelemetry signals.
 - Read `references/datadog.md` only when the repo shows Datadog signals.
 
@@ -157,6 +160,10 @@ Produce the smallest useful plan across the signals that matter:
 
 Prefer extending existing instrumentation over parallel bespoke surfaces.
 
+When the change is runtime-risky, use the service-readiness matrix to make sure
+the signal plan matches the actual contract, state, rollout, and recovery
+posture rather than just adding logs.
+
 ### Phase 4: Report Gaps and Next Moves
 
 When reviewing an existing design or diff, call out:
@@ -189,5 +196,6 @@ platform-neutral plan rather than pretending a vendor exists.
 @./references/signal-design.md
 @./references/reliability-choice-surface.md
 @./references/service-survivability.md
+@./references/service-readiness-matrix.md
 @./references/otel.md
 @./references/datadog.md

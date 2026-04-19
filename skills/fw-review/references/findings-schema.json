@@ -1,102 +1,159 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Flywheel Code Review Findings",
-  "description": "Structured output schema for Flywheel code review subagents",
-  "type": "object",
-  "required": ["reviewer", "findings", "residual_risks", "testing_gaps"],
-  "properties": {
-    "reviewer": {
-      "type": "string",
-      "description": "Persona name that produced this output"
-    },
-    "findings": {
-      "type": "array",
-      "description": "List of code review findings. Empty array if no issues found.",
-      "items": {
-        "type": "object",
-        "required": [
-          "title",
-          "severity",
-          "file",
-          "line",
-          "why_it_matters",
-          "autofix_class",
-          "owner",
-          "requires_verification",
-          "confidence",
-          "evidence",
-          "pre_existing"
-        ],
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "Short, specific issue title",
-            "maxLength": 100
-          },
-          "severity": {
-            "type": "string",
-            "enum": ["P0", "P1", "P2", "P3"],
-            "description": "Issue severity level"
-          },
-          "file": {
-            "type": "string",
-            "description": "Relative file path from repository root"
-          },
-          "line": {
-            "type": "integer",
-            "description": "Primary line number of the issue",
-            "minimum": 1
-          },
-          "why_it_matters": {
-            "type": "string",
-            "description": "Impact and failure mode"
-          },
-          "autofix_class": {
-            "type": "string",
-            "enum": ["safe_auto", "gated_auto", "manual", "advisory"],
-            "description": "Conservative recommendation for how this issue should be handled after synthesis"
-          },
-          "owner": {
-            "type": "string",
-            "enum": ["review-fixer", "downstream-resolver", "human", "release"],
-            "description": "Who should own the next action for this finding after synthesis"
-          },
-          "requires_verification": {
-            "type": "boolean",
-            "description": "Whether any fix for this finding must be re-verified with targeted tests or a focused follow-up review"
-          },
-          "suggested_fix": {
-            "type": ["string", "null"],
-            "description": "Concrete minimal fix. Omit or null if no good fix is obvious."
-          },
-          "confidence": {
-            "type": "number",
-            "description": "Reviewer confidence in this finding",
-            "minimum": 0.0,
-            "maximum": 1.0
-          },
-          "evidence": {
-            "type": "array",
-            "description": "Code-grounded evidence. At least one item.",
-            "items": { "type": "string" },
-            "minItems": 1
-          },
-          "pre_existing": {
-            "type": "boolean",
-            "description": "True if this issue exists in unchanged code unrelated to the current diff"
-          }
+  "description": "Structured output schemas for Flywheel code review subagents. Root validation accepts either the full artifact payload or the compact return payload.",
+  "oneOf": [
+    { "$ref": "#/definitions/artifact_output" },
+    { "$ref": "#/definitions/compact_output" }
+  ],
+  "definitions": {
+    "base_finding": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Short, specific issue title",
+          "maxLength": 100
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["P0", "P1", "P2", "P3"],
+          "description": "Issue severity level"
+        },
+        "file": {
+          "type": "string",
+          "description": "Relative file path from repository root"
+        },
+        "line": {
+          "type": "integer",
+          "description": "Primary line number of the issue",
+          "minimum": 1
+        },
+        "autofix_class": {
+          "type": "string",
+          "enum": ["safe_auto", "gated_auto", "manual", "advisory"],
+          "description": "Conservative recommendation for how this issue should be handled after synthesis"
+        },
+        "owner": {
+          "type": "string",
+          "enum": ["review-fixer", "downstream-resolver", "human", "release"],
+          "description": "Who should own the next action for this finding after synthesis"
+        },
+        "requires_verification": {
+          "type": "boolean",
+          "description": "Whether any fix for this finding must be re-verified with targeted tests or a focused follow-up review"
+        },
+        "suggested_fix": {
+          "type": ["string", "null"],
+          "description": "Concrete minimal fix. Omit or null if no good fix is obvious."
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Reviewer confidence in this finding",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "pre_existing": {
+          "type": "boolean",
+          "description": "True if this issue exists in unchanged code unrelated to the current diff"
+        },
+        "why_it_matters": {
+          "type": "string",
+          "description": "Impact and failure mode"
+        },
+        "evidence": {
+          "type": "array",
+          "description": "Code-grounded evidence. At least one item.",
+          "items": { "type": "string" },
+          "minItems": 1
         }
       }
     },
-    "residual_risks": {
-      "type": "array",
-      "description": "Risks the reviewer noticed but could not confirm as findings",
-      "items": { "type": "string" }
+    "artifact_finding": {
+      "allOf": [
+        { "$ref": "#/definitions/base_finding" },
+        {
+          "required": [
+            "title",
+            "severity",
+            "file",
+            "line",
+            "why_it_matters",
+            "autofix_class",
+            "owner",
+            "requires_verification",
+            "confidence",
+            "evidence",
+            "pre_existing"
+          ]
+        }
+      ]
     },
-    "testing_gaps": {
-      "type": "array",
-      "description": "Missing test coverage the reviewer identified",
-      "items": { "type": "string" }
+    "compact_finding": {
+      "allOf": [
+        { "$ref": "#/definitions/base_finding" },
+        {
+          "required": [
+            "title",
+            "severity",
+            "file",
+            "line",
+            "autofix_class",
+            "owner",
+            "requires_verification",
+            "confidence",
+            "pre_existing"
+          ]
+        }
+      ]
+    },
+    "base_output": {
+      "type": "object",
+      "required": ["reviewer", "findings", "residual_risks", "testing_gaps"],
+      "properties": {
+        "reviewer": {
+          "type": "string",
+          "description": "Persona name that produced this output"
+        },
+        "residual_risks": {
+          "type": "array",
+          "description": "Risks the reviewer noticed but could not confirm as findings",
+          "items": { "type": "string" }
+        },
+        "testing_gaps": {
+          "type": "array",
+          "description": "Missing test coverage the reviewer identified",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "artifact_output": {
+      "allOf": [
+        { "$ref": "#/definitions/base_output" },
+        {
+          "properties": {
+            "findings": {
+              "type": "array",
+              "description": "List of code review findings. Empty array if no issues found.",
+              "items": { "$ref": "#/definitions/artifact_finding" }
+            }
+          }
+        }
+      ]
+    },
+    "compact_output": {
+      "allOf": [
+        { "$ref": "#/definitions/base_output" },
+        {
+          "properties": {
+            "findings": {
+              "type": "array",
+              "description": "Compact reviewer findings returned to the orchestrator.",
+              "items": { "$ref": "#/definitions/compact_finding" }
+            }
+          }
+        }
+      ]
     }
   },
   "_meta": {
@@ -125,7 +182,7 @@
       "release": "Operational or rollout follow-up; do not convert into code-fix work automatically."
     },
     "return_tiers": {
-      "description": "Finding fields are split into two tiers. The full schema applies to the artifact file on disk. The compact return to the orchestrator omits detail-tier fields.",
+      "description": "Finding fields are split into two tiers. Use `definitions.artifact_output` for full artifact validation and `definitions.compact_output` for orchestrator compact-return validation.",
       "merge_tier": "Returned to orchestrator: title, severity, file, line, confidence, autofix_class, owner, requires_verification, pre_existing, suggested_fix. Plus top-level reviewer, residual_risks, testing_gaps.",
       "detail_tier": "Required in artifact file, omitted from compact return: why_it_matters and evidence."
     }

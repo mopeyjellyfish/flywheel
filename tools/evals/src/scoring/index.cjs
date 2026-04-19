@@ -1,6 +1,12 @@
 const { runLocalJudge } = require("../lib/judge.cjs");
 const { deterministicFlywheel } = require("./flywheel.cjs");
+const { deterministicDebug } = require("./fw-debug.cjs");
 const { deterministicIdeate } = require("./fw-ideate.cjs");
+const { deterministicOptimize } = require("./fw-optimize.cjs");
+const { deterministicPlan } = require("./fw-plan.cjs");
+const { deterministicReview } = require("./fw-review.cjs");
+const { deterministicShip } = require("./fw-ship.cjs");
+const { deterministicWork } = require("./fw-work.cjs");
 
 function getDeterministicSuiteScorer(suiteId) {
   if (suiteId === "flywheel") {
@@ -8,6 +14,24 @@ function getDeterministicSuiteScorer(suiteId) {
   }
   if (suiteId === "fw-ideate") {
     return deterministicIdeate;
+  }
+  if (suiteId === "fw-plan") {
+    return deterministicPlan;
+  }
+  if (suiteId === "fw-work") {
+    return deterministicWork;
+  }
+  if (suiteId === "fw-review") {
+    return deterministicReview;
+  }
+  if (suiteId === "fw-debug") {
+    return deterministicDebug;
+  }
+  if (suiteId === "fw-ship") {
+    return deterministicShip;
+  }
+  if (suiteId === "fw-optimize") {
+    return deterministicOptimize;
   }
   throw new Error(`no scorer registered for suite "${suiteId}"`);
 }

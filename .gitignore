@@ -1,2 +1,5 @@
 .context/
+.worktrees/
+.flywheel/*.local.yaml
+.playwright-cli/
 tools/evals/node_modules/
