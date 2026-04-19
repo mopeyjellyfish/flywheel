@@ -16,6 +16,7 @@ groups:
     - product-lens
     - design-lens
     - security-lens
+    - document-simplicity
     - scope-guardian
     - adversarial-document
 
@@ -50,6 +51,12 @@ personas:
     output_mode: schema_json
     default_group: conditionals
     select_when: auth, permissions, trust boundaries, PII, payments, or public integrations are in scope
+  document-simplicity:
+    path: references/personas/document-simplicity.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: conditionals
+    select_when: the document introduces architecture, abstractions, extensibility, orchestration, or verification machinery that may be heavier than the current goal requires
   scope-guardian:
     path: references/personas/scope-guardian.md
     dispatch_type: structured

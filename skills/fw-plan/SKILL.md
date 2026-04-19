@@ -874,8 +874,8 @@ Two deepening modes exist:
 
 The confidence check and `document-review` are different:
 
-- `document-review` checks coherence, feasibility, scope alignment, and
-  role-specific document quality
+- `document-review` checks coherence, feasibility, scope alignment,
+  simplification pressure, and role-specific document quality
 - the confidence check strengthens rationale, sequencing, risk treatment, and
   system-wide thinking when the plan is structurally sound but still thin
 

@@ -378,12 +378,18 @@ need to be preserved.
 When a requirements document was created or updated, run `document-review` in
 `mode:headless` on it before presenting handoff options. Pass the document path.
 If the skill is somehow unavailable in the current environment, manually review
-the document for clarity, scope, portability, and completeness.
+the document for clarity, scope, simplification opportunities, portability, and
+completeness.
 
 If document-review auto-applied fixes, note them briefly when presenting handoff
 options. If it surfaces residual P0 or P1 findings, or a clearly blocking
 top-ranked item, mention that so the user can decide whether to address it
 before proceeding.
+
+When document-review surfaces architectural or scope-shaping complexity that
+looks heavier than the stated goal requires, call that out explicitly before
+offering handoff options so the user can choose whether to keep or simplify the
+documented shape.
 
 When document review is complete, proceed to Phase 4.
 

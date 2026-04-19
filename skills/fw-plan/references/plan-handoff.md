@@ -14,8 +14,9 @@ The confidence check and document-review are complementary:
 
 - the confidence check strengthens rationale, sequencing, risk treatment, and
   grounding
-- document-review checks coherence, feasibility, scope alignment, and returns a
-  confidence-aware, stack-ranked fix queue
+- document-review checks coherence, feasibility, scope alignment,
+  simplification pressure, and returns a confidence-aware, stack-ranked fix
+  queue
 
 If document-review auto-applied fixes, note them briefly when presenting handoff
 options.
@@ -23,6 +24,11 @@ options.
 If residual `P0` or `P1` findings remain, or a clearly blocking top-ranked item
 remains in the queue, mention that so the user can decide whether to address it
 before proceeding.
+
+If document-review flags architecture or implementation shape that appears
+heavier than the plan's stated goal requires, call that out explicitly when
+presenting handoff so the user can choose whether to proceed with that carrying
+cost or simplify first.
 
 When document-review returns `Review complete`, proceed to final checks.
 
