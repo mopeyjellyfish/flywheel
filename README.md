@@ -117,6 +117,15 @@ node scripts/flywheel-eval.js validate
 node scripts/flywheel-eval.js prepare flywheel
 ```
 
+For live local CLI comparisons against Codex and Claude Code without changing
+the plugin runtime surface, use the isolated workspace in `tools/evals/`.
+
+```bash
+npm --prefix tools/evals install
+npm --prefix tools/evals run doctor
+npm --prefix tools/evals run compare -- --suite flywheel
+```
+
 ## Scaffold
 
 - `.codex-plugin/plugin.json` defines the plugin manifest and points Codex at `./skills/`.
@@ -129,6 +138,8 @@ node scripts/flywheel-eval.js prepare flywheel
   practices, and workflow learnings captured by `/fw:spin`.
 - `skills/fw-review/references/reviewer-registry.yaml` is the append-only review
   registry for generic reviewers and optional stack-pack extensions.
+- `tools/evals/` is the isolated live-eval workspace for local Codex and Claude
+  CLI comparisons.
 - `hooks/` is reserved for automation hooks that support the flow.
 - `scripts/` is reserved for helper scripts used by the plugin.
 

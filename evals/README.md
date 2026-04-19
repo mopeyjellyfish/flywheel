@@ -3,6 +3,10 @@
 Flywheel eval packs are structured so you can run the same checks repeatedly
 without inventing a one-off grading flow each time.
 
+For live local CLI runs against Codex and Claude Code, use the isolated
+workspace under `tools/evals/`. This directory remains the committed source of
+truth for manifests, cases, and rubrics.
+
 ## Harness Commands
 
 From the repo root:

@@ -405,6 +405,7 @@ function commandSummarize(suiteId, resultsArg) {
   }
 
   const caseIds = validation.cases.map((row) => row.item.id);
+  const caseIdSet = new Set(caseIds);
   const resultMap = new Map();
   for (const row of resultRows) {
     if (resultMap.has(row.id)) {
@@ -413,18 +414,18 @@ function commandSummarize(suiteId, resultsArg) {
     resultMap.set(row.id, row);
   }
 
-  const missingCaseIds = caseIds.filter((id) => !resultMap.has(id));
   const unknownCaseIds = resultRows
     .map((row) => row.id)
-    .filter((id) => !caseIds.includes(id));
-  if (missingCaseIds.length > 0) {
-    fail(`results are missing cases: ${missingCaseIds.join(", ")}`);
-  }
+    .filter((id) => !caseIdSet.has(id));
   if (unknownCaseIds.length > 0) {
     fail(`results contain unknown cases: ${unknownCaseIds.join(", ")}`);
   }
+  if (resultRows.length === 0) {
+    fail("results file does not contain any cases");
+  }
 
-  const evaluations = caseIds.map((id) => {
+  const evaluatedCaseIds = resultRows.map((row) => row.id);
+  const evaluations = evaluatedCaseIds.map((id) => {
     try {
       return evaluateCase(validation.suite.manifest, resultMap.get(id));
     } catch (error) {
@@ -441,6 +442,9 @@ function commandSummarize(suiteId, resultsArg) {
 
   console.log(`Suite: ${validation.suite.id}`);
   console.log(`Results: ${rel(resultsPath)}`);
+  if (evaluatedCaseIds.length !== caseIds.length) {
+    console.log(`Scope: subset (${evaluatedCaseIds.length} of ${caseIds.length} cases)`);
+  }
   console.log(
     `Summary: ${summary["strong-pass"]} strong-pass, ${summary.pass} pass, ${summary.fail} fail`,
   );

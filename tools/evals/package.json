@@ -1,0 +1,17 @@
+{
+  "name": "@flywheel/evals",
+  "private": true,
+  "description": "Local eval harness for the Flywheel plugin",
+  "engines": {
+    "node": "^20.20.0 || >=22.22.0"
+  },
+  "scripts": {
+    "doctor": "node ./src/cli.cjs doctor",
+    "eval": "node ./src/cli.cjs eval",
+    "compare": "node ./src/cli.cjs compare"
+  },
+  "dependencies": {
+    "@iarna/toml": "2.2.5",
+    "promptfoo": "0.121.5"
+  }
+}
