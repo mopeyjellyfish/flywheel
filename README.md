@@ -83,78 +83,45 @@ gets dropped between implementation and merge.
 
 ## Install and setup
 
-### Quick start
+### Install Flywheel
 
-Use Flywheel as a two-step setup flow:
-
-1. **Install the plugin**
-2. **Run `$flywheel:setup` inside the repository you want to work on**
-
-That keeps installation separate from repo bootstrap. Flywheel itself gets
-installed once, then `$flywheel:setup` discovers what this specific repo actually
-needs.
-
-Flywheel keeps one namespace across hosts:
-
-- Codex: `$flywheel:start` and `$flywheel:<stage>`
-- Claude Code: `/flywheel:start` and `/flywheel:<stage>`
-
-Those namespaced forms are the Flywheel contract. In Claude Code, bare commands
-such as `/plan`, `/run`, or `/commit` can come from Claude itself or from other
-plugins, so do not treat them as proof that Flywheel is installed correctly.
-
-Do not use mixed forms such as `$flywheel:fw-spin`, legacy `/fw:*` commands, or
-legacy `$fw:*` commands.
-
-Unless a section says otherwise, the longer command examples below use Codex
-syntax. In Claude Code, keep the same stage name and switch to `/flywheel:`.
-
-If a later Flywheel update adds a required surface that is missing when a stage
-tries to use it, route back to `$flywheel:setup` with the relevant focus instead of
-trying to patch the environment ad hoc inside that later stage.
-
-### Install the plugin
-
-Install Flywheel from this repository in the host you want to use.
-
-Codex
-
-```text
-.codex-plugin/plugin.json
-```
-
-Claude Code
-
-Install from this same repo through the repo-hosted Claude marketplace:
+For most users, install the shared Flywheel skills with `npx skills`:
 
 ```bash
-claude plugin marketplace add /absolute/path/to/flywheel --scope local
-claude plugin install flywheel@flywheel --scope local
+npx skills add https://github.com/mopeyjellyfish/flywheel.git --skill '*' -a claude-code -a codex -g -y
 ```
 
-For a repo-shared Claude install, use `--scope project` in both commands.
+That installs Flywheel into both hosts from the same repo with one command.
 
-Flywheel keeps one shared `skills/` tree. The host-specific packaging lives in:
+#### Claude Code
 
-```text
-.codex-plugin/plugin.json
-.claude-plugin/plugin.json
-.claude-plugin/marketplace.json
+```bash
+claude plugin marketplace add https://github.com/mopeyjellyfish/flywheel.git --scope user
+claude plugin install flywheel@flywheel --scope user
 ```
 
-Author the workflow once under `skills/`. Do not add host-specific copies of
-the Flywheel stage instructions under `.claude/` or other host-local folders
-unless a host limitation forces that split deliberately.
+Then run `/reload-plugins` in Claude Code or start a fresh Claude session.
 
-### Run `$flywheel:setup`
+#### Codex
 
-Once the plugin is installed, open the target repository and run:
-
-```text
-$flywheel:setup
+```bash
+codex marketplace add https://github.com/mopeyjellyfish/flywheel.git
 ```
 
-`$flywheel:setup` is the repo-local bootstrap pass. It determines:
+Then start a fresh Codex session.
+
+### Start using Flywheel
+
+After installation, run `flywheel:setup` in the repository you want to work in
+when you need Flywheel to bootstrap the local environment. Then route work
+through `flywheel:start` or go straight to a stage such as
+`flywheel:brainstorm`, `flywheel:plan`, or `flywheel:review`.
+
+If you are using the repo-local plugin installs from the Development section
+below, the native command surface is `$flywheel:<stage>` in Codex and
+`/flywheel:<stage>` in Claude Code.
+
+`setup` is the repo-local bootstrap pass. It determines:
 
 - what this repo actually requires
 - which commands, CLIs, and surfaces are missing or misconfigured
@@ -165,9 +132,9 @@ $flywheel:setup
   `.flywheel/config.local.yaml`
 
 It is also the recovery path during upgrades: when `$flywheel:review`,
-`$flywheel:browser-test`, `$flywheel:optimize`, `$flywheel:ship`, or another later stage finds a
-missing requirement, use `$flywheel:setup` again with the closest focus rather than
-teaching each stage to do its own environment repair.
+`$flywheel:browser-test`, `$flywheel:optimize`, `$flywheel:ship`, or another later
+stage finds a missing requirement, use `setup` again with the closest focus
+instead of trying to patch the environment ad hoc inside that later stage.
 
 ### What you need
 
@@ -227,7 +194,7 @@ Side paths used when needed:
 - Browser Test / Polish
 - Observability / Logging
 - Optimize
-- Verification Before Completion
+- Verify
 ```
 
 The loop is intentionally short:
@@ -354,9 +321,10 @@ work that makes changes safer and easier to support.
 
 ## Knowledge store
 
-Flywheel stores solved problems and durable guidance in `docs/solutions/`.
-These entries are written by `$flywheel:spin` and are meant to be reused by future
-ideation, brainstorming, planning, work, review, and debugging sessions.
+In any repository that uses Flywheel, `docs/solutions/` is the place for solved
+problems and durable guidance. These entries are written by `$flywheel:spin` and
+meant to be reused by future ideation, brainstorming, planning, work, review,
+and debugging sessions.
 
 Each solution doc uses YAML frontmatter so agents can search cheaply before
 opening the full file. Common retrieval fields include:
@@ -375,7 +343,66 @@ opening the full file. Common retrieval fields include:
 Prefer docs with `doc_status: active`. If a strong hit has `superseded_by`,
 follow that path first and treat the older doc as historical context.
 
-## Eval harness
+## Development
+
+Everything below is for working on Flywheel itself rather than using Flywheel
+inside another repository.
+
+Flywheel is authored once under `skills/`. The host-specific packaging for that
+shared skill tree lives under `.codex-plugin/` and `.claude-plugin/`.
+
+### Local development
+
+#### From your local checkout
+
+Claude Code
+
+```bash
+make claude-dev
+```
+
+Then run `/reload-plugins` in Claude Code or start a fresh Claude session.
+
+Codex
+
+```bash
+make dev
+```
+
+Then start a fresh Codex session.
+
+#### From another local checkout or worktree
+
+Claude Code
+
+```bash
+make claude-dev-force-source
+```
+
+Use `make claude-refresh-project` when you want a project-scoped install from
+that checkout.
+
+Codex
+
+```bash
+make dev-force-link
+```
+
+#### Individual commands
+
+Use the narrower targets when you only need one part of the loop:
+
+```bash
+make codex-refresh-local
+make codex-refresh-local-force-link
+make claude-refresh-local
+make claude-refresh-local-force-source
+make claude-refresh-project
+make doctor
+make validate
+```
+
+### Eval harness
 
 Flywheel includes a repo-local harness for repeatable skill evaluation.
 
@@ -425,115 +452,15 @@ Setup, compatibility, and troubleshooting notes for working on Flywheel itself:
 - [docs/setup/compatibility.md](docs/setup/compatibility.md)
 - [docs/setup/troubleshooting.md](docs/setup/troubleshooting.md)
 
-## Local Development
+### Repository layout
 
-### From your local checkout
-
-Claude Code
-
-Install or refresh Flywheel from this checkout:
-
-```bash
-make claude-dev
-```
-
-The narrower helper is:
-
-```bash
-make claude-refresh-local
-```
-
-That path installs `flywheel@flywheel` from this repo at local scope. After it
-finishes, run `/reload-plugins` in Claude Code or start a fresh Claude session.
-
-For dev-only direct loading without touching installed Claude plugin state:
-
-```bash
-claude --plugin-dir /absolute/path/to/flywheel
-```
-
-The eval harness uses this direct `--plugin-dir` mode for Claude subject runs.
-
-Codex
-
-Refresh the installed local Flywheel plugin from this checkout:
-
-```bash
-make dev
-```
-
-`make dev` is the primary Codex local development loop. It re-points
-`~/.codex/plugins/flywheel` at this checkout, refreshes Flywheel's local plugin
-cache under `~/.codex/plugins/cache/flywheel-local/flywheel/local/`, ensures
-`~/.codex/config.toml` enables the local Flywheel plugin entry, runs the repo
-doctor, and validates all eval suites.
-
-The local plugin entry it manages is:
-
-```toml
-[plugins."flywheel@flywheel-local"]
-enabled = true
-```
-
-After it finishes, start a fresh Codex session so the refreshed plugin state is
-loaded.
-
-### From another local checkout or worktree
-
-Claude Code
-
-If the `flywheel` marketplace already points at another checkout, replace it
-explicitly from the new checkout:
-
-```bash
-make claude-dev-force-source
-```
-
-For a project-scoped Claude install from this repo instead of a local one:
-
-```bash
-make claude-refresh-project
-```
-
-For dev-only direct loading from another checkout:
-
-```bash
-claude --plugin-dir /path/to/other/flywheel
-```
-
-Codex
-
-From that checkout, run the same loop with force-linking:
-
-```bash
-make dev-force-link
-```
-
-This re-points `~/.codex/plugins/flywheel` at the current checkout before
-running the same doctor and validation steps. Use it when testing another local
-branch or worktree without manually editing symlinks.
-
-### Individual commands
-
-Use the narrower targets when you only need one part of the loop:
-
-```bash
-make codex-refresh-local
-make codex-refresh-local-force-link
-make claude-refresh-local
-make claude-refresh-local-force-source
-make claude-refresh-project
-make doctor
-make validate
-```
-
-## Repository layout
-
+- `.agents/plugins/marketplace.json` — Codex marketplace manifest for this repo
 - `.codex-plugin/plugin.json` — Codex plugin manifest
 - `.claude-plugin/plugin.json` — Claude plugin manifest
 - `.claude-plugin/marketplace.json` — Claude marketplace manifest for this repo
 - `.flywheel/config.local.example.yaml` — local config template
 - `docs/setup/` — compatibility and troubleshooting notes for Flywheel itself
+- `plugins/flywheel/` — Codex marketplace plugin wrapper that points at the shared skill tree
 - `skills/start/` — umbrella routing skill
 - `skills/<stage>/` — command-backed Flywheel workflow skills
 - `skills/document-review/` — design-artifact review before execution

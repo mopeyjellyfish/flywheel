@@ -1,0 +1,20 @@
+{
+  "name": "flywheel",
+  "interface": {
+    "displayName": "Flywheel"
+  },
+  "plugins": [
+    {
+      "name": "flywheel",
+      "source": {
+        "source": "local",
+        "path": "./plugins/flywheel"
+      },
+      "policy": {
+        "installation": "INSTALLED_BY_DEFAULT",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    }
+  ]
+}
