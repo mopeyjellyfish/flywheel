@@ -1,0 +1,31 @@
+{
+  "id": "fw-incident",
+  "skill": "flywheel:incident",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Evidence Grounding",
+    "Blast Radius",
+    "Decision Quality",
+    "Handoff Discipline",
+    "Artifact Preservation"
+  ],
+  "criticalDimensions": [
+    "Evidence Grounding",
+    "Decision Quality",
+    "Handoff Discipline"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "alert_to_incident",
+    "rollback_incident",
+    "patch_incident"
+  ]
+}

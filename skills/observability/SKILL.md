@@ -16,7 +16,7 @@ Observability is not a vendor choice alone. It is the combination of useful
 logs, traces, metrics, and post-deploy validation that lets engineers and
 agents understand a live system without guessing.
 
-`/observability` is a support skill. It can be used during planning, execution,
+`$flywheel:observability` is a support skill. It can be used during planning, execution,
 review, or debugging.
 
 **When directly invoked, always do observability work.** Do not stop at naming
@@ -171,7 +171,15 @@ When reviewing an existing design or diff, call out:
 - missing instrumentation on risky boundaries
 - telemetry that exists but is too noisy or uncorrelated to help
 - dashboards, queries, or monitors that the rollout depends on but never names
-- places where logging belongs in `/logging` specifically
+- places where logging belongs in `$flywheel:logging` specifically
+
+When the missing piece is not signal design but staged release posture, route
+the next step into `$flywheel:rollout` so activation sequence, validation window, and
+rollback triggers become explicit.
+
+When the work starts from a live outage, page, or customer-impact event rather
+than instrumentation design, route the next step into `$flywheel:incident` so the
+blast radius and immediate decision are framed before deeper debugging.
 
 ## Output Contract
 
@@ -183,7 +191,8 @@ Return a concise operational brief:
 4. **Choice surface** — options and recommendation when tradeoffs are real
 5. **Signal plan** — logs, traces, metrics, and validation to add or extend
 6. **Gap report** — what is missing or weak
-7. **Rollout hooks** — what a PR or deploy note should reference
+7. **Rollout or incident hooks** — what `$flywheel:rollout`, `$flywheel:incident`, or
+   `$flywheel:ship` should reference
 
 If the repo exposes no observability stack, say so clearly and give a
 platform-neutral plan rather than pretending a vendor exists.

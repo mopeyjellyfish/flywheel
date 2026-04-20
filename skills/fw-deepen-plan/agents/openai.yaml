@@ -1,4 +1,0 @@
-interface:
-  display_name: "/fw:deepen-plan"
-  short_description: "Strengthen an existing plan before execution"
-  default_prompt: "Use $fw-deepen-plan to harden this plan with repo-grounded research, document-review findings, stronger tests, and better rollout shape before work starts."

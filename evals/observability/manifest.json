@@ -1,0 +1,29 @@
+{
+  "id": "observability",
+  "skill": "observability",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Platform Grounding",
+    "Runtime Surface",
+    "Signal Plan",
+    "Choice Surface"
+  ],
+  "criticalDimensions": [
+    "Platform Grounding",
+    "Signal Plan"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "webhook_retry_runtime",
+    "otel_local_stack",
+    "reliability_choice"
+  ]
+}

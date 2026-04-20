@@ -1,6 +1,6 @@
 {
   "id": "fw-optimize",
-  "skill": "fw-optimize",
+  "skill": "flywheel:optimize",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

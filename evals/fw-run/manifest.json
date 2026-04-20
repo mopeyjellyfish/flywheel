@@ -1,0 +1,30 @@
+{
+  "id": "fw-run",
+  "skill": "flywheel:run",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_start",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Earliest Stage",
+    "Stage Continuity",
+    "Stop-Point Discipline",
+    "Spin Awareness"
+  ],
+  "criticalDimensions": [
+    "Earliest Stage",
+    "Stage Continuity"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "fuzzy_to_brainstorm",
+    "plan_to_work",
+    "ready_branch_to_ship"
+  ]
+}

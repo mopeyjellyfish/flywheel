@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:worktree"
+  short_description: "Create and manage isolated worktrees"
+  default_prompt: "Use $flywheel:worktree to create, inspect, or clean up an isolated git worktree through the bundled manager script rather than raw git worktree commands."

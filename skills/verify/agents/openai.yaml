@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:verify"
+  short_description: "Verify claims with fresh evidence"
+  default_prompt: "Use $flywheel:verify to apply the gate to a concrete claim: identify the proof, run it fresh, compare the result to the claim, and report only the honest status."

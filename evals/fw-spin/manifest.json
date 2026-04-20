@@ -1,6 +1,6 @@
 {
   "id": "fw-spin",
-  "skill": "fw-spin",
+  "skill": "flywheel:spin",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

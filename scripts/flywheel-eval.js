@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { spawnSync } = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");
 const EVALS_DIR = path.join(ROOT, "evals");
@@ -14,6 +15,7 @@ function fail(message) {
 function usage() {
   console.log(`Usage:
   node scripts/flywheel-eval.js list
+  node scripts/flywheel-eval.js doctor [--smoke]
   node scripts/flywheel-eval.js validate [suite]
   node scripts/flywheel-eval.js prepare <suite> [--out <dir>]
   node scripts/flywheel-eval.js summarize <suite> <results.jsonl>`);
@@ -136,6 +138,19 @@ function validateSuite(suite) {
   for (const field of ["passAverage", "strongPassAverage"]) {
     if (typeof manifest[field] !== "number") {
       errors.push(`manifest.${field} must be a number`);
+    }
+  }
+
+  if (
+    manifest.suiteType !== undefined &&
+    !["skill", "journey"].includes(manifest.suiteType)
+  ) {
+    errors.push('manifest.suiteType must be "skill" or "journey" when present');
+  }
+
+  if (manifest.suiteType === "journey") {
+    if (!Array.isArray(manifest.journeyStages) || manifest.journeyStages.length === 0) {
+      errors.push("manifest.journeyStages must be a non-empty array for journey suites");
     }
   }
 
@@ -281,6 +296,7 @@ function commandPrepare(suiteId, outDirArg) {
   const metadata = {
     suite: result.suite.id,
     skill: result.suite.manifest.skill,
+    suiteType: result.suite.manifest.suiteType || "skill",
     createdAt: new Date().toISOString(),
     sourceCaseFile: rel(result.suite.casePath),
     sourceRubricFile: rel(result.suite.rubricPath),
@@ -289,6 +305,7 @@ function commandPrepare(suiteId, outDirArg) {
     passAverage: result.suite.manifest.passAverage,
     strongPassAverage: result.suite.manifest.strongPassAverage,
     suggestedFirstPass: result.suite.manifest.suggestedFirstPass,
+    journeyStages: result.suite.manifest.journeyStages || [],
     caseCount: cases.length,
   };
 
@@ -306,7 +323,9 @@ function commandPrepare(suiteId, outDirArg) {
     [
       `# ${result.suite.id} Eval Run`,
       "",
-      "1. Read `cases.jsonl` and the source rubric named in `metadata.json`.",
+      result.suite.manifest.suiteType === "journey"
+        ? "1. Read `cases.jsonl` as multi-stage journey expectations and use the source rubric named in `metadata.json`."
+        : "1. Read `cases.jsonl` and the source rubric named in `metadata.json`.",
       "2. Copy `results.template.jsonl` to `results.jsonl` and fill in scores.",
       `3. Run \`node scripts/flywheel-eval.js summarize ${result.suite.id} ${path.join(runDir, "results.jsonl")}\`.`,
       "",
@@ -500,6 +519,18 @@ function main() {
     case "list":
       listSuites();
       return;
+    case "doctor": {
+      const result = spawnSync(
+        process.execPath,
+        [path.join(ROOT, "scripts", "flywheel-doctor.js"), ...rest],
+        {
+          cwd: ROOT,
+          stdio: "inherit",
+        },
+      );
+      process.exit(result.status ?? 1);
+      return;
+    }
     case "validate":
       commandValidate(rest[0]);
       return;

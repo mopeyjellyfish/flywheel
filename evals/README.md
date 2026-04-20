@@ -25,14 +25,29 @@ live harness runs rather than relying on host defaults.
 
 Current suites:
 
+- `conventional-commit`
+- `document-review`
 - `flywheel`
+- `flywheel-runtime-change`
+- `flywheel-incident-response`
+- `fw-brainstorm`
+- `fw-browser-test`
+- `fw-deepen-plan`
 - `fw-ideate`
 - `fw-plan`
+- `fw-polish`
+- `fw-run`
+- `fw-setup`
 - `fw-work`
+- `fw-worktree`
 - `fw-review`
 - `fw-debug`
 - `fw-ship`
+- `fw-spin`
 - `fw-optimize`
+- `logging`
+- `observability`
+- `verification-before-completion`
 
 ## Suite Contract
 
@@ -41,6 +56,13 @@ Each suite directory contains:
 - `manifest.json` — machine-readable scoring dimensions and pass thresholds
 - `cases.jsonl` — case inputs
 - `rubric.md` — human grading guidance
+
+Journey suites use the same contract with two optional manifest fields:
+
+- `suiteType: "journey"` — marks the suite as a multi-stage flow rather than a
+  single-skill eval
+- `journeyStages` — names the expected stage sequence so prepared runs and
+  metadata stay readable
 
 The harness validates the suite shape before it prepares or summarizes runs.
 

@@ -1,0 +1,39 @@
+{
+  "id": "flywheel-runtime-change",
+  "skill": "flywheel:run",
+  "suiteType": "journey",
+  "journeyStages": [
+    "work",
+    "review",
+    "rollout",
+    "ship",
+    "spin"
+  ],
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_start",
+    "expected_path",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Earliest Stage",
+    "Journey Coherence",
+    "Risk Gating",
+    "Artifact Carry",
+    "Closure"
+  ],
+  "criticalDimensions": [
+    "Earliest Stage",
+    "Journey Coherence",
+    "Risk Gating"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "plan_to_runtime_release",
+    "reviewed_runtime_change_to_rollout"
+  ]
+}

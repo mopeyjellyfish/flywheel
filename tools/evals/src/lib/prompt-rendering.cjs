@@ -1,11 +1,27 @@
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function skillForms(skill) {
+  const forms = new Set([skill]);
+
+  if (skill.startsWith("flywheel:")) {
+    const stage = skill.slice("flywheel:".length);
+    forms.add(`fw:${stage}`);
+    forms.add(`fw-${stage}`);
+  }
+
+  return [...forms];
+}
+
 function stripSkillLead(rawArguments, skill) {
-  const escaped = skill.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const patterns = [
-    new RegExp(`^Use\\s+\\$${escaped}\\s*`, "i"),
-    new RegExp(`^Use\\s+/${escaped}\\s*`, "i"),
-    new RegExp(`^\\$${escaped}\\s*`, "i"),
-    new RegExp(`^/${escaped}\\s*`, "i"),
-  ];
+  const forms = skillForms(skill).map(escapeRegex);
+  const patterns = forms.flatMap((form) => ([
+    new RegExp(`^Use\\s+\\$${form}\\s*`, "i"),
+    new RegExp(`^Use\\s+/${form}\\s*`, "i"),
+    new RegExp(`^\\$${form}\\s*`, "i"),
+    new RegExp(`^/${form}\\s*`, "i"),
+  ]));
 
   let stripped = rawArguments.trim();
   for (const pattern of patterns) {
@@ -17,6 +33,10 @@ function stripSkillLead(rawArguments, skill) {
 function renderSubjectPrompt({ runner, skill, rawArguments }) {
   const payload = stripSkillLead(rawArguments, skill);
   if (runner === "claude") {
+    if (skill.startsWith("flywheel:")) {
+      const stage = skill.slice("flywheel:".length);
+      return payload ? `/fw:${stage} ${payload}` : `/fw:${stage}`;
+    }
     return payload ? `/${skill} ${payload}` : `/${skill}`;
   }
 

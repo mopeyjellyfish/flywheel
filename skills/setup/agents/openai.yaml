@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:setup"
+  short_description: "Diagnose repo and machine readiness for Flywheel work"
+  default_prompt: "Use $flywheel:setup to inspect this repo's actual setup requirements, classify required vs optional tooling, surface missing workflow dependencies, bootstrap durable local Flywheel config when useful, check security posture and trusted MCP inventory, and clarify browser-proof plus optimization readiness including playwright-cli, Datadog, OTel-native, local-stack, or only local paths."

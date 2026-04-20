@@ -1,0 +1,30 @@
+{
+  "id": "verification-before-completion",
+  "skill": "flywheel:verify",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Claim Definition",
+    "Proof Identification",
+    "Fresh Verification",
+    "Honest Status"
+  ],
+  "criticalDimensions": [
+    "Claim Definition",
+    "Fresh Verification",
+    "Honest Status"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "tests_pass_claim",
+    "bug_fixed_claim",
+    "blank_claim"
+  ]
+}

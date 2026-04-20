@@ -1,7 +1,7 @@
 # `fw-spin` Prompt Eval Pack
 
 This directory contains a lightweight prompt-eval pack for
-`skills/fw-spin/SKILL.md`.
+`skills/spin/SKILL.md`.
 
 Use it to check whether `fw-spin` behaves like a living knowledge-store
 maintainer rather than a one-shot markdown writer.

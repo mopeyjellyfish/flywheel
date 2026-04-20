@@ -1,7 +1,7 @@
 # `flywheel` End-to-End Eval Pack
 
 This directory contains a compact prompt-eval pack for the top-level
-`skills/flywheel/SKILL.md` routing flow.
+`skills/start/SKILL.md` routing flow.
 
 Use it to verify that Flywheel feels coherent from idea to working PR:
 
@@ -32,8 +32,8 @@ manual or integration testing in a live repo.
 
 ## Manual Use
 
-1. Open `skills/flywheel/SKILL.md`.
-2. Run `$flywheel` with each `item.arguments` value from `cases.jsonl`.
+1. Open `skills/start/SKILL.md`.
+2. Run `$flywheel:start` with each `item.arguments` value from `cases.jsonl`.
 3. Grade the result with `rubric.md`.
 
 For a repeatable harness-driven run, use:

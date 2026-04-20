@@ -222,8 +222,8 @@ Offer these options:
 1. **Fix top-ranked item and re-review (Recommended)** — address the current
    rank 1 finding, then rerun document-review
 2. **Address several findings, then re-review** — batch a few changes, then rerun
-3. **Review complete** — for requirements docs, continue with `/fw:plan`; for
-   plan docs, continue with `/fw:work`
+3. **Review complete** — for requirements docs, continue with `$flywheel:plan`; for
+   plan docs, continue with `$flywheel:work`
 
 ## Iteration Guidance
 

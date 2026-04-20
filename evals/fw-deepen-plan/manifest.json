@@ -1,0 +1,30 @@
+{
+  "id": "fw-deepen-plan",
+  "skill": "flywheel:deepen",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Plan Targeting",
+    "Document Review Integration",
+    "Repo Grounding",
+    "Work Handoff",
+    "Runtime Awareness"
+  ],
+  "criticalDimensions": [
+    "Plan Targeting",
+    "Work Handoff"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "existing_plan",
+    "runtime_plan",
+    "latest_plan_blank"
+  ]
+}

@@ -1,4 +1,0 @@
-interface:
-  display_name: "/fw:brainstorm"
-  short_description: "Refine ideas into a requirements plan"
-  default_prompt: "Use $fw-brainstorm to turn this idea into a right-sized requirements doc before planning."

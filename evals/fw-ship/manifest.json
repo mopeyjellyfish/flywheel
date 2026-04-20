@@ -1,6 +1,6 @@
 {
   "id": "fw-ship",
-  "skill": "fw-ship",
+  "skill": "flywheel:ship",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

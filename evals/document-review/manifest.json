@@ -1,0 +1,30 @@
+{
+  "id": "document-review",
+  "skill": "document-review",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Document Targeting",
+    "Reviewer Selection",
+    "Findings Structure",
+    "Mode Handling",
+    "Workflow Fit"
+  ],
+  "criticalDimensions": [
+    "Document Targeting",
+    "Findings Structure"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "requirements_doc",
+    "plan_doc_runtime",
+    "headless_missing_path"
+  ]
+}

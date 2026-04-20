@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:debug"
+  short_description: "Reproduce bugs, prove cause, then fix or reroute"
+  default_prompt: "Use $flywheel:debug to reproduce the bug, gather evidence, state the causal chain, prove it with a red signal, and then either make the minimal fix or route the design problem back upstream."

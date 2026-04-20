@@ -1,0 +1,29 @@
+{
+  "id": "fw-worktree",
+  "skill": "flywheel:worktree",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Script Usage",
+    "Env Safety",
+    "Action Routing",
+    "Next Step"
+  ],
+  "criticalDimensions": [
+    "Script Usage",
+    "Env Safety"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "create_isolated",
+    "copy_env",
+    "cleanup_branch"
+  ]
+}

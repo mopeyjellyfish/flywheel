@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:run"
+  short_description: "Coordinate the remaining Flywheel stages end to end"
+  default_prompt: "Use $flywheel:run to take this bounded task through the remaining Flywheel stages until it reaches a clean handoff, shipping point, or captured lesson."

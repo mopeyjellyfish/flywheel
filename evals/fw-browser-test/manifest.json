@@ -1,0 +1,29 @@
+{
+  "id": "fw-browser-test",
+  "skill": "flywheel:browser-test",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Browser Capability",
+    "Blocked Handling",
+    "Evidence Hygiene",
+    "Workflow Handoff"
+  ],
+  "criticalDimensions": [
+    "Browser Capability",
+    "Workflow Handoff"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "changed_flow",
+    "missing_playwright",
+    "sensitive_network_evidence"
+  ]
+}

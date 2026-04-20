@@ -1,0 +1,30 @@
+{
+  "id": "conventional-commit",
+  "skill": "flywheel:commit",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_type",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Commit Shape",
+    "Type Selection",
+    "Breaking Change Gate",
+    "Output Shape"
+  ],
+  "criticalDimensions": [
+    "Commit Shape",
+    "Type Selection"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "feature_message",
+    "docs_message",
+    "breaking_change_gate"
+  ]
+}

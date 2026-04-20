@@ -1,13 +1,14 @@
 const { mentionsAny } = require("./shared.cjs");
 
 function stagePatterns(stage) {
-  const slug = stage.replace(/^fw-/, "");
+  const slug = String(stage || "").replace(/^flywheel:/, "").replace(/^fw-/, "");
   return [
-    new RegExp(`\\$${stage}\\b`, "i"),
-    new RegExp(`/${slug}\\b`, "i"),
-    new RegExp(`/${stage}\\b`, "i"),
+    new RegExp(`\\$flywheel:${slug}\\b`, "i"),
+    new RegExp(`/fw:${slug}\\b`, "i"),
+    new RegExp(`\\$fw-${slug}\\b`, "i"),
+    new RegExp(`/fw-${slug}\\b`, "i"),
     new RegExp(`\\b${slug}\\b`, "i"),
-    new RegExp(`\\b${stage}\\b`, "i"),
+    new RegExp(`\\bfw-${slug}\\b`, "i"),
   ];
 }
 
@@ -23,10 +24,10 @@ function deterministicFlywheel(caseItem, output) {
 
   let shortcutScore = 1;
   if (caseItem.id === "clear_small_change_to_work") {
-    shortcutScore = mentionsAny(output, stagePatterns("fw-work")) ? 2 : 0;
+    shortcutScore = mentionsAny(output, stagePatterns("work")) ? 2 : 0;
   }
   if (caseItem.id === "idea_to_brainstorm" || caseItem.id === "backlog_to_ideate") {
-    shortcutScore = mentionsAny(output, stagePatterns("fw-work")) ? 0 : 2;
+    shortcutScore = mentionsAny(output, stagePatterns("work")) ? 0 : 2;
   }
   scores["Shortcut Discipline"] = shortcutScore;
   notes["Shortcut Discipline"] =

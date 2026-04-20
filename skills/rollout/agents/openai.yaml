@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:rollout"
+  short_description: "Plan staged release posture for runtime-risky changes"
+  default_prompt: "Use $flywheel:rollout to choose rollout posture, validation windows, and rollback triggers before shipping a runtime-risky change."

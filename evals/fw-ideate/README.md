@@ -1,7 +1,7 @@
 # `fw-ideate` Prompt Eval Pack
 
 This directory contains a lightweight prompt-eval pack for
-`skills/fw-ideate/SKILL.md`.
+`skills/ideate/SKILL.md`.
 
 It is designed for three use cases:
 
@@ -48,7 +48,7 @@ already expect that field.
 
 For a quick regression pass:
 
-1. Open `skills/fw-ideate/SKILL.md`
+1. Open `skills/ideate/SKILL.md`
 2. Run the skill against each `item.arguments` case
 3. Grade the output using `rubric.md`
 

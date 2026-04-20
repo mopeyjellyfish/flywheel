@@ -4,7 +4,7 @@ function deterministicPlan(caseItem, output) {
   const scores = {};
   const notes = {};
 
-  const handoffToWork = mentionsAny(output, [/\$fw-work\b/i, /\/fw-work\b/i, /\/fw:work\b/i]);
+  const handoffToWork = mentionsAny(output, [/\$flywheel:work\b/i, /\/fw:work\b/i, /\/fw:work\b/i]);
   scores["Workflow Handoff"] = handoffToWork ? 2 : 0;
   notes["Workflow Handoff"] = handoffToWork
     ? "Preserves planning -> work handoff."

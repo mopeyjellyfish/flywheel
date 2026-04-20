@@ -1,0 +1,29 @@
+{
+  "id": "fw-setup",
+  "skill": "flywheel:setup",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Repo Grounding",
+    "Surface Classification",
+    "Security Posture",
+    "Browser Readiness"
+  ],
+  "criticalDimensions": [
+    "Repo Grounding",
+    "Surface Classification"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "blank_project",
+    "security_focus",
+    "browser_focus"
+  ]
+}

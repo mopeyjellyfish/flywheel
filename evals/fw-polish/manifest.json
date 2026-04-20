@@ -1,0 +1,29 @@
+{
+  "id": "fw-polish",
+  "skill": "flywheel:polish",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Browser Loop",
+    "Blocked Handling",
+    "Browser Proof Closure",
+    "Workflow Handoff"
+  ],
+  "criticalDimensions": [
+    "Browser Loop",
+    "Workflow Handoff"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "browser_polish",
+    "missing_playwright",
+    "proof_closure"
+  ]
+}

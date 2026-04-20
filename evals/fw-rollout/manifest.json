@@ -1,0 +1,31 @@
+{
+  "id": "fw-rollout",
+  "skill": "flywheel:rollout",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Trigger Discipline",
+    "Blast Radius Grounding",
+    "Rollout Posture",
+    "Validation And Rollback",
+    "Shipping Handoff"
+  ],
+  "criticalDimensions": [
+    "Rollout Posture",
+    "Validation And Rollback",
+    "Shipping Handoff"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "runtime_risky_queue_change",
+    "low_risk_runtime_change",
+    "stateful_transition_change"
+  ]
+}

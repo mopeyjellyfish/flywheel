@@ -26,4 +26,4 @@ Does it protect the default branch?
 
 ### Commit Honesty
 
-Does it preserve conventional-commit honesty and breaking-change checks?
+Does it preserve commit honesty and breaking-change checks?

@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:plan"
+  short_description: "Turn requirements into technical plans"
+  default_prompt: "Use $flywheel:plan to turn this requirements doc or idea into a technical plan that agents or humans can execute."

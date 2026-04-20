@@ -1,0 +1,30 @@
+{
+  "id": "fw-brainstorm",
+  "skill": "flywheel:brainstorm",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Requirements Focus",
+    "Scope Assessment",
+    "Artifact Discipline",
+    "Plan Handoff",
+    "Simplicity Pressure"
+  ],
+  "criticalDimensions": [
+    "Requirements Focus",
+    "Plan Handoff"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "vague_feature",
+    "clear_small_feature",
+    "yagni_options"
+  ]
+}

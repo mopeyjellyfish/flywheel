@@ -1,0 +1,39 @@
+{
+  "id": "flywheel-incident-response",
+  "skill": "flywheel:run",
+  "suiteType": "journey",
+  "journeyStages": [
+    "incident",
+    "debug",
+    "rollout",
+    "ship",
+    "spin"
+  ],
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_start",
+    "expected_path",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Earliest Stage",
+    "Journey Coherence",
+    "Evidence Preservation",
+    "Risk Gating",
+    "Closure"
+  ],
+  "criticalDimensions": [
+    "Earliest Stage",
+    "Journey Coherence",
+    "Evidence Preservation"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "live_incident_to_patch",
+    "live_incident_to_rollback"
+  ]
+}

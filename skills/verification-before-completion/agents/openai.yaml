@@ -1,4 +1,0 @@
-interface:
-  display_name: "/verification-before-completion"
-  short_description: "Verify claims with fresh evidence"
-  default_prompt: "Use $verification-before-completion to apply the gate to a concrete claim: identify the proof, run it fresh, compare the result to the claim, and report only the honest status."

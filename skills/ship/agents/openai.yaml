@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:ship"
+  short_description: "Commit, push, and prepare a clean PR"
+  default_prompt: "Use $flywheel:ship to finish this branch safely: verify readiness, commit with conventional messages, push, create or refresh the PR, and include testing plus post-deploy validation notes."

@@ -1,0 +1,29 @@
+{
+  "id": "logging",
+  "skill": "logging",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Current Truth",
+    "Event Model",
+    "Sensitive Data Discipline",
+    "Operability"
+  ],
+  "criticalDimensions": [
+    "Current Truth",
+    "Sensitive Data Discipline"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "queue_retry_logging",
+    "sensitive_payload_logging",
+    "blank_audit"
+  ]
+}
