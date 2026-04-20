@@ -1,6 +1,6 @@
 ---
 name: run
-description: "Run a bounded task through the remaining Flywheel stages end to end. Use when the user wants one coordinated pass from the earliest missing stage through work, review, shipping, and spin rather than invoking each stage manually."
+description: "Run a bounded task through the remaining Flywheel stages end to end. Use when the user wants one coordinated pass from the earliest missing stage through work, optional docs, review, shipping, and spin rather than invoking each stage manually."
 metadata:
   argument-hint: "[task description, requirements doc path, plan path, or existing branch goal]"
 ---
@@ -53,6 +53,9 @@ When relevant:
 
 - use `document-review` before work when the plan or requirements doc needs
   hardening
+- use `$flywheel:docs` after `$flywheel:work` when the change altered setup, public
+  APIs, CLI flows, configuration, or user workflows and the user wants docs
+  refreshed before review
 - use `$flywheel:incident` before `$flywheel:debug` when the task begins with live
   degradation, alerts, logs, traces, or metrics rather than a settled local bug
 - use `$flywheel:browser-test` before shipping for browser-visible changes

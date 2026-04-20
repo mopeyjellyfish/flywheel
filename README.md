@@ -1,8 +1,8 @@
 # flywheel
 
 Flywheel is a development workflow for Codex and Claude Code. It helps you
-shape the work, build it, review it, ship it, and keep the useful lesson for
-later.
+shape the work, build it, document it, review it, ship it, and keep the useful
+lesson for later.
 
 ## Install
 
@@ -34,6 +34,7 @@ Flywheel is built for real repository work:
 - turn vague requests into clear requirements
 - write durable implementation plans
 - execute against repo truth instead of guesswork
+- write or refresh Diataxis docs when user-facing contracts change
 - debug from a reproducer instead of a hunch
 - review changes before merge
 - handle browser proof, observability, logging, and optimization work
@@ -75,6 +76,7 @@ Support stages:
 
 - `ideate`
 - `deepen`
+- `docs`
 - `debug`
 - `incident`
 - `rollout`
@@ -96,8 +98,9 @@ Support stages:
 1. `brainstorm`
 2. `plan`
 3. `work`
-4. `review`
-5. `ship`
+4. optional `docs`
+5. `review`
+6. `ship`
 
 ### Bug to proven fix
 
@@ -116,6 +119,13 @@ Support stages:
 
 1. `work`
 2. `browser-test`
+3. `review`
+4. `ship`
+
+### User-facing or API change
+
+1. `work`
+2. `docs`
 3. `review`
 4. `ship`
 
@@ -162,6 +172,7 @@ stricter workflow gates, copy:
 ### Build and debug
 
 - `work` - execute the plan and validate the result
+- `docs` - write or refresh Diataxis docs after setup, CLI, API, config, or workflow changes
 - `debug` - prove the bug before fixing it
 - `worktree` - create or manage isolated worktrees
 

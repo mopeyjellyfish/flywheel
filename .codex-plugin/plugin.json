@@ -1,11 +1,12 @@
 {
   "name": "flywheel",
   "version": "0.1.0",
-  "description": "Standardize a compounding development flow from setup and ideation through execution, review, incident handling, rollout, shipping, and learning capture.",
+  "description": "Standardize a compounding development flow from setup and ideation through execution, documentation, review, incident handling, rollout, shipping, and learning capture.",
   "license": "UNLICENSED",
   "keywords": [
     "flywheel",
     "development-workflow",
+    "documentation",
     "planning",
     "worktrees",
     "code-review",
@@ -15,7 +16,7 @@
   "interface": {
     "displayName": "Flywheel",
     "shortDescription": "Compound engineering leverage across the dev loop",
-    "longDescription": "Guide work from repo setup, ideation, and measured optimization through brainstorming, planning, execution, review, incident handling, rollout for risky changes, shipping, and captured learnings so each completed task makes the next one easier.",
+    "longDescription": "Guide work from repo setup, ideation, and measured optimization through brainstorming, planning, execution, documentation, review, incident handling, rollout for risky changes, shipping, and captured learnings so each completed task makes the next one easier.",
     "category": "Coding",
     "capabilities": [
       "Interactive",
@@ -24,7 +25,8 @@
     "defaultPrompt": [
       "Use $flywheel:start to route this task through the right Flywheel stage.",
       "Use $flywheel:setup to prove repo and machine readiness before work starts.",
-      "Use $flywheel:run to coordinate one bounded task through the remaining Flywheel stages."
+      "Use $flywheel:run to coordinate one bounded task through the remaining Flywheel stages.",
+      "Use $flywheel:docs to refresh project docs after implementation changes setup, APIs, CLI flows, config, or user workflows."
     ]
   }
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:docs"
+  short_description: "Write or refresh project docs with Diataxis"
+  default_prompt: "Use $flywheel:docs to update project docs with a Diataxis pass: map changes into tutorial, how-to, reference, or explanation work and write the right in-repo updates."

@@ -5,6 +5,23 @@ when all Phase 2 tasks are complete and execution transitions to quality check.
 
 ## Phase 3: Quality Check
 
+### 0. Offer A Docs Pass When Needed
+
+Before review, ask whether `$flywheel:docs` should run when the completed work
+changed:
+
+- setup or onboarding steps
+- public API or library behavior
+- CLI commands, flags, or output that users rely on
+- configuration keys, environment variables, or defaults
+- operator or end-user workflows
+
+If the user agrees, run `$flywheel:docs` with a change-scoped argument before
+continuing. Keep the docs changes in the same branch so review and ship see the
+full user-facing update together.
+
+If the user declines, continue and note that docs were consciously deferred.
+
 ### 1. Run Core Quality Checks
 
 Always run before submitting:
@@ -59,6 +76,8 @@ Before shipping, confirm:
 - each requirement in `Requirements Trace`, if present, is satisfied by the
   completed work
 - any `Deferred to Implementation` questions were resolved during execution
+- documentation impact was addressed or consciously deferred when the change
+  altered setup, public interfaces, CLI behavior, config, or user workflows
 
 ### 4. Prepare Operational Validation Plan (Required)
 
@@ -196,6 +215,9 @@ Before creating a PR, verify:
 - [ ] The PR description includes `Post-Deploy Monitoring & Validation` or an explicit no-impact rationale
 - [ ] Code review completed, inline or via `$flywheel:review`
 - [ ] The PR description includes summary, testing notes, and evidence when captured
+- [ ] Documentation impact was addressed or consciously deferred when the
+      change touched setup, public interfaces, config, CLI behavior, or user
+      workflows
 - [ ] Any durable session learnings were either captured with `$flywheel:spin` or consciously deferred
 
 ## Code Review Tiers

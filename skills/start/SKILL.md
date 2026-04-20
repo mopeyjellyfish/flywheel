@@ -1,6 +1,6 @@
 ---
 name: start
-description: "Route software-development work through the Flywheel flow: setup, ideate, brainstorm, plan, work, incident, review, rollout, ship, spin, and repeat. Use when a task should follow a standard development loop that makes each next task easier instead of being handled ad hoc."
+description: "Route software-development work through the Flywheel flow: setup, ideate, brainstorm, plan, work, docs, incident, review, rollout, ship, spin, and repeat. Use when a task should follow a standard development loop that makes each next task easier instead of being handled ad hoc."
 ---
 
 # Flywheel
@@ -33,15 +33,18 @@ Route to the right stage as soon as the intent is clear:
 2. `flywheel:plan` for turning that requirements plan, or a detailed idea, into a
    technical implementation plan.
 3. `flywheel:work` for carrying out the plan with traceability.
-4. `flywheel:debug` for bug investigation that must prove the hypothesis before a
+4. `flywheel:docs` for change-scoped or broader Diataxis documentation work when
+   implementation changed setup, public APIs, CLI flows, configuration, or
+   user-facing behavior.
+5. `flywheel:debug` for bug investigation that must prove the hypothesis before a
    fix or redesign.
-5. `flywheel:review` for pre-merge code review and risk finding.
-6. `flywheel:rollout` for staged release planning on runtime-risky changes before
+6. `flywheel:review` for pre-merge code review and risk finding.
+7. `flywheel:rollout` for staged release planning on runtime-risky changes before
    final shipping closure.
-7. `flywheel:ship` for commit, push, PR, and finishing closure.
-8. `flywheel:spin` for capturing what should change so the next cycle is easier.
-9. `repeat` by starting the next task with better stored context than before.
-10. `flywheel:ideate` as an optional force multiplier when the job is to surface the
+8. `flywheel:ship` for commit, push, PR, and finishing closure.
+9. `flywheel:spin` for capturing what should change so the next cycle is easier.
+10. `repeat` by starting the next task with better stored context than before.
+11. `flywheel:ideate` as an optional force multiplier when the job is to surface the
    best next ideas before entering the main loop.
 
 Support surfaces, used when needed rather than as mandatory stages:
@@ -53,6 +56,8 @@ Support surfaces, used when needed rather than as mandatory stages:
 - `flywheel:incident` for production or runtime incidents that begin with live
   evidence and need mitigation vs rollback vs patch framing
 - `flywheel:deepen` for strengthening an existing plan before implementation
+- `flywheel:docs` for post-work or direct documentation passes that should write
+  or refresh Diataxis-shaped project docs before review and ship
 - `flywheel:worktree` for isolated parallel checkouts
 - `flywheel:optimize` for measurement-driven performance, throughput, or cost work
 - `flywheel:rollout` for runtime-risky change-management, validation windows, and
@@ -87,6 +92,8 @@ inside that blocked stage.
   `../deepen/SKILL.md`.
 - If a plan exists or the user wants implementation now, use
   `../work/SKILL.md`.
+- If the immediate job is updating project docs, running a Diataxis docs pass,
+  or refreshing docs after a code change, use `../docs/SKILL.md`.
 - If the user is dealing with a failing test, regression, stack trace, or
   broken behavior and the immediate job is root-cause analysis, use
   `../debug/SKILL.md`.
@@ -139,6 +146,9 @@ Apply these routing heuristics before doing repo exploration:
   design artifact, route to `../document-review/SKILL.md`
 - if the input explicitly points at `docs/plans/` or asks to implement a plan,
   route to `../work/SKILL.md`
+- if the input asks to update docs, README guidance, tutorials, how-to guides,
+  reference pages, explanation docs, or a post-work documentation handoff,
+  route to `../docs/SKILL.md`
 - if the input is a bug, regression, test failure, or stack trace, route to
   `../debug/SKILL.md`
 - if the input says the code already changed or asks for pre-merge bug finding,
@@ -231,13 +241,16 @@ Preferred stage-to-handoff wording:
   `flywheel:work`
 - `flywheel:plan` -> produce a technical implementation plan -> then move into
   `flywheel:work`
+- `flywheel:docs` -> produce updated project docs mapped to the right Diataxis
+  quadrants -> then continue into `flywheel:review` or `flywheel:ship`
 - `document-review` -> produce prioritized document findings and fix direction
   -> then revise the doc or continue into `flywheel:plan` or `flywheel:work` if clean
 - `flywheel:browser-test` -> produce fresh browser-proof artifacts -> then continue
   into `flywheel:review` or `flywheel:ship`
 - `flywheel:polish` -> produce tightened browser-visible behavior plus fresh browser
   proof -> then continue into `flywheel:review` and `flywheel:ship`
-- `flywheel:work` -> produce implemented, validated changes -> then move through
+- `flywheel:work` -> produce implemented, validated changes -> then offer
+  `flywheel:docs` when user-facing contracts changed, move through
   `flywheel:review` and `flywheel:ship`, then offer `flywheel:spin`
 - `flywheel:debug` -> produce a proved causal chain and either a red-to-green fix or
   a handoff back to `flywheel:brainstorm` or `flywheel:plan`
@@ -283,6 +296,10 @@ Use these patterns to keep routing answers stable across frontier models:
 - **Deepen route:** "This belongs in `flywheel:deepen` because a plan
   already exists and the immediate job is to make it more execution-ready. The
   output should be a stronger plan, then `flywheel:work`."
+- **Docs route:** "This belongs in `flywheel:docs` because the immediate job is
+  refreshing project docs from repo truth, not changing code. The output
+  should be Diataxis-shaped docs updates, then `flywheel:review` or
+  `flywheel:ship` if the branch is otherwise ready."
 - **Document-review route:** "This belongs in `document-review` because the
   immediate job is to harden a requirements or plan artifact before execution.
   The output should be a prioritized fix queue or a clean pass. From there,
@@ -296,8 +313,10 @@ Use these patterns to keep routing answers stable across frontier models:
   output should be tightened behavior plus a final browser-proof pass."
 - **Work route:** "This is ready for `flywheel:work` because the scope is already
   concrete enough to execute. The output should be implemented, validated
-  changes. After that, run `flywheel:review`, route runtime-risky work through
-  `flywheel:rollout`, then `flywheel:ship`, and offer `flywheel:spin`."
+  changes. After that, offer `flywheel:docs` when the change altered setup,
+  public interfaces, config, or user workflows, run `flywheel:review`, route
+  runtime-risky work through `flywheel:rollout`, then `flywheel:ship`, and
+  offer `flywheel:spin`."
 - **Debug route:** "This belongs in `flywheel:debug` because the immediate job is to
   prove why the bug happens before changing code. The output should be a causal
   chain plus either a red-to-green fix or a routing decision back into
@@ -357,6 +376,8 @@ Use these patterns to keep routing answers stable across frontier models:
 - `run`: the remaining Flywheel artifacts plus a clear stop point or ship state.
 - `deepen`: a stronger, more execution-ready plan.
 - `plan`: a technical execution plan with validation and risk notes.
+- `docs`: updated tutorial, how-to, reference, or explanation docs grounded in
+  the repo's actual behavior.
 - `document-review`: ranked findings on a requirements, plan, or design doc.
 - `browser-test`: fresh browser-proof evidence for a browser-visible change.
 - `polish`: tightened browser-visible behavior plus a closing proof pass.
@@ -385,3 +406,4 @@ Use these patterns to keep routing answers stable across frontier models:
 - "Use the `flywheel:start` router to route this feature request through the right Flywheel stage."
 - "Use the `flywheel:start` router to decide whether this repo needs ideation, planning, or direct work."
 - "Use the `flywheel:start` router to finish this task and capture the reusable learnings."
+- "Use the `flywheel:start` router to decide whether this branch needs a docs pass before review."

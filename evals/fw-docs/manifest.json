@@ -1,0 +1,31 @@
+{
+  "id": "fw-docs",
+  "skill": "flywheel:docs",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Scope Control",
+    "Diataxis Mapping",
+    "Repo Grounding",
+    "Doc Placement",
+    "Workflow Fit"
+  ],
+  "criticalDimensions": [
+    "Diataxis Mapping",
+    "Repo Grounding",
+    "Doc Placement"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "change_scoped_cli_update",
+    "repo_wide_pass",
+    "no_docs_needed"
+  ]
+}

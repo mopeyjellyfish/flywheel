@@ -396,6 +396,9 @@ while (tasks remain):
   - When the change is browser-visible, run `$flywheel:browser-test` before claiming
     completion unless the repo has a stronger existing browser-proof surface
     and you can name it explicitly
+  - When the change alters setup, public APIs, CLI flows, config, or
+    user/operator workflows, note the likely docs impact so you can offer
+    `$flywheel:docs` before review
   - When runtime behavior changes meaningfully, confirm the chosen reliability
     posture still matches the current code, failure modes, and blast radius
   - When local policy requires explicit operational validation for runtime
@@ -547,6 +550,11 @@ If the work is UI-heavy and the task includes Figma designs:
 - Keep the user informed at major milestones.
 
 ### Phase 3-4: Quality Check and Ship It
+
+If the completed change likely changed setup steps, public interfaces, config
+contracts, CLI behavior, or user workflows, offer `$flywheel:docs` before quality
+check. If the user agrees, complete that docs pass first and then continue into
+review and ship.
 
 When all Phase 2 tasks are complete and execution transitions to quality check,
 read `references/shipping-workflow.md` and follow that workflow for final
