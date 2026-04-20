@@ -3,15 +3,7 @@ function escapeRegex(value) {
 }
 
 function skillForms(skill) {
-  const forms = new Set([skill]);
-
-  if (skill.startsWith("flywheel:")) {
-    const stage = skill.slice("flywheel:".length);
-    forms.add(`fw:${stage}`);
-    forms.add(`fw-${stage}`);
-  }
-
-  return [...forms];
+  return [skill];
 }
 
 function stripSkillLead(rawArguments, skill) {
@@ -35,7 +27,7 @@ function renderSubjectPrompt({ runner, skill, rawArguments }) {
   if (runner === "claude") {
     if (skill.startsWith("flywheel:")) {
       const stage = skill.slice("flywheel:".length);
-      return payload ? `/fw:${stage} ${payload}` : `/fw:${stage}`;
+      return payload ? `/flywheel:${stage} ${payload}` : `/flywheel:${stage}`;
     }
     return payload ? `/${skill} ${payload}` : `/${skill}`;
   }

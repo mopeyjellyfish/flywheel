@@ -77,7 +77,6 @@ async function runClaudeSubject({ rawArguments, skill, model }) {
   const prompt = renderSubjectPrompt({ runner: "claude", skill, rawArguments });
   const args = [
     "-p",
-    "--bare",
     "--plugin-dir",
     repoRoot,
     "--no-session-persistence",

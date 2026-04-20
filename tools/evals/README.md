@@ -48,6 +48,8 @@ defaults as a stable comparison baseline.
 - local auth already configured in the relevant CLI
 - Flywheel installed and enabled in local Codex for Codex subject runs
 
-Claude runs load the repo directly with `--plugin-dir`. Codex runs use the
-installed local plugin configuration. The harness will stop Codex subject runs
-up front if that plugin enablement is missing.
+Claude subject runs in this harness load the repo directly with `--plugin-dir`
+for direct local comparisons. Codex subject runs use the installed local plugin
+configuration. Installed Claude plugin validation lives in
+`node scripts/flywheel-doctor.js` and the Claude refresh helpers rather than in
+the promptfoo subject runner.

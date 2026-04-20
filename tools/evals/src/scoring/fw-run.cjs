@@ -1,14 +1,10 @@
 const { mentionsAny, mentionsAtLeast } = require("./shared.cjs");
 
 function stagePatterns(stage) {
-  const slug = String(stage || "").replace(/^flywheel:/, "").replace(/^fw-/, "");
-  const legacy = `fw-${slug}`;
+  const slug = String(stage || "").replace(/^flywheel:/, "");
   return [
     new RegExp(`\\$flywheel:${slug}\\b`, "i"),
-    new RegExp(`/fw:${slug}\\b`, "i"),
-    new RegExp(`\\$${legacy}\\b`, "i"),
-    new RegExp(`/${legacy}\\b`, "i"),
-    new RegExp(`\\b${legacy}\\b`, "i"),
+    new RegExp(`/flywheel:${slug}\\b`, "i"),
     new RegExp(`\\b${slug}\\b`, "i"),
   ];
 }
@@ -37,7 +33,7 @@ function deterministicRun(caseItem, output) {
     ? "Mentions orchestration stop points."
     : "Does not clearly mention stop points, but the run flow is present.";
 
-  const spinSignal = mentionsAny(output, [/\$flywheel:spin\b/i, /\/fw:spin\b/i, /\/fw:spin\b/i]);
+  const spinSignal = mentionsAny(output, [/\$flywheel:spin\b/i, /\/flywheel:spin\b/i]);
   scores["Spin Awareness"] = spinSignal ? 2 : 0;
   notes["Spin Awareness"] = spinSignal
     ? "Keeps spin in the closing path."

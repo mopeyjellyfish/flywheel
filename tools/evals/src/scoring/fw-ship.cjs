@@ -29,7 +29,7 @@ function deterministicShip(caseItem, output) {
 
   const browserCase = (caseItem.special_constraints || []).some((item) => /browser/i.test(item));
   if (browserCase) {
-    const browserProof = mentionsAny(output, [/\$flywheel:browser-test\b/i, /\/fw:browser-test\b/i, /browser proof/i]);
+    const browserProof = mentionsAny(output, [/\$flywheel:browser-test\b/i, /\/flywheel:browser-test\b/i, /browser proof/i]);
     scores["Browser Proof Discipline"] = browserProof ? 2 : 0;
     notes["Browser Proof Discipline"] = browserProof
       ? "Requires or offers browser proof for browser-visible work."

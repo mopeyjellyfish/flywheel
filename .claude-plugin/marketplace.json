@@ -1,0 +1,21 @@
+{
+  "name": "flywheel",
+  "owner": {
+    "name": "David Hall"
+  },
+  "metadata": {
+    "description": "Flywheel plugin distribution for Codex and Claude Code from one shared repo"
+  },
+  "plugins": [
+    {
+      "name": "flywheel",
+      "description": "Standardize a compounding development flow from setup and ideation through execution, review, incident handling, rollout, shipping, and learning capture.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Flywheel"
+      },
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}

@@ -105,7 +105,6 @@ async function runClaudeJudge({ suite, caseItem, output, dimensions, model }) {
   const schema = buildJudgeSchema(dimensions);
   const args = [
     "-p",
-    "--bare",
     "--no-session-persistence",
     "--output-format",
     "json",

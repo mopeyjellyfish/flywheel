@@ -22,7 +22,7 @@ function deterministicDeepenPlan(caseItem, output) {
     ? "Mentions repo truth or prior learnings."
     : "Grounding is present but weak.";
 
-  const handoffSignal = mentionsAny(output, [/\$flywheel:work\b/i, /\/fw:work\b/i, /\/fw:work\b/i]);
+  const handoffSignal = mentionsAny(output, [/\$flywheel:work\b/i, /\/flywheel:work\b/i, /\/flywheel:work\b/i]);
   scores["Work Handoff"] = handoffSignal ? 2 : 0;
   notes["Work Handoff"] = handoffSignal
     ? "Carries the plan forward into work."

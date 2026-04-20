@@ -6,7 +6,7 @@ const { runEval } = require("./run.cjs");
 
 function usage() {
   console.log(`Usage:
-  node src/cli.cjs doctor [--smoke]
+  node src/cli.cjs doctor [--smoke] [--host codex|claude|all]
   node src/cli.cjs eval --suite <suite> [--case <case-id[,case-id...]>] [--runner codex|claude|all] [--judge claude|codex|none] [--subject-model <model>] [--judge-model <model>] [--subject-config <key=value>] [--judge-config <key=value>] [--output-dir <dir>] [--no-cache]
   node src/cli.cjs compare --suite <suite> [--case <case-id[,case-id...]>] [--judge claude|codex|none] [--subject-model <model>] [--judge-model <model>] [--subject-config <key=value>] [--judge-config <key=value>] [--output-dir <dir>] [--no-cache]`);
 }
@@ -21,7 +21,7 @@ async function main() {
   }
 
   if (command === "doctor") {
-    const result = await runDoctor({ smoke: Boolean(values.smoke) });
+    const result = await runDoctor({ smoke: Boolean(values.smoke), host: values.host || "all" });
     for (const check of result.checks) {
       console.log(`${check.ok ? "OK" : "FAIL"}  ${check.name} - ${check.detail}`);
     }

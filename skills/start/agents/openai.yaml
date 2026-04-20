@@ -1,4 +1,4 @@
 interface:
   display_name: "Flywheel"
   short_description: "Route work through the Flywheel dev flow"
-  default_prompt: "Use $flywheel to take this task from repo setup, ideation, browser proof, or measured optimization through the right Flywheel workflow and out to a working PR."
+  default_prompt: "Use $flywheel:start to take this task from repo setup, ideation, browser proof, or measured optimization through the right Flywheel workflow and out to a working PR."

@@ -13,17 +13,39 @@ product choice while the workflow and operational surfaces are still evolving.
 | Surface | Codex CLI | Claude Code | Notes |
 | --- | --- | --- | --- |
 | Core Flywheel skill workflow | Supported | Supported | Skills are authored to stay host-compatible and low-context |
-| Local plugin development from this checkout | Supported | Supported | Codex uses installed local plugin config; Claude supports `--plugin-dir` on this machine |
+| Repeatable installed usage from this checkout | Supported | Supported | Codex installs from `.codex-plugin/plugin.json`; Claude installs from this repo through `.claude-plugin/marketplace.json` |
+| Dev-only direct loading from this checkout | Supported | Supported | Codex uses the local plugin config + cache refresh loop; Claude also supports `--plugin-dir` for direct local runs |
 | Eval harness validation | Supported | Supported | Requires local CLI install and auth for the relevant runner |
 | Side-by-side live comparison | Supported | Supported | Run from `tools/evals/` after installing workspace deps |
 
+Flywheel is authored once in the repo-root `skills/` tree. `.codex-plugin/`
+and `.claude-plugin/` package that same workflow for different hosts; they are
+not separate workflow forks.
+
 ## Local Development Loop
 
-Claude local checkout:
+Claude installed local checkout:
+
+```bash
+make claude-dev
+```
+
+The narrower Claude refresh helper is:
+
+```bash
+make claude-refresh-local
+```
+
+For dev-only direct Claude loading:
 
 ```bash
 claude --plugin-dir /absolute/path/to/flywheel
 ```
+
+Claude's canonical Flywheel contract is `/flywheel:<stage>`. Bare slash
+commands such as `/plan`, `/run`, or `/commit` may be built-ins or come from
+other plugins, so verify Flywheel through the namespaced surface and the doctor
+commands rather than menu overlap.
 
 Codex local checkout from this repository:
 
@@ -41,7 +63,7 @@ To switch to another Flywheel checkout or worktree:
 Claude:
 
 ```bash
-claude --plugin-dir /path/to/other/flywheel
+make claude-dev-force-source
 ```
 
 Codex, from that checkout:
@@ -55,6 +77,9 @@ Use the narrower targets when you only need one part of the loop:
 ```bash
 make codex-refresh-local
 make codex-refresh-local-force-link
+make claude-refresh-local
+make claude-refresh-local-force-source
+make claude-refresh-project
 make doctor
 make validate
 ```
@@ -67,9 +92,15 @@ npm --prefix tools/evals run doctor
 npm --prefix tools/evals run compare -- --suite flywheel
 ```
 
+To verify the installed Claude command surface from this checkout:
+
+```bash
+node scripts/flywheel-doctor.js --host claude --smoke
+```
+
 ## Intentional Non-Goals For Now
 
-- broad editor or marketplace packaging beyond Codex and Claude Code
+- broad editor or public marketplace distribution beyond Codex and Claude Code
 - always-loaded host-wide instruction files
 - host-specific workflow forks when a shared skill surface is sufficient
 

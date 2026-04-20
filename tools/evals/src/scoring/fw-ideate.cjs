@@ -33,9 +33,9 @@ function deterministicIdeate(caseItem, output) {
     notes["Restraint"] = "Used overall length as a restraint proxy.";
   }
 
-  const routesToBrainstorm = mentionsAny(output, [/\$flywheel:brainstorm\b/i, /\/fw:brainstorm\b/i, /\/fw:brainstorm\b/i, /\/brainstorm\b/i]);
-  const jumpsToPlan = mentionsAny(output, [/\$flywheel:plan\b/i, /\/fw:plan\b/i, /\/fw:plan\b/i]);
-  const jumpsToWork = mentionsAny(output, [/\$flywheel:work\b/i, /\/fw:work\b/i, /\/fw:work\b/i]);
+  const routesToBrainstorm = mentionsAny(output, [/\$flywheel:brainstorm\b/i, /\/flywheel:brainstorm\b/i, /\/flywheel:brainstorm\b/i, /\/brainstorm\b/i]);
+  const jumpsToPlan = mentionsAny(output, [/\$flywheel:plan\b/i, /\/flywheel:plan\b/i, /\/flywheel:plan\b/i]);
+  const jumpsToWork = mentionsAny(output, [/\$flywheel:work\b/i, /\/flywheel:work\b/i, /\/flywheel:work\b/i]);
   scores["Workflow Routing"] = routesToBrainstorm && !jumpsToWork ? 2 : jumpsToPlan || jumpsToWork ? 0 : 1;
   notes["Workflow Routing"] =
     scores["Workflow Routing"] === 2

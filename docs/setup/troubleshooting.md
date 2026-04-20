@@ -56,7 +56,32 @@ make codex-refresh-local
 
 Then start a fresh Codex session.
 
-### Claude local plugin runs are not available
+### Claude installed Flywheel is not available
+
+Symptom:
+- `claude plugin list --json` does not show `flywheel@flywheel`
+- Claude reports `Unknown command: /flywheel:start`
+- Claude shows `/plan` or `/run`, but you are not sure whether Flywheel itself
+  is registered
+
+Check:
+- `claude plugin validate .`
+- `claude plugin list --json`
+- `node scripts/flywheel-doctor.js --host claude --smoke`
+
+Fix:
+- rerun `make claude-dev`
+- if the `flywheel` marketplace points at another checkout, rerun
+  `make claude-dev-force-source`
+- for a project-scoped install from this repo, run `make claude-refresh-project`
+- then run `/reload-plugins` in Claude Code or start a fresh Claude session
+
+Note:
+- Flywheel's Claude contract is `/flywheel:<stage>`
+- bare `/plan`, `/run`, or `/commit` commands can come from Claude built-ins or
+  other plugins and are not proof of Flywheel registration by themselves
+
+### Claude direct `--plugin-dir` runs are not available
 
 Symptom:
 - Claude-based eval runs fail before prompt execution
@@ -70,10 +95,10 @@ Fix:
 ### Browser proof is blocked in target repos
 
 Symptom:
-- `/fw:browser-test` or `/fw:polish` reports missing `playwright-cli`
+- `/flywheel:browser-test` or `/flywheel:polish` reports missing `playwright-cli`
 
 Fix:
-- run `$flywheel:setup browser` in Codex, or `/fw:setup browser` in Claude,
+- run `$flywheel:setup browser` in Codex, or `/flywheel:setup browser` in Claude,
   inside the target repo
 - prefer the repo-native install path first
 
@@ -114,5 +139,5 @@ Fix:
 ## Recovery Principle
 
 When a later Flywheel stage discovers a missing surface, prefer routing back to
-`$flywheel:setup <focus>` in Codex, or `/fw:setup <focus>` in Claude, in the
+`$flywheel:setup <focus>` in Codex, or `/flywheel:setup <focus>` in Claude, in the
 target repo instead of patching the environment ad hoc inside that later stage.

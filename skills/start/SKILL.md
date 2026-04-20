@@ -8,7 +8,10 @@ description: "Route software-development work through the Flywheel flow: setup, 
 ## Overview
 
 Use this skill as the umbrella entrypoint for the Flywheel development flow.
-Invoke it as `$flywheel:start`.
+Invoke it as `flywheel:start` using the current host's native syntax:
+
+- Codex: `$flywheel:start`
+- Claude Code: `/flywheel:start`
 
 The goal is not just to finish the current task. The goal is to leave behind
 better context, sharper decisions, and reusable artifacts so future work gets
@@ -25,42 +28,42 @@ appeared. Prefer docs with `doc_status: active`, and if a strong hit has
 
 Route to the right stage as soon as the intent is clear:
 
-1. `$flywheel:brainstorm` as the main entry point for refining ideas into a
+1. `flywheel:brainstorm` as the main entry point for refining ideas into a
    requirements plan.
-2. `$flywheel:plan` for turning that requirements plan, or a detailed idea, into a
+2. `flywheel:plan` for turning that requirements plan, or a detailed idea, into a
    technical implementation plan.
-3. `$flywheel:work` for carrying out the plan with traceability.
-4. `$flywheel:debug` for bug investigation that must prove the hypothesis before a
+3. `flywheel:work` for carrying out the plan with traceability.
+4. `flywheel:debug` for bug investigation that must prove the hypothesis before a
    fix or redesign.
-5. `$flywheel:review` for pre-merge code review and risk finding.
-6. `$flywheel:rollout` for staged release planning on runtime-risky changes before
+5. `flywheel:review` for pre-merge code review and risk finding.
+6. `flywheel:rollout` for staged release planning on runtime-risky changes before
    final shipping closure.
-7. `$flywheel:ship` for commit, push, PR, and finishing closure.
-8. `$flywheel:spin` for capturing what should change so the next cycle is easier.
+7. `flywheel:ship` for commit, push, PR, and finishing closure.
+8. `flywheel:spin` for capturing what should change so the next cycle is easier.
 9. `repeat` by starting the next task with better stored context than before.
-10. `$flywheel:ideate` as an optional force multiplier when the job is to surface the
+10. `flywheel:ideate` as an optional force multiplier when the job is to surface the
    best next ideas before entering the main loop.
 
 Support surfaces, used when needed rather than as mandatory stages:
 
-- `$flywheel:setup` for repo and machine readiness, first-run bootstrap, and
+- `flywheel:setup` for repo and machine readiness, first-run bootstrap, and
   update-time recovery when a later stage discovers a missing requirement,
   including trusted MCP posture and sandbox or devcontainer readiness
-- `$flywheel:run` for optional end-to-end orchestration across the remaining stages
-- `$flywheel:incident` for production or runtime incidents that begin with live
+- `flywheel:run` for optional end-to-end orchestration across the remaining stages
+- `flywheel:incident` for production or runtime incidents that begin with live
   evidence and need mitigation vs rollback vs patch framing
-- `$flywheel:deepen` for strengthening an existing plan before implementation
-- `$flywheel:worktree` for isolated parallel checkouts
-- `$flywheel:optimize` for measurement-driven performance, throughput, or cost work
-- `$flywheel:rollout` for runtime-risky change-management, validation windows, and
+- `flywheel:deepen` for strengthening an existing plan before implementation
+- `flywheel:worktree` for isolated parallel checkouts
+- `flywheel:optimize` for measurement-driven performance, throughput, or cost work
+- `flywheel:rollout` for runtime-risky change-management, validation windows, and
   rollback posture before ship
-- `$flywheel:browser-test` for browser acceptance proof with playwright-cli
-- `$flywheel:polish` for interactive browser-visible tightening before review or ship
-- `$flywheel:document-review` for requirements, plan, or design-doc review before execution
-- `$flywheel:observability` for runtime signal, blast radius, and rollout validation design
-- `$flywheel:logging` for structured event and log-shape design
-- `$flywheel:verify` for fresh proof before claiming a task is done
-- `$flywheel:commit` for commit-message drafting and breaking-change checks
+- `flywheel:browser-test` for browser acceptance proof with playwright-cli
+- `flywheel:polish` for interactive browser-visible tightening before review or ship
+- `flywheel:document-review` for requirements, plan, or design-doc review before execution
+- `flywheel:observability` for runtime signal, blast radius, and rollout validation design
+- `flywheel:logging` for structured event and log-shape design
+- `flywheel:verify` for fresh proof before claiming a task is done
+- `flywheel:commit` for commit-message drafting and breaking-change checks
 
 Do not force every request through every stage. Route to the earliest missing
 stage, then carry forward the artifacts from there.
@@ -180,9 +183,18 @@ This skill is a router. It should select the next Flywheel stage, explain the
 handoff, and then stop. Do not silently perform the downstream stage inside the
 same response.
 
-In Codex-facing output, name Flywheel skills as `$flywheel:<stage-or-skill>`.
-Do not emit slash commands like `/fw:setup`, `/document-review`, or `/logging`;
-Codex does not register Flywheel skills as slash commands.
+In user-facing output, use the current host's native Flywheel invocation
+syntax:
+
+- Codex: `$flywheel:<stage-or-skill>`
+- Claude Code: `/flywheel:<stage-or-skill>`
+
+Do not emit legacy `/fw:*` or `$fw:*` forms.
+
+When this document refers to a stage as `flywheel:<stage-or-skill>`, treat that
+as the shared stage id and adapt the prefix to the current host.
+Do not leave a bare `flywheel:<stage-or-skill>` id in the final user-facing
+route; render the host-native full invocation instead.
 
 In particular:
 
@@ -209,47 +221,47 @@ focused question after stating the stage and handoff.
 
 Preferred stage-to-handoff wording:
 
-- `$flywheel:ideate` -> produce a ranked shortlist -> then move the selected idea into
-  `$flywheel:brainstorm`
-- `$flywheel:brainstorm` -> produce a requirements doc or requirements plan -> then
-  move into `$flywheel:plan`
-- `$flywheel:run` -> produce the remaining stage artifacts through a bounded end-to-end
+- `flywheel:ideate` -> produce a ranked shortlist -> then move the selected idea into
+  `flywheel:brainstorm`
+- `flywheel:brainstorm` -> produce a requirements doc or requirements plan -> then
+  move into `flywheel:plan`
+- `flywheel:run` -> produce the remaining stage artifacts through a bounded end-to-end
   pass -> then stop at shipping, spin, or an approval gate
-- `$flywheel:deepen` -> produce a stronger technical plan -> then move into
-  `$flywheel:work`
-- `$flywheel:plan` -> produce a technical implementation plan -> then move into
-  `$flywheel:work`
+- `flywheel:deepen` -> produce a stronger technical plan -> then move into
+  `flywheel:work`
+- `flywheel:plan` -> produce a technical implementation plan -> then move into
+  `flywheel:work`
 - `document-review` -> produce prioritized document findings and fix direction
-  -> then revise the doc or continue into `$flywheel:plan` or `$flywheel:work` if clean
-- `$flywheel:browser-test` -> produce fresh browser-proof artifacts -> then continue
-  into `$flywheel:review` or `$flywheel:ship`
-- `$flywheel:polish` -> produce tightened browser-visible behavior plus fresh browser
-  proof -> then continue into `$flywheel:review` and `$flywheel:ship`
-- `$flywheel:work` -> produce implemented, validated changes -> then move through
-  `$flywheel:review` and `$flywheel:ship`, then offer `$flywheel:spin`
-- `$flywheel:debug` -> produce a proved causal chain and either a red-to-green fix or
-  a handoff back to `$flywheel:brainstorm` or `$flywheel:plan`
-- `$flywheel:review` -> produce findings and fix decisions -> then update the branch,
-  route through `$flywheel:rollout` when the change is runtime-risky, then push or
-  create/update the PR through `$flywheel:ship`
-- `$flywheel:rollout` -> produce a rollout brief with activation, validation, and
-  rollback posture -> then continue into `$flywheel:ship`
-- `$flywheel:incident` -> produce an incident brief with blast radius, evidence, and
-  mitigation or rollback posture -> then continue into `$flywheel:debug`,
-  `$flywheel:rollout`, `$flywheel:plan`, or `$flywheel:ship`
-- `$flywheel:optimize` -> produce a measured optimization brief and winning change set
-  -> then route through `$flywheel:review` and `$flywheel:ship` when code changed
+  -> then revise the doc or continue into `flywheel:plan` or `flywheel:work` if clean
+- `flywheel:browser-test` -> produce fresh browser-proof artifacts -> then continue
+  into `flywheel:review` or `flywheel:ship`
+- `flywheel:polish` -> produce tightened browser-visible behavior plus fresh browser
+  proof -> then continue into `flywheel:review` and `flywheel:ship`
+- `flywheel:work` -> produce implemented, validated changes -> then move through
+  `flywheel:review` and `flywheel:ship`, then offer `flywheel:spin`
+- `flywheel:debug` -> produce a proved causal chain and either a red-to-green fix or
+  a handoff back to `flywheel:brainstorm` or `flywheel:plan`
+- `flywheel:review` -> produce findings and fix decisions -> then update the branch,
+  route through `flywheel:rollout` when the change is runtime-risky, then push or
+  create/update the PR through `flywheel:ship`
+- `flywheel:rollout` -> produce a rollout brief with activation, validation, and
+  rollback posture -> then continue into `flywheel:ship`
+- `flywheel:incident` -> produce an incident brief with blast radius, evidence, and
+  mitigation or rollback posture -> then continue into `flywheel:debug`,
+  `flywheel:rollout`, `flywheel:plan`, or `flywheel:ship`
+- `flywheel:optimize` -> produce a measured optimization brief and winning change set
+  -> then route through `flywheel:review` and `flywheel:ship` when code changed
 - `observability` -> produce a concrete signal and validation plan -> then feed
-  `$flywheel:plan`, `$flywheel:work`, or `$flywheel:ship` depending on stage
+  `flywheel:plan`, `flywheel:work`, or `flywheel:ship` depending on stage
 - `logging` -> produce a concrete logging design or gap report -> then feed
-  `$flywheel:plan`, `$flywheel:work`, or `$flywheel:review`
+  `flywheel:plan`, `flywheel:work`, or `flywheel:review`
 - `verify` -> produce fresh proof and honest status ->
-  then either continue through `$flywheel:ship`, `$flywheel:spin`, or back to `$flywheel:work`
+  then either continue through `flywheel:ship`, `flywheel:spin`, or back to `flywheel:work`
 - `commit` -> produce a conventional commit message -> then
-  continue through `$flywheel:ship` or the user's chosen git step
-- `$flywheel:ship` -> produce a committed branch or PR with testing and operational
-  validation notes -> then offer `$flywheel:spin`
-- `$flywheel:spin` -> produce or update an active-repo `docs/solutions/` entry
+  continue through `flywheel:ship` or the user's chosen git step
+- `flywheel:ship` -> produce a committed branch or PR with testing and operational
+  validation notes -> then offer `flywheel:spin`
+- `flywheel:spin` -> produce or update an active-repo `docs/solutions/` entry
   -> then start the next task with that stored context
 
 If the user asks for routing help only, do not dump every stage. Name the
@@ -259,50 +271,50 @@ current stage, its artifact, and the immediate next handoff.
 
 Use these patterns to keep routing answers stable across frontier models:
 
-- **Brainstorm route:** "This should go through `$flywheel:brainstorm` first because
+- **Brainstorm route:** "This should go through `flywheel:brainstorm` first because
   behavior or scope is still unclear. The output should be a short requirements
-  doc or requirements plan. Once that exists, move into `$flywheel:plan`."
-- **Plan route:** "This is ready for `$flywheel:plan` because the intended behavior is
+  doc or requirements plan. Once that exists, move into `flywheel:plan`."
+- **Plan route:** "This is ready for `flywheel:plan` because the intended behavior is
   already clear enough to design execution. The output should be a technical
-  plan. From there, move into `$flywheel:work`."
-- **Run route:** "This belongs in `$flywheel:run` because the task is bounded enough
+  plan. From there, move into `flywheel:work`."
+- **Run route:** "This belongs in `flywheel:run` because the task is bounded enough
   for one coordinated pass through the remaining Flywheel stages. The output
   should be the current artifact set plus a clear stop point."
-- **Deepen route:** "This belongs in `$flywheel:deepen` because a plan
+- **Deepen route:** "This belongs in `flywheel:deepen` because a plan
   already exists and the immediate job is to make it more execution-ready. The
-  output should be a stronger plan, then `$flywheel:work`."
+  output should be a stronger plan, then `flywheel:work`."
 - **Document-review route:** "This belongs in `document-review` because the
   immediate job is to harden a requirements or plan artifact before execution.
   The output should be a prioritized fix queue or a clean pass. From there,
   revise the document or continue into planning or work."
-- **Browser-test route:** "This belongs in `$flywheel:browser-test` because the
+- **Browser-test route:** "This belongs in `flywheel:browser-test` because the
   immediate job is to prove browser-visible behavior with fresh evidence. The
   output should be a browser-proof brief plus artifacts that review and
   shipping can reuse."
-- **Polish route:** "This belongs in `$flywheel:polish` because the feature is already
+- **Polish route:** "This belongs in `flywheel:polish` because the feature is already
   runnable and the immediate job is short browser-visible tightening loops. The
   output should be tightened behavior plus a final browser-proof pass."
-- **Work route:** "This is ready for `$flywheel:work` because the scope is already
+- **Work route:** "This is ready for `flywheel:work` because the scope is already
   concrete enough to execute. The output should be implemented, validated
-  changes. After that, run `$flywheel:review`, route runtime-risky work through
-  `$flywheel:rollout`, then `$flywheel:ship`, and offer `$flywheel:spin`."
-- **Debug route:** "This belongs in `$flywheel:debug` because the immediate job is to
+  changes. After that, run `flywheel:review`, route runtime-risky work through
+  `flywheel:rollout`, then `flywheel:ship`, and offer `flywheel:spin`."
+- **Debug route:** "This belongs in `flywheel:debug` because the immediate job is to
   prove why the bug happens before changing code. The output should be a causal
   chain plus either a red-to-green fix or a routing decision back into
   brainstorming or planning."
-- **Incident route:** "This belongs in `$flywheel:incident` because the work starts
+- **Incident route:** "This belongs in `flywheel:incident` because the work starts
   from live evidence and the immediate job is deciding mitigate vs rollback vs
   patch. The output should be an incident brief, then the right downstream
   handoff into debug, rollout, planning, work, or ship."
-- **Review route:** "This belongs in `$flywheel:review` because code already changed
+- **Review route:** "This belongs in `flywheel:review` because code already changed
   and the immediate job is risk finding before merge. The output should be a
-  review verdict and concrete findings. After that, hand off to `$flywheel:rollout`
-  for runtime-risky changes or `$flywheel:ship` when the branch should be published."
-- **Rollout route:** "This belongs in `$flywheel:rollout` because the code is already
+  review verdict and concrete findings. After that, hand off to `flywheel:rollout`
+  for runtime-risky changes or `flywheel:ship` when the branch should be published."
+- **Rollout route:** "This belongs in `flywheel:rollout` because the code is already
   changed and the immediate job is safe release planning for a runtime-risky
   change. The output should be a rollout brief with activation, validation, and
-  rollback posture, then `$flywheel:ship`."
-- **Optimize route:** "This belongs in `$flywheel:optimize` because the immediate job
+  rollback posture, then `flywheel:ship`."
+- **Optimize route:** "This belongs in `flywheel:optimize` because the immediate job
   is measured tuning, not general feature implementation. The output should be
   a baseline, guardrails, chosen measurement path, and a proven improvement or
   next experiment."
@@ -313,20 +325,20 @@ Use these patterns to keep routing answers stable across frontier models:
 - **Logging route:** "This belongs in `logging` because the immediate job is to
   improve event shape and log usefulness rather than implement product
   behavior. The output should be a concrete logging design or gap report."
-- **Verification route:** "This belongs in `$flywheel:verify`
+- **Verification route:** "This belongs in `flywheel:verify`
   because the immediate job is to prove a completion claim with fresh evidence.
   The output should be an honest status against the claim."
-- **Ship route:** "This belongs in `$flywheel:ship` because the code is ready to leave
+- **Ship route:** "This belongs in `flywheel:ship` because the code is ready to leave
   the workstation. The output should be a committed branch or PR with testing
   notes and post-deploy validation."
-- **Spin route:** "This belongs in `$flywheel:spin` because the work is complete and
+- **Spin route:** "This belongs in `flywheel:spin` because the work is complete and
   the value now is preserving what was learned. The output should be a durable
   active-repo `docs/solutions/` entry."
 
 ## Operating Principles
 
 - Prefer compounding improvements over novelty.
-- Treat `$flywheel:brainstorm` as the default first step and `$flywheel:ideate` as the
+- Treat `flywheel:brainstorm` as the default first step and `flywheel:ideate` as the
   optional leverage step.
 - Route fast. This skill is primarily a stage selector and handoff generator,
   not a deep analysis workflow.
@@ -370,6 +382,6 @@ Use these patterns to keep routing answers stable across frontier models:
 
 ## Example Prompts
 
-- "Use $flywheel:start to route this feature request through the right Flywheel stage."
-- "Use $flywheel:start to decide whether this repo needs ideation, planning, or direct work."
-- "Use $flywheel:start to finish this task and capture the reusable learnings."
+- "Use the `flywheel:start` router to route this feature request through the right Flywheel stage."
+- "Use the `flywheel:start` router to decide whether this repo needs ideation, planning, or direct work."
+- "Use the `flywheel:start` router to finish this task and capture the reusable learnings."

@@ -16,6 +16,7 @@ function parseCliArgs(argv) {
       "output-dir": { type: "string" },
       "no-cache": { type: "boolean" },
       smoke: { type: "boolean" },
+      host: { type: "string" },
     },
   });
 

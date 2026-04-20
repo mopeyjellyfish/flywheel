@@ -11,16 +11,16 @@ In Flywheel, the docs are that stored energy. Each time we spin the flywheel,
 we add to the docs so the next task starts with more context, more reusable
 structure, and less rediscovery.
 
-Flywheel is a Codex development plugin focused on building and preserving that
-momentum across the development loop.
+Flywheel is a development plugin for Codex and Claude Code focused on building
+and preserving that momentum across the development loop.
 
 Each cycle spins the flywheel: brainstorms sharpen plans, plans inform future
 plans, reviews catch more issues, and patterns get documented.
 
 ## What and how Flywheel works
 
-Flywheel is a Codex plugin for taking software work from vague idea to clean
-PR, then capturing what was learned so the next task starts with better context.
+Flywheel is a plugin for taking software work from vague idea to clean PR, then
+capturing what was learned so the next task starts with better context.
 
 It is built for fast, high-quality engineering on real repositories:
 
@@ -94,23 +94,20 @@ That keeps installation separate from repo bootstrap. Flywheel itself gets
 installed once, then `$flywheel:setup` discovers what this specific repo actually
 needs.
 
-Naming is intentionally simple in Codex:
+Flywheel keeps one namespace across hosts:
 
-- use `$flywheel:start` for the router
-- use `$flywheel:<stage>` for a specific stage, such as `$flywheel:spin`
+- Codex: `$flywheel:start` and `$flywheel:<stage>`
+- Claude Code: `/flywheel:start` and `/flywheel:<stage>`
 
-Do not use mixed forms like `$flywheel:fw-spin`, legacy forms like `$fw-spin`,
-or slash forms like `/fw:spin`. Codex does not register Flywheel stages as
-slash commands.
+Those namespaced forms are the Flywheel contract. In Claude Code, bare commands
+such as `/plan`, `/run`, or `/commit` can come from Claude itself or from other
+plugins, so do not treat them as proof that Flywheel is installed correctly.
 
-Host shorthand differs by tool:
+Do not use mixed forms such as `$flywheel:fw-spin`, legacy `/fw:*` commands, or
+legacy `$fw:*` commands.
 
-- Codex: `$flywheel:start`, `$flywheel:plan`, `$flywheel:work`
-- Claude local plugin runs: `/fw:start`, `/fw:plan`, `/fw:work`
-
-That difference is intentional. Claude uses slash commands naturally, while
-Codex binds Flywheel through the plugin namespace. Flywheel does not currently
-ship a supported `$fw:<stage>` alias in Codex.
+Unless a section says otherwise, the longer command examples below use Codex
+syntax. In Claude Code, keep the same stage name and switch to `/flywheel:`.
 
 If a later Flywheel update adds a required surface that is missing when a stage
 tries to use it, route back to `$flywheel:setup` with the relevant focus instead of
@@ -118,15 +115,36 @@ trying to patch the environment ad hoc inside that later stage.
 
 ### Install the plugin
 
-Install Flywheel through your normal Codex plugin flow using this repository as
-the plugin source. The installable manifest is:
+Install Flywheel from this repository in the host you want to use.
+
+Codex
 
 ```text
 .codex-plugin/plugin.json
 ```
 
-Flywheel is packaged as a Codex plugin, while the actual workflows live under
-`skills/`.
+Claude Code
+
+Install from this same repo through the repo-hosted Claude marketplace:
+
+```bash
+claude plugin marketplace add /absolute/path/to/flywheel --scope local
+claude plugin install flywheel@flywheel --scope local
+```
+
+For a repo-shared Claude install, use `--scope project` in both commands.
+
+Flywheel keeps one shared `skills/` tree. The host-specific packaging lives in:
+
+```text
+.codex-plugin/plugin.json
+.claude-plugin/plugin.json
+.claude-plugin/marketplace.json
+```
+
+Author the workflow once under `skills/`. Do not add host-specific copies of
+the Flywheel stage instructions under `.claude/` or other host-local folders
+unless a host limitation forces that split deliberately.
 
 ### Run `$flywheel:setup`
 
@@ -155,8 +173,8 @@ teaching each stage to do its own environment repair.
 
 Required:
 
-- [Codex CLI](https://developers.openai.com/codex/cli) or another Codex surface
-  that supports plugins and skills
+- [Codex CLI](https://developers.openai.com/codex/cli) or
+  [Claude Code](https://code.claude.com/docs/en/quickstart)
 - a Git repository to work in
 
 Optional, depending on the workflow you want:
@@ -167,8 +185,8 @@ Optional, depending on the workflow you want:
 - repo toolchains such as Node, Python, Go, Ruby, Java, Rust, or Zig as needed
   by the repository itself; `$flywheel:setup` inspects repo truth and only asks for
   what this repo actually uses
-- [Claude Code](https://code.claude.com/docs/en/quickstart) if you want to run
-  Flywheel's local eval harness against both Codex and Claude Code
+- Claude Code if you want the Claude-installed plugin flow or local Claude eval
+  runs
 
 If you want durable local preferences after running `$flywheel:setup`, copy:
 
@@ -386,8 +404,21 @@ npm --prefix tools/evals run compare -- --suite fw-review
 This is optional. You do not need the eval harness to use Flywheel as a plugin.
 
 The `fw-*` names in eval commands are suite IDs only. They are harness labels,
-not runtime skill invocations. Use `$flywheel:<stage>` when actually calling
-Flywheel skills in Codex.
+not runtime skill invocations. Use `$flywheel:<stage>` in Codex and
+`/flywheel:<stage>` in Claude Code.
+
+The Claude subject runner in `tools/evals/` still uses repo-root `--plugin-dir`
+for direct local comparisons. Installed-plugin validation lives in
+`node scripts/flywheel-doctor.js` and the local refresh helpers.
+
+To verify the installed Claude plugin surface from this repo, prefer:
+
+```bash
+node scripts/flywheel-doctor.js --host claude --smoke
+```
+
+That path validates the manifest, install state, callable `/flywheel:start`
+behavior, and the registered `flywheel:*` command list.
 
 Setup, compatibility, and troubleshooting notes for working on Flywheel itself:
 
@@ -400,14 +431,28 @@ Setup, compatibility, and troubleshooting notes for working on Flywheel itself:
 
 Claude Code
 
-Point Claude at this checkout directly:
+Install or refresh Flywheel from this checkout:
+
+```bash
+make claude-dev
+```
+
+The narrower helper is:
+
+```bash
+make claude-refresh-local
+```
+
+That path installs `flywheel@flywheel` from this repo at local scope. After it
+finishes, run `/reload-plugins` in Claude Code or start a fresh Claude session.
+
+For dev-only direct loading without touching installed Claude plugin state:
 
 ```bash
 claude --plugin-dir /absolute/path/to/flywheel
 ```
 
-The Flywheel eval harness uses this same repo-root `--plugin-dir` path for
-Claude runs.
+The eval harness uses this direct `--plugin-dir` mode for Claude subject runs.
 
 Codex
 
@@ -437,7 +482,20 @@ loaded.
 
 Claude Code
 
-Point `--plugin-dir` at that checkout directly:
+If the `flywheel` marketplace already points at another checkout, replace it
+explicitly from the new checkout:
+
+```bash
+make claude-dev-force-source
+```
+
+For a project-scoped Claude install from this repo instead of a local one:
+
+```bash
+make claude-refresh-project
+```
+
+For dev-only direct loading from another checkout:
 
 ```bash
 claude --plugin-dir /path/to/other/flywheel
@@ -462,13 +520,18 @@ Use the narrower targets when you only need one part of the loop:
 ```bash
 make codex-refresh-local
 make codex-refresh-local-force-link
+make claude-refresh-local
+make claude-refresh-local-force-source
+make claude-refresh-project
 make doctor
 make validate
 ```
 
 ## Repository layout
 
-- `.codex-plugin/plugin.json` — plugin manifest
+- `.codex-plugin/plugin.json` — Codex plugin manifest
+- `.claude-plugin/plugin.json` — Claude plugin manifest
+- `.claude-plugin/marketplace.json` — Claude marketplace manifest for this repo
 - `.flywheel/config.local.example.yaml` — local config template
 - `docs/setup/` — compatibility and troubleshooting notes for Flywheel itself
 - `skills/start/` — umbrella routing skill
@@ -480,6 +543,7 @@ make validate
 - `docs/solutions/` — searchable knowledge store captured by `$flywheel:spin`
 - `Makefile` — local development targets such as `make dev` and targeted refresh / doctor helpers
 - `scripts/codex-refresh-local.sh` — dev-only local Codex plugin refresh helper
+- `scripts/claude-refresh-local.sh` — dev-only Claude marketplace/install refresh helper
 - `scripts/flywheel-doctor.js` — repo-local health and recovery wrapper
 - `scripts/flywheel-eval.js` — repo-local eval helper
 - `tools/evals/` — isolated live-eval workspace

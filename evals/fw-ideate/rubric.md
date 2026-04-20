@@ -69,8 +69,8 @@ listed?
 
 Does the response preserve the Flywheel workflow?
 
-- ideation should route to `/fw:brainstorm` when action is selected
-- it should not skip straight to `/fw:plan` or implementation by default
+- ideation should route to `/flywheel:brainstorm` when action is selected
+- it should not skip straight to `/flywheel:plan` or implementation by default
 
 ### 7. Constraint Obedience
 

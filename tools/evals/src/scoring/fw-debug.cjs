@@ -30,7 +30,7 @@ function deterministicDebug(caseItem, output) {
 
   const designCase = (caseItem.special_constraints || []).some((item) => /design/i.test(item));
   if (designCase) {
-    const upstreamRoute = mentionsAny(output, [/\$flywheel:brainstorm\b/i, /\/fw:brainstorm\b/i, /\$flywheel:plan\b/i, /\/fw:plan\b/i]);
+    const upstreamRoute = mentionsAny(output, [/\$flywheel:brainstorm\b/i, /\/flywheel:brainstorm\b/i, /\$flywheel:plan\b/i, /\/flywheel:plan\b/i]);
     scores["Upstream Routing"] = upstreamRoute ? 2 : 0;
     notes["Upstream Routing"] = upstreamRoute
       ? "Routes design problems back upstream."

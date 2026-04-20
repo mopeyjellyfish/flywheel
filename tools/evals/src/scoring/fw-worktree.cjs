@@ -4,7 +4,7 @@ function deterministicWorktree(caseItem, output) {
   const scores = {};
   const notes = {};
 
-  const scriptSignal = mentionsAny(output, [/worktree-manager\.sh/i, /\$flywheel:worktree\b/i, /\/fw:worktree\b/i]);
+  const scriptSignal = mentionsAny(output, [/worktree-manager\.sh/i, /\$flywheel:worktree\b/i, /\/flywheel:worktree\b/i]);
   scores["Script Usage"] = scriptSignal ? 2 : 0;
   notes["Script Usage"] = scriptSignal
     ? "Uses or mentions the bundled worktree manager."
