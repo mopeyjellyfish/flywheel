@@ -108,7 +108,9 @@ Then run `/reload-plugins` in Claude Code or start a fresh Claude session.
 codex marketplace add https://github.com/mopeyjellyfish/flywheel.git
 ```
 
-Then start a fresh Codex session.
+This adds the Flywheel marketplace to Codex from the same repo. For the
+shortest confirmed CLI-only install that makes Flywheel available in Codex
+immediately, use the `npx skills` command above.
 
 ### Start using Flywheel
 
