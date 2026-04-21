@@ -38,16 +38,19 @@ does not:
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Prefer a concise choice surface when the user has not already named an action:
 
-1. **Create isolated worktree** (recommended)
-2. **List current worktrees**
-3. **Show path for an existing worktree**
-4. **Clean up a finished worktree**
-5. **Custom**
+- **Create isolated worktree** (recommended)
+- **List current worktrees**
+- **Show path for an existing worktree**
+- **Clean up a finished worktree**
+- Freeform path when the predicted actions do not fit
 
 ## Workflow
 

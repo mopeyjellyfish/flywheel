@@ -15,12 +15,13 @@
     "Risk Focus",
     "Requirements Completeness",
     "Browser Proof Handoff",
-    "Shipping Handoff"
+    "Commit Handoff",
+    "Review Budget Discipline"
   ],
   "criticalDimensions": [
     "Review Structure",
     "Risk Focus",
-    "Shipping Handoff"
+    "Commit Handoff"
   ],
   "passAverage": 1.5,
   "strongPassAverage": 1.75,

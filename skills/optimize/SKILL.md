@@ -20,11 +20,15 @@ This is not a "spray tweaks and hope" skill. It is a measurement-first loop.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. When multiple measurement paths are viable, present
-the recommended option first and keep `Custom` last.
+the recommended label first and rely on the host's native freeform final path
+when it exists.
 
 ## Input
 
@@ -138,12 +142,12 @@ Read `references/provider-selection.md`.
 
 Use repo evidence plus any setup ledger to choose one of these paths:
 
-1. **Hybrid local + shared** (recommended when both a fast local harness and a
-   trustworthy shared measurement environment exist)
-2. **Datadog-backed measurement**
-3. **OTel-native backed measurement**
-4. **Local-only benchmark/profile/stack**
-5. **Custom**
+- **Hybrid local + shared** (recommended when both a fast local harness and a
+  trustworthy shared measurement environment exist)
+- **Datadog-backed measurement**
+- **OTel-native backed measurement**
+- **Local-only benchmark/profile/stack**
+- Freeform path when the repo needs a different measurement posture
 
 Selection rules:
 

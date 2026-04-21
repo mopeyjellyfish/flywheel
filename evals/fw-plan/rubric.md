@@ -32,3 +32,8 @@ plan review found, and what execution would start with.
 ### Restraint
 
 Is it right-sized instead of bloated?
+
+### Interaction Quality
+
+Does it use structured, bounded choice surfaces and avoid raw-number reply UX
+or over-questioning?

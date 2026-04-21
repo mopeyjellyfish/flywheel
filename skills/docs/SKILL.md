@@ -22,11 +22,16 @@ inventing filler docs.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. Prefer narrow choices when deciding between a
-change-scoped docs pass and a broader docs sweep.
+change-scoped docs pass and a broader docs sweep. When the likely answer space
+is predictable, keep the choice labels recommended-first and rely on the
+host's native freeform final path when it exists.
 
 When the stage is being *offered* from another workflow, get the user's approval
 before writing docs. When the user invoked `$flywheel:docs` directly, proceed
@@ -105,9 +110,9 @@ If `<docs_input>` is blank:
 If the scope is obviously broader than the current branch and the user did not
 ask for that breadth explicitly, ask one focused question before writing:
 
-1. **Change-scoped docs pass** (recommended)
-2. **Broader project docs sweep**
-3. **Custom**
+- **Change-scoped docs pass** (recommended)
+- **Broader project docs sweep**
+- Freeform path when neither predicted label fits
 
 ### Phase 1: Touch Grass On The Doc Surface
 

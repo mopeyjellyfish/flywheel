@@ -216,14 +216,15 @@ skill.
 **Headless mode:** Return `Review complete` immediately. The caller owns the next
 step.
 
-**Interactive mode:** Ask using the platform's question tool if available.
+**Interactive mode:** Ask using the exact host question tool named in the host
+interaction contract when that tool is available.
 Offer these options:
 
-1. **Fix top-ranked item and re-review (Recommended)** — address the current
-   rank 1 finding, then rerun document-review
-2. **Address several findings, then re-review** — batch a few changes, then rerun
-3. **Review complete** — for requirements docs, continue with `$flywheel:plan`; for
-   plan docs, continue with `$flywheel:work`
+- **Fix top-ranked item and re-review (Recommended)** — address the current
+  rank 1 finding, then rerun document-review
+- **Address several findings, then re-review** — batch a few changes, then rerun
+- **Review complete** — for requirements docs, continue with `$flywheel:plan`; for
+  plan docs, continue with `$flywheel:work`
 
 ## Iteration Guidance
 

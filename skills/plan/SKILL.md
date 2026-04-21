@@ -29,15 +29,18 @@ with a user choice between `$flywheel:deepen` and `$flywheel:work`.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. Prefer concise single-select choices when natural
 options exist.
 
 When multiple implementation or reliability postures are viable, present a
-short predicted option list with the recommended option first and a `Custom`
-option last.
+short predicted choice list with the recommended label first and rely on the
+host's native freeform final path when it exists.
 When a planning question has a predictable answer space, prefer the same
 recommended-first 2-4 option shape instead of a broad open-ended prompt.
 

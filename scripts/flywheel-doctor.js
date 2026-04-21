@@ -43,6 +43,53 @@ function checkFile(name, relativePath) {
   };
 }
 
+function checkCodexHooksFeatureEnabled() {
+  const codexHome = process.env.CODEX_HOME || path.join(process.env.HOME || "", ".codex");
+  const configPath = path.join(codexHome, "config.toml");
+  if (!fs.existsSync(configPath)) {
+    return {
+      name: "Codex hooks feature flag",
+      ok: false,
+      detail: `missing ${configPath}`,
+    };
+  }
+
+  const text = fs.readFileSync(configPath, "utf8");
+  const ok = /\[features\][\s\S]*?^\s*codex_hooks\s*=\s*true\s*$/m.test(text);
+  return {
+    name: "Codex hooks feature flag",
+    ok,
+    detail: ok ? "config.toml enables codex_hooks" : "config.toml is missing [features].codex_hooks = true",
+  };
+}
+
+function checkCodexHooksInstalled() {
+  const codexHome = process.env.CODEX_HOME || path.join(process.env.HOME || "", ".codex");
+  const hooksPath = path.join(codexHome, "hooks.json");
+  if (!fs.existsSync(hooksPath)) {
+    return {
+      name: "Flywheel Codex hook guardrail",
+      ok: false,
+      detail: `missing ${hooksPath}`,
+    };
+  }
+
+  const payload = parseJson(fs.readFileSync(hooksPath, "utf8"));
+  const groups = Array.isArray(payload?.hooks?.PreToolUse) ? payload.hooks.PreToolUse : [];
+  const present = groups.some((group) =>
+    Array.isArray(group?.hooks) &&
+    group.hooks.some((hook) => typeof hook?.command === "string" && hook.command.includes("flywheel-hook-policy.js")),
+  );
+
+  return {
+    name: "Flywheel Codex hook guardrail",
+    ok: present,
+    detail: present
+      ? "hooks.json contains the Flywheel PreToolUse guardrail"
+      : "hooks.json is missing the Flywheel PreToolUse guardrail",
+  };
+}
+
 function checkFlywheelVisibleToCodex() {
   const promptInput = run("codex", ["debug", "prompt-input", "test"]);
   if (promptInput.error) {
@@ -216,8 +263,10 @@ function main() {
 
   if (includeCodex) {
     checks.unshift(checkFile("Plugin manifest", ".codex-plugin/plugin.json"));
+    checks.unshift(checkFile("Shared hook policy script", "hooks/flywheel-hook-policy.js"));
   }
   if (includeClaude) {
+    checks.unshift(checkFile("Claude hook pack", "hooks/hooks.json"));
     checks.unshift(checkFile("Claude marketplace manifest", ".claude-plugin/marketplace.json"));
     checks.unshift(checkFile("Claude plugin manifest", ".claude-plugin/plugin.json"));
   }
@@ -260,6 +309,8 @@ function main() {
   }
 
   if (includeCodex) {
+    checks.push(checkCodexHooksFeatureEnabled());
+    checks.push(checkCodexHooksInstalled());
     checks.push(checkFlywheelVisibleToCodex());
   }
   if (includeClaude) {

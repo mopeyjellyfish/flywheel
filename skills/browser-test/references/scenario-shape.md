@@ -15,7 +15,7 @@ Choose the smallest scenario set that can honestly prove the change:
   - use when fixing a bug or validating a risky interaction
   - first reproduce the failing behavior, then rerun after the fix
 
-- **Custom**
+- Freeform path
   - use only when repo context or user direction clearly requires a different
     scenario shape
 

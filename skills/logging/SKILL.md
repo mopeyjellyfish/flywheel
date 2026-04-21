@@ -21,12 +21,18 @@ gap report grounded in the repo's existing logging truth.
 
 ## Interaction Method
 
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
 When more than one logging posture is viable:
 
 - present 2-4 predicted options at most
 - put the recommended option first
 - keep the differences operational, not stylistic
-- always offer a `Custom` option
+- rely on the host's native freeform final path when it exists
 
 Do not start with an open-ended question when adjacent code and runtime needs
 already suggest the likely choices.
@@ -98,7 +104,7 @@ For the relevant request, job, or message flow:
   - a narrower additive event that extends an existing repo pattern
 
 When tradeoffs are real, present the likely choices with a recommended option
-and a `Custom` option rather than improvising silently.
+and a host-native freeform path rather than improvising silently.
 
 ### Phase 3: Audit for Logging Quality
 

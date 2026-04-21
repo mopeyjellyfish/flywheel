@@ -25,13 +25,19 @@ usable signal plan or gap report.
 
 ## Interaction Method
 
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
 When the user needs to choose between viable reliability or supportability
 postures:
 
 - present 2-4 predicted options at most
 - put the recommended option first
 - keep the tradeoffs concrete
-- always offer a `Custom` option
+- rely on the host's native freeform final path when it exists
 
 Do not lead with an open-ended question when repo truth supports a short,
 useful menu.
@@ -141,7 +147,7 @@ Then ask:
 If the work changes a runtime boundary with meaningful tradeoffs, do not stop
 at "we should monitor this." Use the choice-surface protocol from
 `references/reliability-choice-surface.md` and keep it short: current truth,
-failure modes, blast radius, predicted options plus `Custom`, and a clear
+failure modes, blast radius, predicted options plus a freeform path, and a clear
 recommendation.
 
 Typical triggers include retries, deadlines, fallbacks, degraded modes, queue

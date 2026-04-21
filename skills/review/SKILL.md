@@ -18,6 +18,18 @@ larger Flywheel loop when code has changed and the next job is to find risk.
 into a casual summary or diff explanation. If the scope is unclear, establish
 it and continue the review workflow.
 
+## Interaction Method
+
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
+Ask one question at a time. In `mode:autofix`, `mode:report-only`, or
+`mode:headless`, skip interactive questions unless the mode contract explicitly
+requires a failure message instead.
+
 ## When To Use
 
 - Before creating a PR
@@ -183,13 +195,14 @@ The initial Flywheel reviewer catalog is intentionally cross-cutting and
 language-agnostic. The core workflow does not depend on stack- or
 platform-specific reviewers being hardcoded into `SKILL.md`.
 
-Every review uses:
+Every review starts with a bounded default budget:
 
-- 4 always-on structured personas
-- 2 always-on Flywheel agents
+- 2 baseline structured personas
+- any relevant scale-up structured reviewers
 - any relevant cross-cutting conditionals
 - optional stack-pack extensions
-- optional Flywheel conditional agents for migrations and rollout verification
+- optional Flywheel agents only when the diff or repo evidence actually calls
+  for them
 
 Read `references/reviewer-registry.yaml` and
 `references/persona-loading.md` before reviewer selection. Do not invent new
@@ -327,8 +340,8 @@ Write a 2-3 line intent summary and pass it to every reviewer.
 
 If intent is ambiguous:
 
-- Interactive mode: ask one targeted question using the platform's blocking
-  question tool.
+- Interactive mode: ask one targeted question using the exact host question
+  tool named in the host interaction contract when that tool is available.
 - Autofix, report-only, or headless: infer conservatively and note the
   uncertainty in Coverage or Verdict reasoning.
 
@@ -416,8 +429,11 @@ Use that bundle to:
 Read the diff and file list from Stage 1, then read
 `references/reviewer-registry.yaml` and `references/persona-loading.md`.
 
-Always include the always-on personas and always-on Flywheel agents from the
-registry.
+Always include the baseline reviewers from the registry.
+
+Add scale-up structured reviewers and Flywheel agents only when the diff,
+standards paths, local learnings, or agent-workflow surface actually warrant
+them.
 
 For each cross-cutting conditional reviewer, decide whether the diff warrants
 it. This is agent judgment, not keyword matching.
@@ -472,8 +488,9 @@ Before spawning reviewers, locate relevant `AGENTS.md` and `CLAUDE.md` files:
 1. Find all `**/AGENTS.md` and `**/CLAUDE.md`.
 2. Keep only those whose directory is an ancestor of at least one changed file.
 
-Pass the resulting path list to the `project-standards` reviewer inside a
-`<standards-paths>` block. The reviewer reads the files itself.
+If `project-standards` was selected, pass the resulting path list to that
+reviewer inside a `<standards-paths>` block. The reviewer reads the files
+itself.
 
 ### Stage 4: Execute Reviewer Passes
 
@@ -525,9 +542,9 @@ approval is already present. Otherwise run the same reviewer passes serially
 yourself while preserving persona boundaries.
 
 Parallelism is by reviewer, not by pack. Once the selected reviewer set is
-known, dispatch the always-on reviewers, relevant cross-cutting reviewers, and
-selected stack-pack reviewers in the same parallel review batch when the host
-allows it.
+known, dispatch the baseline reviewers plus any selected scale-up, cross-
+cutting, and stack-pack reviewers in the same parallel review batch when the
+host allows it.
 
 Keep each reviewer prompt compact:
 
@@ -560,8 +577,8 @@ write is the reviewer artifact file under:
 Each reviewer writes full JSON to disk when a run ID exists and returns compact
 JSON with merge-tier fields only.
 
-When delegated reviewer execution is permitted, dispatch the always-on and
-conditional Flywheel agents in parallel with the structured reviewers.
+When delegated reviewer execution is permitted, dispatch only the selected
+Flywheel agents in parallel with the structured reviewers.
 Otherwise produce the equivalent advisory analysis inline and preserve those
 outputs for synthesis even though they do not use the structured findings
 schema.
@@ -745,8 +762,9 @@ Before delivering the review, verify:
 **Interactive**
 
 - Apply `safe_auto -> review-fixer` findings automatically.
-- Ask a policy question using the platform's blocking question tool only when
-  `gated_auto` or `manual` findings remain.
+- Ask a policy question using the exact host question tool named in the host
+  interaction contract only when that tool is available and `gated_auto` or
+  `manual` findings remain.
 - If only `manual` findings remain, offer residual-work vs report-only choices.
 - If `gated_auto` findings remain, offer approval, residual-work, or
   report-only choices.

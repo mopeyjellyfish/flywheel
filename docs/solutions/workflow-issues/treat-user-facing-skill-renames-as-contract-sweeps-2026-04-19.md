@@ -7,6 +7,7 @@ problem_type: workflow_issue
 component: developer_workflow
 severity: medium
 doc_status: active
+last_updated: 2026-04-21
 files_touched:
   - skills/start/SKILL.md
   - .codex-plugin/plugin.json
@@ -32,6 +33,7 @@ related_docs:
   - docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md
   - docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md
   - docs/solutions/developer-experience/journey-evals-without-a-harness-redesign-2026-04-19.md
+  - docs/solutions/workflow-issues/make-commit-the-user-facing-finish-stage-2026-04-21.md
 ---
 
 # Treat user-facing skill renames as contract sweeps
@@ -93,3 +95,4 @@ evals/flywheel/README.md
 - [Use $flywheel:start as the Flywheel router entrypoint](docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md)
 - [Keep eval suite IDs separate from runtime skill names](docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md)
 - [Journey evals without a harness redesign](docs/solutions/developer-experience/journey-evals-without-a-harness-redesign-2026-04-19.md)
+- [Make commit the user-facing finish stage and move message drafting into a helper](docs/solutions/workflow-issues/make-commit-the-user-facing-finish-stage-2026-04-21.md)

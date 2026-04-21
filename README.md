@@ -28,11 +28,14 @@ one faster.
 
 ## Install
 
-### Codex and Claude Code
+### Global install for Codex, Claude Code, and OpenCode
 
 ```bash
-npx skills add mopeyjellyfish/flywheel --all -y
+npx skills add mopeyjellyfish/flywheel --global --skill '*' --agent codex --agent claude-code --agent opencode --yes
 ```
+
+This installs Flywheel outside the current project by default and limits the
+install to those three agent targets.
 
 Then in your tool of choice:
 
@@ -44,6 +47,14 @@ Use the host's native syntax:
 
 - Codex: `$flywheel:<stage>`
 - Claude Code: `/flywheel:<stage>`
+
+Flywheel's interaction contract is shared across hosts: use the host's
+structured choice UI instead of asking for raw `1/2/3` replies. Claude Code
+uses `AskUserQuestion`, Codex uses `request_user_input` when the active runtime
+exposes it, and OpenCode uses `question`. Risky-edge hook guardrails are
+bundled with the Claude plugin install. Codex uses an optional global
+`~/.codex/hooks.json` guardrail because current Codex hooks are repo-local or
+user-global rather than plugin-bundled.
 
 ### Getting started
 
@@ -123,6 +134,10 @@ make dev
 
 Restart the host session after either command finishes.
 
+`make dev` now refreshes the local Flywheel plugin install shape, turns on the
+experimental Codex hooks feature, and merges the Flywheel Bash guardrail into
+`~/.codex/hooks.json`.
+
 From another checkout or worktree:
 
 Claude Code:
@@ -171,6 +186,7 @@ Setup and troubleshooting notes:
 - `.claude-plugin/plugin.json` - Claude plugin manifest
 - `.claude-plugin/marketplace.json` - Claude marketplace manifest for this repo
 - `.flywheel/config.local.example.yaml` - local config template
+- `hooks/` - shared hook policy script and Claude plugin hook pack
 - `plugins/flywheel/` - Codex marketplace plugin wrapper
 - `skills/` - shared Flywheel workflow skills
 - `docs/setup/` - compatibility and troubleshooting notes

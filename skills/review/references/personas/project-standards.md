@@ -2,7 +2,7 @@
 id: project-standards
 dispatch_type: structured
 output_mode: schema_json
-default_group: always_on_structured
+default_group: scale_up_structured
 ---
 
 # Project Standards Reviewer

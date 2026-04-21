@@ -27,12 +27,15 @@ were skipped.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. When multiple finish paths are viable, present a
-short predicted option list with the recommended option first and `Custom`
-last.
+short predicted choice list with the recommended label first and rely on the
+host's native freeform final path when it exists.
 
 ## Input
 
@@ -196,10 +199,10 @@ If the change affects observable behavior and the repo or host already exposes
 evidence such as screenshots, CLI transcripts, request examples, generated
 artifacts, or a shared evidence bundle, offer three choices:
 
-1. **Include existing evidence** (recommended when a clean or redacted bundle
-   entry already exists)
-2. **Finish without evidence**
-3. **Custom**
+- **Include existing evidence** (recommended when a clean or redacted bundle
+  entry already exists)
+- **Finish without evidence**
+- Freeform path when the repo needs a different evidence posture
 
 Do not block finishing on evidence capture when the repo has no practical
 capture path.

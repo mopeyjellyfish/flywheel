@@ -13,7 +13,9 @@
     "Repo Grounding",
     "Surface Classification",
     "Security Posture",
-    "Browser Readiness"
+    "Browser Readiness",
+    "Hook Readiness",
+    "Interaction Quality"
   ],
   "criticalDimensions": [
     "Repo Grounding",

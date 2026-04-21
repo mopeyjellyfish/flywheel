@@ -2,7 +2,7 @@
 id: testing
 dispatch_type: structured
 output_mode: schema_json
-default_group: always_on_structured
+default_group: baseline_structured
 ---
 
 # Testing Reviewer

@@ -9,7 +9,8 @@ Usage:
 Refresh the local Flywheel plugin install for Claude Code development by:
   1. ensuring the Flywheel marketplace points at this repo
   2. refreshing that marketplace
-  3. reinstalling flywheel@flywheel at the chosen scope
+  3. reinstalling flywheel@flywheel at the chosen scope, including the bundled
+     hook pack at hooks/hooks.json
 
 This is a development helper for working on Flywheel itself. It does not hot
 reload an already-running Claude session.
@@ -37,6 +38,11 @@ ensure_repo_shape() {
 
   if [ ! -f "$REPO_ROOT/.claude-plugin/marketplace.json" ]; then
     echo "ERROR: expected .claude-plugin/marketplace.json under $REPO_ROOT" >&2
+    exit 1
+  fi
+
+  if [ ! -f "$REPO_ROOT/hooks/hooks.json" ]; then
+    echo "ERROR: expected hooks/hooks.json under $REPO_ROOT" >&2
     exit 1
   fi
 }

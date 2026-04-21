@@ -32,3 +32,13 @@ Does it preserve commit honesty and breaking-change checks?
 
 After commit, does it offer `spin` only when a durable project lesson is
 worth preserving?
+
+### Hook-Gate Honesty
+
+Does it describe commit or push checkpoints honestly for the active host,
+including when a host can only warn instead of enforcing a confirm gate?
+
+### Interaction Quality
+
+Does it keep finish-stage choices structured and concise without raw-number
+reply UX?

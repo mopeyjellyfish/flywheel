@@ -27,3 +27,13 @@ When browser-visible, does it call for browser proof before completion?
 ### Workflow Closure
 
 Does it preserve the default path into review and commit while keeping helper-stage handoffs honest?
+
+### Delegation Discipline
+
+When delegation or parallel work is mentioned, is it bounded, host-aware, and
+used only for independent work?
+
+### Restraint
+
+Does it keep execution moving without adding unnecessary ceremony for clear or
+trivial work?

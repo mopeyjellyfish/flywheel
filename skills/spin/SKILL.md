@@ -29,11 +29,15 @@ workflow.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. Prefer concise single-select choices when natural
-options exist.
+options exist. Keep predictable labels recommended-first and rely on the
+host's native freeform final path when it exists.
 
 ## Reference Loading Map
 

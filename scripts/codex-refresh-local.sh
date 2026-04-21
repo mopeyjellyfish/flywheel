@@ -9,7 +9,8 @@ Usage:
 Refresh the local Flywheel plugin install for Codex development by:
   1. ensuring ~/.codex/plugins/flywheel points at this repo
   2. refreshing the local Flywheel plugin cache
-  3. ensuring ~/.codex/config.toml enables flywheel@flywheel-local
+  3. ensuring ~/.codex/config.toml enables flywheel@flywheel-local and codex hooks
+  4. merging the Flywheel Codex hook guardrail into ~/.codex/hooks.json
 
 This is a development helper for working on Flywheel itself. It does not hot
 reload an already-running Codex session.
@@ -29,7 +30,9 @@ PLUGIN_LINK="$CODEX_HOME_DIR/plugins/$PLUGIN_NAME"
 CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/${PLUGIN_NAME}-local"
 CACHE_PLUGIN_DIR="$CACHE_ROOT/$PLUGIN_NAME/local"
 CONFIG_FILE="$CODEX_HOME_DIR/config.toml"
+HOOKS_FILE="$CODEX_HOME_DIR/hooks.json"
 PLUGIN_CONFIG_SECTION='[plugins."flywheel@flywheel-local"]'
+FEATURES_SECTION='[features]'
 DRY_RUN=0
 FORCE_LINK=0
 
@@ -66,6 +69,11 @@ canonicalize_existing_path() {
 ensure_repo_shape() {
   if [ ! -f "$REPO_ROOT/.codex-plugin/plugin.json" ]; then
     echo "ERROR: expected .codex-plugin/plugin.json under $REPO_ROOT" >&2
+    exit 1
+  fi
+
+  if [ ! -f "$REPO_ROOT/hooks/flywheel-hook-policy.js" ]; then
+    echo "ERROR: expected hooks/flywheel-hook-policy.js under $REPO_ROOT" >&2
     exit 1
   fi
 }
@@ -218,6 +226,175 @@ EOF
   echo "OK  updated $CONFIG_FILE to enable [plugins.\"flywheel@flywheel-local\"]"
 }
 
+features_section_enabled() {
+  if [ ! -f "$CONFIG_FILE" ]; then
+    return 1
+  fi
+
+  awk -v section="$FEATURES_SECTION" '
+    $0 == section { in_section=1; next }
+    /^\[/ {
+      if (in_section) {
+        exit enabled ? 0 : 1
+      }
+      next
+    }
+    in_section && $0 ~ /^[[:space:]]*codex_hooks[[:space:]]*=[[:space:]]*true[[:space:]]*$/ {
+      enabled=1
+    }
+    END {
+      if (in_section) {
+        exit enabled ? 0 : 1
+      }
+      exit 1
+    }
+  ' "$CONFIG_FILE"
+}
+
+write_features_block() {
+  local temp_file
+  temp_file="$(mktemp)"
+
+  awk -v section="$FEATURES_SECTION" '
+    {
+      if ($0 == section) {
+        in_section=1
+        section_found=1
+        hooks_written=0
+        print
+        next
+      }
+
+      if (in_section && $0 ~ /^\[/) {
+        if (!hooks_written) {
+          print "codex_hooks = true"
+          hooks_written=1
+        }
+        in_section=0
+      }
+
+      if (in_section && $0 ~ /^[[:space:]]*codex_hooks[[:space:]]*=/) {
+        if (!hooks_written) {
+          print "codex_hooks = true"
+          hooks_written=1
+        }
+        next
+      }
+
+      print
+    }
+
+    END {
+      if (in_section && !hooks_written) {
+        print "codex_hooks = true"
+      }
+
+      if (!section_found) {
+        if (NR > 0) {
+          print ""
+        }
+        print section
+        print "codex_hooks = true"
+      }
+    }
+  ' "$CONFIG_FILE" > "$temp_file"
+
+  run mv "$temp_file" "$CONFIG_FILE"
+}
+
+ensure_codex_hooks_feature() {
+  run mkdir -p "$(dirname "$CONFIG_FILE")"
+
+  if features_section_enabled; then
+    echo "OK  Codex config enables [features].codex_hooks"
+    return 0
+  fi
+
+  if [ ! -f "$CONFIG_FILE" ]; then
+    if [ "$DRY_RUN" -eq 1 ]; then
+      echo "DRY_RUN: create $CONFIG_FILE with [features] codex_hooks = true"
+    else
+      cat > "$CONFIG_FILE" <<EOF
+[features]
+codex_hooks = true
+EOF
+    fi
+    echo "OK  wrote [features] codex_hooks = true to $CONFIG_FILE"
+    return 0
+  fi
+
+  write_features_block
+  echo "OK  updated $CONFIG_FILE to enable [features].codex_hooks"
+}
+
+merge_hooks_config() {
+  local hook_command
+  hook_command="node \"$PLUGIN_LINK/hooks/flywheel-hook-policy.js\" pre-tool codex"
+
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "DRY_RUN: merge Flywheel hook into $HOOKS_FILE"
+    return 0
+  fi
+
+  run mkdir -p "$(dirname "$HOOKS_FILE")"
+
+  HOOKS_FILE="$HOOKS_FILE" HOOK_COMMAND="$hook_command" node <<'NODE'
+const fs = require("fs");
+
+const hooksFile = process.env.HOOKS_FILE;
+const hookCommand = process.env.HOOK_COMMAND;
+const hookNeedle = "flywheel-hook-policy.js";
+
+let payload = { hooks: {} };
+if (fs.existsSync(hooksFile)) {
+  try {
+    payload = JSON.parse(fs.readFileSync(hooksFile, "utf8"));
+  } catch {
+    payload = { hooks: {} };
+  }
+}
+
+if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+  payload = { hooks: {} };
+}
+if (!payload.hooks || typeof payload.hooks !== "object" || Array.isArray(payload.hooks)) {
+  payload.hooks = {};
+}
+if (!Array.isArray(payload.hooks.PreToolUse)) {
+  payload.hooks.PreToolUse = [];
+}
+
+for (const matcherGroup of payload.hooks.PreToolUse) {
+  if (!matcherGroup || !Array.isArray(matcherGroup.hooks)) {
+    continue;
+  }
+  matcherGroup.hooks = matcherGroup.hooks.filter((hook) => {
+    return !(hook && typeof hook.command === "string" && hook.command.includes(hookNeedle));
+  });
+}
+
+payload.hooks.PreToolUse = payload.hooks.PreToolUse.filter((matcherGroup) => {
+  return matcherGroup && Array.isArray(matcherGroup.hooks) && matcherGroup.hooks.length > 0;
+});
+
+let bashGroup = payload.hooks.PreToolUse.find((matcherGroup) => matcherGroup.matcher === "Bash");
+if (!bashGroup) {
+  bashGroup = { matcher: "Bash", hooks: [] };
+  payload.hooks.PreToolUse.push(bashGroup);
+}
+
+bashGroup.hooks.push({
+  type: "command",
+  command: hookCommand,
+  statusMessage: "Checking Flywheel policy",
+});
+
+fs.writeFileSync(hooksFile, `${JSON.stringify(payload, null, 2)}\n`);
+NODE
+
+  echo "OK  merged Flywheel hook guardrail into $HOOKS_FILE"
+}
+
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --dry-run)
@@ -243,7 +420,9 @@ ensure_repo_shape
 ensure_plugin_link
 refresh_plugin_cache
 ensure_plugin_config
+ensure_codex_hooks_feature
+merge_hooks_config
 
 echo
 echo "Next step: start a fresh Codex session."
-echo "Running sessions may keep stale plugin state even after the cache is refreshed."
+echo "Running sessions may keep stale plugin or hook state even after refresh."
