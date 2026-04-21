@@ -66,7 +66,7 @@ Keep it concise and structured:
      1. recommended option
      2. most meaningful alternative
      3. any other credible option only if it changes the tradeoff materially
-     4. `Custom` — user-defined posture or constraint
+     4. freeform final path — user-defined posture or constraint
    - do not ask an open-ended question first when repo truth supports likely
      options
 
@@ -105,4 +105,4 @@ When the user needs to choose, prefer labels that predict intent, for example:
 - `Recommended` — aligns with current repo posture
 - `Safer / tighter containment`
 - `Faster / lower implementation cost`
-- `Custom`
+- freeform final path

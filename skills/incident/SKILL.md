@@ -21,11 +21,14 @@ runtime evidence to the right next Flywheel stage.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the host's structured question UI when it is available. Do not ask for raw
+`1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. When multiple response paths are viable, present
-the recommended option first and keep `Custom` last.
+the recommended label first and rely on the host's native freeform final path
+when it exists.
 
 ## Input
 
@@ -111,15 +114,15 @@ Read `references/decision-matrix.md`.
 
 Choose one of:
 
-1. **Mitigate in place** - disable, rate-limit, degrade, or isolate the bad
-   path while keeping service up
-2. **Roll back** - revert or disable the recent change when a rollback lever is
-   safer than patching live
-3. **Patch now** - route into `$flywheel:debug` when a quick local causal proof and
-   fix path is realistic
-4. **Observe briefly** - only when impact is low or confidence is too low for a
-   stronger move, and only with an explicit time box
-5. **Custom**
+- **Mitigate in place** - disable, rate-limit, degrade, or isolate the bad
+  path while keeping service up
+- **Roll back** - revert or disable the recent change when a rollback lever is
+  safer than patching live
+- **Patch now** - route into `$flywheel:debug` when a quick local causal proof
+  and fix path is realistic
+- **Observe briefly** - only when impact is low or confidence is too low for a
+  stronger move, and only with an explicit time box
+- Freeform path when the incident needs a different response
 
 State why the recommended path is best given impact, confidence, rollback
 levers, and time-to-recovery.

@@ -29,3 +29,8 @@ When browser-visible behavior changed, does it offer browser proof before commit
 ### Commit Handoff
 
 Does it preserve commit as the downstream step?
+
+### Review Budget Discipline
+
+Does it keep the reviewer set bounded and justified by diff or repo evidence
+rather than assuming maximal fan-out by default?

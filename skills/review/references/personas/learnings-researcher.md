@@ -2,7 +2,7 @@
 id: learnings-researcher
 dispatch_type: advisory_agent
 output_mode: notes
-default_group: always_on_agents
+default_group: scale_up_agents
 ---
 
 # Learnings Researcher

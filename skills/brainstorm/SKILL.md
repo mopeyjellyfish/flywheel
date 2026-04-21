@@ -80,14 +80,13 @@ phase so the working context stays tight.
    all coexist. If prioritization matters, follow up by asking which selected
    item is primary.
 4. **Use the platform's question tool when available** - When asking the user
-   a question, prefer the platform's blocking question tool if one exists.
-   Otherwise, present numbered options in chat and wait for the user's reply
-   before proceeding.
+   a question, prefer the host's structured choice UI if one exists. Do not
+   ask for raw numeric replies when the host already offers that surface.
 5. **Keep explicit options narrow** - When presenting answer choices, keep them
    to 2-4 options. Default to 3 unless the task clearly needs fewer or more.
-6. **Lead with the recommendation, keep a custom path available** - when
-   presenting options, put the recommended choice first and include `Custom`
-   only when free-form input is still useful.
+6. **Lead with the recommendation, keep a freeform path available** - when
+   presenting options, put the recommended choice first and rely on the host's
+   native freeform final path when it exists.
 7. **Prefer targeted dialogue over silent inference** - ask at least one
    material question when the answer would sharpen the problem, scope,
    priorities, or success criteria.

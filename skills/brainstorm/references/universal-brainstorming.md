@@ -85,8 +85,8 @@ and any assumptions made. This is the primary output of the brainstorm — the
 user should be able to read the summary and know what they landed on.
 
 **Then offer next steps** using the platform's question tool if available. If
-no question tool is available, present the numbered options in chat and wait
-for the user's reply before proceeding.
+no question tool is available, present a short label-based choice surface in
+chat instead of asking for raw numeric replies.
 
 **Question:** "Brainstorm wrapped. What would you like to do next?"
 

@@ -12,12 +12,13 @@ loading_contract:
     persona files.
 
 groups:
-  always_on_structured:
+  baseline_structured:
     - correctness
     - testing
+  scale_up_structured:
     - maintainability
     - project-standards
-  always_on_agents:
+  scale_up_agents:
     - agent-native
     - learnings-researcher
   cross_cutting_conditionals:
@@ -42,45 +43,45 @@ extension_points:
     index: references/stack-packs/index.yaml
     rule: >
       Stack packs may add reviewers when repo and diff evidence support them.
-      Packs never remove always-on reviewers.
+      Packs never remove baseline reviewers.
 
 personas:
   correctness:
     path: references/personas/correctness.md
     dispatch_type: structured
     output_mode: schema_json
-    default_group: always_on_structured
+    default_group: baseline_structured
     select_when: every review
   testing:
     path: references/personas/testing.md
     dispatch_type: structured
     output_mode: schema_json
-    default_group: always_on_structured
+    default_group: baseline_structured
     select_when: every review
   maintainability:
     path: references/personas/maintainability.md
     dispatch_type: structured
     output_mode: schema_json
-    default_group: always_on_structured
-    select_when: every review
+    default_group: scale_up_structured
+    select_when: the diff adds wrappers, helpers, orchestration, or multi-file complexity that may be reducible
   project-standards:
     path: references/personas/project-standards.md
     dispatch_type: structured
     output_mode: schema_json
-    default_group: always_on_structured
-    select_when: every review
+    default_group: scale_up_structured
+    select_when: relevant AGENTS.md or CLAUDE.md files exist for the changed paths, or repo workflow standards are materially in play
   agent-native:
     path: references/personas/agent-native.md
     dispatch_type: advisory_agent
     output_mode: notes
-    default_group: always_on_agents
-    select_when: every review
+    default_group: scale_up_agents
+    select_when: the diff changes prompts, skills, agents, hooks, evals, or other agent-facing workflow surfaces
   learnings-researcher:
     path: references/personas/learnings-researcher.md
     dispatch_type: advisory_agent
     output_mode: notes
-    default_group: always_on_agents
-    select_when: every review
+    default_group: scale_up_agents
+    select_when: strong local docs or prior-learnings hits exist, or the diff touches workflow or repeated-problem surfaces where prior lessons may matter
   security:
     path: references/personas/security.md
     dispatch_type: structured

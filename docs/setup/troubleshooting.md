@@ -56,6 +56,31 @@ make codex-refresh-local
 
 Then start a fresh Codex session.
 
+### Codex hook guardrails are not active
+
+Symptom:
+- dangerous Bash commands are not blocked
+- Codex does not show Flywheel policy reminders before commit or push
+
+Check:
+- `~/.codex/config.toml` contains `[features]` with `codex_hooks = true`
+- `~/.codex/hooks.json` contains the Flywheel `flywheel-hook-policy.js` entry
+- `node scripts/flywheel-doctor.js --host codex`
+
+Fix:
+
+```bash
+make codex-refresh-local
+```
+
+Then start a fresh Codex session.
+
+Note:
+- current Codex hooks are experimental and Bash-focused
+- Codex can hard-block destructive Bash commands, but commit and push policy
+  checkpoints may degrade to warnings when the host cannot honestly enforce an
+  ask gate
+
 ### Claude installed Flywheel is not available
 
 Symptom:
@@ -80,6 +105,26 @@ Note:
 - Flywheel's Claude contract is `/flywheel:<stage>`
 - bare `/plan`, `/run`, or `/commit` commands can come from Claude built-ins or
   other plugins and are not proof of Flywheel registration by themselves
+
+### Claude hook guardrails are missing
+
+Symptom:
+- Claude loads Flywheel skills, but risky-edge confirmations do not appear
+- local plugin validation passes, but hook behavior is absent
+
+Check:
+- `hooks/hooks.json` exists in this checkout
+- `claude plugin validate .`
+- `/hooks` in Claude Code shows Flywheel plugin hooks after install
+
+Fix:
+- rerun `make claude-dev`
+- then run `/reload-plugins` in Claude Code or start a fresh Claude session
+
+Note:
+- Claude plugin hooks are bundled from the plugin root `hooks/hooks.json`
+- Flywheel keeps those hooks thin: destructive-deny plus confirm gates at
+  commit or push checkpoints when repo-local policy requires them
 
 ### Claude direct `--plugin-dir` runs are not available
 

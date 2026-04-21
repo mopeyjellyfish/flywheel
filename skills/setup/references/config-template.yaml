@@ -29,6 +29,7 @@ optimize:
 commit:
   include_existing_evidence_first: true
   require_browser_proof_for_browser_visible_changes: true
+  confirm_push_to_default_branch: true
 
 workflow:
   prefer_worktrees: true

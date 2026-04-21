@@ -208,7 +208,8 @@ For fuzzy, product-shaping, or workflow-shaping requests:
 - ask one material challenge question when the answer could change the chosen
   stage or artifact
 - prefer 2-4 explicit answer options, with the recommended option first and a
-  `Custom` option last, when the likely answer space is predictable
+  host-native freeform final path when it exists, when the likely answer space
+  is predictable
 - ask an open question only when the answer space cannot be predicted
   responsibly
 - do not ask a question just to add ceremony when the route is already obvious
@@ -259,7 +260,7 @@ Always include, in plain language:
 When the route depends on unresolved product, scope, or workflow-framing
 questions, ask one focused challenge question after stating the stage and
 handoff. Prefer 2-4 explicit options with the recommended option first and a
-`Custom` option last when the likely answer space is predictable.
+host-native freeform final path when the likely answer space is predictable.
 
 Preferred stage-to-handoff wording:
 

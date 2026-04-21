@@ -23,12 +23,14 @@ Use this skill when work is about to be described as:
 
 ## Interaction Method
 
+Follow `../references/host-interaction-contract.md`.
+
 When more than one proof path is plausible:
 
 - present 2-4 predicted proof options at most
 - put the recommended proof first
 - keep options concrete, such as exact commands, tests, or artifacts
-- always offer a `Custom` option
+- rely on the host's native freeform final path when it exists
 
 Do not start with an open-ended question when the likely proof paths are
 already visible from repo truth or the current claim.

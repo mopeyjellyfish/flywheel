@@ -20,11 +20,14 @@ posture, validation playbook, and commit handoff.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the host's structured question UI when it is available. Do not ask for raw
+`1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. When multiple rollout postures are viable, present
-the recommended option first and keep `Custom` last.
+the recommended label first and rely on the host's native freeform final path
+when it exists.
 
 ## Input
 
@@ -113,13 +116,13 @@ Read `references/validation-playbook.md`.
 
 Choose the narrowest viable posture, for example:
 
-1. **Feature-flagged progressive enablement**
-2. **Canary or percentage rollout**
-3. **Tenant, region, cell, or queue partition rollout**
-4. **Shadow, dual-write, or read-compare transition**
-5. **All-at-once** only when blast radius is genuinely low and rollback is
-   trivial
-6. **Custom**
+- **Feature-flagged progressive enablement**
+- **Canary or percentage rollout**
+- **Tenant, region, cell, or queue partition rollout**
+- **Shadow, dual-write, or read-compare transition**
+- **All-at-once** only when blast radius is genuinely low and rollback is
+  trivial
+- Freeform path when the repo needs a different rollout posture
 
 State why the recommended posture fits the current compatibility constraints,
 rollback levers, and blast radius better than the alternatives.

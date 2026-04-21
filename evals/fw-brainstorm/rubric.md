@@ -26,3 +26,8 @@ Does it carry the outcome into `fw-plan` rather than stopping at ideas?
 ### Simplicity Pressure
 
 When the prompt invites over-design, does it apply YAGNI or simplicity pressure?
+
+### Interaction Quality
+
+Does it use structured, bounded choice surfaces without drifting into raw-number
+reply UX or unnecessary questioning?

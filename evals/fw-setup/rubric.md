@@ -21,3 +21,12 @@ isolation posture?
 
 For browser-focused cases, does it cover `playwright-cli` setup or explicit
 blocking?
+
+### Hook Readiness
+
+Does it describe hook posture or recovery honestly for the active host instead
+of overstating enforcement?
+
+### Interaction Quality
+
+Does it use structured, bounded setup choices without raw-number reply UX?

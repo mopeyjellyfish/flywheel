@@ -42,12 +42,14 @@ Setup should also clarify the host security posture Flywheel should assume:
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the host's structured question UI when it is available. Do not ask for raw
+`1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. When multiple setup postures are viable, present a
-short predicted option list with the recommended option first and `Custom`
-last.
+short predicted choice list with the recommended label first and rely on the
+host's native freeform final path when it exists.
 
 ## Focus Hint
 
@@ -235,13 +237,13 @@ Treat that as a concrete setup gap, not a vague recommendation.
 
 When fixes are needed, present a short choice surface:
 
-1. **Minimum viable bootstrap** (recommended) - only unblock the immediate
-   workflow
-2. **Workflow-ready bootstrap** - immediate workflow plus review, commit, and
-   worktree readiness
-3. **Full local environment** - everything the repo appears to support,
-   including eval and optional tooling
-4. **Custom**
+- **Minimum viable bootstrap** (recommended) - only unblock the immediate
+  workflow
+- **Workflow-ready bootstrap** - immediate workflow plus review, commit, and
+  worktree readiness
+- **Full local environment** - everything the repo appears to support,
+  including eval and optional tooling
+- Freeform path when the repo needs a different bootstrap posture
 
 For each missing item, give:
 

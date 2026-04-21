@@ -18,11 +18,14 @@ works cleanly with frontier coding agents.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the host's structured question UI when it is available. Do not ask for raw
+`1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. When multiple browser-proof paths are viable,
-present the recommended option first and keep `Custom` last.
+present the recommended label first and rely on the host's native freeform
+final path when it exists.
 
 ## Input
 
@@ -110,11 +113,11 @@ Read `references/scenario-shape.md`.
 
 Choose the smallest honest scenario set:
 
-1. **Smoke** - page loads, no console explosions, primary surface renders
-2. **Changed happy path** - the flow the change was meant to improve
-3. **Regression reproduction** - only when fixing a bug or validating a risky
-   interaction
-4. **Custom**
+- **Smoke** - page loads, no console explosions, primary surface renders
+- **Changed happy path** - the flow the change was meant to improve
+- **Regression reproduction** - only when fixing a bug or validating a risky
+  interaction
+- Freeform path when the repo needs a different scenario shape
 
 For browser-visible feature work, at least one scenario must exercise the
 changed behavior directly.

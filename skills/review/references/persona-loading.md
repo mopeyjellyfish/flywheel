@@ -16,8 +16,8 @@ Always follow this sequence:
 1. Read `references/reviewer-registry.yaml`.
 2. Read this file, `references/persona-loading.md`.
 3. Determine the selected reviewer IDs:
-   - start with every `always_on_structured` and `always_on_agents` reviewer in
-     the registry
+   - start with every `baseline_structured` reviewer in the registry
+   - add any relevant `scale_up_structured` and `scale_up_agents` reviewers
    - add any relevant `cross_cutting_conditionals`
    - if stack or platform extensions are enabled, read
      `references/stack-packs/index.yaml`, then only the matching pack files,
@@ -36,7 +36,9 @@ Do not bulk-load every file under `references/personas/` or
 ## Selection Principles
 
 - The registry is the source of truth for reviewer IDs and paths.
-- Always-on reviewers are not optional.
+- Baseline reviewers are not optional.
+- Scale-up reviewers should be selected only when the diff or repo evidence
+  justifies the extra fan-out.
 - Conditional reviewers are selected by diff evidence and intent, not by file
   extensions alone.
 - Selected persona files are authoritative. Do not supplement them by mentally

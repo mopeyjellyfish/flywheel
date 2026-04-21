@@ -219,11 +219,11 @@ step.
 **Interactive mode:** Ask using the platform's question tool if available.
 Offer these options:
 
-1. **Fix top-ranked item and re-review (Recommended)** — address the current
-   rank 1 finding, then rerun document-review
-2. **Address several findings, then re-review** — batch a few changes, then rerun
-3. **Review complete** — for requirements docs, continue with `$flywheel:plan`; for
-   plan docs, continue with `$flywheel:work`
+- **Fix top-ranked item and re-review (Recommended)** — address the current
+  rank 1 finding, then rerun document-review
+- **Address several findings, then re-review** — batch a few changes, then rerun
+- **Review complete** — for requirements docs, continue with `$flywheel:plan`; for
+  plan docs, continue with `$flywheel:work`
 
 ## Iteration Guidance
 

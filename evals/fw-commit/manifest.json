@@ -16,7 +16,9 @@
     "Browser Proof Discipline",
     "Branch Safety",
     "Commit Honesty",
-    "Spin Offer Discipline"
+    "Spin Offer Discipline",
+    "Hook-Gate Honesty",
+    "Interaction Quality"
   ],
   "criticalDimensions": [
     "Commit Path",

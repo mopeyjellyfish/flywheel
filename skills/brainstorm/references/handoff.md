@@ -8,8 +8,8 @@ written and reviewed.
 #### 4.1 Present Next-Step Options
 
 Present the options using the platform's blocking question tool if one exists.
-If no question tool is available, present the numbered options in chat and wait
-for the user's reply before proceeding.
+If no question tool is available, present a short label-based choice surface in
+chat instead of asking for raw numeric replies.
 
 Before presenting the menu, summarize:
 

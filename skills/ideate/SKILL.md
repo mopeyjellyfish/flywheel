@@ -28,8 +28,10 @@ they only want brainstorming or planning.
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply before proceeding.
+Follow `../references/host-interaction-contract.md`.
+
+Use the host's structured question UI when it is available. Do not ask for raw
+`1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. Prefer concise single-select choices when natural
 options exist.
@@ -38,8 +40,9 @@ When interactive, prefer at least one targeted framing question when the answer
 would materially change which ideas survive. Treat the user's answers,
 preferences, and corrections as durable inputs to later brainstorming, planning,
 and spin.
-When the likely answer space is predictable, present 2-4 explicit options with
-the recommended option first and `Custom` last.
+When the likely answer space is predictable, present 2-4 explicit labels with
+the recommended option first and rely on the host's native freeform final path
+when it exists.
 
 ## Focus Hint
 

@@ -29,14 +29,17 @@ that execution would be irresponsible, recommend `$flywheel:brainstorm` or
 
 ## Interaction Method
 
-Use the platform's blocking question tool when available. Otherwise present
-numbered options in chat and wait for the user's reply.
+Follow `../references/host-interaction-contract.md`.
+
+Use the host's structured question UI when it is available. Do not ask for raw
+`1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. Prefer concise single-select choices when natural
 options exist.
 
-When runtime tradeoffs are real, present a short predicted option list with the
-recommended option first and a `Custom` option last.
+When runtime tradeoffs are real, present a short predicted choice list with the
+recommended label first and rely on the host's native freeform final path when
+it exists.
 
 In automated or non-interactive contexts, skip approval prompts once ambiguity
 is low enough to proceed responsibly.

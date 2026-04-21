@@ -133,6 +133,6 @@ When multiple postures are viable, compress them into:
 
 1. a recommended option that best matches repo truth
 2. one meaningful alternative with a different tradeoff
-3. a `Custom` option for user-specified constraints
+3. a freeform final path for user-specified constraints
 
 Do not present a long menu. The point is fast, informed choice.

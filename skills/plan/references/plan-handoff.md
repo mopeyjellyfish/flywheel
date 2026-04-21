@@ -68,8 +68,8 @@ interactive menu and return control immediately. The plan file already exists,
 the confidence check already ran, and document-review already ran.
 
 After document-review completes, present the options using the platform's
-blocking question tool when available. Otherwise present numbered options in
-chat and wait for the user's reply.
+blocking question tool when available. Otherwise present a short label-based
+choice surface in chat instead of asking for raw numeric replies.
 
 Before presenting options, summarize:
 
