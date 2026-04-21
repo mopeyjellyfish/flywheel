@@ -65,6 +65,9 @@ phase so the working context stays tight.
    approach that delivers meaningful value. Avoid speculative complexity and
    hypothetical future-proofing, but low-cost polish or delight is worth
    including when its ongoing cost is small and easy to maintain.
+7. **Treat user answers as durable inputs** - preferences, constraints,
+   corrections, and examples surfaced in the dialogue should shape the
+   requirements doc and may later become spin-worthy project guidance.
 
 ## Interaction Rules
 
@@ -82,6 +85,12 @@ phase so the working context stays tight.
    before proceeding.
 5. **Keep explicit options narrow** - When presenting answer choices, keep them
    to 2-4 options. Default to 3 unless the task clearly needs fewer or more.
+6. **Lead with the recommendation, keep a custom path available** - when
+   presenting options, put the recommended choice first and include `Custom`
+   only when free-form input is still useful.
+7. **Prefer targeted dialogue over silent inference** - ask at least one
+   material question when the answer would sharpen the problem, scope,
+   priorities, or success criteria.
 
 ## Output Guidance
 
@@ -279,6 +288,10 @@ when available.
   edge cases).
 - Clarify the problem frame, validate assumptions, and ask about success
   criteria.
+- When the likely answer space is predictable, ask with 2-4 explicit options
+  instead of a fully open prompt.
+- Reflect back what changed after each answer so the user can see what is now
+  understood and what is still open.
 - Make requirements concrete enough that planning will not need to invent
   behavior.
 - Surface dependencies or prerequisites only when they materially affect
@@ -297,10 +310,12 @@ compact checkpoint. Cover:
 
 - problem frame
 - target user or stakeholder
+- what changed from the user's starting frame
 - in-scope behavior
 - out-of-scope boundary or non-goal
 - success criteria
 - unresolved product decisions, if any
+- likely next stage or next decision
 
 If any of those cannot be stated concretely, ask one more targeted question
 before proceeding.
@@ -326,7 +341,7 @@ user has seen alternatives anchors the conversation prematurely.
 When useful, include one deliberately higher-upside alternative:
 
 - Identify what adjacent addition or reframing would most increase usefulness,
-  compounding value, or durability without disproportionate carrying cost.
+  future-speed value, or durability without disproportionate carrying cost.
   Present it as a challenger option alongside the baseline, not as the
   default. Omit it when the work is already obviously over-scoped or the
   baseline request is clearly the right move.

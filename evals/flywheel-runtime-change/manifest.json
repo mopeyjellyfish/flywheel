@@ -6,7 +6,7 @@
     "work",
     "review",
     "rollout",
-    "ship",
+    "commit",
     "spin"
   ],
   "caseFile": "cases.jsonl",

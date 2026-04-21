@@ -49,8 +49,8 @@ for one.
 
 ## Reference Loading Map
 
-Do not preload support files. Read `../ship/references/evidence-bundle.md`
-only when the verified claim should feed `$flywheel:review` or `$flywheel:ship`.
+Do not preload support files. Read `../commit/references/evidence-bundle.md`
+only when the verified claim should feed `$flywheel:review` or `$flywheel:commit`.
 
 ## Core Rule
 
@@ -70,7 +70,7 @@ Before claiming completion:
 
 ## Evidence Handoff
 
-When the verified claim is likely to matter in a later review or shipping step,
+When the verified claim is likely to matter in a later review or commit step,
 create or update a shared evidence bundle under:
 
 ```text
@@ -123,4 +123,4 @@ Return a concise verification brief:
 
 ## Included References
 
-@../ship/references/evidence-bundle.md
+@../commit/references/evidence-bundle.md

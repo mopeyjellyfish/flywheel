@@ -6,7 +6,7 @@
     "incident",
     "debug",
     "rollout",
-    "ship",
+    "commit",
     "spin"
   ],
   "caseFile": "cases.jsonl",

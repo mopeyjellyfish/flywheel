@@ -1,6 +1,6 @@
 ---
 name: browser-test
-description: "Run browser acceptance checks for local or remote web surfaces using playwright-cli. Use when a change affects observable browser behavior and the goal is to prove the flow with fresh evidence before review or shipping."
+description: "Run browser acceptance checks for local or remote web surfaces using playwright-cli. Use when a change affects observable browser behavior and the goal is to prove the flow with fresh evidence before review or commit."
 metadata:
   argument-hint: "[url, local route, changed flow, or blank to inspect current web surface]"
 ---
@@ -44,8 +44,8 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `references/scenario-shape.md` when deciding which browser scenarios to
   run.
 - Read `references/evidence-contract.md` when deciding what artifacts to keep.
-- Read `../ship/references/evidence-bundle.md` when browser proof should be
-  handed off into review or shipping.
+- Read `../commit/references/evidence-bundle.md` when browser proof should be
+  handed off into review or commit.
 
 ## Core Principles
 
@@ -56,7 +56,7 @@ Do not preload every reference. Load only what the current phase needs:
 3. **Small scenario set, high signal** - smoke plus the changed path beats a
    giant brittle checklist.
 4. **Capture artifacts that help later stages** - snapshots, screenshots,
-   console, network, and traces should make review and shipping easier.
+   console, network, and traces should make review and commit easier.
 5. **Do not silently invent a browser stack** - if the repo has no web surface
    or no runnable target, say so clearly.
 6. **Treat evidence as potentially sensitive** - avoid capturing or sharing
@@ -138,8 +138,8 @@ Keep evidence under a local artifact directory, preferably:
 ```
 
 Read `references/evidence-contract.md` before deciding what to save.
-Read `../ship/references/evidence-bundle.md` when the run should leave a
-reusable handoff for `$flywheel:review` or `$flywheel:ship`.
+Read `../commit/references/evidence-bundle.md` when the run should leave a
+reusable handoff for `$flywheel:review` or `$flywheel:commit`.
 
 Default to the smallest safe evidence set. Unless failure analysis or the user
 clearly requires more, prefer screenshots or snapshots over raw console,
@@ -152,7 +152,7 @@ when you are above 90% confident they contain no secrets and no meaningful PII.
 If a failing scenario truly requires network or trace data but that confidence
 is not there, keep it local, summarize the useful signal, and redact or replace
 sensitive fields with dummy values before handing it to `$flywheel:review` or
-`$flywheel:ship`.
+`$flywheel:commit`.
 
 When the run produces proof that downstream stages should reuse, create or
 update a shared evidence bundle under:
@@ -181,10 +181,10 @@ Return a concise browser-proof brief:
    confidence is high enough, otherwise use redacted or dummy-substituted
    examples
 5. **Observed issues** - concrete failures, regressions, or surprises
-6. **Next move** - `$flywheel:work`, `$flywheel:review`, `$flywheel:ship`, or another test pass
+6. **Next move** - `$flywheel:work`, `$flywheel:review`, `$flywheel:commit`, or another test pass
 
 If the browser-visible change passed, call that out plainly so review and
-shipping can reuse the evidence.
+commit can reuse the evidence.
 
 If the run is blocked because browser tooling is missing, say that plainly and
 route to `$flywheel:setup browser` instead of implying the app or test flow failed.
@@ -196,4 +196,4 @@ route to `$flywheel:setup browser` instead of implying the app or test flow fail
 @./references/dev-server-detection.md
 @./references/scenario-shape.md
 @./references/evidence-contract.md
-@../ship/references/evidence-bundle.md
+@../commit/references/evidence-bundle.md

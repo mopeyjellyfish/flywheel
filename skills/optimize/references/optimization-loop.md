@@ -55,5 +55,5 @@ Revert or isolate further when:
 Optimization changes still go through the normal Flywheel closeout:
 
 - `$flywheel:review` for risk finding
-- `$flywheel:ship` for commit, push, PR, and monitoring notes
+- `$flywheel:commit` for commit, push, PR, and monitoring notes
 - `$flywheel:spin` when the lesson is durable

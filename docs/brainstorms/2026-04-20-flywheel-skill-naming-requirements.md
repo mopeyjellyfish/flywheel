@@ -20,7 +20,7 @@ obvious near-term renames from higher-risk changes that should wait.
 - R1. Prefer single-word skill names when they remain clear at the call site.
 - R2. Preserve the `flywheel` plugin namespace in Codex.
 - R3. Keep the core loop especially short and legible:
-  `start`, `brainstorm`, `plan`, `work`, `review`, `ship`, `spin`.
+  `start`, `brainstorm`, `plan`, `work`, `review`, `commit`, `spin`.
 - R4. Keep names aligned with the user's mental model of the job, not the
   implementation detail behind it.
 - R5. Avoid renames that materially increase ambiguity just to satisfy the
@@ -68,7 +68,7 @@ obvious near-term renames from higher-risk changes that should wait.
 - `debug`
 - `review`
 - `rollout`
-- `ship`
+- `commit`
 - `spin`
 - `setup`
 - `run`
@@ -126,7 +126,7 @@ $flywheel:work
 $flywheel:debug
 $flywheel:review
 $flywheel:rollout
-$flywheel:ship
+$flywheel:commit
 $flywheel:spin
 $flywheel:setup
 $flywheel:run

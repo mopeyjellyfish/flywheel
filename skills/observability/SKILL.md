@@ -192,7 +192,7 @@ Return a concise operational brief:
 5. **Signal plan** — logs, traces, metrics, and validation to add or extend
 6. **Gap report** — what is missing or weak
 7. **Rollout or incident hooks** — what `$flywheel:rollout`, `$flywheel:incident`, or
-   `$flywheel:ship` should reference
+   `$flywheel:commit` should reference
 
 If the repo exposes no observability stack, say so clearly and give a
 platform-neutral plan rather than pretending a vendor exists.

@@ -8,7 +8,7 @@ Use it to verify that Flywheel feels coherent from idea to working PR:
 1. the router chooses the right next stage
 2. the handoff does not skip necessary workflow steps
 3. the flow stays grounded in repo artifacts when they exist
-4. the terminal path still reaches review, shipping, and spin
+4. the terminal path still reaches review, commit, and spin
 
 ## Files
 

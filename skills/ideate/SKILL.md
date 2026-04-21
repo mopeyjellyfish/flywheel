@@ -1,6 +1,6 @@
 ---
 name: ideate
-description: "Generate and critically filter grounded ideas for a repo, subsystem, product area, or software topic before choosing one to brainstorm. Use when the user asks what to improve, wants proactive backlog shaping, requests idea generation, or wants the AI to surface the strongest next bets instead of refining a single chosen idea."
+description: "Generate and critically filter grounded ideas for a repo, subsystem, product area, or software topic before choosing one to brainstorm. Pressure-test the starting frame before committing to one direction. Use when the user asks what to improve, wants proactive backlog shaping, requests idea generation, or wants the AI to surface the strongest next bets instead of refining a single chosen idea."
 metadata:
   argument-hint: "[feature, focus area, path, or constraint]"
 ---
@@ -33,6 +33,13 @@ numbered options in chat and wait for the user's reply before proceeding.
 
 Ask one question at a time. Prefer concise single-select choices when natural
 options exist.
+
+When interactive, prefer at least one targeted framing question when the answer
+would materially change which ideas survive. Treat the user's answers,
+preferences, and corrections as durable inputs to later brainstorming, planning,
+and spin.
+When the likely answer space is predictable, present 2-4 explicit options with
+the recommended option first and `Custom` last.
 
 ## Focus Hint
 
@@ -88,6 +95,12 @@ Core tags:
    `$flywheel:brainstorm` defines one chosen direction precisely enough for planning.
 5. **Persistence is opt-in** - The conversation loop is already useful. Save
    only when the user wants a durable artifact or a handoff.
+6. **Use the user's context, not just repo evidence** - interactive answers can
+   change which ideas survive and should be reflected explicitly in the final
+   shortlist.
+7. **Challenge the starting frame** - when the user arrives with a proposed
+   solution, test nearby reframings before treating that solution as the thing
+   to optimize.
 
 ## Execution Flow
 
@@ -145,8 +158,8 @@ Honor clear overrides such as `top 3`, `10 ideas`, `quick wins`, `go deep`, or
 Skip this step for repo-grounded ideation.
 
 Apply the discrimination test before asking anything: would changing one piece
-of the user's current context materially change which ideas survive? If yes,
-proceed without questions. If no, ask 1-3 narrowly chosen questions and stop
+of the user's current context materially change which ideas survive? If no,
+proceed without questions. If yes, ask 1-3 narrowly chosen questions and stop
 as soon as the answer space is constrained enough.
 
 When the user already provided rich context, confirm it briefly and move on.
@@ -254,7 +267,7 @@ Use these six frames as starting biases, not hard constraints:
    automated away?
 3. **Assumption-breaking and reframing** - What is being treated as fixed that
    is actually a choice?
-4. **Leverage and compounding** - What makes many later tasks cheaper, safer,
+4. **Leverage and future speed** - What makes many later tasks cheaper, safer,
    or faster once it lands?
 5. **Cross-domain analogy** - How do structurally similar problems get solved
    elsewhere?
@@ -306,6 +319,8 @@ Before finishing, check:
 - the raw candidate list existed before filtering
 - every rejected idea has a concrete reason
 - survivors materially beat a naive "give me ideas" list
+- if the user started from a proposed solution, the shortlist still tested
+  whether a better framing exists
 - chosen follow-up routes to `$flywheel:brainstorm`, not directly to implementation
 - any saved artifact uses repo-relative paths and remains portable
 

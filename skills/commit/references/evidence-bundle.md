@@ -66,7 +66,7 @@ Allowed values:
 ## Promotion Rules
 
 Only promote evidence into the shared bundle when it materially helps a later
-stage such as `$flywheel:review` or `$flywheel:ship`.
+stage such as `$flywheel:review` or `$flywheel:commit`.
 
 Promote:
 
@@ -91,7 +91,7 @@ or dummy-substituted example when the structure matters.
 
 ## Consumer Rules
 
-`$flywheel:ship` is the primary consumer:
+`$flywheel:commit` is the primary consumer:
 
 - read the shared bundle first when it exists
 - include only items marked `clean` or `redacted` with `PR Use: yes`

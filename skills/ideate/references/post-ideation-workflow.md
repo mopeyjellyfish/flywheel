@@ -73,6 +73,14 @@ anything.
 Use the platform's blocking question tool when available. Otherwise present
 numbered options in chat and wait.
 
+Before offering next steps, present a compact stage summary covering:
+
+- the primary opportunity or problem Flywheel now believes matters most
+- what changed from the user's starting frame
+- what remains open or uncertain
+- what the recommended next stage would do
+- what input Flywheel needs now, if any
+
 Offer these next steps:
 
 1. **Refine the ideation in conversation** — add ideas, re-evaluate, or go

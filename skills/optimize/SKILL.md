@@ -1,6 +1,6 @@
 ---
 name: optimize
-description: "Run metric-driven optimization loops for latency, throughput, resource use, cost, build time, query performance, or other measurable outcomes. Use when the goal is not just 'make it better' but prove improvement with Datadog, OTel-native backends such as Grafana/Prometheus/Loki/Tempo/Mimir/Pyroscope, or local measurement before shipping."
+description: "Run metric-driven optimization loops for latency, throughput, resource use, cost, build time, query performance, or other measurable outcomes. Use when the goal is not just 'make it better' but prove improvement with Datadog, OTel-native backends such as Grafana/Prometheus/Loki/Tempo/Mimir/Pyroscope, or local measurement before commit."
 metadata:
   argument-hint: "[optimization goal, hotspot, path, service, or existing optimization note]"
 ---
@@ -49,8 +49,8 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `references/datadog-path.md` only when the Datadog path is selected.
 - Read `references/lgtm-path.md` only when the OTel-native path is selected.
 - Read `references/optimization-loop.md` only when execution planning begins.
-- Read `../ship/references/evidence-bundle.md` only when a measured result
-  should be handed off into `$flywheel:review` or `$flywheel:ship`.
+- Read `../commit/references/evidence-bundle.md` only when a measured result
+  should be handed off into `$flywheel:review` or `$flywheel:commit`.
 - Read `../observability/references/service-readiness-matrix.md` only when the
   optimization target is runtime-risky or blast-radius-sensitive.
 
@@ -228,7 +228,7 @@ Use local worktrees when isolated iteration will reduce confusion or protect
 the current checkout.
 
 If the change survives the optimization gate, route through `$flywheel:review` and
-`$flywheel:ship` before calling it complete.
+`$flywheel:commit` before calling it complete.
 
 When the measurement result should feed later stages, create or update a shared
 evidence bundle under:
@@ -263,7 +263,7 @@ Return a concise optimization brief:
 8. **Residual risks or missing signal**
 9. **Evidence bundle** - shared bundle path when one was created, otherwise
    `not created`
-10. **Next Flywheel handoff** - `$flywheel:work`, `$flywheel:review`, `$flywheel:ship`, or
+10. **Next Flywheel handoff** - `$flywheel:work`, `$flywheel:review`, `$flywheel:commit`, or
     another optimization iteration
 
 ---
@@ -275,4 +275,4 @@ Return a concise optimization brief:
 @./references/datadog-path.md
 @./references/lgtm-path.md
 @./references/optimization-loop.md
-@../ship/references/evidence-bundle.md
+@../commit/references/evidence-bundle.md

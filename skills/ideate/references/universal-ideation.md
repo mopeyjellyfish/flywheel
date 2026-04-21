@@ -54,7 +54,7 @@ frames from the main skill in domain-agnostic language:
    removed, inverted, or delegated?
 3. **Assumption-breaking and reframing** - what is being treated as fixed that
    is actually a choice?
-4. **Leverage and compounding** - what creates second-order benefits?
+4. **Leverage and future speed** - what creates second-order benefits?
 5. **Cross-domain analogy** - how do unrelated fields solve a structurally
    similar problem?
 6. **Constraint-flipping** - what becomes visible if the obvious constraint is

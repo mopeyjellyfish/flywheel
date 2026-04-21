@@ -33,6 +33,11 @@ Is the output grounded in the right evidence surface?
 
 Automatic fail if it invents repo facts or issue data.
 
+When interactive, strong grounding may include a targeted framing question when
+the answer would materially change which ideas survive.
+When the prompt starts from a proposed solution, strong grounding and candidate
+quality should pressure-test that framing instead of elaborating it blindly.
+
 ### 3. Structure Compliance
 
 Does the final shortlist follow the canonical shape?
@@ -71,6 +76,7 @@ Does the response preserve the Flywheel workflow?
 
 - ideation should route to `/flywheel:brainstorm` when action is selected
 - it should not skip straight to `/flywheel:plan` or implementation by default
+- it should make the recommended next user choice or next input legible
 
 ### 7. Constraint Obedience
 

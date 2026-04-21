@@ -1,6 +1,6 @@
 {
   "name": "flywheel",
-  "description": "Standardize a compounding development flow from setup and ideation through execution, documentation, review, incident handling, rollout, shipping, and learning capture.",
+  "description": "Guide software project work from shaping and execution through review, branch finishing, and reusable repo knowledge.",
   "version": "0.1.0",
   "author": {
     "name": "David Hall"

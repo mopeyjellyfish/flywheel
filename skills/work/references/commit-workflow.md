@@ -1,6 +1,6 @@
-# Shipping Workflow
+# Commit Workflow
 
-This file contains the shipping workflow for Phase 3 and Phase 4. Load it only
+This file contains the commit workflow for Phase 3 and Phase 4. Load it only
 when all Phase 2 tasks are complete and execution transitions to quality check.
 
 ## Phase 3: Quality Check
@@ -17,7 +17,7 @@ changed:
 - operator or end-user workflows
 
 If the user agrees, run `$flywheel:docs` with a change-scoped argument before
-continuing. Keep the docs changes in the same branch so review and ship see the
+continuing. Keep the docs changes in the same branch so review and commit see the
 full user-facing update together.
 
 If the user declines, continue and note that docs were consciously deferred.
@@ -42,12 +42,14 @@ before pushing in addition to the grounded command discovery above.
 
 ### 2. Code Review (Required)
 
-Every change gets reviewed before shipping. The depth scales with the change's
+Every change gets reviewed before commit. The depth scales with the change's
 risk profile, but review itself is never skipped.
 
 **Tier 2: Full review** — default and required unless Tier 1 is explicitly
-justified. Invoke `$flywheel:review` with `mode:autofix`. When the plan file path is
-known, pass it as `plan:<path>`. This is the mandatory default.
+justified. Invoke `$flywheel:review` with `mode:autofix`. When the plan file
+path is known, pass it as `plan:<path>`. This is the mandatory default.
+`$flywheel:review` should select reviewer personas from the diff and dispatch
+them in parallel when the host supports it.
 
 Proceed to Tier 1 only after confirming every criterion below.
 
@@ -64,7 +66,7 @@ any criterion is uncertain, use Tier 2.
 
 ### 3. Final Validation
 
-Before shipping, confirm:
+Before commit, confirm:
 
 - all tasks are marked completed
 - testing is addressed: tests pass and new or changed behavior has matching
@@ -99,7 +101,7 @@ Touch Grass instead of generic placeholders.
 If there is truly no production or runtime impact, still include the section
 with `No additional operational monitoring required` and a one-line reason.
 
-## Phase 4: Ship It
+## Phase 4: Commit It
 
 ### 1. Prepare Evidence Context
 
@@ -127,13 +129,13 @@ If the input document has YAML frontmatter with a `status` field, update it to
 status: active  ->  status: completed
 ```
 
-Choose conventional commit messages for the final shipping step. Prefer
-`$flywheel:commit` when available. If the helper is unavailable, draft the
+Choose conventional commit messages for the final commit step. Prefer
+`$flywheel:commit-message` when available. If the helper is unavailable, draft the
 header directly as `<type>(scope): summary`. If the best message would use `!`
 or `BREAKING CHANGE:`, ask the user before marking the commit as breaking.
 
-Then hand off to `$flywheel:ship` for commit, push, PR creation, or PR refresh. If no
-host helper exists, `$flywheel:ship` should complete the same steps directly with git
+Then hand off to `$flywheel:commit` for commit, push, PR creation, or PR refresh. If no
+host helper exists, `$flywheel:commit` should complete the same steps directly with git
 and GitHub CLI or the repo's standard tooling:
 
 ```bash
@@ -162,8 +164,8 @@ When providing PR-description context, include:
 - the Figma design link when applicable
 - the `Post-Deploy Monitoring & Validation` section
 
-If the user prefers to commit without creating a PR, `$flywheel:ship` should still
-choose a conventional message first, prefer `$flywheel:commit` when
+If the user prefers to commit without creating a PR, `$flywheel:commit` should still
+choose a conventional message first, prefer `$flywheel:commit-message` when
 available, and then either use the host helper or a direct `git commit`.
 
 ### 3. Notify User
@@ -190,11 +192,11 @@ Present each candidate in one line with why it is worth preserving, then ask
 whether to run `$flywheel:spin` now.
 
 Unless the user explicitly asked for `$flywheel:spin`, do not silently write
-new active-repo `docs/solutions/` entries as part of shipping.
+new active-repo `docs/solutions/` entries as part of commit.
 
 If the user agrees to spin a specific candidate, invoke `$flywheel:spin` with that
 selected candidate summary as the argument. Do not call `$flywheel:spin` blank after
-the user already chose a candidate in this shipping step.
+the user already chose a candidate in this commit step.
 
 If the user wants to spin multiple candidates, handle them one at a time in
 priority order rather than passing a blank prompt that forces candidate
@@ -231,11 +233,11 @@ residual work surfaces as todos. Always use this tier unless all four Tier 1
 criteria are explicitly confirmed.
 
 If the review verdict is `Not ready`, or unresolved `P0` or `P1` gated/manual
-findings remain, stop the shipping path until those findings are resolved or
+findings remain, stop the commit path until those findings are resolved or
 explicitly accepted by the user.
 
 If the completed change is runtime-risky and the release posture is still
-unclear, route through `$flywheel:rollout` before `$flywheel:ship` so activation sequence,
+unclear, route through `$flywheel:rollout` before `$flywheel:commit` so activation sequence,
 validation window, and rollback triggers are explicit.
 
 **Tier 1: Inline self-review** — permitted only when all four are true and each

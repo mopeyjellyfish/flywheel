@@ -6,7 +6,9 @@ Score each dimension `0`, `1`, or `2`.
 
 ### Requirements Focus
 
-Does the response sharpen requirements, success criteria, and scope?
+Does the response sharpen requirements, success criteria, and scope through
+collaborative questions and bounded choice surfaces rather than silent
+assumptions?
 
 ### Scope Assessment
 
@@ -14,7 +16,8 @@ Does it right-size the brainstorming depth?
 
 ### Artifact Discipline
 
-Does it preserve a durable brainstorm artifact under `docs/brainstorms/`?
+Does it preserve a durable brainstorm artifact under `docs/brainstorms/` and
+leave a checkpoint summary the user can correct before planning?
 
 ### Plan Handoff
 

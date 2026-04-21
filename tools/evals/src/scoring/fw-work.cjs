@@ -18,12 +18,16 @@ function deterministicWork(caseItem, output) {
     ? "Mentions checks or continuous validation."
     : "Does not clearly mention checks or validation.";
 
-  const closureSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i, /\/flywheel:review\b/i]) &&
-    mentionsAny(output, [/\$flywheel:ship\b/i, /\/flywheel:ship\b/i, /\/flywheel:ship\b/i]);
-  scores["Workflow Closure"] = closureSignal ? 2 : 0;
-  notes["Workflow Closure"] = closureSignal
-    ? "Carries work forward into review and ship."
-    : "Does not clearly preserve review and ship as the downstream path.";
+  const reviewSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i, /\breview\b/i]);
+  const commitSignal = mentionsAny(output, [/\$flywheel:commit\b/i, /\/flywheel:commit\b/i, /\bcommit\b/i, /\bpull request\b/i, /\bPR\b/i]);
+  const closureScore = reviewSignal && commitSignal ? 2 : reviewSignal || commitSignal ? 1 : 0;
+  scores["Workflow Closure"] = closureScore;
+  notes["Workflow Closure"] =
+    closureScore === 2
+      ? "Carries work forward into review and commit while keeping helper-stage closure visible when needed."
+      : closureScore === 1
+        ? "Only part of the expected review -> commit closure is explicit."
+        : "Does not clearly preserve review and commit as the downstream path.";
 
   const browserCase = (caseItem.special_constraints || []).some((item) => /browser/i.test(item));
   if (browserCase) {

@@ -24,4 +24,4 @@ journey?
 
 ### Closure
 
-Does it keep the journey pointed toward ship and final lesson capture?
+Does it keep the journey pointed toward commit and final lesson capture?

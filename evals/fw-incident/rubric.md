@@ -19,7 +19,7 @@ Does it choose and justify mitigation, rollback, patch, or observe posture?
 
 ### Handoff Discipline
 
-Does it route cleanly into debug, rollout, planning, work, or ship?
+Does it route cleanly into debug, rollout, planning, work, or commit?
 
 ### Artifact Preservation
 

@@ -19,4 +19,4 @@ guesswork?
 
 ### Workflow Handoff
 
-Does it carry polished work into review and ship?
+Does it carry polished work into review and commit?

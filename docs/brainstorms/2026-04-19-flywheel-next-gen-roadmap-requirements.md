@@ -12,11 +12,11 @@ supportability and repo-grounded execution than most workflow plugins. The main
 gap is not the core loop itself. The gap is the product shell and the
 post-code operational control plane around it.
 
-Today Flywheel is strong at brainstorming, planning, work, review, shipping,
+Today Flywheel is strong at brainstorming, planning, work, review, commit,
 logging, observability, and durable lessons. It is weaker at three things that
 matter for service and distributed-system engineering:
 
-1. rollout and change-management guidance between review and shipping
+1. rollout and change-management guidance between review and commit
 2. incident-first production debugging and mitigation flow
 3. productized setup, install, doctor, and recovery surfaces that make the
    plugin feel complete rather than merely capable
@@ -43,13 +43,13 @@ feature breadth or host count for its own sake.
   triggers, validation windows, owners, and failure signals.
 - R5. Flywheel must add a first-class incident workflow for production issues,
   starting from logs, traces, metrics, or runtime evidence and routing cleanly
-  into debug, planning, implementation, and shipping.
+  into debug, planning, implementation, and commit.
 - R6. Flywheel must support repo-local strict workflow policies for risky work,
   such as requiring browser proof, a reproducer before bug fixes, operational
-  validation for runtime changes, or review before ship.
+  validation for runtime changes, or review before commit.
 - R7. Flywheel must standardize an evidence bundle that can carry browser proof,
   test proof, review outcomes, optimization evidence, and rollout notes into
-  shipping.
+  commit.
 
 **Productization And Validation**
 - R8. Flywheel must provide a more complete product shell around setup,
@@ -64,7 +64,7 @@ feature breadth or host count for its own sake.
 ## Success Criteria
 
 - A runtime-risky change can move through planning, work, review, rollout, and
-  shipping with explicit validation ownership, rollback posture, and healthy vs
+  commit with explicit validation ownership, rollback posture, and healthy vs
   unhealthy signals.
 - A production issue can start from runtime evidence and follow a named,
   documented Flywheel path without inventing a fresh incident process.
@@ -85,18 +85,18 @@ feature breadth or host count for its own sake.
   context.
 - Do not force TDD, browser proof, or runtime validation onto trivial or
   low-risk work without an explicit policy toggle.
-- Do not replace existing `fw:debug`, `fw:ship`, `fw:setup`, or `fw:review`
+- Do not replace existing `fw:debug`, `fw:commit`, `fw:setup`, or `fw:review`
   surfaces when extension or clearer routing is sufficient.
 
 ## Key Decisions
 
 - **Favor standalone operational workflows over hidden sub-modes**: rollout and
   incident work are substantial enough to deserve explicit skills and routing,
-  not a few extra bullets inside `fw:ship` or `fw:debug`.
+  not a few extra bullets inside `fw:commit` or `fw:debug`.
 - **Use policy overlays instead of hard global mandates**: strictness should be
   configurable through local Flywheel config so teams can tighten risky work
   without making trivial work slow.
-- **Build product shell around existing strengths**: setup, review, shipping,
+- **Build product shell around existing strengths**: setup, review, commit,
   observability, and eval infrastructure already exist and should be extended,
   not replaced.
 - **Prioritize service-engineering leverage over marketplace breadth**: the

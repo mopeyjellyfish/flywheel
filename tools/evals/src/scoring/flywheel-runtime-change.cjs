@@ -42,10 +42,10 @@ function deterministicFlywheelRuntimeChange(caseItem, output) {
     ? "Carries forward prior stage artifacts."
     : "Only weakly references artifact carry between stages.";
 
-  const closureSignal = mentionsAny(output, [/ship/i, /\bPR\b/i, /pull request/i, /spin/i]);
+  const closureSignal = mentionsAny(output, [/commit/i, /\bPR\b/i, /pull request/i, /spin/i]);
   scores["Closure"] = closureSignal ? 2 : 1;
   notes["Closure"] = closureSignal
-    ? "Keeps the journey pointed at shipping or spin."
+    ? "Keeps the journey pointed at commit or spin."
     : "Does not clearly close the runtime-change journey.";
 
   return { scores, notes };

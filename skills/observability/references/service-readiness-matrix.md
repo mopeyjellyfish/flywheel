@@ -1,6 +1,6 @@
 # Service Readiness Matrix
 
-Use this matrix when planning, executing, reviewing, or shipping a change that
+Use this matrix when planning, executing, reviewing, or commit a change that
 can affect a live service, job system, queue, migration, integration, cache,
 workflow, or distributed boundary.
 

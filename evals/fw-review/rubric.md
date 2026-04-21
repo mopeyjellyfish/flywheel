@@ -11,7 +11,8 @@ Does the response respect explicit mode cues such as `mode:headless`?
 ### Review Structure
 
 Does it clearly look like a review workflow with findings, reviewers, or a
-verdict?
+verdict? Strong passes should make the selected reviewer/persona set visible
+when the diff evidence justifies it.
 
 ### Risk Focus
 
@@ -23,8 +24,8 @@ When a plan is provided, does it account for plan-backed completeness checks?
 
 ### Browser Proof Handoff
 
-When browser-visible behavior changed, does it offer browser proof before ship?
+When browser-visible behavior changed, does it offer browser proof before commit?
 
-### Shipping Handoff
+### Commit Handoff
 
-Does it preserve ship as the downstream step?
+Does it preserve commit as the downstream step?

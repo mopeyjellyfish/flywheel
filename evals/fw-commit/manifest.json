@@ -1,6 +1,6 @@
 {
-  "id": "fw-ship",
-  "skill": "flywheel:ship",
+  "id": "fw-commit",
+  "skill": "flywheel:commit",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [
@@ -10,15 +10,16 @@
     "success_definition"
   ],
   "dimensions": [
-    "Shipping Path",
+    "Commit Path",
     "Readiness Gate",
     "Monitoring Notes",
     "Browser Proof Discipline",
     "Branch Safety",
-    "Commit Honesty"
+    "Commit Honesty",
+    "Spin Offer Discipline"
   ],
   "criticalDimensions": [
-    "Shipping Path",
+    "Commit Path",
     "Readiness Gate",
     "Monitoring Notes"
   ],
@@ -27,6 +28,6 @@
   "suggestedFirstPass": [
     "feature_branch_create_pr",
     "default_branch_guard",
-    "browser_visible_ship"
+    "browser_visible_commit"
   ]
 }

@@ -25,9 +25,11 @@ steps?
 
 - ideate before brainstorm when the problem is idea selection
 - brainstorm before plan when behavior and scope are unclear
-- plan before work when execution details still need structure
-- review before merge when code is already changed
-- spin after work or shipping when lessons should be preserved
+- plan before work when execution details still need structure, and planning
+  runs document review before the user chooses deepen or work
+- shape -> work -> review -> commit as the compact backbone for software-project work
+- review before merge when code changed or when work completes on the current branch
+- spin after work or commit when lessons should be preserved
 
 ### 3. Shortcut Discipline
 
@@ -40,11 +42,15 @@ Does it allow shortcuts only when the task is truly ready?
 
 Does it explain what the selected stage should produce and what comes next?
 
+For fuzzy or workflow-shaping requests, strong handoff quality also makes the
+next user input explicit instead of acting as if routing alone resolved the
+ambiguity.
+
 Expected examples:
 
 - brainstorming -> requirements doc -> planning
-- planning -> technical plan -> work
-- work -> implementation, review, shipping, optional spin
+- planning -> reviewed technical plan -> deepen or work
+- work -> implementation, helper checks as needed, review, commit, optional spin
 
 ### 5. Repo Grounding
 
@@ -56,11 +62,17 @@ generic product advice?
 Does it keep the overall path pointed toward a working PR and captured
 learnings, not just the next single stage?
 
+### 7. Interactive Routing
+
+For fuzzy or early-stage requests, does it ask one material question or state
+the next needed user input instead of silently assuming the framing is already
+correct?
+
 ## Pass Threshold
 
 Recommended pass rule:
 
-- no `0` on dimensions 1, 2, or 4
+- no `0` on dimensions 1, 2, 4, or 7
 - average score at least `1.5`
 
 Strong pass:

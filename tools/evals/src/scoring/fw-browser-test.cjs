@@ -25,10 +25,10 @@ function deterministicBrowserTest(caseItem, output) {
     ? "Mentions evidence handling and sensitive-data hygiene."
     : "Does not clearly address evidence hygiene.";
 
-  const handoffSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i, /\$flywheel:ship\b/i, /\/flywheel:ship\b/i]);
+  const handoffSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i, /\$flywheel:commit\b/i, /\/flywheel:commit\b/i]);
   scores["Workflow Handoff"] = handoffSignal ? 2 : 0;
   notes["Workflow Handoff"] = handoffSignal
-    ? "Carries browser proof into review or ship."
+    ? "Carries browser proof into review or commit."
     : "Does not clearly hand off browser proof downstream.";
 
   return { scores, notes };

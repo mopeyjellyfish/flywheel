@@ -1,15 +1,15 @@
 ---
 name: review
-description: "Structured code review using tiered reviewer personas, confidence-gated findings, and a merge/dedup pipeline. Use when reviewing code changes before creating a PR, checking whether a branch is ready to merge, or running a review pass inside a larger Flywheel workflow."
+description: "Structured code review using diff-selected reviewer personas, confidence-gated findings, and a merge/dedup pipeline. Use when reviewing code changes before creating a PR, checking whether a branch is ready to merge, or running a review pass inside a larger Flywheel workflow."
 metadata:
   argument-hint: "[blank to review current branch, or provide PR link]"
 ---
 
 # Code Review
 
-`$flywheel:review` reviews code changes with a risk-first, structured workflow. It is
-designed for frontier-model orchestration: keep reviewer passes focused and
-structured, keep synthesis centralized, and keep mutation bounded.
+`$flywheel:review` reviews code changes with a risk-first, structured workflow.
+It selects reviewers from diff evidence, dispatches them in parallel when the
+host supports it, keeps synthesis centralized, and keeps mutation bounded.
 
 Use this skill before merge, after meaningful implementation work, or inside a
 larger Flywheel loop when code has changed and the next job is to find risk.
@@ -76,8 +76,8 @@ Do not preload every reference. Load only what the current phase needs:
   immediately before reviewer dispatch or serial reviewer execution.
 - Read `references/subagent-template.md` immediately before parallel reviewer
   dispatch.
-- Read `../ship/references/evidence-bundle.md` only when an existing shared
-  evidence bundle is present or the review artifact should feed `$flywheel:ship`.
+- Read `../commit/references/evidence-bundle.md` only when an existing shared
+  evidence bundle is present or the review artifact should feed `$flywheel:commit`.
 - Read `references/review-output-template.md` during synthesis and
   presentation.
 
@@ -360,7 +360,7 @@ Use that frame to sharpen:
 - reviewer selection, especially observability, reliability, performance,
   data-access, api-contract, data-migrations, and deployment verification
 - verdict reasoning
-- any final handoff into `$flywheel:rollout` or `$flywheel:ship`
+- any final handoff into `$flywheel:rollout` or `$flywheel:commit`
 
 ### Stage 2d: Discover Local Prior Learnings
 
@@ -384,17 +384,17 @@ Use these local prior learnings to:
 ### Stage 2e: Read Local Workflow Policy When Present
 
 If `.flywheel/config.local.yaml` exists, read only the local policy keys that
-materially affect review-to-ship handoff, such as:
+materially affect review-to-commit handoff, such as:
 
-- `review.require_review_before_ship`
+- `review.require_review_before_commit`
 - `runtime.require_operational_validation_for_runtime_changes`
 - browser-proof gates already relevant to the changed surface
 
 Use these local policy gates to sharpen:
 
 - verdict reasoning
-- residual-work vs ship-readiness language
-- final handoff into `$flywheel:ship`
+- residual-work vs commit-readiness language
+- final handoff into `$flywheel:commit`
 
 Absent config is not a policy violation. Treat local policy as an explicit
 overlay, not a universal Flywheel default.
@@ -407,9 +407,9 @@ that clearly matches the current branch, task, or plan.
 Use that bundle to:
 
 - avoid re-describing browser or verification proof that already exists
-- sharpen ship-readiness reasoning
+- sharpen commit-readiness reasoning
 - decide whether this review should append its own verdict and artifact path for
-  `$flywheel:ship`
+  `$flywheel:commit`
 
 ### Stage 3: Select Reviewers
 
@@ -810,7 +810,7 @@ In autofix mode, create durable todo files only for unresolved actionable
 findings whose final owner is `downstream-resolver`.
 
 If a shared evidence bundle already exists, or if this review is clearly
-feeding `$flywheel:ship`, read `../ship/references/evidence-bundle.md` and append
+feeding `$flywheel:commit`, read `../commit/references/evidence-bundle.md` and append
 one short review entry to:
 
 ```text
@@ -830,13 +830,13 @@ to it from the shared bundle instead of duplicating large findings payloads.
 
 Interactive mode only:
 
-- PR mode: offer `$flywheel:ship` to push and refresh the PR, or `Exit`
-- Feature-branch mode: offer `$flywheel:ship`, `Continue without shipping`, or `Exit`
+- PR mode: offer `$flywheel:commit` to push and refresh the PR, or `Exit`
+- Feature-branch mode: offer `$flywheel:commit`, `Continue without finishing the branch`, or `Exit`
 - Base/default-branch mode: offer `Continue` or `Exit`
 - If the diff changes browser-visible behavior and no fresh acceptance proof was
-  captured yet, offer `$flywheel:browser-test` before `$flywheel:ship`.
+  captured yet, offer `$flywheel:browser-test` before `$flywheel:commit`.
 - If the diff is runtime-risky and rollout posture is still unresolved, offer
-  `$flywheel:rollout` before `$flywheel:ship`.
+  `$flywheel:rollout` before `$flywheel:commit`.
 - If the dominant residual work is performance, throughput, build-time, or
   cost tuning rather than correctness, offer `$flywheel:optimize` as the next handoff.
 
@@ -882,4 +882,4 @@ sequentially. Keep the same stages, merge pipeline, and output format.
 
 ### Evidence Bundle
 
-@../ship/references/evidence-bundle.md
+@../commit/references/evidence-bundle.md

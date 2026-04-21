@@ -15,10 +15,13 @@ session learnings into searchable documentation under the active repo's
 `docs/solutions/`.
 
 This is where solved problems become stored energy. A non-obvious bug fix, a
-durable workflow improvement, or a clarified project rule should not stay
-trapped in one session if it will matter again.
+durable workflow improvement, a clarified repo rule, or a user correction that
+changed how Flywheel should behave on project work should not stay trapped in
+one session if it will matter again.
 
-`$flywheel:spin` may be called directly, or offered after `$flywheel:work` finishes.
+`$flywheel:spin` may be called directly, or offered after `$flywheel:commit`
+finishes when the completed project work exposed a durable lesson worth
+keeping.
 
 **When directly invoked, always spin.** If the lesson is still vague or the
 problem is not actually solved, clarify or defer. Do not silently skip the
@@ -58,11 +61,13 @@ Do not preload every support file. Load only what the current phase needs:
 5. **Keep the knowledge store close to future use** - solution docs live in the
    active repo's `docs/solutions/`, where `ideate`, `brainstorm`, `plan`, and
    `work` can consult them in that same repo.
-6. **Offer spin, do not force it** - when `spin` is merely being suggested at
+6. **Prefer project-specific guidance over abstract reflection** - capture what
+   will help future repo work, not generic commentary about agents.
+7. **Offer spin, do not force it** - when `spin` is merely being suggested at
    the end of another workflow, get the user's approval before writing docs.
-7. **Every spin includes bounded housekeeping** - refresh nearby discoverability
+8. **Every spin includes bounded housekeeping** - refresh nearby discoverability
    and contradiction markers while the context is fresh.
-8. **Prefer one canonical answer per lesson family** - update, supersede, or
+9. **Prefer one canonical answer per lesson family** - update, supersede, or
    cross-link explicitly instead of letting overlapping docs silently compete.
 
 ## Input Hint
@@ -86,6 +91,7 @@ Good upstream arguments look like:
 
 - `Document the retry-timeout mismatch fix in the Kafka consumer`
 - `Capture the Redis cache invalidation lesson from this session`
+- `Capture the compact plan-work-commit correction for Flywheel's project workflow`
 - `Refresh docs/solutions/workflow-issues/test-fixture-setup-2026-04-18.md`
 
 If the input clearly names a selected candidate from `$flywheel:work` or another
@@ -148,8 +154,11 @@ If `<spin_input>` is blank:
    - the current diff
    - the latest plan in `docs/plans/`
    - resolved review findings
+   - the commit summary or PR story
    - the final implementation summary
    - the tests or validation work that proved the fix
+   - answers and preferences surfaced during `ideate`, `brainstorm`, or `plan`
+   - explicit user corrections that changed the repo's workflow contract
 2. identify at most **3** candidate learnings worth preserving
 3. for each candidate, give:
    - a short title
@@ -163,6 +172,10 @@ Good spin candidates include:
 - a workflow or tooling improvement that removed friction
 - a reusable testing or validation pattern
 - a clarified repo rule that future planning or implementation should follow
+- a repeated preference or constraint revealed during `ideate`, `brainstorm`,
+  or `plan` that future project work should inherit
+- a user correction that changed Flywheel's project-workflow contract in a way
+  future repo work should inherit
 - a repeated dead end that future work should avoid
 
 If nothing non-trivial surfaced, say so and stop. Do not manufacture a lesson

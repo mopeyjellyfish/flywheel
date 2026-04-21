@@ -155,7 +155,7 @@ Review-only and documentation-only worktrees should usually not copy them.
   default branch and isolation is preferable.
 - `$flywheel:review` should prefer `$flywheel:worktree` when a PR or branch must be
   reviewed without switching the shared checkout.
-- `$flywheel:ship` may suggest `$flywheel:worktree cleanup <branch>` after merge or after a
+- `$flywheel:commit` may suggest `$flywheel:worktree cleanup <branch>` after merge or after a
   shipped branch no longer needs an isolated checkout.
 
 ## Output Contract

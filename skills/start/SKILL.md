@@ -1,6 +1,6 @@
 ---
 name: start
-description: "Route software-development work through the Flywheel flow: setup, ideate, brainstorm, plan, work, docs, incident, review, rollout, ship, spin, and repeat. Use when a task should follow a standard development loop that makes each next task easier instead of being handled ad hoc."
+description: "Route project-development work through Flywheel's compact loop: shape, work, review, commit, and post-commit spin when it is worth keeping. Pressure-test fuzzy requests before handoff, and use helper stages only when the task clearly starts there or the main loop needs them."
 ---
 
 # Flywheel
@@ -13,9 +13,9 @@ Invoke it as `flywheel:start` using the current host's native syntax:
 - Codex: `$flywheel:start`
 - Claude Code: `/flywheel:start`
 
-The goal is not just to finish the current task. The goal is to leave behind
-better context, sharper decisions, and reusable artifacts so future work gets
-cheaper and faster.
+The goal is not just to finish the current repo task. The goal is to leave
+behind better context, sharper decisions, and reusable artifacts so future work
+in that repo gets cheaper and faster.
 
 If the active repo has `docs/solutions/`, treat that local directory as the
 knowledge store for solved problems and durable practices. When a stage touches
@@ -26,28 +26,34 @@ appeared. Prefer docs with `doc_status: active`, and if a strong hit has
 
 ## Flow Map
 
-Route to the right stage as soon as the intent is clear:
+For software-project work, Flywheel's visible backbone is:
 
-1. `flywheel:brainstorm` as the main entry point for refining ideas into a
-   requirements plan.
-2. `flywheel:plan` for turning that requirements plan, or a detailed idea, into a
-   technical implementation plan.
-3. `flywheel:work` for carrying out the plan with traceability.
-4. `flywheel:docs` for change-scoped or broader Diataxis documentation work when
-   implementation changed setup, public APIs, CLI flows, configuration, or
-   user-facing behavior.
-5. `flywheel:debug` for bug investigation that must prove the hypothesis before a
-   fix or redesign.
-6. `flywheel:review` for pre-merge code review and risk finding.
-7. `flywheel:rollout` for staged release planning on runtime-risky changes before
-   final shipping closure.
-8. `flywheel:ship` for commit, push, PR, and finishing closure.
-9. `flywheel:spin` for capturing what should change so the next cycle is easier.
-10. `repeat` by starting the next task with better stored context than before.
-11. `flywheel:ideate` as an optional force multiplier when the job is to surface the
-   best next ideas before entering the main loop.
+1. shaping via `flywheel:ideate`, `flywheel:brainstorm`, or `flywheel:plan`,
+   ending in plan review and the user's `flywheel:deepen` vs `flywheel:work`
+   choice
+2. `flywheel:work`
+3. `flywheel:review`
+4. `flywheel:commit`
 
-Support surfaces, used when needed rather than as mandatory stages:
+`flywheel:plan` is read-only. It should produce a plan, run `document-review`
+on that plan, and then pause for the user to choose whether to
+`flywheel:deepen` the plan or begin `flywheel:work`.
+
+If the task is still fuzzy, route through `flywheel:ideate` or
+`flywheel:brainstorm` before `flywheel:plan`.
+
+For known-scoped repo changes, shaping usually collapses to `flywheel:plan`
+plus that reviewed-plan handoff.
+
+When multiple materially different routes or artifacts are plausible, ask one
+material challenge question before final handoff so the user can correct the
+framing early.
+
+After `flywheel:commit`, offer `flywheel:spin` only when the completed work
+revealed durable project-specific guidance worth preserving.
+
+Helper and alternate-entry surfaces, used when needed rather than as mandatory
+visible stages:
 
 - `flywheel:setup` for repo and machine readiness, first-run bootstrap, and
   update-time recovery when a later stage discovers a missing requirement,
@@ -55,23 +61,26 @@ Support surfaces, used when needed rather than as mandatory stages:
 - `flywheel:run` for optional end-to-end orchestration across the remaining stages
 - `flywheel:incident` for production or runtime incidents that begin with live
   evidence and need mitigation vs rollback vs patch framing
-- `flywheel:deepen` for strengthening an existing plan before implementation
+- `flywheel:deepen` for strengthening a reviewed plan before implementation
 - `flywheel:docs` for post-work or direct documentation passes that should write
-  or refresh Diataxis-shaped project docs before review and ship
+  or refresh Diataxis-shaped project docs before review and commit
 - `flywheel:worktree` for isolated parallel checkouts
 - `flywheel:optimize` for measurement-driven performance, throughput, or cost work
 - `flywheel:rollout` for runtime-risky change-management, validation windows, and
-  rollback posture before ship
+  rollback posture after review and before commit
 - `flywheel:browser-test` for browser acceptance proof with playwright-cli
-- `flywheel:polish` for interactive browser-visible tightening before review or ship
-- `flywheel:document-review` for requirements, plan, or design-doc review before execution
+- `flywheel:polish` for interactive browser-visible tightening before review or commit
+- `flywheel:document-review` for requirements, plan, or design-doc review before execution,
+  including the default plan-review pass at the end of shaping
 - `flywheel:observability` for runtime signal, blast radius, and rollout validation design
 - `flywheel:logging` for structured event and log-shape design
 - `flywheel:verify` for fresh proof before claiming a task is done
-- `flywheel:commit` for commit-message drafting and breaking-change checks
+- `flywheel:commit` for finish-stage commit, push, PR creation or refresh, and conditional spin offers
+- `flywheel:commit-message` for conventional commit-message drafting and breaking-change checks
 
 Do not force every request through every stage. Route to the earliest missing
-stage, then carry forward the artifacts from there.
+stage, then carry forward the artifacts from there. For normal project work,
+prefer the fewest visible stages that still fit the task.
 
 If a later stage is blocked because a required CLI, local config, browser
 surface, review surface, or telemetry surface is missing, route to
@@ -80,12 +89,16 @@ inside that blocked stage.
 
 ## Routing Rules
 
-- If the user has an idea, request, or vague direction and needs to refine it,
-  start with `../brainstorm/SKILL.md`.
+- If the user has one idea, request, or vague direction and needs to refine
+  that chosen direction, start with `../brainstorm/SKILL.md`.
 - If the direction is mostly decided and the user wants concrete execution
   steps, use `../plan/SKILL.md`.
 - If the user wants a better next bet, backlog shaping, or project leverage
   before entering the main loop, use `../ideate/SKILL.md`.
+- If the user is shaping the current repo's development workflow, stage
+  boundaries, or operating contract and the solution direction is not yet
+  fixed, use
+  `../ideate/SKILL.md`.
 - If the user wants a coordinated pass through the remaining stages rather than
   invoking them one by one, use `../run/SKILL.md`.
 - If the user wants to strengthen an existing plan before implementation, use
@@ -110,16 +123,16 @@ inside that blocked stage.
   flow, or gathering browser acceptance evidence, use
   `../browser-test/SKILL.md`.
 - If the immediate job is tightening browser-visible behavior interactively
-  before review or ship, use `../polish/SKILL.md`.
+  before review or commit, use `../polish/SKILL.md`.
 - If the immediate job is reviewing a requirements doc, plan, spec, ADR, or
   similar design artifact before implementation, use
   `../document-review/SKILL.md`.
 - If the immediate job is commit, push, PR creation, PR refresh, or branch
-  finishing, use `../ship/SKILL.md`.
+  finishing, use `../commit/SKILL.md`.
 - If the work is done and the value should be preserved in docs, scripts,
   skills, or checklists, use `../spin/SKILL.md`.
 - If the user wants help choosing or validating a commit message, or a workflow
-  is about to commit, use `../commit/SKILL.md`.
+  is about to commit, use `../commit-message/SKILL.md`.
 - If the user is onboarding a repo, checking machine readiness, or proving
   which tools and commands are actually available, use
   `../setup/SKILL.md`.
@@ -136,8 +149,12 @@ inside that blocked stage.
 
 Apply these routing heuristics before doing repo exploration:
 
-- if the input is a vague feature, problem, or request, route to
-  `../brainstorm/SKILL.md`
+- if the input is about how the current repo's development workflow should
+  route, question, or present stage boundaries and the exact solution is not
+  yet chosen, route to
+  `../ideate/SKILL.md`
+- if the input is a vague feature, problem, or request and the immediate job is
+  clarifying one chosen direction, route to `../brainstorm/SKILL.md`
 - if the input explicitly points at `docs/brainstorms/` or an existing
   requirements doc, route to `../plan/SKILL.md`
 - if the input explicitly asks to deepen, strengthen, or harden an existing
@@ -166,7 +183,7 @@ Apply these routing heuristics before doing repo exploration:
 - if the input asks to polish, tighten, or iterate on a browser-visible surface
   with live feedback, route to `../polish/SKILL.md`
 - if the input says commit, push, PR, refresh the PR description, or finish the
-  branch, route to `../ship/SKILL.md`
+  branch, route to `../commit/SKILL.md`
 - if the input says the work is done and the goal is preserving lessons or
   solved problems, route to `../spin/SKILL.md`
 - if the input asks for the best next bets before choosing one problem, route
@@ -183,6 +200,18 @@ search the repo only when:
 - the user explicitly asks for repo-grounded routing
 - the request is ambiguous enough that a quick check materially changes the
   stage choice
+
+## Routing Dialogue
+
+For fuzzy, product-shaping, or workflow-shaping requests:
+
+- ask one material challenge question when the answer could change the chosen
+  stage or artifact
+- prefer 2-4 explicit answer options, with the recommended option first and a
+  `Custom` option last, when the likely answer space is predictable
+- ask an open question only when the answer space cannot be predicted
+  responsibly
+- do not ask a question just to add ceremony when the route is already obvious
 
 ## Router Response Contract
 
@@ -225,9 +254,12 @@ Always include, in plain language:
 2. why that stage is the earliest missing stage
 3. what artifact or outcome that stage should produce
 4. the next stage after that artifact exists
+5. what input or correction is needed from the user now, when any
 
-When the route depends on unresolved product or scope questions, ask one
-focused question after stating the stage and handoff.
+When the route depends on unresolved product, scope, or workflow-framing
+questions, ask one focused challenge question after stating the stage and
+handoff. Prefer 2-4 explicit options with the recommended option first and a
+`Custom` option last when the likely answer space is predictable.
 
 Preferred stage-to-handoff wording:
 
@@ -236,44 +268,53 @@ Preferred stage-to-handoff wording:
 - `flywheel:brainstorm` -> produce a requirements doc or requirements plan -> then
   move into `flywheel:plan`
 - `flywheel:run` -> produce the remaining stage artifacts through a bounded end-to-end
-  pass -> then stop at shipping, spin, or an approval gate
-- `flywheel:deepen` -> produce a stronger technical plan -> then move into
-  `flywheel:work`
-- `flywheel:plan` -> produce a technical implementation plan -> then move into
-  `flywheel:work`
+  pass -> then stop at commit, a post-commit spin offer, or an approval gate
+- `flywheel:deepen` -> produce a stronger reviewed technical plan -> then let
+  the user choose between another deepen pass and `flywheel:work`
+- `flywheel:plan` -> produce a technical implementation plan, run
+  `document-review`, pause for user review, and then let the user choose
+  between `flywheel:deepen` and `flywheel:work`
 - `flywheel:docs` -> produce updated project docs mapped to the right Diataxis
-  quadrants -> then continue into `flywheel:review` or `flywheel:ship`
+  quadrants -> then continue into `flywheel:review` and `flywheel:commit`
 - `document-review` -> produce prioritized document findings and fix direction
-  -> then revise the doc or continue into `flywheel:plan` or `flywheel:work` if clean
+  -> then revise the doc, continue into `flywheel:plan`, continue into
+  `flywheel:deepen` if the reviewed document is a plan that needs
+  strengthening, or continue into `flywheel:work` if the reviewed plan is
+  accepted
 - `flywheel:browser-test` -> produce fresh browser-proof artifacts -> then continue
-  into `flywheel:review` or `flywheel:ship`
+  into `flywheel:review` and `flywheel:commit`
 - `flywheel:polish` -> produce tightened browser-visible behavior plus fresh browser
-  proof -> then continue into `flywheel:review` and `flywheel:ship`
-- `flywheel:work` -> produce implemented, validated changes -> then offer
-  `flywheel:docs` when user-facing contracts changed, move through
-  `flywheel:review` and `flywheel:ship`, then offer `flywheel:spin`
+  proof -> then continue into `flywheel:review` and `flywheel:commit`
+- `flywheel:work` -> produce implemented, validated repo changes, pulling in
+  `flywheel:docs`, `flywheel:browser-test`, `flywheel:rollout`, or
+  `flywheel:verify` only when the work needs them -> then continue into
+  `flywheel:review` and `flywheel:commit`
 - `flywheel:debug` -> produce a proved causal chain and either a red-to-green fix or
   a handoff back to `flywheel:brainstorm` or `flywheel:plan`
-- `flywheel:review` -> produce findings and fix decisions -> then update the branch,
-  route through `flywheel:rollout` when the change is runtime-risky, then push or
-  create/update the PR through `flywheel:ship`
+- `flywheel:review` -> produce findings and fix decisions from the
+  diff-selected reviewer set, dispatching personas in parallel when the host
+  supports it -> then update the branch, route through `flywheel:rollout`
+  when the change is runtime-risky, then push or create/update the PR through
+  `flywheel:commit`
 - `flywheel:rollout` -> produce a rollout brief with activation, validation, and
-  rollback posture -> then continue into `flywheel:ship`
+  rollback posture -> then continue into `flywheel:commit`
 - `flywheel:incident` -> produce an incident brief with blast radius, evidence, and
   mitigation or rollback posture -> then continue into `flywheel:debug`,
-  `flywheel:rollout`, `flywheel:plan`, or `flywheel:ship`
+  `flywheel:rollout`, `flywheel:plan`, or `flywheel:commit`
 - `flywheel:optimize` -> produce a measured optimization brief and winning change set
-  -> then route through `flywheel:review` and `flywheel:ship` when code changed
+  -> then route through `flywheel:review` and `flywheel:commit` when code changed
 - `observability` -> produce a concrete signal and validation plan -> then feed
-  `flywheel:plan`, `flywheel:work`, or `flywheel:ship` depending on stage
+  `flywheel:plan`, `flywheel:work`, or `flywheel:commit` depending on stage
 - `logging` -> produce a concrete logging design or gap report -> then feed
   `flywheel:plan`, `flywheel:work`, or `flywheel:review`
 - `verify` -> produce fresh proof and honest status ->
-  then either continue through `flywheel:ship`, `flywheel:spin`, or back to `flywheel:work`
-- `commit` -> produce a conventional commit message -> then
-  continue through `flywheel:ship` or the user's chosen git step
-- `flywheel:ship` -> produce a committed branch or PR with testing and operational
-  validation notes -> then offer `flywheel:spin`
+  then either continue through `flywheel:review`, `flywheel:commit`,
+  `flywheel:spin`, or back to `flywheel:work`
+- `commit-message` -> produce a conventional commit message -> then
+  continue through `flywheel:commit` or the user's chosen git step
+- `flywheel:commit` -> produce a committed branch or PR with testing and operational
+  validation notes -> then offer `flywheel:spin` only when the finished work
+  surfaced a durable project lesson
 - `flywheel:spin` -> produce or update an active-repo `docs/solutions/` entry
   -> then start the next task with that stored context
 
@@ -289,34 +330,36 @@ Use these patterns to keep routing answers stable across frontier models:
   doc or requirements plan. Once that exists, move into `flywheel:plan`."
 - **Plan route:** "This is ready for `flywheel:plan` because the intended behavior is
   already clear enough to design execution. The output should be a technical
-  plan. From there, move into `flywheel:work`."
+  plan the user can review before any implementation starts. After
+  `document-review` runs on that plan, let the user choose whether to
+  `flywheel:deepen` it or move into `flywheel:work`."
 - **Run route:** "This belongs in `flywheel:run` because the task is bounded enough
   for one coordinated pass through the remaining Flywheel stages. The output
   should be the current artifact set plus a clear stop point."
 - **Deepen route:** "This belongs in `flywheel:deepen` because a plan
   already exists and the immediate job is to make it more execution-ready. The
-  output should be a stronger plan, then `flywheel:work`."
+  output should be a stronger reviewed plan, then a user choice between
+  another deepen pass and `flywheel:work`."
 - **Docs route:** "This belongs in `flywheel:docs` because the immediate job is
   refreshing project docs from repo truth, not changing code. The output
-  should be Diataxis-shaped docs updates, then `flywheel:review` or
-  `flywheel:ship` if the branch is otherwise ready."
+  should be Diataxis-shaped docs updates, then `flywheel:review` and
+  `flywheel:commit` if the branch is otherwise ready."
 - **Document-review route:** "This belongs in `document-review` because the
   immediate job is to harden a requirements or plan artifact before execution.
   The output should be a prioritized fix queue or a clean pass. From there,
-  revise the document or continue into planning or work."
+  revise the document, continue into `flywheel:plan`, continue into
+  `flywheel:deepen`, or continue into work."
 - **Browser-test route:** "This belongs in `flywheel:browser-test` because the
   immediate job is to prove browser-visible behavior with fresh evidence. The
   output should be a browser-proof brief plus artifacts that review and
-  shipping can reuse."
+  commit can reuse."
 - **Polish route:** "This belongs in `flywheel:polish` because the feature is already
   runnable and the immediate job is short browser-visible tightening loops. The
   output should be tightened behavior plus a final browser-proof pass."
 - **Work route:** "This is ready for `flywheel:work` because the scope is already
-  concrete enough to execute. The output should be implemented, validated
-  changes. After that, offer `flywheel:docs` when the change altered setup,
-  public interfaces, config, or user workflows, run `flywheel:review`, route
-  runtime-risky work through `flywheel:rollout`, then `flywheel:ship`, and
-  offer `flywheel:spin`."
+  concrete enough to execute. The output should be implemented, validated repo
+  changes. During work, pull in helper stages only when the change needs them,
+  then continue into `flywheel:review` and `flywheel:commit`."
 - **Debug route:** "This belongs in `flywheel:debug` because the immediate job is to
   prove why the bug happens before changing code. The output should be a causal
   chain plus either a red-to-green fix or a routing decision back into
@@ -324,15 +367,17 @@ Use these patterns to keep routing answers stable across frontier models:
 - **Incident route:** "This belongs in `flywheel:incident` because the work starts
   from live evidence and the immediate job is deciding mitigate vs rollback vs
   patch. The output should be an incident brief, then the right downstream
-  handoff into debug, rollout, planning, work, or ship."
+  handoff into debug, rollout, planning, work, or commit."
 - **Review route:** "This belongs in `flywheel:review` because code already changed
   and the immediate job is risk finding before merge. The output should be a
-  review verdict and concrete findings. After that, hand off to `flywheel:rollout`
-  for runtime-risky changes or `flywheel:ship` when the branch should be published."
+  review verdict and concrete findings from the selected diff-based reviewer
+  personas. After that, fix the branch if needed, hand off to
+  `flywheel:rollout` for runtime-risky changes, and then continue into
+  `flywheel:commit` when the branch should be published."
 - **Rollout route:** "This belongs in `flywheel:rollout` because the code is already
   changed and the immediate job is safe release planning for a runtime-risky
   change. The output should be a rollout brief with activation, validation, and
-  rollback posture, then `flywheel:ship`."
+  rollback posture, then `flywheel:commit`."
 - **Optimize route:** "This belongs in `flywheel:optimize` because the immediate job
   is measured tuning, not general feature implementation. The output should be
   a baseline, guardrails, chosen measurement path, and a proven improvement or
@@ -347,33 +392,40 @@ Use these patterns to keep routing answers stable across frontier models:
 - **Verification route:** "This belongs in `flywheel:verify`
   because the immediate job is to prove a completion claim with fresh evidence.
   The output should be an honest status against the claim."
-- **Ship route:** "This belongs in `flywheel:ship` because the code is ready to leave
+- **Commit route:** "This belongs in `flywheel:commit` because the code is ready to leave
   the workstation. The output should be a committed branch or PR with testing
-  notes and post-deploy validation."
+  notes and post-deploy validation, then a spin offer if the finished work
+  surfaced a durable project lesson."
 - **Spin route:** "This belongs in `flywheel:spin` because the work is complete and
   the value now is preserving what was learned. The output should be a durable
   active-repo `docs/solutions/` entry."
 
 ## Operating Principles
 
-- Prefer compounding improvements over novelty.
-- Treat `flywheel:brainstorm` as the default first step and `flywheel:ideate` as the
-  optional leverage step.
-- Route fast. This skill is primarily a stage selector and handoff generator,
-  not a deep analysis workflow.
+- Prefer stored-repo improvements over novelty.
+- Treat `shape -> flywheel:work -> flywheel:review -> flywheel:commit` as the
+  compact backbone for software-project work, where `shape` means
+  `flywheel:ideate`, `flywheel:brainstorm`, or `flywheel:plan`.
+- Use `flywheel:brainstorm` before `flywheel:plan` only when behavior or scope is
+  still unclear, and `flywheel:ideate` only when the immediate job is choosing
+  the right problem first.
+- Route decisively. This skill is primarily a stage selector and handoff
+  generator, but it should use one material question when that prevents the
+  wrong stage or artifact.
 - Carry assumptions, open questions, and decisions forward explicitly.
 - Reuse durable learnings from the active repo's `docs/solutions/` when the
   current area has already been documented.
 - Keep artifacts lean. Document only what will matter again.
 - Let evidence beat optimism. Plans, implementation, and review should all be
   grounded in the codebase and actual checks.
-- End each stage with a clear handoff to the next one.
+- End each stage with a clear handoff to the next one, and treat `flywheel:spin`
+  as a conditional post-commit capture step rather than default extra ceremony.
 
 ## Expected Outputs
 
 - `ideate`: a ranked shortlist with why each option matters now.
 - `brainstorm`: a requirements plan with only as much Q&A as the task needs.
-- `run`: the remaining Flywheel artifacts plus a clear stop point or ship state.
+- `run`: the remaining Flywheel artifacts plus a clear stop point or finish-stage state.
 - `deepen`: a stronger, more execution-ready plan.
 - `plan`: a technical execution plan with validation and risk notes.
 - `docs`: updated tutorial, how-to, reference, or explanation docs grounded in
@@ -381,7 +433,7 @@ Use these patterns to keep routing answers stable across frontier models:
 - `document-review`: ranked findings on a requirements, plan, or design doc.
 - `browser-test`: fresh browser-proof evidence for a browser-visible change.
 - `polish`: tightened browser-visible behavior plus a closing proof pass.
-- `work`: implemented changes, task progress, and checks run.
+- `work`: implemented repo changes, task progress, and the helper checks the task needed before review.
 - `debug`: a proved causal chain and a red signal for the bug, then either a
   minimal fix or a redesign handoff.
 - `incident`: an incident brief with runtime evidence, blast radius, and the
@@ -393,10 +445,10 @@ Use these patterns to keep routing answers stable across frontier models:
 - `observability`: a concrete signal, failure-mode, and rollout-validation plan.
 - `logging`: a structured logging design, migration sketch, or audit gap report.
 - `verify`: a claim, a fresh proof run, and honest status.
-- `ship`: a commit, push, PR, or PR refresh with operational validation notes.
+- `commit`: a commit, push, PR, or PR refresh with operational validation notes and a conditional spin offer when warranted.
 - `spin`: a new or updated active-repo `docs/solutions/` entry that reduces
   repeated future effort.
-- `commit`: a commit header, optional body or footers, and an
+- `commit-message`: a commit header, optional body or footers, and an
   explicit user check before marking breaking changes.
 - `setup`: a repo-grounded readiness report with required vs optional tooling.
 - `worktree`: an isolated checkout path and the next exact command to use it.
