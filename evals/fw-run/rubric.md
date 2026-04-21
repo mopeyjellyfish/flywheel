@@ -12,9 +12,13 @@ Does the response identify the correct earliest missing stage?
 
 Does it show a coherent path through the remaining workflow stages?
 
+For software-project work, the remaining path should normally include review
+before commit unless the case starts after review is already complete.
+
 ### Stop-Point Discipline
 
-Does it respect user-approval or readiness stop points instead of bulldozing?
+Does it respect user-approval or readiness stop points instead of bulldozing,
+especially at the plan -> work boundary?
 
 ### Spin Awareness
 

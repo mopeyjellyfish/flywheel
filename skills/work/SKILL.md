@@ -1,6 +1,6 @@
 ---
 name: work
-description: "Execute work efficiently while maintaining quality and finishing features. Use when a plan doc, specification, todo file, or clear implementation request is ready for execution, and the goal is to ship complete work with visible task tracking, repo-grounded validation, and disciplined follow-through."
+description: "Execute work efficiently while maintaining quality and finishing features. Use when a plan doc, specification, todo file, or clear implementation request is ready for execution, and the goal is to finish complete work with visible task tracking, repo-grounded validation, and disciplined follow-through into review and commit."
 metadata:
   argument-hint: "[Plan doc path or description of work. Blank to auto use latest plan doc]"
 ---
@@ -10,14 +10,17 @@ metadata:
 Use the actual current date from runtime context when identifying the latest
 plan document or updating dated execution artifacts.
 
-`$flywheel:work` is the execution stage of Flywheel. It takes a plan, spec, todo
-file, or clear work request and turns it into shipped implementation. The goal
-is not to stay busy. The goal is to finish the feature, validate it against repo
-truth, and leave the tree in a reviewable, shippable state.
+`$flywheel:work` is the smart middle stage of Flywheel's compact project loop.
+It takes a plan, spec, todo file, or clear work request and turns it into
+implemented, validated repo changes. The goal is not to stay busy. The goal is
+to finish the feature, validate it against repo truth, pull in helper
+workflows only when the task actually needs them, and leave the tree ready for
+review and commit.
 
 `$flywheel:brainstorm` defines **WHAT** to build. `$flywheel:plan` defines **HOW** to build
-it. `$flywheel:work` executes the plan, stays grounded in the repo, and closes the
-loop with quality checks and shipping discipline.
+it. `$flywheel:work` executes the plan, stays grounded in the repo, and absorbs
+helper-stage selection for things like docs, browser proof, rollout, verify,
+observability, or logging when the work needs those surfaces before review.
 
 **When directly invoked, always execute.** Do not treat a direct invocation as
 "not an execution task" and exit. If the work is large or underdefined enough
@@ -42,16 +45,16 @@ is low enough to proceed responsibly.
 
 Do not preload every reference. Load only what the current phase needs:
 
-- Read `references/shipping-workflow.md` only when all implementation tasks are
+- Read `references/commit-workflow.md` only when all implementation tasks are
   complete and execution transitions from Phase 2 into quality check and
-  shipping.
+  commit.
 - Read `../observability/references/service-readiness-matrix.md` only when the
   work changes runtime behavior, contracts, state, rollout posture, retries,
   queues, migrations, or other blast-radius-sensitive boundaries.
 
 ## Core Principles
 
-1. **Ship complete slices** — finishing the feature matters more than looking
+1. **Finish complete slices** — finishing the feature matters more than looking
    busy.
 2. **Touch grass before and during execution** — replace guesses with repo
    truth by finding the actual commands, policies, and patterns that can prove
@@ -64,6 +67,8 @@ Do not preload every reference. Load only what the current phase needs:
 5. **Test continuously** — run the right checks while the work is still fresh.
 6. **Keep progress visible** — maintain task state, note blockers, and finish
    with a clean quality gate.
+7. **Prefer fewer extra visible handoffs** — use helper workflows when they add
+   real value beyond the default shape -> work -> review -> commit loop.
 
 ## Input Document
 
@@ -145,7 +150,7 @@ Build a short **ground-truth ledger** from the repo:
   present or when the repo still uses it as compatibility context.
 - Read `.flywheel/config.local.yaml` when present and carry forward only the
   local policy gates that materially affect this task, such as browser proof,
-  reproducer-before-fix, review-before-ship, or runtime validation.
+  reproducer-before-fix, review-before-commit, or runtime validation.
 - When the active repo has `docs/solutions/`, search that local store for the
   target area before editing. Prefer frontmatter-first lookup by
   `files_touched`, `module`, `tags`, `problem_type`, `component`, and title,
@@ -397,8 +402,8 @@ while (tasks remain):
     completion unless the repo has a stronger existing browser-proof surface
     and you can name it explicitly
   - When the change alters setup, public APIs, CLI flows, config, or
-    user/operator workflows, note the likely docs impact so you can offer
-    `$flywheel:docs` before review
+    user/operator workflows, note the likely docs impact so you can surface
+    `$flywheel:docs` before final review when a separate docs pass is worth it
   - When runtime behavior changes meaningfully, confirm the chosen reliability
     posture still matches the current code, failure modes, and blast radius
   - When local policy requires explicit operational validation for runtime
@@ -410,8 +415,8 @@ while (tasks remain):
   - Run tests after changes
   - Assess testing coverage: if behavior changed, were tests added or updated?
   - Apply verify discipline before claiming the task is done
-  - Keep repo-local ship gates visible when present, especially review-before-
-    ship and browser-proof requirements
+  - Keep repo-local commit gates visible when present, especially review-before-
+    commit and browser-proof requirements
   - Mark task as completed
   - Evaluate for an incremental commit
 ```
@@ -489,7 +494,7 @@ related units may land together.
 git add <files related to this logical unit>
 
 # 3. Choose a conventional commit header/body/footer
-#    Prefer $flywheel:commit when available
+#    Prefer $flywheel:commit-message when available
 #    If the helper is unavailable, draft the message directly
 #    If the best message would use `!` or `BREAKING CHANGE:`, ask the user first
 
@@ -549,21 +554,21 @@ If the work is UI-heavy and the task includes Figma designs:
 - Create new tasks if scope legitimately expands.
 - Keep the user informed at major milestones.
 
-### Phase 3-4: Quality Check and Ship It
+### Phase 3-4: Quality Check and Commit It
 
 If the completed change likely changed setup steps, public interfaces, config
-contracts, CLI behavior, or user workflows, offer `$flywheel:docs` before quality
-check. If the user agrees, complete that docs pass first and then continue into
-review and ship.
+contracts, CLI behavior, or user workflows, offer `$flywheel:docs` before final
+review. If the user agrees, complete that docs pass first and then resume the
+path into review and commit.
 
 When all Phase 2 tasks are complete and execution transitions to quality check,
-read `references/shipping-workflow.md` and follow that workflow for final
-validation, `$flywheel:review`, and notification.
+read `references/commit-workflow.md` and follow that workflow for final
+validation, required `$flywheel:review`, and notification.
 
 If the completed change is runtime-risky and the release posture is still
-unclear, route through `$flywheel:rollout` before `$flywheel:ship` so activation sequence,
-validation window, and rollback triggers are explicit instead of being squeezed
-into the final ship step.
+unclear, route through `$flywheel:rollout` after `$flywheel:review` and before
+`$flywheel:commit` so activation sequence, validation window, and rollback
+triggers are explicit instead of being squeezed into the final commit step.
 
 ## Common Failure Modes
 
@@ -576,3 +581,6 @@ into the final ship step.
 - **Stopping at 80%** — finish the feature and close the quality gate.
 - **Skipping review** — every change gets reviewed, even when the review is
   lightweight.
+- **Turning helper checks into default ceremony** — use docs, browser proof,
+  rollout, and verify when the task needs them, not as a fixed visible
+  checklist layered on top of the default review step.

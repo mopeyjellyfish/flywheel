@@ -1,7 +1,7 @@
 {
   "name": "flywheel",
   "version": "0.1.0",
-  "description": "Standardize a compounding development flow from setup and ideation through execution, documentation, review, incident handling, rollout, shipping, and learning capture.",
+  "description": "Guide software project work from shaping and execution through review, branch finishing, and reusable repo knowledge.",
   "license": "UNLICENSED",
   "keywords": [
     "flywheel",
@@ -15,8 +15,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Flywheel",
-    "shortDescription": "Compound engineering leverage across the dev loop",
-    "longDescription": "Guide work from repo setup, ideation, and measured optimization through brainstorming, planning, execution, documentation, review, incident handling, rollout for risky changes, shipping, and captured learnings so each completed task makes the next one easier.",
+    "shortDescription": "Make the next repo change faster",
+    "longDescription": "Guide repo work through shaping, execution, review, branch finishing, and captured lessons so each completed task leaves better context behind for the next one.",
     "category": "Coding",
     "capabilities": [
       "Interactive",

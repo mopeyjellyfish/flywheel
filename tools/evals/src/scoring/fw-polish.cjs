@@ -26,11 +26,11 @@ function deterministicPolish(caseItem, output) {
     : "Does not clearly call for a closing browser proof pass.";
 
   const handoffSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i]) &&
-    mentionsAny(output, [/\$flywheel:ship\b/i, /\/flywheel:ship\b/i]);
+    mentionsAny(output, [/\$flywheel:commit\b/i, /\/flywheel:commit\b/i]);
   scores["Workflow Handoff"] = handoffSignal ? 2 : 0;
   notes["Workflow Handoff"] = handoffSignal
-    ? "Carries polish forward into review and ship."
-    : "Does not clearly hand off polish into review and ship.";
+    ? "Carries polish forward into review and commit."
+    : "Does not clearly hand off polish into review and commit.";
 
   return { scores, notes };
 }

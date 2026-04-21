@@ -1,6 +1,6 @@
 ---
 name: polish
-description: "Run an interactive browser polish loop on a browser-visible feature using playwright-cli, live app reloads, and quick fix iterations. Use when the user wants to try the feature, call out rough edges, and tighten it before review or shipping."
+description: "Run an interactive browser polish loop on a browser-visible feature using playwright-cli, live app reloads, and quick fix iterations. Use when the user wants to try the feature, call out rough edges, and tighten it before review or commit."
 metadata:
   argument-hint: "[url, route, branch, or blank to use the current browser-visible surface]"
 ---
@@ -36,7 +36,7 @@ This skill uses `playwright-cli` as the browser-control surface.
 6. Make fixes in short loops and rely on app reloads where available.
 7. Before calling the polish pass done, run `$flywheel:browser-test` on the changed
    happy path so the final state has fresh evidence.
-8. Route onward through `$flywheel:review` and `$flywheel:ship`.
+8. Route onward through `$flywheel:review` and `$flywheel:commit`.
 
 ## Output Contract
 

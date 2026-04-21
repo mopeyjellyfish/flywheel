@@ -1,6 +1,6 @@
 {
   "id": "conventional-commit",
-  "skill": "flywheel:commit",
+  "skill": "flywheel:commit-message",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

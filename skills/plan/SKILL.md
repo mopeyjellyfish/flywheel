@@ -1,6 +1,6 @@
 ---
 name: plan
-description: "Create structured implementation plans from a requirements document, bug report, feature idea, or rough description. Also deepen existing plans when the user explicitly asks. Use when a brainstorm or requirements doc is ready for planning, when the user says 'plan this', 'create a plan', 'write a tech plan', 'plan the implementation', 'how should we build this', or when agents or humans need a durable technical plan to work from."
+description: "Create structured implementation plans from a requirements document, bug report, feature idea, or rough description. Planning is read-only: it should produce a plan the user can review before any execution starts. Also deepen existing plans when the user explicitly asks."
 metadata:
   argument-hint: "[optional: feature description, requirements doc path, plan path to deepen, or task to plan]"
 ---
@@ -11,17 +11,21 @@ Use the actual current date from runtime context when dating plans and
 searching for recent documentation.
 
 `$flywheel:brainstorm` defines **WHAT** to build. `$flywheel:plan` defines **HOW** to build
-it. `$flywheel:work` executes the plan. A prior brainstorm is useful context but not
-required — planning can start from a requirements doc, a bug report, a feature
-idea, or a rough description.
+it. `$flywheel:work` executes the plan only after the user explicitly approves
+that next step. A prior brainstorm is useful context but not required —
+planning can start from a requirements doc, a bug report, a feature idea, or a
+rough description.
 
 **When directly invoked, always plan.** Never classify a direct invocation as
 "not a planning task" and exit the workflow. If the input is unclear, ask
 clarifying questions or use the planning bootstrap to establish enough context,
 but stay in planning.
 
-This workflow produces a durable implementation plan. It does **not** implement
-code, run tests, or learn from execution-time results.
+This workflow produces a durable implementation plan. It is a read-only,
+collaborative stage. It does **not** implement code, run tests, or silently
+transition into execution-time work. After the plan file exists and the
+confidence check completes, it must run `document-review` on that plan and end
+with a user choice between `$flywheel:deepen` and `$flywheel:work`.
 
 ## Interaction Method
 
@@ -34,6 +38,13 @@ options exist.
 When multiple implementation or reliability postures are viable, present a
 short predicted option list with the recommended option first and a `Custom`
 option last.
+When a planning question has a predictable answer space, prefer the same
+recommended-first 2-4 option shape instead of a broad open-ended prompt.
+
+Prefer to ask at least one targeted planning question when the answer would
+materially improve scope, sequencing, tradeoffs, or execution safety. Treat the
+user's answers and corrections as part of the planning record, not as throwaway
+chat.
 
 ## Reference Loading Map
 
@@ -73,20 +84,22 @@ needs:
 6. **Keep the plan portable** — the plan should work as a durable document,
    review artifact, or issue body without embedding tool-specific executor
    instructions.
-7. **Use TDD where it materially fits** — plans should prefer a test-first
+7. **Keep planning approval-gated** — a plan should be understandable enough
+   for the user to review what will be worked on before `work` begins.
+8. **Use TDD where it materially fits** — plans should prefer a test-first
    posture for meaningful feature work and for code paths that are already
    reasonably testable. Do not force TDD onto configuration-only changes,
    purely mechanical edits, or areas where the repo shape makes upfront tests
    disproportionate. When a different posture is better, state it briefly and
    explain why.
-8. **Plan the testing strategy, not just the code changes** — every software
+9. **Plan the testing strategy, not just the code changes** — every software
    plan should state how new or changed behavior will be tested, which existing
    test idioms to follow, whether to extend current tests or add new ones, and
    which public contracts must stay protected. Exact test or coverage commands
    belong to the host project's instructions or `$flywheel:work`, not the plan. When
    TDD fits, each material hypothesis should map to a concrete red signal and a
    green completion signal.
-9. **Make runtime tradeoffs explicit** — when a plan changes retries,
+10. **Make runtime tradeoffs explicit** — when a plan changes retries,
    fallbacks, queue behavior, health checks, or other operationally meaningful
    boundaries, present the current repo truth, likely failure modes, blast
    radius, viable options, and the recommended posture.
@@ -122,7 +135,11 @@ Every plan should contain:
   the project's testing posture or file-level patterns
 
 A plan is ready when an implementer can start confidently without needing the
-plan to write the code for them.
+plan to write the code for them, and when the user can review what execution
+would do before deciding whether to `$flywheel:deepen` the plan or start
+`$flywheel:work`. The handoff should also make it easy for the user to see what
+changed during planning, what remains open, what the review pass found, and
+what execution would start with.
 
 ## Feature Description
 

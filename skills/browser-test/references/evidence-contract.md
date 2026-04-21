@@ -1,6 +1,6 @@
 # Evidence Contract
 
-Capture only the artifacts that materially help downstream review or shipping.
+Capture only the artifacts that materially help downstream review or commit.
 
 Default posture:
 
@@ -50,7 +50,7 @@ update a shared evidence bundle summary under:
 .context/flywheel/evidence/<bundle-id>/summary.md
 ```
 
-Use the shared bundle contract in `../ship/references/evidence-bundle.md`.
+Use the shared bundle contract in `../commit/references/evidence-bundle.md`.
 Keep raw browser artifacts in the browser directory and promote only clean or
 redacted items into the bundle summary.
 

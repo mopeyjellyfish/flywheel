@@ -25,7 +25,7 @@ optimize:
   preferred_backend: ""
   preferred_environment: ""
 
-shipping:
+commit:
   include_existing_evidence_first: true
   require_browser_proof_for_browser_visible_changes: true
 
@@ -37,7 +37,7 @@ debug:
   require_reproducer_before_fix: true
 
 review:
-  require_review_before_ship: true
+  require_review_before_commit: true
 
 runtime:
   require_operational_validation_for_runtime_changes: true

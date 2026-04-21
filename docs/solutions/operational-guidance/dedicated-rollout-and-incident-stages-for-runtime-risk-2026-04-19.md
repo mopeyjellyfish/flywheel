@@ -13,13 +13,13 @@ files_touched:
   - skills/incident/SKILL.md
   - skills/start/SKILL.md
   - skills/review/SKILL.md
-  - skills/ship/SKILL.md
+  - skills/commit/SKILL.md
   - skills/debug/SKILL.md
 applies_when:
   - a change affects live contracts, state, retries, queues, migrations, or other meaningful blast-radius boundaries
   - work starts from alerts, logs, traces, metrics, or a live customer-impact event instead of a settled local reproducer
 symptoms:
-  - runtime-risky changes were being flattened directly into shipping
+  - runtime-risky changes were being flattened directly into commit
   - live incidents could jump into debug before mitigation versus rollback was framed
 root_cause: workflow_gap
 resolution_type: workflow_improvement
@@ -39,8 +39,8 @@ related_docs:
 
 ## Context
 
-Flywheel already had strong work, review, and ship stages, but runtime-risky
-changes and live incidents were too easy to flatten into generic shipping or
+Flywheel already had strong work, review, and commit stages, but runtime-risky
+changes and live incidents were too easy to flatten into generic commit or
 bug fixing. That made blast radius, rollback posture, and mitigation choices
 too implicit.
 
@@ -52,14 +52,14 @@ Use dedicated stages for the decisions that are unique to live systems:
 - `$flywheel:incident` for live issues that start from runtime evidence and need
   mitigation versus rollback versus patch framing
 
-Do not hide those decisions inside `$flywheel:ship` or `$flywheel:debug`.
+Do not hide those decisions inside `$flywheel:commit` or `$flywheel:debug`.
 
 Preferred downstream paths:
 
 ```text
-$flywheel:review -> $flywheel:rollout -> $flywheel:ship
+$flywheel:review -> $flywheel:rollout -> $flywheel:commit
 $flywheel:incident -> $flywheel:debug
-$flywheel:incident -> $flywheel:rollout -> $flywheel:ship
+$flywheel:incident -> $flywheel:rollout -> $flywheel:commit
 ```
 
 ## Why This Matters
@@ -90,7 +90,7 @@ ordinary bug-fix flows from skipping the stabilizing step.
 Use rollout for risky release planning:
 
 ```text
-$flywheel:review -> $flywheel:rollout -> $flywheel:ship
+$flywheel:review -> $flywheel:rollout -> $flywheel:commit
 ```
 
 Use incident before debug when a live problem is still being framed:
@@ -103,7 +103,7 @@ Use incident plus rollout when disablement or rollback is safer than immediate
 patching:
 
 ```text
-$flywheel:incident -> $flywheel:rollout -> $flywheel:ship
+$flywheel:incident -> $flywheel:rollout -> $flywheel:commit
 ```
 
 ## Related

@@ -42,7 +42,7 @@ function deterministicFlywheelIncidentResponse(caseItem, output) {
     ? "Keeps mitigation or rollback decisions explicit."
     : "Does not clearly frame mitigation vs rollback vs patch.";
 
-  const closureSignal = mentionsAny(output, [/ship/i, /\bPR\b/i, /pull request/i, /spin/i, /plan/i, /work/i]);
+  const closureSignal = mentionsAny(output, [/commit/i, /\bPR\b/i, /pull request/i, /spin/i, /plan/i, /work/i]);
   scores["Closure"] = closureSignal ? 2 : 1;
   notes["Closure"] = closureSignal
     ? "Keeps the incident path tied to a real downstream stage."

@@ -1,6 +1,6 @@
 ---
 name: rollout
-description: "Plan the release posture for runtime-risky changes before final shipping. Use when a change affects live behavior, contracts, state, retries, queues, migrations, or blast radius and the immediate job is deciding how to validate, sequence, and roll it out safely."
+description: "Plan the release posture for runtime-risky changes before final commit. Use when a change affects live behavior, contracts, state, retries, queues, migrations, or blast radius and the immediate job is deciding how to validate, sequence, and roll it out safely."
 metadata:
   argument-hint: "[change description, plan path, PR context, or blank to inspect current runtime-risky work]"
 ---
@@ -16,7 +16,7 @@ Use it when the question is not "how do we code this?" but:
 - what signals tell us to continue, pause, mitigate, or roll back?
 
 This skill does not automate deployments. It produces a grounded rollout
-posture, validation playbook, and shipping handoff.
+posture, validation playbook, and commit handoff.
 
 ## Interaction Method
 
@@ -38,7 +38,7 @@ Interpret the input as:
 - a blank request to inspect current work and decide whether rollout is needed
 
 If the change is clearly not runtime-facing or the blast radius is trivial,
-say so plainly and hand off to `$flywheel:ship` with a grounded no-rollout rationale.
+say so plainly and hand off to `$flywheel:commit` with a grounded no-rollout rationale.
 
 ## Reference Loading Map
 
@@ -51,8 +51,8 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `../observability/references/service-readiness-matrix.md` when the
   change crosses contracts, state, retries, queues, migrations, or other
   blast-radius-sensitive boundaries.
-- Read `../ship/references/evidence-bundle.md` when rollout proof should
-  feed `$flywheel:ship`.
+- Read `../commit/references/evidence-bundle.md` when rollout proof should
+  feed `$flywheel:commit`.
 
 ## Core Principles
 
@@ -80,7 +80,7 @@ Ground the rollout in repo and release truth:
   playbooks, queue controls, and environment docs
 - inspect observability surfaces, dashboards, alerts, saved queries, and error
   trackers for the affected path
-- read `.flywheel/config.local.yaml` when present for repo-local ship or
+- read `.flywheel/config.local.yaml` when present for repo-local commit or
   runtime gates
 - inspect the active repo's `docs/solutions/` for prior rollout or incident
   lessons in the same area
@@ -105,7 +105,7 @@ Use rollout when one or more of these are true:
 - the repo or team already expects staged enablement for this surface
 
 If none apply and the runtime impact is small, say that a dedicated rollout
-stage is not needed and hand off to `$flywheel:ship` with the exact rationale.
+stage is not needed and hand off to `$flywheel:commit` with the exact rationale.
 
 ### Phase 3: Choose Rollout Posture
 
@@ -163,7 +163,7 @@ Add only the rollout-specific reusable summary:
 - activation sequence
 - validation window and owner
 - rollback or mitigation trigger
-- any PR-safe evidence references the ship stage should cite
+- any PR-safe evidence references the commit stage should cite
 
 Keep bulky dashboards, raw logs, and detailed incident notes in their native
 locations and reference them from the artifact instead of duplicating them.
@@ -180,7 +180,7 @@ Return a concise rollout brief:
    rollback trigger, owner, and validation window
 6. **Artifacts** - rollout artifact path and shared evidence-bundle path when
    created
-7. **Next handoff** - usually `$flywheel:ship`, or `$flywheel:work` or `$flywheel:plan` if the
+7. **Next handoff** - usually `$flywheel:commit`, or `$flywheel:work` or `$flywheel:plan` if the
    rollout assumptions are not yet satisfiable
 
 ---
@@ -190,4 +190,4 @@ Return a concise rollout brief:
 @./references/rollout-template.md
 @./references/validation-playbook.md
 @../observability/references/service-readiness-matrix.md
-@../ship/references/evidence-bundle.md
+@../commit/references/evidence-bundle.md

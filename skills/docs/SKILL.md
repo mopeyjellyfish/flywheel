@@ -52,7 +52,7 @@ Do not preload every support file. Load only what the current phase needs:
 4. **Update before duplicating** - refresh the strongest existing doc before
    creating a competing one.
 5. **Keep docs reviewable with the code** - when docs work follows
-   implementation, keep it in the same branch before review and ship.
+   implementation, keep it in the same branch before review and commit.
 6. **Ask before broad rewrites** - a large docs sweep changes product surface
    area and should not be smuggled in through a small feature handoff.
 
@@ -83,7 +83,7 @@ Good upstream arguments look like:
 - `Update docs for the webhook retry-policy config change`
 - `Refresh project docs after the checkout workflow rewrite`
 
-If the user declines, continue through the normal review and ship path and note
+If the user declines, continue through the normal review and commit path and note
 that docs were consciously deferred.
 
 ## Workflow
@@ -182,7 +182,7 @@ When the docs pass is complete:
 1. summarize what changed and which Diataxis quadrants were touched
 2. call out any intentionally deferred docs work
 3. if code changes are still waiting, hand back to `$flywheel:review` and then
-   `$flywheel:ship`
+   `$flywheel:commit`
 4. if the work is otherwise complete and the docs pass surfaced a durable repo
    lesson, offer `$flywheel:spin`
 

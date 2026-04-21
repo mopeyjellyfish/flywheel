@@ -77,5 +77,5 @@ Execution note: no-new-tests
 - `skills/rollout/SKILL.md`
 - `skills/optimize/SKILL.md`
 - `skills/spin/SKILL.md`
-- `skills/work/references/shipping-workflow.md`
+- `skills/work/references/commit-workflow.md`
 - `skills/review/references/personas/learnings-researcher.md`

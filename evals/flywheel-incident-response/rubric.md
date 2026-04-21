@@ -7,7 +7,7 @@ Score each dimension `0`, `1`, or `2`.
 ### Earliest Stage
 
 Does the response start at incident handling rather than skipping straight into
-debug or shipping?
+debug or commit?
 
 ### Journey Coherence
 
@@ -23,4 +23,4 @@ Does it keep mitigation, rollback, patch, or rollout decisions explicit?
 
 ### Closure
 
-Does it still point the journey toward safe shipping and final lesson capture?
+Does it still point the journey toward safe commit and final lesson capture?

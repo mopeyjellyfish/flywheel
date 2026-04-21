@@ -171,9 +171,9 @@ Execution note: no-new-tests
   route explanations, and output-contract text use `deepen`, `verify`, and
   `commit`.
 - Update downstream runtime references that currently teach the old names:
-  `skills/debug/SKILL.md`, `skills/ship/SKILL.md`, `skills/work/SKILL.md`,
-  `skills/work/references/shipping-workflow.md`,
-  `skills/ship/references/evidence-bundle.md`, and
+  `skills/debug/SKILL.md`, `skills/commit/SKILL.md`, `skills/work/SKILL.md`,
+  `skills/work/references/commit-workflow.md`,
+  `skills/commit/references/evidence-bundle.md`, and
   `skills/ideate/references/post-ideation-workflow.md`.
 - Update user-facing docs that advertise the command surface, primarily
   `README.md`, and any active solution doc that still names an old skill path
@@ -237,10 +237,10 @@ Execution note: no-new-tests
 - `skills/conventional-commit/agents/openai.yaml` -> `skills/commit/agents/openai.yaml`
 - `skills/start/SKILL.md`
 - `skills/debug/SKILL.md`
-- `skills/ship/SKILL.md`
+- `skills/commit/SKILL.md`
 - `skills/work/SKILL.md`
-- `skills/work/references/shipping-workflow.md`
-- `skills/ship/references/evidence-bundle.md`
+- `skills/work/references/commit-workflow.md`
+- `skills/commit/references/evidence-bundle.md`
 - `skills/ideate/references/post-ideation-workflow.md`
 - `README.md`
 - `docs/solutions/operational-guidance/shared-evidence-bundle-for-stage-handoffs-2026-04-19.md`

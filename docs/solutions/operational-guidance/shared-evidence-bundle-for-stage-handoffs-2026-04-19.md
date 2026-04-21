@@ -13,11 +13,11 @@ files_touched:
   - skills/review/SKILL.md
   - skills/optimize/SKILL.md
   - skills/verify/SKILL.md
-  - skills/ship/SKILL.md
-  - skills/ship/references/evidence-bundle.md
+  - skills/commit/SKILL.md
+  - skills/commit/references/evidence-bundle.md
 applies_when:
   - browser proof, review, optimization, or verification output should feed a later Flywheel stage
-  - a PR or shipping step needs reusable proof without depending on chat history
+  - a PR or commit step needs reusable proof without depending on chat history
 symptoms:
   - later stages had to rediscover evidence from prior stages
   - proof reuse risked copying raw local artifacts or sensitive payloads into PR text
@@ -25,7 +25,7 @@ root_cause: workflow_gap
 resolution_type: workflow_improvement
 tags:
   - evidence-bundle
-  - shipping
+  - commit
   - review-handoff
   - browser-proof
   - verification
@@ -63,7 +63,7 @@ The bundle should carry only what downstream stages need:
 - whether the item is `clean`, `redacted`, or `local-only`
 - whether the item is safe for PR reuse or summary-only
 
-`$flywheel:ship` should read the bundle first when it exists and include only
+`$flywheel:commit` should read the bundle first when it exists and include only
 sanitized, PR-safe items in the PR story.
 
 ## Why This Matters
@@ -76,8 +76,8 @@ dumps.
 ## When to Apply
 
 - when browser-visible work produces screenshots, snapshots, or trace notes
-- when review produces a verdict that shipping should cite
-- when optimization or verification creates proof that must survive into ship
+- when review produces a verdict that commit should cite
+- when optimization or verification creates proof that must survive into commit
 - when local raw artifacts are useful but not safe to paste into a PR
 
 ## Examples

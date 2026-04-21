@@ -29,4 +29,4 @@ the models or snapshots and holding the harness or judge setup constant?
 
 ### Workflow Handoff
 
-Does it route successful changes back into review and ship?
+Does it route successful changes back into review and commit?

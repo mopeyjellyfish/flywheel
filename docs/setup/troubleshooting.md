@@ -105,7 +105,7 @@ Fix:
 ### GitHub review or PR work is blocked
 
 Symptom:
-- review or ship cannot fetch or update PR state
+- review or commit cannot fetch or update PR state
 
 Check:
 - `gh auth status`

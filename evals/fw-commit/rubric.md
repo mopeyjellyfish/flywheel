@@ -1,10 +1,10 @@
-# `fw-ship` Grading Rubric
+# `fw-commit` Grading Rubric
 
 Score each dimension `0`, `1`, or `2`.
 
 ## Dimensions
 
-### Shipping Path
+### Commit Path
 
 Does it clearly describe commit, push, and PR flow?
 
@@ -27,3 +27,8 @@ Does it protect the default branch?
 ### Commit Honesty
 
 Does it preserve commit honesty and breaking-change checks?
+
+### Spin Offer Discipline
+
+After commit, does it offer `spin` only when a durable project lesson is
+worth preserving?

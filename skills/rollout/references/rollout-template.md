@@ -35,5 +35,5 @@ Use this template for the local rollout handoff artifact.
 - PR-safe summary bullets:
 ```
 
-Keep the artifact short enough that `$flywheel:ship` can summarize it without
+Keep the artifact short enough that `$flywheel:commit` can summarize it without
 guessing.

@@ -1,8 +1,8 @@
 ---
 name: setup
-description: "Diagnose and bootstrap the repo-local development environment for Flywheel work. Use when onboarding a repo, checking whether the machine can execute the project workflow, reconciling setup after a Flywheel update, validating host security posture, or proving which tools and commands are actually available before planning, work, review, or shipping."
+description: "Diagnose and bootstrap the repo-local development environment for Flywheel work. Use when onboarding a repo, checking whether the machine can execute the project workflow, reconciling setup after a Flywheel update, validating host security posture, or proving which tools and commands are actually available before planning, work, review, or commit."
 metadata:
-  argument-hint: "[blank to inspect current repo, or pass a focus such as project, security, worktrees, review, shipping, doctor, or evals]"
+  argument-hint: "[blank to inspect current repo, or pass a focus such as project, security, worktrees, review, commit, doctor, or evals]"
 ---
 
 # Setup And Bootstrap
@@ -60,7 +60,7 @@ Interpret a provided argument as optional emphasis:
 - `worktrees` -> isolate branch and worktree readiness
 - `browser` -> browser-proof and acceptance-test readiness
 - `review` -> GitHub CLI, diff, and review-surface readiness
-- `shipping` -> commit, push, PR, and branch-safety readiness
+- `commit` -> commit, push, PR, and branch-safety readiness
 - `doctor` -> repo-owned health checks, recovery wrappers, and Flywheel-local readiness
 - `evals` -> local harness and comparison-tool readiness
 - `optimize` -> telemetry access, measurement paths, and optimization readiness
@@ -131,7 +131,7 @@ From that pass, determine:
 - whether browser-proof work is likely in this repo and whether the project
   already uses Playwright or other browser automation
 - whether local workflow policy already exists for browser proof, reproducer
-  requirements, review-before-ship, or runtime validation
+  requirements, review-before-commit, or runtime validation
 - whether the repo already expects isolated worktrees
 - whether the repo appears Datadog-first, OTel-native-first, or local-only for
   runtime telemetry
@@ -172,7 +172,7 @@ Also check workflow-specific readiness:
 - **planning/work** - tests, lint, typecheck, dev boot
 - **browser** - acceptance-test proof via `playwright-cli`
 - **review** - GitHub auth, clean diff scope, base-branch resolution surfaces
-- **shipping** - commit, push, PR, and branch safety
+- **commit** - commit, push, PR, and branch safety
 - **worktrees** - `.worktrees/` ignore coverage and env-file strategy
 - **doctor / recovery** - repo-owned health checks, plugin or tool recovery
   wrappers, and troubleshooting docs when present
@@ -237,7 +237,7 @@ When fixes are needed, present a short choice surface:
 
 1. **Minimum viable bootstrap** (recommended) - only unblock the immediate
    workflow
-2. **Workflow-ready bootstrap** - immediate workflow plus review, shipping, and
+2. **Workflow-ready bootstrap** - immediate workflow plus review, commit, and
    worktree readiness
 3. **Full local environment** - everything the repo appears to support,
    including eval and optional tooling
@@ -276,9 +276,9 @@ Typical config values worth persisting:
 - reusable dev command or base URL when the repo has a stable local surface
 - preferred optimization backend and environment
 - whether bug fixes must prove a reproducer before implementation
-- whether review is required before shipping
+- whether review is required before commit
 - whether runtime changes must carry explicit operational validation
-- whether shipping should require browser proof for browser-visible changes
+- whether commit should require browser proof for browser-visible changes
 - worktree env-copy posture
 - security posture, trusted MCP servers, and sandbox or devcontainer preference
 
@@ -352,4 +352,4 @@ explicitly in both **Required now** and **Browser proof readiness**, and include
 the next runnable setup command.
 
 If the repo is already ready, say so clearly and name the next usable workflow
-surface, such as `$flywheel:plan`, `$flywheel:work`, `$flywheel:review`, or `$flywheel:ship`.
+surface, such as `$flywheel:plan`, `$flywheel:work`, `$flywheel:review`, or `$flywheel:commit`.

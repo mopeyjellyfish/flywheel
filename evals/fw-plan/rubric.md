@@ -24,7 +24,10 @@ radius?
 
 ### Workflow Handoff
 
-Does it preserve planning -> work as the next stage?
+Does it preserve planning -> document-review -> user choice between deepen and
+work as the next stage, rather than sliding into execution automatically?
+Strong handoff should also make it clear what changed during planning, what the
+plan review found, and what execution would start with.
 
 ### Restraint
 

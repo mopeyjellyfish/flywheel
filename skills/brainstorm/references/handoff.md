@@ -11,10 +11,16 @@ Present the options using the platform's blocking question tool if one exists.
 If no question tool is available, present the numbered options in chat and wait
 for the user's reply before proceeding.
 
-If no requirements document exists, first present a compact synthesis block in
-chat that includes:
+Before presenting the menu, summarize:
 
-- problem frame
+- what Flywheel now believes the problem or opportunity is
+- what changed from the user's starting frame
+- what remains open, if anything
+- what `$flywheel:plan` would work on first
+
+If no requirements document exists, present that summary as a compact synthesis
+block in chat that also includes:
+
 - key decisions
 - scope boundaries
 - success criteria
@@ -41,18 +47,12 @@ Present only the options that apply, keeping the total at 4 or fewer:
 
 - **Proceed to planning (Recommended)** - Move to `$flywheel:plan` for structured
   implementation planning. Shown only when `Resolve Before Planning` is empty.
-- **Proceed directly to work** - Skip planning and move to `$flywheel:work`; suited
-  to lightweight, well-defined changes. Shown only when
-  `Resolve Before Planning` is empty **and** scope is lightweight, success
-  criteria are clear, scope boundaries are clear, and no meaningful technical
-  or research questions remain **and** either a compact requirements document
-  exists or the synthesis block above is present (the "direct-to-work gate").
 - **Continue the brainstorm** - Answer more clarifying questions to tighten
   scope, edge cases, and preferences. Always shown.
 - **Open in Proof (web app) — review and comment to iterate with the agent** -
   Open the doc in Proof, iterate with the agent via comments, or copy a link
-  to share with others. Shown only when a requirements document exists, the
-  direct-to-work gate is not satisfied, and the `proof` skill or an equivalent
+  to share with others. Shown only when a requirements document exists and the
+  `proof` skill or an equivalent
   HITL review tool exists.
 - **Done for now** - Pause; the requirements doc is saved and can be resumed
   later. Always shown.
@@ -70,12 +70,6 @@ Immediately run `$flywheel:plan` in the current session. Pass the requirements
 document path when one exists; otherwise pass a concise summary of the finalized
 brainstorm decisions using the synthesis block format above. Do not print the
 closing summary first.
-
-**If user selects "Proceed directly to work":**
-
-Immediately run `$flywheel:work` in the current session using the finalized brainstorm
-output as context. If a compact requirements document exists, pass its path. Do
-not print the closing summary first.
 
 **If user selects "Continue the brainstorm":**
 
@@ -129,6 +123,10 @@ Key decisions:
 - [Decision 1]
 - [Decision 2]
 
+What changed:
+- [Clarification or correction 1]
+- [Clarification or correction 2]
+
 Recommended next step: `$flywheel:plan`
 ```
 
@@ -142,6 +140,10 @@ Requirements doc: docs/brainstorms/YYYY-MM-DD-<topic>-requirements.md  # if one 
 Planning is blocked by:
 - [Blocking question 1]
 - [Blocking question 2]
+
+What changed so far:
+- [Clarification or correction 1]
+- [Clarification or correction 2]
 
 Resume with `$flywheel:brainstorm` when ready to resolve these before planning.
 ```

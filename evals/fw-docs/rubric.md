@@ -42,5 +42,5 @@ Does it choose sensible target files or directories?
 Does it behave like a Flywheel stage rather than a generic writing pass?
 
 - treats docs as a post-work or direct documentation stage
-- hands back to review or ship when appropriate
+- hands back to review or commit when appropriate
 - allows a no-op when docs do not need to change

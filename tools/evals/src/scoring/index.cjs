@@ -15,7 +15,7 @@ const { deterministicPolish } = require("./fw-polish.cjs");
 const { deterministicReview } = require("./fw-review.cjs");
 const { deterministicRun } = require("./fw-run.cjs");
 const { deterministicSetup } = require("./fw-setup.cjs");
-const { deterministicShip } = require("./fw-ship.cjs");
+const { deterministicCommit } = require("./fw-commit.cjs");
 const { deterministicSpin } = require("./fw-spin.cjs");
 const { deterministicWork } = require("./fw-work.cjs");
 const { deterministicWorktree } = require("./fw-worktree.cjs");
@@ -75,8 +75,8 @@ function getDeterministicSuiteScorer(suiteId) {
   if (suiteId === "fw-debug") {
     return deterministicDebug;
   }
-  if (suiteId === "fw-ship") {
-    return deterministicShip;
+  if (suiteId === "fw-commit") {
+    return deterministicCommit;
   }
   if (suiteId === "fw-optimize") {
     return deterministicOptimize;

@@ -18,4 +18,4 @@ Does it address screenshot, snapshot, and sensitive-data handling?
 
 ### Workflow Handoff
 
-Does it carry browser proof into review or ship instead of ending locally?
+Does it carry browser proof into review or commit instead of ending locally?

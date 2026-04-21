@@ -7,7 +7,7 @@ Score each dimension `0`, `1`, or `2`.
 ### Trigger Discipline
 
 Does it distinguish between changes that need dedicated rollout planning and
-those that can go straight to shipping?
+those that can go straight to commit?
 
 ### Blast Radius Grounding
 
@@ -23,6 +23,6 @@ Does it choose and justify a concrete rollout posture?
 Does it define healthy signals, failure signals, and rollback or mitigation
 triggers?
 
-### Shipping Handoff
+### Commit Handoff
 
-Does it produce a clear artifact or handoff into shipping?
+Does it produce a clear artifact or handoff into commit?

@@ -1,6 +1,6 @@
 ---
 name: incident
-description: "Handle production or runtime incidents from live evidence. Use when the work starts from alerts, logs, traces, metrics, or visible degradation and the immediate job is to bound blast radius, choose mitigation vs rollback vs patch, and hand off cleanly into debug, planning, rollout, or shipping."
+description: "Handle production or runtime incidents from live evidence. Use when the work starts from alerts, logs, traces, metrics, or visible degradation and the immediate job is to bound blast radius, choose mitigation vs rollback vs patch, and hand off cleanly into debug, planning, rollout, or commit."
 metadata:
   argument-hint: "[incident report, alert, log/trace summary, issue, or blank to inspect current runtime evidence]"
 ---
@@ -50,8 +50,8 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `../observability/references/service-readiness-matrix.md` when the
   incident crosses contracts, state, retries, queues, or other blast-radius-
   sensitive boundaries.
-- Read `../ship/references/evidence-bundle.md` when incident evidence should
-  feed later debug, rollout, or ship work.
+- Read `../commit/references/evidence-bundle.md` when incident evidence should
+  feed later debug, rollout, or commit work.
 
 ## Core Principles
 
@@ -64,7 +64,7 @@ Do not preload every reference. Load only what the current phase needs:
 4. **Preserve the evidence trail** - later debug and rollout work should not
    depend on memory or chat alone.
 5. **Route as soon as the next job is clear** - use `$flywheel:debug`, `$flywheel:rollout`,
-   `$flywheel:plan`, `$flywheel:work`, or `$flywheel:ship` once the incident posture is decided.
+   `$flywheel:plan`, `$flywheel:work`, or `$flywheel:commit` once the incident posture is decided.
 
 ## Workflow
 
@@ -79,7 +79,7 @@ Ground the incident in current truth:
   active repo's `docs/solutions/`
 - inspect `.flywheel/config.local.yaml` when present for repo-local bug-fix or
   runtime gates
-- inspect the latest review, rollout, shipping, or evidence-bundle artifacts if
+- inspect the latest review, rollout, commit, or evidence-bundle artifacts if
   the incident likely ties back to a recent change
 
 Capture:
@@ -151,7 +151,7 @@ Preserve only what later stages need:
 Then route cleanly:
 
 - **mitigate or patch** -> `$flywheel:debug`
-- **rollback or staged disablement** -> `$flywheel:rollout` or `$flywheel:ship`
+- **rollback or staged disablement** -> `$flywheel:rollout` or `$flywheel:commit`
 - **design-level follow-up after stabilization** -> `$flywheel:plan` or
   `$flywheel:brainstorm`
 
@@ -166,7 +166,7 @@ Return a concise incident brief:
 5. **Artifact paths** - incident artifact path and shared evidence-bundle path
    when created
 6. **Next handoff** - `$flywheel:debug`, `$flywheel:rollout`, `$flywheel:plan`, `$flywheel:work`, or
-   `$flywheel:ship`
+   `$flywheel:commit`
 
 ---
 
@@ -175,4 +175,4 @@ Return a concise incident brief:
 @./references/incident-template.md
 @./references/decision-matrix.md
 @../observability/references/service-readiness-matrix.md
-@../ship/references/evidence-bundle.md
+@../commit/references/evidence-bundle.md

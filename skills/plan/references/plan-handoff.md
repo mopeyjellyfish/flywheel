@@ -71,19 +71,43 @@ After document-review completes, present the options using the platform's
 blocking question tool when available. Otherwise present numbered options in
 chat and wait for the user's reply.
 
+Before presenting options, summarize:
+
+- what the plan now covers
+- what changed or sharpened during planning
+- the most important decisions or tradeoffs that were locked in
+- what still needs user confirmation or is intentionally deferred
+- what execution would work on first
+
 **Question:** "Plan ready at `docs/plans/YYYY-MM-DD-NNN-<type>-<name>-plan.md`.
 What would you like to do next?"
 
-**Options:**
+Present 2-4 explicit options with the recommended choice first.
 
-1. **Start `$flywheel:work`** (recommended) — begin implementing this plan in the
-   current session
-2. **Create Issue** — create a tracked issue from this plan in the configured
+If the review pass surfaced material findings, unresolved tradeoffs, or the
+user asked for more rigor, use:
+
+1. **Deepen the plan** (recommended) — run `$flywheel:deepen` on this reviewed
+   plan before execution
+2. **Start `$flywheel:work` now** — begin implementing this plan in the current
+   session
+3. **Create Issue** — create a tracked issue from this plan in the configured
    issue tracker
-3. **Open in Proof (web app) — review and comment to iterate with the agent** —
-   only show this when the `proof` skill or an equivalent HITL review tool
-   exists
 4. **Done for now** — pause; the plan file is saved and can be resumed later
+
+If the reviewed plan is clean and the remaining uncertainty is low, use:
+
+1. **Start `$flywheel:work` now** (recommended) — begin implementing this plan
+   in the current session
+2. **Deepen the plan** — run `$flywheel:deepen` on this reviewed plan before
+   execution
+3. **Create Issue** — create a tracked issue from this plan in the configured
+   issue tracker
+4. **Done for now** — pause; the plan file is saved and can be resumed later
+
+If the `proof` skill or an equivalent HITL review tool exists, mention that
+option in prose alongside the menu instead of replacing the explicit review
+and deepen/work choice above.
 
 **Surface additional document-review context contextually, not as a menu
 fixture:** when the prior review pass surfaced residual `P0` or `P1` findings
@@ -92,14 +116,14 @@ offer another review pass in prose. Do not add it to the option list.
 
 Based on selection:
 
-- **Start `$flywheel:work`** → call `$flywheel:work` with the plan path
+- **Deepen the plan** → call `$flywheel:deepen` with the plan path
+- **Start `$flywheel:work` now** → call `$flywheel:work` with the plan path
 - **Create Issue** → follow the issue creation section below
-- **Open in Proof** → only when the proof skill or equivalent exists; otherwise
-  explain briefly and return to the options
 - **Done for now** → confirm the plan file is saved and end the turn
 - **If the user asks for another document review** → rerun `document-review`
   with the plan path, then return to the options
-- **Other free-form revisions** → revise the plan, then return to the options
+- **Other free-form revisions** → revise the plan in place, rerun
+  `document-review` on the updated plan, then return to the options
 
 ## Issue Creation
 

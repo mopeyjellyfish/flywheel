@@ -26,4 +26,4 @@ When browser-visible, does it call for browser proof before completion?
 
 ### Workflow Closure
 
-Does it preserve the path into review and ship?
+Does it preserve the default path into review and commit while keeping helper-stage handoffs honest?

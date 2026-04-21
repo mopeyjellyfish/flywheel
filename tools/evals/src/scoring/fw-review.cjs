@@ -13,11 +13,11 @@ function deterministicReview(caseItem, output) {
     ? "Mentions review structure or outputs."
     : "Does not clearly present a review-shaped output.";
 
-  const shipSignal = mentionsAny(output, [/\$flywheel:ship\b/i, /\/flywheel:ship\b/i, /\/flywheel:ship\b/i]);
-  scores["Shipping Handoff"] = shipSignal ? 2 : 0;
-  notes["Shipping Handoff"] = shipSignal
-    ? "Preserves ship as the downstream handoff."
-    : "Does not clearly hand off from review into shipping.";
+  const shipSignal = mentionsAny(output, [/\$flywheel:commit\b/i, /\/flywheel:commit\b/i, /\/flywheel:commit\b/i]);
+  scores["Commit Handoff"] = shipSignal ? 2 : 0;
+  notes["Commit Handoff"] = shipSignal
+    ? "Preserves commit as the downstream handoff."
+    : "Does not clearly hand off from review into commit.";
 
   const headlessCase = /mode:headless/i.test(caseItem.arguments);
   if (headlessCase) {

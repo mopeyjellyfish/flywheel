@@ -5,9 +5,13 @@ function deterministicBrainstorm(caseItem, output) {
   const notes = {};
 
   const requirementsSignal = mentionsAny(output, [/requirements/i, /requirements document/i, /success criteria/i, /scope/i]);
-  scores["Requirements Focus"] = requirementsSignal ? 2 : 0;
+  const collaborationSignal = mentionsAny(output, [/\bask\b/i, /\bquestion\b/i, /\bclarify\b/i, /\bwhat are you thinking\b/i, /\bconstraint\b/i]);
+  const optionSignal = mentionsAny(output, [/recommended/i, /\bcustom\b/i, /\boption\b/i, /^\d+\.\s+/m]);
+  scores["Requirements Focus"] = requirementsSignal ? (collaborationSignal || optionSignal ? 2 : 1) : 0;
   notes["Requirements Focus"] = requirementsSignal
-    ? "Focuses on requirements and scope."
+    ? collaborationSignal || optionSignal
+      ? "Focuses on requirements and scope through collaborative discovery or bounded choices."
+      : "Focuses on requirements and scope, but does not clearly show collaborative questioning."
     : "Does not clearly focus on requirements.";
 
   const scopeSignal = mentionsAny(output, [/lightweight/i, /standard/i, /deep/i, /clear requirements/i, /alignment/i, /capture now/i]);
@@ -17,9 +21,12 @@ function deterministicBrainstorm(caseItem, output) {
     : "Does not clearly assess scope or ceremony level.";
 
   const artifactSignal = mentionsAny(output, [/docs\/brainstorms/i, /requirements doc/i, /brief/i]);
-  scores["Artifact Discipline"] = artifactSignal ? 2 : 1;
+  const summarySignal = mentionsAny(output, [/what changed/i, /still open/i, /unresolved/i, /next step/i, /planning is blocked/i]);
+  scores["Artifact Discipline"] = artifactSignal ? (summarySignal ? 2 : 1) : 1;
   notes["Artifact Discipline"] = artifactSignal
-    ? "Mentions the durable brainstorm artifact."
+    ? summarySignal
+      ? "Mentions the durable brainstorm artifact and leaves a checkpoint summary."
+      : "Mentions the durable brainstorm artifact, but not a clear checkpoint summary."
     : "Keeps the output conversational but does not clearly name the artifact.";
 
   const handoffSignal = mentionsAny(output, [/\$flywheel:plan\b/i, /\/flywheel:plan\b/i, /\/flywheel:plan\b/i]);

@@ -12,7 +12,9 @@ metadata:
 Use it when a plan already exists but needs a more rigorous pass before
 implementation starts.
 
-This skill improves the plan. It does not implement the work.
+This skill improves the plan. It does not implement the work. The result should
+return the plan to a reviewed state so the user can deliberately choose whether
+to deepen again or start implementation.
 
 ## Workflow
 
@@ -66,11 +68,20 @@ Update the plan so it is materially easier to execute:
 - simplify over-engineered plan structure where the work does not need it
 - make deferred questions explicit instead of leaving them implicit
 
-### Phase 5: Report
+### Phase 5: Re-Review The Updated Plan
+
+After the plan is strengthened, rerun `document-review` on the updated plan,
+preferably in headless mode when the host supports it.
+
+Use that pass to confirm whether the plan is now clean enough for execution or
+whether another deepen pass is still warranted.
+
+### Phase 6: Report
 
 Return:
 
 1. **Plan deepened**
 2. **Main gaps fixed**
-3. **Remaining open questions**
-4. **Recommended next move** — usually `$flywheel:work`
+3. **Residual review findings or open questions**
+4. **Recommended next move** — either another `$flywheel:deepen` pass or
+   `$flywheel:work`

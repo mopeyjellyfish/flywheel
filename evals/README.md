@@ -43,7 +43,7 @@ Current suites:
 - `fw-review`
 - `fw-debug`
 - `fw-docs`
-- `fw-ship`
+- `fw-commit`
 - `fw-spin`
 - `fw-optimize`
 - `logging`

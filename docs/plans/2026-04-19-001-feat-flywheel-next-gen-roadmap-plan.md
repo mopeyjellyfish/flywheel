@@ -33,7 +33,7 @@ outside the center of the loop:
 
 - no dedicated rollout or change-management workflow for runtime-risky changes
 - no dedicated incident workflow that starts from runtime evidence
-- no unified evidence artifact that shipping can consume
+- no unified evidence artifact that commit can consume
 - no fully productized setup and recovery shell
 - no end-to-end eval story for whole workflows
 
@@ -89,7 +89,7 @@ leverage and product polish over marketplace breadth. See origin:
   duplicate.
 - `skills/review/SKILL.md` already has lazy-loading reviewer and stack-pack
   infrastructure that should remain the extensibility model.
-- `skills/ship/SKILL.md` already requires operational validation notes and
+- `skills/commit/SKILL.md` already requires operational validation notes and
   evidence hygiene, making it the natural evidence-bundle consumer.
 - `skills/debug/SKILL.md` already enforces evidence-before-fix discipline and
   should become the main downstream integration point for incident work.
@@ -109,7 +109,7 @@ leverage and product polish over marketplace breadth. See origin:
 ## Key Technical Decisions
 
 - **Add `fw-rollout` and `fw-incident` as explicit skills**: these are distinct
-  enough to deserve named workflows instead of hiding inside `fw-ship` or
+  enough to deserve named workflows instead of hiding inside `fw-commit` or
   `fw-debug`.
 - **Keep strictness in local config**: policy overlays belong in
   `.flywheel/config.local.yaml` and the setup template, not as unconditional
@@ -117,7 +117,7 @@ leverage and product polish over marketplace breadth. See origin:
 - **Use a shared evidence contract, not stage-specific ad hoc notes**:
   `fw-browser-test`, `fw-review`, `fw-optimize`, and
   `verification-before-completion` should produce compatible evidence that
-  `fw-ship` can consume.
+  `fw-commit` can consume.
 - **Productize setup through existing surfaces first**: extend `fw-setup`,
   durable local config, repo docs, and a small doctor surface rather than
   building a large separate installation subsystem.
@@ -143,7 +143,7 @@ leverage and product polish over marketplace breadth. See origin:
   the behavior has already been covered by the same unit's eval additions.
 - **Material hypotheses:**
   - A dedicated rollout skill will improve runtime-risky change handling
-    without bloating `fw-ship`.
+    without bloating `fw-commit`.
   - A dedicated incident skill will let production issues start from runtime
     evidence and still route back into the main Flywheel loop cleanly.
   - A small set of strict local policy keys can strengthen risky work without
@@ -159,7 +159,7 @@ leverage and product polish over marketplace breadth. See origin:
   and doctor surfaces remain the main verification path. Let implementation use
   repo-owned validation surfaces rather than inventing a separate test runner.
 - **Public contracts to protect:** skill names, repo-relative path discipline,
-  lazy-loading posture, `fw:setup` bootstrap expectations, `fw:ship` evidence
+  lazy-loading posture, `fw:setup` bootstrap expectations, `fw:commit` evidence
   and monitoring expectations, and the current Codex / Claude install story.
 - **Primary test surfaces:** `evals/*`, `tools/evals/*`, durable artifact
   generation under `.context/flywheel-evals-*`, and targeted documentation
@@ -214,7 +214,7 @@ leverage and product polish over marketplace breadth. See origin:
       fw-setup/SKILL.md
       fw-work/SKILL.md
       fw-review/SKILL.md
-      fw-ship/SKILL.md
+      fw-commit/SKILL.md
       fw-debug/SKILL.md
       fw-run/SKILL.md
       fw-browser-test/SKILL.md
@@ -235,12 +235,12 @@ leverage and product polish over marketplace breadth. See origin:
 > *This illustrates the intended approach and is directional guidance for review, not implementation specification.*
 
 ```text
-router -> brainstorm -> plan -> work -> review -> rollout? -> ship -> spin
+router -> brainstorm -> plan -> work -> review -> rollout? -> commit -> spin
                                  \-> incident -> debug -> plan/work -> review
 
 strict local policy
   -> setup discovers and persists posture
-  -> work/review/ship/debug enforce only the configured gates
+  -> work/review/commit/debug enforce only the configured gates
 
 evidence producers
   -> browser-test
@@ -252,7 +252,7 @@ evidence producers
   shared evidence bundle
         |
         v
-      ship / rollout
+      commit / rollout
 
 validation surfaces
   -> per-skill evals
@@ -277,13 +277,13 @@ workflow gates without making the default path heavy.
 - Modify: `skills/setup/SKILL.md`
 - Modify: `skills/work/SKILL.md`
 - Modify: `skills/review/SKILL.md`
-- Modify: `skills/ship/SKILL.md`
+- Modify: `skills/commit/SKILL.md`
 - Modify: `skills/debug/SKILL.md`
 - Modify: `README.md`
 - Test: `evals/fw:setup/cases.jsonl`
 - Test: `evals/fw:work/cases.jsonl`
 - Test: `evals/fw:review/cases.jsonl`
-- Test: `evals/fw:ship/cases.jsonl`
+- Test: `evals/fw:commit/cases.jsonl`
 - Test: `evals/verification-before-completion/cases.jsonl`
 
 **Test posture:** `tdd` -- the policy surface is behavior-bearing guidance and
@@ -293,7 +293,7 @@ should be pinned with failing eval expectations before the skill text shifts.
 - Define a compact set of local policy keys for browser proof, reproducer
   requirements, review requirements, and runtime validation.
 - Teach setup to discover and persist those keys.
-- Thread policy-aware language into work, review, ship, and debug without
+- Thread policy-aware language into work, review, commit, and debug without
   making unconfigured repos slower by default.
 
 **Execution note:** Keep the config surface intentionally small; a few clear
@@ -306,14 +306,14 @@ keys are better than a dense policy taxonomy.
 
 **Test scenarios:**
 - A setup path can recommend and persist strict policy settings for risky repos.
-- Work and ship reflect configured proof requirements without implying they are
+- Work and commit reflect configured proof requirements without implying they are
   universal defaults.
 - Debug can require a reproducer when the policy says so.
 
 **Red signal:** New eval cases assert policy-aware workflow behavior that the
 current skill text does not yet satisfy.
 
-**Green signal:** Updated eval cases for setup, work, review, ship, and
+**Green signal:** Updated eval cases for setup, work, review, commit, and
 verification pass with the new policy model in place.
 
 **Verification:**
@@ -381,7 +381,7 @@ prepare a clean readiness summary for first-run and upgrade-time flows.
 - [x] **Unit 3: Unified Evidence Bundle**
 
 **Goal:** Create one evidence contract that browser proof, review, optimize,
-and verification stages can write and shipping can consume.
+and verification stages can write and commit can consume.
 
 **Requirements:** R3, R7, R8, R10
 
@@ -392,13 +392,13 @@ and verification stages can write and shipping can consume.
 - Modify: `skills/review/SKILL.md`
 - Modify: `skills/optimize/SKILL.md`
 - Modify: `skills/verification-before-completion/SKILL.md`
-- Modify: `skills/ship/SKILL.md`
-- Create: `skills/ship/references/evidence-bundle.md`
+- Modify: `skills/commit/SKILL.md`
+- Create: `skills/commit/references/evidence-bundle.md`
 - Modify: `README.md`
 - Test: `evals/fw:browser-test/cases.jsonl`
 - Test: `evals/fw:review/cases.jsonl`
 - Test: `evals/fw:optimize/cases.jsonl`
-- Test: `evals/fw:ship/cases.jsonl`
+- Test: `evals/fw:commit/cases.jsonl`
 - Test: `evals/verification-before-completion/cases.jsonl`
 
 **Test posture:** `tdd` -- the evidence contract should be pinned with eval
@@ -407,36 +407,36 @@ expectations before producer and consumer wording are updated.
 **Approach:**
 - Define a minimal shared evidence shape and expected artifact location.
 - Update proof-producing stages to write or reference evidence in that shape.
-- Update shipping to consume the bundle rather than depending on scattered chat
+- Update commit to consume the bundle rather than depending on scattered chat
   context.
 
 **Execution note:** Keep the evidence contract small and human-readable; avoid
   inventing a heavy schema registry.
 
 **Patterns to follow:**
-- `skills/ship/SKILL.md`
+- `skills/commit/SKILL.md`
 - `skills/browser-test/SKILL.md`
 - `skills/verification-before-completion/SKILL.md`
 
 **Test scenarios:**
-- Browser-visible work can carry safe proof into shipping.
+- Browser-visible work can carry safe proof into commit.
 - Review outcomes and verification evidence can be summarized in one bundle.
 - Sensitive-data hygiene remains explicit even when evidence is centralized.
 
 **Red signal:** New eval cases require a shared evidence bundle or contract that
 the current skills do not yet describe.
 
-**Green signal:** Browser-test, review, optimize, verification, and ship evals
+**Green signal:** Browser-test, review, optimize, verification, and commit evals
 pass with a consistent evidence-bundle story.
 
 **Verification:**
-- PR-body and shipping guidance still preserve the existing 90%-confidence
+- PR-body and commit guidance still preserve the existing 90%-confidence
   sensitive-data rule.
 
 - [x] **Unit 4: Rollout Workflow**
 
 **Goal:** Add `fw-rollout` as the first-class path for runtime-risky change
-management before final shipping closure.
+management before final commit closure.
 
 **Requirements:** R1, R3, R4, R7, R8
 
@@ -449,7 +449,7 @@ management before final shipping closure.
 - Modify: `skills/start/SKILL.md`
 - Modify: `skills/work/SKILL.md`
 - Modify: `skills/review/SKILL.md`
-- Modify: `skills/ship/SKILL.md`
+- Modify: `skills/commit/SKILL.md`
 - Modify: `skills/observability/SKILL.md`
 - Modify: `README.md`
 - Create: `evals/fw:rollout/manifest.json`
@@ -460,7 +460,7 @@ management before final shipping closure.
 introduced only alongside its own eval pack.
 
 **Approach:**
-- Define when rollout is the right stage and how it hands off into shipping.
+- Define when rollout is the right stage and how it hands off into commit.
 - Make rollout own compatibility posture, change sequencing, failure signals,
   rollback triggers, validation windows, and owners.
 - Integrate rollout with the evidence bundle and operational validation story.
@@ -469,14 +469,14 @@ introduced only alongside its own eval pack.
   validation posture, not deployment automation.
 
 **Patterns to follow:**
-- `skills/ship/SKILL.md`
+- `skills/commit/SKILL.md`
 - `skills/observability/SKILL.md`
 - `skills/work/SKILL.md`
 
 **Test scenarios:**
-- Runtime-risky changes route into rollout instead of being flattened into ship.
+- Runtime-risky changes route into rollout instead of being flattened into commit.
 - Rollout choices stay grounded in blast radius, compatibility, and validation.
-- Rollout produces a handoff artifact that ship can summarize cleanly.
+- Rollout produces a handoff artifact that commit can summarize cleanly.
 
 **Red signal:** The new `fw-rollout` eval pack fails because no dedicated
 workflow exists yet and existing stages do not express the required posture.
@@ -492,7 +492,7 @@ recognize rollout as part of the risky-change path.
 
 **Goal:** Add `fw-incident` as the first-class path for production issues that
 begin with runtime evidence and may flow into debug, planning, implementation,
-review, and shipping.
+review, and commit.
 
 **Requirements:** R1, R3, R5, R6, R8
 
@@ -587,7 +587,7 @@ cases before harness changes are introduced.
 
 **Test scenarios:**
 - A runtime-risky change path can be evaluated from planning through rollout
-  and shipping expectations.
+  and commit expectations.
 - An incident path can be evaluated from runtime evidence through debug and
   downstream routing.
 - Existing per-skill validation still works after scenario support lands.
@@ -605,7 +605,7 @@ without regressing existing suite behavior.
 ## System-Wide Impact
 
 - **Interaction graph:** router -> setup / brainstorm / plan / work / review /
-  rollout / ship / spin, with incident feeding debug, plan, work, and rollout
+  rollout / commit / spin, with incident feeding debug, plan, work, and rollout
   as needed.
 - **Error propagation:** missing config, missing doctor readiness, or missing
   evidence should fail with explicit routing and recovery steps rather than
@@ -648,7 +648,7 @@ without regressing existing suite behavior.
 - Related code: `skills/setup/SKILL.md`
 - Related code: `skills/work/SKILL.md`
 - Related code: `skills/review/SKILL.md`
-- Related code: `skills/ship/SKILL.md`
+- Related code: `skills/commit/SKILL.md`
 - Related code: `skills/debug/SKILL.md`
 - Related code: `scripts/flywheel-eval.js`
 - Related code: `.flywheel/config.local.example.yaml`
