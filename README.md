@@ -49,10 +49,12 @@ Use the host's native syntax:
 - Claude Code: `/flywheel:<stage>`
 
 Flywheel's interaction contract is shared across hosts: use the host's
-structured choice UI instead of asking for raw `1/2/3` replies. Risky-edge
-hook guardrails are bundled with the Claude plugin install. Codex uses an
-optional global `~/.codex/hooks.json` guardrail because current Codex hooks are
-repo-local or user-global rather than plugin-bundled.
+structured choice UI instead of asking for raw `1/2/3` replies. Claude Code
+uses `AskUserQuestion`, Codex uses `request_user_input` when the active runtime
+exposes it, and OpenCode uses `question`. Risky-edge hook guardrails are
+bundled with the Claude plugin install. Codex uses an optional global
+`~/.codex/hooks.json` guardrail because current Codex hooks are repo-local or
+user-global rather than plugin-bundled.
 
 ### Getting started
 

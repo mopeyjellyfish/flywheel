@@ -39,8 +39,8 @@ recommendations are worse than none.
 
 ## Step 1b: Focused Q&A
 
-Ask up to 3 targeted questions. Use the platform's question tool when
-available.
+Ask up to 3 targeted questions. Use the exact host question tool named in the
+host interaction contract when that tool is available.
 
 Ask informed questions, not blank extraction prompts. Offer choices when
 possible. Use multi-select only when it genuinely helps.

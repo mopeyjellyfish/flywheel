@@ -84,9 +84,10 @@ reflect back what emerged: key decisions, the direction chosen, open threads,
 and any assumptions made. This is the primary output of the brainstorm — the
 user should be able to read the summary and know what they landed on.
 
-**Then offer next steps** using the platform's question tool if available. If
-no question tool is available, present a short label-based choice surface in
-chat instead of asking for raw numeric replies.
+**Then offer next steps** using the exact host question tool named in the host
+interaction contract when that tool is available. If no such tool is
+available, present a short label-based choice surface in chat instead of
+asking for raw numeric replies.
 
 **Question:** "Brainstorm wrapped. What would you like to do next?"
 

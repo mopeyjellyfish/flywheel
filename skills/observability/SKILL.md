@@ -27,6 +27,10 @@ usable signal plan or gap report.
 
 Follow `../references/host-interaction-contract.md`.
 
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
 When the user needs to choose between viable reliability or supportability
 postures:
 

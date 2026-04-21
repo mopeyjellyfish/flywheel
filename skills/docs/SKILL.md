@@ -24,8 +24,9 @@ inventing filler docs.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the host's structured question UI when it is available. Do not ask for raw
-`1/2/3` replies when the host already offers a choice surface.
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. Prefer narrow choices when deciding between a
 change-scoped docs pass and a broader docs sweep. When the likely answer space

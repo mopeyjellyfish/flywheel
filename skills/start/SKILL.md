@@ -205,6 +205,8 @@ search the repo only when:
 
 For fuzzy, product-shaping, or workflow-shaping requests:
 
+- use the exact host question tool named in
+  `../references/host-interaction-contract.md` when that tool is available
 - ask one material challenge question when the answer could change the chosen
   stage or artifact
 - prefer 2-4 explicit answer options, with the recommended option first and a

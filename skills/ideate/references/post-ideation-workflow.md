@@ -70,8 +70,9 @@ every candidate.
 Persistence is opt-in. The ideation loop is already useful without writing
 anything.
 
-Use the host's structured question UI when available. Otherwise present a short
-label-based choice surface in chat instead of asking for raw numeric replies.
+Use the exact host question tool named in the host interaction contract when
+that tool is available. Otherwise present a short label-based choice surface in
+chat instead of asking for raw numeric replies.
 
 Before offering next steps, present a compact stage summary covering:
 

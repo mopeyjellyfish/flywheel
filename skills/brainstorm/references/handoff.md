@@ -7,9 +7,10 @@ written and reviewed.
 
 #### 4.1 Present Next-Step Options
 
-Present the options using the platform's blocking question tool if one exists.
-If no question tool is available, present a short label-based choice surface in
-chat instead of asking for raw numeric replies.
+Present the options using the exact host question tool named in the host
+interaction contract when that tool is available. If no such tool is
+available, present a short label-based choice surface in chat instead of
+asking for raw numeric replies.
 
 Before presenting the menu, summarize:
 

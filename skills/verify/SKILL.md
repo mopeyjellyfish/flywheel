@@ -25,6 +25,10 @@ Use this skill when work is about to be described as:
 
 Follow `../references/host-interaction-contract.md`.
 
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
 When more than one proof path is plausible:
 
 - present 2-4 predicted proof options at most

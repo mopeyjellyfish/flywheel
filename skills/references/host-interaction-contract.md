@@ -3,9 +3,18 @@
 Flywheel is authored once for multiple hosts. Keep the workflow shared and let
 the host provide the UI surface.
 
+## Host Tool Map
+
+- Claude Code: use `AskUserQuestion` for structured question flows.
+- Codex: use `request_user_input` when the active Codex runtime exposes it.
+  Some Codex collaboration modes do not expose this tool; in those cases ask a
+  concise plain-text choice question in chat instead of pretending the tool is
+  available.
+- OpenCode: use `question` for structured question flows.
+
 ## Structured Choice Rules
 
-- Use the host's structured question UI when it is available.
+- Use the exact host question tool named above when that tool is available.
 - Do not ask the user to reply with raw `1`, `2`, or `3` when the host already
   offers a choice surface.
 - Ask one question at a time.
@@ -13,6 +22,9 @@ the host provide the UI surface.
 - Use multi-select only for compatible sets such as goals, constraints,
   non-goals, or success criteria that can coexist.
 - Do not use multi-select for mutually exclusive decision forks.
+- OpenCode can submit multiple questions together, but Flywheel should still
+  ask one question at a time unless the workflow explicitly benefits from a
+  bundled answer set.
 - When the likely answer space is predictable, present `2-4` recommended-first
   labels.
 - Rely on the host's native freeform final path when it exists instead of

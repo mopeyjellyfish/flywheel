@@ -13,6 +13,17 @@ stack-ranked queue for the remaining work.
 
 This skill is for document quality, not code implementation.
 
+## Interaction Method
+
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
+Ask one question at a time. In `mode:headless`, skip user questions entirely
+and return the required failure or review output directly.
+
 ## Reference Loading Map
 
 Do not preload every reference. Load only what the current phase needs:

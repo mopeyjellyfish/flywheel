@@ -216,7 +216,8 @@ skill.
 **Headless mode:** Return `Review complete` immediately. The caller owns the next
 step.
 
-**Interactive mode:** Ask using the platform's question tool if available.
+**Interactive mode:** Ask using the exact host question tool named in the host
+interaction contract when that tool is available.
 Offer these options:
 
 - **Fix top-ranked item and re-review (Recommended)** — address the current

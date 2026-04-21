@@ -67,9 +67,10 @@ If artifact-backed mode was used for deepening:
 interactive menu and return control immediately. The plan file already exists,
 the confidence check already ran, and document-review already ran.
 
-After document-review completes, present the options using the platform's
-blocking question tool when available. Otherwise present a short label-based
-choice surface in chat instead of asking for raw numeric replies.
+After document-review completes, present the options using the exact host
+question tool named in the host interaction contract when that tool is
+available. Otherwise present a short label-based choice surface in chat instead
+of asking for raw numeric replies.
 
 Before presenting options, summarize:
 

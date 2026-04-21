@@ -79,9 +79,10 @@ phase so the working context stays tight.
    sets such as goals, constraints, non-goals, or success criteria that can
    all coexist. If prioritization matters, follow up by asking which selected
    item is primary.
-4. **Use the platform's question tool when available** - When asking the user
-   a question, prefer the host's structured choice UI if one exists. Do not
-   ask for raw numeric replies when the host already offers that surface.
+4. **Use the exact host question tool when available** - When asking the user
+   a question, prefer the host question tool named in the host interaction
+   contract. Do not ask for raw numeric replies when the host already offers
+   that surface.
 5. **Keep explicit options narrow** - When presenting answer choices, keep them
    to 2-4 options. Default to 3 unless the task clearly needs fewer or more.
 6. **Lead with the recommendation, keep a freeform path available** - when
@@ -276,8 +277,8 @@ depth to scope:
 
 #### 1.3 Collaborative Dialogue
 
-Follow the Interaction Rules above. Use the platform's blocking question tool
-when available.
+Follow the Interaction Rules above. Use the exact host question tool named in
+the host interaction contract when that tool is available.
 
 **Guidelines:**
 

@@ -23,8 +23,9 @@ runtime evidence to the right next Flywheel stage.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the host's structured question UI when it is available. Do not ask for raw
-`1/2/3` replies when the host already offers a choice surface.
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 Ask one question at a time. When multiple response paths are viable, present
 the recommended label first and rely on the host's native freeform final path

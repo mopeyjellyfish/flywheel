@@ -23,9 +23,11 @@ Flywheel is authored once in the repo-root `skills/` tree. `.codex-plugin/`
 and `.claude-plugin/` package that same workflow for different hosts; they are
 not separate workflow forks.
 
-The interaction contract is also shared: interactive skills should use the
-host's structured choice UI, avoid raw-number reply prompts, and rely on the
-host's native freeform final path when it exists.
+The interaction contract is also shared: Claude Code should use
+`AskUserQuestion`, Codex should use `request_user_input` when the active
+runtime exposes it, and OpenCode should use `question`. Interactive skills
+should avoid raw-number reply prompts and rely on the host's native freeform
+final path when it exists.
 
 ## Local Development Loop
 
