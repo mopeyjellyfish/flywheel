@@ -135,19 +135,19 @@ From this checkout:
 Claude Code:
 
 ```bash
-make dev/claude
+make install/claude
 ```
 
 Codex:
 
 ```bash
-make dev/codex
+make install/codex
 ```
 
 Restart the host session after either command finishes.
 
-`make dev/codex` now refreshes the local Flywheel plugin install shape, turns
-on the experimental Codex hooks feature, and merges the Flywheel Bash
+`make install/codex` now refreshes the local Flywheel plugin install shape,
+turns on the experimental Codex hooks feature, and merges the Flywheel Bash
 guardrail into `~/.codex/hooks.json`.
 
 From another checkout or worktree:
@@ -155,25 +155,25 @@ From another checkout or worktree:
 Claude Code:
 
 ```bash
-make dev/claude/force-source
+make install/claude/force-source
 ```
 
 Codex:
 
 ```bash
-make dev/codex/force-link
+make install/codex/force-link
 ```
 
 For a project-scoped Claude install from this checkout:
 
 ```bash
-make refresh/claude/project
+make install/claude/refresh/project
 ```
 
 To remove Flywheel from both hosts and retest a clean local install:
 
 ```bash
-make remove/all
+make uninstall/all
 ```
 
 ### Validation
@@ -190,7 +190,7 @@ node scripts/flywheel-doctor.js --host claude --smoke
 checks plus eval-suite validation. In broad verification it validates repo
 packaging for both hosts, requires live smoke for the hosts currently enabled
 from this checkout, and skips the Claude installed-path smoke when this repo is
-not currently installed in Claude. Use `make dev/claude` followed by
+not currently installed in Claude. Use `make install/claude` followed by
 `node scripts/flywheel-doctor.js --host claude --smoke` when the installed
 Claude path itself must be proven.
 

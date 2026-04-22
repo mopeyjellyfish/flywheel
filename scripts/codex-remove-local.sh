@@ -246,4 +246,4 @@ remove_plugin_config
 remove_hooks_config
 
 echo
-echo "Next step: run \`make dev/codex\` to reinstall Flywheel for Codex, then start a fresh Codex session."
+echo "Next step: run \`make install/codex\` to reinstall Flywheel for Codex, then start a fresh Codex session."

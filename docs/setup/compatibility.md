@@ -34,13 +34,13 @@ final path when it exists.
 Claude installed local checkout:
 
 ```bash
-make dev/claude
+make install/claude
 ```
 
 The narrower Claude refresh helper is:
 
 ```bash
-make refresh/claude
+make install/claude/refresh
 ```
 
 For dev-only direct Claude loading:
@@ -57,10 +57,10 @@ commands rather than menu overlap.
 Codex local checkout from this repository:
 
 ```bash
-make dev/codex
+make install/codex
 ```
 
-`make dev/codex` refreshes the local Flywheel plugin install shape for this
+`make install/codex` refreshes the local Flywheel plugin install shape for this
 checkout, clears the local cache, ensures the local `flywheel@flywheel-local`
 Codex plugin entry is enabled, turns on the experimental Codex hooks feature,
 merges the Flywheel PreToolUse guardrail into `~/.codex/hooks.json`, runs the
@@ -72,28 +72,28 @@ To switch to another Flywheel checkout or worktree:
 Claude:
 
 ```bash
-make dev/claude/force-source
+make install/claude/force-source
 ```
 
 Codex, from that checkout:
 
 ```bash
-make dev/codex/force-link
+make install/codex/force-link
 ```
 
 Use the narrower targets when you only need one part of the loop:
 
 ```bash
-make dev/all
-make remove/all
-make refresh/codex
-make refresh/codex/force-link
-make refresh/codex/dry-run
-make remove/codex
-make refresh/claude
-make refresh/claude/force-source
-make refresh/claude/project
-make remove/claude
+make install/all
+make uninstall/all
+make install/codex/refresh
+make install/codex/refresh/force-link
+make install/codex/refresh/dry-run
+make uninstall/codex
+make install/claude/refresh
+make install/claude/refresh/force-source
+make install/claude/refresh/project
+make uninstall/claude
 make verify
 make doctor
 make validate
@@ -103,7 +103,7 @@ make validate
 doctor smoke checks plus eval-suite validation. In this broad mode it validates
 repo packaging for both hosts, requires live smoke for the hosts currently
 enabled from this checkout, and skips the Claude installed-path smoke when this
-repo is not currently installed in Claude. Use `make dev/claude` followed by
+repo is not currently installed in Claude. Use `make install/claude` followed by
 `node scripts/flywheel-doctor.js --host claude --smoke` when the installed
 Claude path itself must be checked.
 

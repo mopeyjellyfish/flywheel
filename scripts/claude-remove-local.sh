@@ -115,4 +115,4 @@ remove_installed_plugins
 remove_marketplace
 
 echo
-echo "Next step: run \`make dev/claude\` to reinstall Flywheel for Claude, then run /reload-plugins or start a fresh Claude session."
+echo "Next step: run \`make install/claude\` to reinstall Flywheel for Claude, then run /reload-plugins or start a fresh Claude session."

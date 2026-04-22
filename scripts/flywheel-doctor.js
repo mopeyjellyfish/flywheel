@@ -15,7 +15,7 @@ const includeClaude = host === "all" || host === "claude";
 const requireClaudeInstall = host === "claude";
 
 function optionalClaudeInstallDetail(detail) {
-  return `${detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make dev/claude\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`;
+  return `${detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make install/claude\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`;
 }
 
 function run(command, args, options = {}) {

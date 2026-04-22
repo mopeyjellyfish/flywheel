@@ -28,7 +28,7 @@ Flywheel already has a real Codex plugin surface:
 
 - `.codex-plugin/plugin.json`
 - `scripts/codex-refresh-local.sh`
-- `make dev/codex`
+- `make install/codex`
 - `scripts/flywheel-doctor.js`
 
 Claude support is not yet first-class installed-plugin support. The repo still
@@ -281,7 +281,7 @@ Test scenarios:
 
 ### Unit 4: Add Cross-Host Local Dev And Doctor Support
 
-- Keep `scripts/codex-refresh-local.sh` and `make dev/codex` working for Codex.
+- Keep `scripts/codex-refresh-local.sh` and `make install/codex` working for Codex.
 - Add a Claude-oriented local helper, likely `scripts/claude-refresh-local.sh`,
   that installs or refreshes Flywheel for Claude from this repo through the
   marketplace/install flow instead of only advising `--plugin-dir`.
