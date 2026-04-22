@@ -11,14 +11,15 @@ Visual aids are conditional on content patterns, not on plan depth.
 
 | Plan describes... | Visual aid | Placement |
 |---|---|---|
-| 4+ implementation units with non-linear dependencies | Mermaid dependency graph | Before or after `## Implementation Units` |
+| 4+ implementation units with non-linear dependencies or 2+ parallel-ready sibling groups | Mermaid dependency graph | Before or after `## Implementation Units` |
 | `System-Wide Impact` naming 3+ interacting surfaces or cross-layer effects | Mermaid interaction or component diagram | Within `System-Wide Impact` |
 | `Overview` or `Problem Frame` involving 3+ behavioral modes, states, or variants | Markdown comparison table | Within `Overview` or `Problem Frame` |
 | `Key Technical Decisions` or `Alternative Approaches` with 3+ interacting decisions or alternatives | Markdown comparison table | Within the relevant section |
 
 ## When to Skip
 
-- the plan has 3 or fewer units in a straight dependency chain
+- the plan has 3 or fewer units in a straight dependency chain with no
+  parallel-ready sibling sets
 - prose already communicates the relationships clearly
 - the visual would duplicate what `High-Level Technical Design` already shows
 - the visual describes code-level detail rather than plan structure

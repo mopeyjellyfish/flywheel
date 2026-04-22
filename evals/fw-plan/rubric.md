@@ -7,6 +7,8 @@ Score each dimension `0`, `1`, or `2`.
 ### Planning Discipline
 
 Does the response stay in planning instead of drifting into implementation?
+Strong passes also break the work into atomic implementation units instead of
+vague phases.
 
 ### Repo Grounding
 
@@ -19,6 +21,9 @@ Does it include testing posture, verification, or red/green expectations?
 
 For architecture-bearing work, strong passes also make the relevant boundary or
 pattern decisions explicit enough that work does not have to rediscover them.
+For execution-shape-sensitive work, strong passes also make dependencies and
+serial vs `parallel-ready` posture explicit enough that `work` can track units
+one-for-one.
 
 ### Runtime Awareness
 
@@ -31,6 +36,8 @@ Does it preserve planning -> document-review -> user choice between deepen and
 work as the next stage, rather than sliding into execution automatically?
 Strong handoff should also make it clear what changed during planning, what the
 plan review found, and what execution would start with.
+When mixed execution modes matter, strong handoff also makes the first serial
+unit or first eligible parallel-ready batch obvious.
 
 ### Restraint
 
