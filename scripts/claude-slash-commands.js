@@ -30,6 +30,7 @@ function expectedPluginCommands() {
 
   return fs.readdirSync(skillsDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
+    .filter((entry) => fs.existsSync(path.join(skillsDir, entry.name, "SKILL.md")))
     .map((entry) => `${pluginName}:${entry.name}`)
     .sort();
 }
