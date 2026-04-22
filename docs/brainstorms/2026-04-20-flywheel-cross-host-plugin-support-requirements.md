@@ -42,8 +42,8 @@ contract around those skills in each host.
 **Codex**
 - R4. Codex support must continue to use `.codex-plugin/plugin.json` as the
   Codex install surface.
-- R5. Existing Codex local development flows such as `make dev`,
-  `make dev-force-link`, and the local doctor should keep working.
+- R5. Existing Codex local development flows such as `make dev/codex`,
+  `make dev/codex/force-link`, and the local doctor should keep working.
 
 **Claude Code**
 - R6. Claude Code support must add an official Claude plugin surface using

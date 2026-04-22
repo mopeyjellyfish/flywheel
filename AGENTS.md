@@ -19,10 +19,11 @@ plugins/flywheel/ Codex marketplace wrapper for this repo
 ```
 
 ## Development & Verification Commands
-- `make dev` refreshes the local Codex install, repairs hooks, runs doctor checks, and validates eval suites.
-- `make dev-force-link` repoints the Codex install to this checkout when another repo or worktree is linked.
-- `make claude-dev` refreshes the local Claude marketplace install and runs the same validation loop for Claude.
-- `make claude-dev-force-source` repoints the Claude marketplace source to this checkout.
+- `make dev/codex` refreshes the local Codex install, repairs hooks, runs doctor checks, and validates eval suites.
+- `make dev/codex/force-link` repoints the Codex install to this checkout when another repo or worktree is linked.
+- `make dev/claude` refreshes the local Claude marketplace install and runs the same validation loop for Claude.
+- `make dev/claude/force-source` repoints the Claude marketplace source to this checkout.
+- `make remove/all` removes Flywheel from Codex and Claude so a later refresh starts from a clean host state.
 - `make doctor` runs repository health checks without reinstalling anything.
 - `make validate` validates every eval suite through `node scripts/flywheel-eval.js validate`.
 - `make verify` runs the broad plugin verification pass: `node scripts/flywheel-doctor.js --smoke`, which includes eval-suite validation.
@@ -39,9 +40,9 @@ plugins/flywheel/ Codex marketplace wrapper for this repo
 ## Debugging Plugin Bugs
 Bug reports often come from an installed plugin rather than the current checkout. Start by identifying the execution path: installed plugin, direct `--plugin-dir` load, or raw repo edits.
 
-- Codex development installs point `~/.codex/plugins/flywheel` at this repo and serve from the cache under `~/.codex/plugins/cache/flywheel-local/flywheel/local/`. Use `make dev` to refresh both.
-- Claude development installs use this repo as the marketplace source and reinstall `flywheel@flywheel`. Use `make claude-dev` to refresh that state.
-- If another checkout or worktree is active, use `make dev-force-link` or `make claude-dev-force-source` before debugging code.
+- Codex development installs point `~/.codex/plugins/flywheel` at this repo and serve from the cache under `~/.codex/plugins/cache/flywheel-local/flywheel/local/`. Use `make dev/codex` to refresh both.
+- Claude development installs use this repo as the marketplace source and reinstall `flywheel@flywheel`. Use `make dev/claude` to refresh that state.
+- If another checkout or worktree is active, use `make dev/codex/force-link` or `make dev/claude/force-source` before debugging code.
 - Check `git status --short` early. A dirty tree can mean the repo, the installed copy, and the cached copy all differ.
 - If the repo already contains the fix but the installed plugin still reproduces the bug, the install is stale. Refresh the install, reload the host session, and retest.
 - If both the installed copy and the current repo reproduce the bug, fix the repo and rerun `make verify`.

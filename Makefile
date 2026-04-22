@@ -1,29 +1,29 @@
 SHELL := /bin/bash
 
-.PHONY: dev dev-force-link dev-all claude-dev claude-dev-force-source doctor validate verify codex-refresh-local codex-refresh-local-force-link codex-refresh-local-dry-run claude-refresh-local claude-refresh-local-force-source claude-refresh-project
+.PHONY: dev/all dev/codex dev/codex/force-link dev/claude dev/claude/force-source doctor validate verify remove/all refresh/codex refresh/codex/force-link refresh/codex/dry-run remove/codex refresh/claude refresh/claude/force-source refresh/claude/project remove/claude
 
-dev:
+dev/codex:
 	bash scripts/codex-refresh-local.sh
 	node scripts/flywheel-doctor.js --host codex
 	node scripts/flywheel-eval.js validate
 
-dev-force-link:
+dev/codex/force-link:
 	bash scripts/codex-refresh-local.sh --force-link
 	node scripts/flywheel-doctor.js --host codex
 	node scripts/flywheel-eval.js validate
 
-dev-all:
+dev/all:
 	bash scripts/codex-refresh-local.sh
 	bash scripts/claude-refresh-local.sh --scope local
 	node scripts/flywheel-doctor.js --smoke
 	node scripts/flywheel-eval.js validate
 
-claude-dev:
+dev/claude:
 	bash scripts/claude-refresh-local.sh --scope local
 	node scripts/flywheel-doctor.js --host claude --smoke
 	node scripts/flywheel-eval.js validate
 
-claude-dev-force-source:
+dev/claude/force-source:
 	bash scripts/claude-refresh-local.sh --scope local --force-source
 	node scripts/flywheel-doctor.js --host claude --smoke
 	node scripts/flywheel-eval.js validate
@@ -37,20 +37,30 @@ validate:
 verify:
 	node scripts/flywheel-doctor.js --smoke
 
-codex-refresh-local:
+remove/all:
+	bash scripts/codex-remove-local.sh
+	bash scripts/claude-remove-local.sh
+
+refresh/codex:
 	bash scripts/codex-refresh-local.sh
 
-codex-refresh-local-force-link:
+refresh/codex/force-link:
 	bash scripts/codex-refresh-local.sh --force-link
 
-codex-refresh-local-dry-run:
+refresh/codex/dry-run:
 	bash scripts/codex-refresh-local.sh --dry-run
 
-claude-refresh-local:
+remove/codex:
+	bash scripts/codex-remove-local.sh
+
+refresh/claude:
 	bash scripts/claude-refresh-local.sh --scope local
 
-claude-refresh-local-force-source:
+refresh/claude/force-source:
 	bash scripts/claude-refresh-local.sh --scope local --force-source
 
-claude-refresh-project:
+refresh/claude/project:
 	bash scripts/claude-refresh-local.sh --scope project
+
+remove/claude:
+	bash scripts/claude-remove-local.sh
