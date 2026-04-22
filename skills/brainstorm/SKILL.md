@@ -39,6 +39,12 @@ phase so the working context stays tight.
   fast path, preparing the synthesis checkpoint, structuring approach
   comparisons, drafting the requirements document, or repairing output that is
   drifting from the expected shape.
+- Read `../references/research/activation-heuristics.md` when deciding whether
+  to reuse a saved research brief or run a focused research pass before deeper
+  brainstorming.
+- Read `../references/research/source-ranking-and-synthesis.md` when current
+  published guidance or unfamiliar territory would materially change the
+  requirements, scope, or approach comparison.
 - Read `../references/architecture-code-quality/activation-heuristics.md` when
   the brainstorm is explicitly about technical boundaries, architecture, or
   named pattern choices that may materially affect scope or behavior.
@@ -74,6 +80,12 @@ phase so the working context stays tight.
 7. **Treat user answers as durable inputs** - preferences, constraints,
    corrections, and examples surfaced in the dialogue should shape the
    requirements doc and may later become spin-worthy project guidance.
+8. **Use research to sharpen the brainstorm, not replace it** - when current
+   published guidance materially changes the requirements, reuse a fresh
+   matching brief first and otherwise run only the smallest focused research
+   pass needed before returning to requirements shaping. Fold the findings and
+   resulting recommendation back into the requirements and approach comparison
+   instead of emitting a side report.
 
 ## Interaction Rules
 
@@ -223,7 +235,13 @@ repo `docs/solutions/` entry). When the active repo has `docs/solutions/`,
 search that local store by frontmatter using `files_touched`, `module`, `tags`,
 `problem_type`, `component`, and title before opening full docs. Prefer
 `doc_status: active` and follow `superseded_by` when present. Skim adjacent
-examples covering similar behavior.
+examples covering similar behavior. When the active repo has `docs/research/`
+and the topic is current-practice-sensitive, unfamiliar, or explicitly
+research-driven, search that local store by frontmatter and title before broad
+external research. Match on `topic`, `keywords`, `reuse_targets`, and title.
+Prefer a matching fresh brief whose `reuse_targets` include `brainstorm`. If it
+is stale or partial, reuse it as context and note the need for targeted
+follow-up research instead of trusting it blindly.
 
 If nothing obvious appears after a short scan, say so and continue. Two rules
 govern technical depth during the scan:
@@ -245,6 +263,22 @@ govern technical depth during the scan:
    bounded contexts, named patterns, or distributed posture affect scope or
    behavior, capture the decision surface and recommended direction, but leave
    file-level implementation and execution sequencing for planning.
+
+**Research context** (conditional, proactive) -- may auto-run when evidence
+quality would otherwise be weak. Route by condition:
+
+- **Matching fresh brief**: Reuse it and say briefly that the brainstorm is
+  being grounded with saved research.
+- **No matching brief + current-practice-sensitive or unfamiliar topic**: Say
+  plainly that a short research pass is being done on the user's behalf, gather
+  only the smallest current source set likely to change requirements, then
+  continue the brainstorm.
+- **Explicit no external research or local-only constraint**: Stay local, say
+  that choice is intentional, and label any freshness limits.
+- **After research**: Fold the findings into questions, approach comparisons,
+  and requirement capture. Carry forward the recommendation the evidence
+  supports. Do not replace the brainstorm artifact with a standalone research
+  report.
 
 **Slack context** (opt-in, Standard and Deep only) -- never auto-dispatch.
 Route by condition:
@@ -394,6 +428,10 @@ durable decisions worth preserving. Read `references/requirements-capture.md`
 for the document template, formatting rules, and completeness checks. If a
 visual aid may materially improve comprehension, also read
 `references/visual-communication.md`.
+
+When research materially shaped the requirements, capture only the
+decision-changing conclusions, the recommended direction they support, or cite
+the saved brief. Do not turn the requirements document into a source dump.
 
 For **Lightweight** brainstorms, keep the document compact. Skip document
 creation when the user only needs brief alignment and no durable decisions

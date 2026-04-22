@@ -95,10 +95,13 @@ writes the implementation path. Before `work` starts, Flywheel runs
 `document-review` on the plan and lets the user choose whether to `deepen` the
 plan or start execution.
 
-When boundaries, pattern choices, or code-quality pressure are the real
-question, Flywheel can pull in focused helper surfaces such as
-`architecture-strategy`, `pattern-recognition`, `maintainability`, and
-`simplify` without turning them into new mandatory visible stages.
+When topic investigation or current best practices are the real question,
+Flywheel can pull in `research` inside shaping or review to sharpen the next
+artifact or finding set. When
+boundaries, pattern choices, or code-quality pressure are the real question,
+Flywheel can pull in focused helper surfaces such as `architecture-strategy`,
+`pattern-recognition`, `maintainability`, and `simplify` without turning any
+of them into new mandatory visible stages.
 
 `work` is the execution stage. It can pull in `docs`, `debug`, `browser-test`,
 `verify`, `rollout`, `observability`, `logging`, `architecture-strategy`,
@@ -112,6 +115,8 @@ knowledge than the last one.
 Common starts:
 
 - new feature or vague idea: `$flywheel:start`, `$flywheel:ideate`, or `$flywheel:brainstorm`
+- research a topic or current best practices: `$flywheel:start`, or
+  `$flywheel:research` when the research brief itself is the main artifact
 - known scoped change: `$flywheel:plan`
 - architecture or pattern decision: `$flywheel:architecture-strategy` or `$flywheel:pattern-recognition`
 - bug with an unclear cause: `$flywheel:debug`

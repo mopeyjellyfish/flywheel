@@ -1,0 +1,37 @@
+{
+  "id": "research",
+  "skill": "research",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Topic Framing",
+    "Execution Strategy",
+    "Evidence Ranking",
+    "Source Posture",
+    "Uncertainty Discipline",
+    "Decision Guidance",
+    "Reuse Value"
+  ],
+  "criticalDimensions": [
+    "Topic Framing",
+    "Execution Strategy",
+    "Evidence Ranking",
+    "Source Posture",
+    "Uncertainty Discipline",
+    "Decision Guidance"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "frontier_model_research_workflows",
+    "breadth_first_orchestrated_research",
+    "repo_grounded_research_with_external_context",
+    "no_external_research_repo_only"
+  ]
+}

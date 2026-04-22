@@ -28,7 +28,13 @@ Automatic fail if it confidently chooses the wrong mode.
 Is the output grounded in the right evidence surface?
 
 - repo cases: real repo shape, files, docs, or honest absence
+- repo cases with matching research context: saved `docs/research/` briefs may
+  be reused when fresh, but should not replace repo truth
 - outside-repo software: user/product context without invented repo facts
+- outside-repo software when current practice matters: should use or explicitly
+  invoke current research rather than pretending stale intuition is enough, and
+  fold only the decision-changing findings into grounding and the final
+  recommendation
 - universal: topic-native context without software pollution
 
 Automatic fail if it invents repo facts or issue data.
@@ -87,6 +93,7 @@ Examples:
 - `top 3`
 - `quick wins`
 - `no external research`
+- current published guidance matters
 - path-specific scope
 
 Automatic fail if an explicit constraint is ignored.

@@ -19,6 +19,11 @@ Does it right-size the brainstorming depth?
 Does it preserve a durable brainstorm artifact under `docs/brainstorms/` and
 leave a checkpoint summary the user can correct before planning?
 
+When current published guidance materially changes the requirements, strong
+passes either reuse a matching `docs/research/` brief or explicitly say they
+are doing a focused research pass, fold only the decision-changing findings and
+recommendation into the brainstorm, and still preserve the brainstorm artifact.
+
 ### Plan Handoff
 
 Does it carry the outcome into `fw-plan` rather than stopping at ideas?

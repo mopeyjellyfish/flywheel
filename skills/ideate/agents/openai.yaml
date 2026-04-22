@@ -1,4 +1,4 @@
 interface:
   display_name: "$flywheel:ideate"
   short_description: "Find grounded high-leverage next bets"
-  default_prompt: "Use $flywheel:ideate to discover grounded improvement ideas, filter them hard, and surface the strongest next bets."
+  default_prompt: "Use $flywheel:ideate to discover grounded improvement ideas, reuse saved research when it is fresh, trigger current-practice research when it materially improves the shortlist, fold only the decision-changing findings into grounding and the final recommendation, filter the candidates hard, and surface the strongest next bets."

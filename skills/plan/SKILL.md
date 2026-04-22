@@ -63,6 +63,13 @@ needs:
 - Read `references/visual-communication.md` only when the plan structure would
   materially benefit from a dependency graph, interaction diagram, or
   comparison table.
+- Read `../references/research/research-brief-contract.md` when deciding
+  whether a saved `docs/research/` brief is fresh and in-scope enough to reuse.
+- Read `../references/research/activation-heuristics.md` when deciding whether
+  to reuse a saved brief, skip external research, or run targeted follow-up
+  research.
+- Read `../references/research/source-ranking-and-synthesis.md` when current
+  external guidance, standards, or best practices materially affect the plan.
 - Read `../references/architecture-code-quality/activation-heuristics.md` when
   deciding whether the work is architecture-bearing enough to need explicit
   boundary or pattern decisions.
@@ -119,9 +126,14 @@ needs:
    boundaries, present the current repo truth, likely failure modes, blast
    radius, viable options, and the recommended posture.
 11. **Make architecture and pattern choices explicit when warranted** — when
-   the work changes boundaries, ownership, named patterns, or distributed
-   posture, record the chosen option, rejected alternatives, and the clean-code
-   constraints `work` must preserve.
+    the work changes boundaries, ownership, named patterns, or distributed
+    posture, record the chosen option, rejected alternatives, and the clean-code
+    constraints `work` must preserve.
+12. **Prefer reusable research to redundant reruns** — match fresh
+    `docs/research/` briefs first, then run only the narrow follow-up research
+    needed to close planning gaps. Fold the decision-changing findings and
+    recommendation into plan decisions instead of creating a side report by
+    default.
 
 ## Plan Quality Bar
 
@@ -345,6 +357,11 @@ Always do local research:
   `files_touched`, `module`, `tags`, `problem_type`, `component`, and title
   before reading full docs. Prefer `doc_status: active` and follow
   `superseded_by` when present
+- when the active repo has `docs/research/`, search that local store by
+  frontmatter and title before broad external research; match on `topic`,
+  `keywords`, `reuse_targets`, and title. Prefer matching fresh briefs whose
+  `reuse_targets` include `plan`, and use `freshness_basis` plus
+  `reuse_targets` to decide whether they still fit
 
 When the platform supports delegated or parallel bounded research **and** policy
 allows it, you may split local research into small focused passes, for example:
@@ -419,10 +436,17 @@ assertions or every branch-level detail.
 
 #### 1.2 Decide on External Research
 
-Based on the origin document, user signals, and local findings, decide whether
-external research adds value.
+Before deciding to browse broadly, check whether a matching saved research
+brief already covers the topic. Treat a fresh matching brief as the default
+external-context input for planning. If the brief is stale or only partially
+answers the question, keep it as context and decide whether targeted follow-up
+research is needed rather than restarting the topic from zero.
 
-Lean toward external research when:
+Based on the origin document, user signals, local findings, and any saved
+research brief, decide whether external research or targeted follow-up research
+adds value.
+
+Lean toward external research or targeted follow-up research when:
 
 - the topic is high-risk: security, payments, privacy, external APIs,
   migrations, compliance
@@ -430,21 +454,24 @@ Lean toward external research when:
 - local patterns exist only in adjacent domains, not the exact one being
   planned
 - the user is exploring unfamiliar territory
+- a saved brief exists but freshness or one open thread still needs a narrow
+  update
 
 Skip external research when:
 
 - the codebase already shows strong direct local patterns
 - the user already knows the intended shape
 - additional external context would add little practical value
+- a matching fresh brief already covers the current-practice questions
 
 Announce the decision briefly before continuing.
 
 #### 1.3 External Research (Conditional)
 
 If external research is useful, gather only the smallest set of sources that
-materially improve the plan. Prefer official docs and primary sources for
-technical questions. Parallelize independent research threads only when policy
-and tools allow it.
+materially improve the plan or close the unresolved gap from a saved brief.
+Prefer official docs and primary sources for technical questions. Parallelize
+independent research threads only when policy and tools allow it.
 
 #### 1.4 Consolidate Research
 
@@ -453,8 +480,11 @@ Summarize:
 - relevant codebase patterns and file paths
 - relevant testing idioms, fixtures, helpers, and contract-test patterns
 - relevant institutional learnings
+- matching saved research briefs, their freshness basis, and any targeted
+  follow-up that refreshed or narrowed them
 - organizational context from Slack, if gathered
 - external references and best practices, if gathered
+- the recommendation-bearing takeaway those research inputs imply for the plan
 - related issues, PRs, or prior art
 - constraints that materially shape the plan
 
@@ -745,6 +775,10 @@ deepened: YYYY-MM-DD  # optional, set when the confidence check substantively st
 
 - [Relevant active-repo `docs/solutions/` insight]
 
+### Saved Research Briefs
+
+- [Relevant `docs/research/` brief, freshness basis, and why it still applies]
+
 ### External References
 
 - [Relevant external docs or best-practice source, if used]
@@ -870,6 +904,7 @@ check passes when this unit is implemented correctly. Otherwise `n/a -- [reason]
 ## Sources & References
 
 - **Origin document:** [docs/brainstorms/YYYY-MM-DD-<topic>-requirements.md](path)
+- Saved research: [docs/research/YYYY-MM-DD-<topic>-research.md](path)
 - Related code: [path or symbol]
 - Related PRs/issues: #[number]
 - External docs: [url]
@@ -912,6 +947,9 @@ Before finalizing, check:
 - if there was no origin document, the planning bootstrap established enough
   product clarity to plan responsibly
 - every major decision is grounded in the origin document or research
+- when a saved research brief or follow-up research shaped the plan, freshness,
+  source scope, and reuse boundaries stay explicit, and repo truth remains
+  distinct from external guidance
 - the testing strategy reflects `AGENTS.md`, `CLAUDE.md`, local test patterns,
   and any durable testing references when present
 - the testing strategy defines per-unit posture choices using exactly

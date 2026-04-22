@@ -25,6 +25,7 @@ const { deterministicLogging } = require("./logging.cjs");
 const { deterministicMaintainability } = require("./maintainability.cjs");
 const { deterministicObservability } = require("./observability.cjs");
 const { deterministicPatternRecognition } = require("./pattern-recognition.cjs");
+const { deterministicResearch } = require("./research.cjs");
 const { deterministicSimplify } = require("./simplify.cjs");
 const { deterministicVerification } = require("./verification-before-completion.cjs");
 
@@ -106,6 +107,9 @@ function getDeterministicSuiteScorer(suiteId) {
   }
   if (suiteId === "pattern-recognition") {
     return deterministicPatternRecognition;
+  }
+  if (suiteId === "research") {
+    return deterministicResearch;
   }
   if (suiteId === "simplify") {
     return deterministicSimplify;

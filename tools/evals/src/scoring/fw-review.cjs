@@ -38,6 +38,34 @@ function deterministicReview(caseItem, output) {
       : "Misses browser-proof handoff on a browser-visible diff.";
   }
 
+  const researchCase = (caseItem.special_constraints || []).some((item) => /external-guidance/i.test(item));
+  if (researchCase) {
+    const researchSignal = mentionsAny(output, [
+      /targeted research/i,
+      /saved research brief/i,
+      /docs\/research/i,
+      /official docs/i,
+      /current published guidance/i,
+      /published guidance/i
+    ]);
+    const helperSignal = mentionsAny(output, [
+      /during review/i,
+      /support (for )?(the )?findings/i,
+      /support (for )?(the )?verdict/i,
+      /verdict reasoning/i,
+      /sharpen (the )?(findings|review)/i,
+      /keep review (as )?(the )?(main|primary) artifact/i,
+      /without turning (it|review) into (a )?standalone research/i
+    ]);
+    const routeAway = mentionsAny(output, [/belongs in .*flywheel:research/i, /route to .*flywheel:research/i]);
+    scores["Research Support"] = researchSignal && helperSignal && !routeAway ? 2 : researchSignal ? 1 : 0;
+    notes["Research Support"] = researchSignal && helperSignal && !routeAway
+      ? "Uses research as targeted support for review rather than replacing review."
+      : researchSignal
+        ? "Mentions research, but does not clearly tie it back to findings or verdict reasoning."
+        : "Does not clearly allow targeted research support when current guidance matters.";
+  }
+
   const specialistCase = (caseItem.special_constraints || []).some((item) => /pattern-heavy|boundary-change/i.test(item));
   if (specialistCase) {
     const specialistSignal = mentionsAtLeast(output, [/pattern-recognition/i, /architecture/i, /maintainability/i, /simplicity/i], 2);

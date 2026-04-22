@@ -23,6 +23,7 @@
     ],
     "defaultPrompt": [
       "Use $flywheel:start to route this task through the right Flywheel stage.",
+      "Use $flywheel:research when the immediate job is topic investigation or current best-practice discovery that should sharpen ideation, brainstorming, review, or planning.",
       "Use $flywheel:setup to prove repo and machine readiness before work starts.",
       "Use $flywheel:run to coordinate one bounded task through the remaining Flywheel stages.",
       "Use $flywheel:architecture-strategy, $flywheel:pattern-recognition, $flywheel:maintainability, or $flywheel:simplify when a focused architecture or code-quality pass is the real need."

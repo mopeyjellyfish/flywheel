@@ -52,6 +52,7 @@ Current suites:
 - `logging`
 - `observability`
 - `pattern-recognition`
+- `research`
 - `simplify`
 - `verification-before-completion`
 

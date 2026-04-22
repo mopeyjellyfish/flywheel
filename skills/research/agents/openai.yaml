@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:research"
+  short_description: "Research a topic and rank the evidence"
+  default_prompt: "Use $flywheel:research to investigate the topic with repo grounding plus current published sources, choose the simplest viable research mode, start broad then narrow, rank the evidence by relevance, source quality, freshness, and confidence, keep uncertainty visible, return findings plus a recommendation inline by default, and save a reusable research brief only when later shaping work should build on it."
