@@ -33,6 +33,10 @@ Use the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
+When the workflow spans multiple material steps, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a short task list.
+
 Ask one question at a time. When multiple finish paths are viable, present a
 short predicted choice list with the recommended label first and rely on the
 host's native freeform final path when it exists.

@@ -16,6 +16,18 @@ This skill improves the plan. It does not implement the work. The result should
 return the plan to a reviewed state so the user can deliberately choose whether
 to deepen again or start implementation.
 
+## Interaction Method
+
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
+When the deepen pass spans multiple material steps, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a short task list.
+
 ## Workflow
 
 ### Phase 0: Resolve The Target Plan

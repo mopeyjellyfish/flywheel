@@ -21,6 +21,18 @@ direct commit requests. Load it before:
 Base the message on the actual logical unit being committed, not on the whole
 branch or PR.
 
+## Interaction Method
+
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
+This workflow is usually short. If it expands into a multi-step pass across
+multiple candidate commits, use the host task-tracking tool named in
+`../references/host-interaction-contract.md` to keep the task list visible.
+
 ## Message Shape
 
 Use Conventional Commits v1.0.0 structure:

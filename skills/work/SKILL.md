@@ -36,6 +36,10 @@ Use the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
+When the workflow spans multiple material steps, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a short task list.
+
 Ask one question at a time. Prefer concise single-select choices when natural
 options exist.
 
@@ -113,8 +117,8 @@ specification, or todo file. Skip to Phase 1.
    | Complexity | Signals | Action |
    | --- | --- | --- |
    | **Trivial** | 1-2 files, no behavioral change, typo, rename, narrow config edit | Proceed to Phase 1 step 2, then implement directly. Skip task-list construction and the execution strategy phase. Apply Test Discovery if the change touches behavior-bearing code. |
-   | **Small / Medium** | Clear scope, bounded change, usually under 10 files | Build a task list from discovery and proceed to Phase 1 step 2. |
-   | **Large** | Cross-cutting, architectural, high-risk, or likely 10+ files, including auth, payments, migrations, or shared infra | Explain that the work would benefit from `$flywheel:brainstorm` or `$flywheel:plan` to surface edge cases and scope boundaries. Honor the user's choice. If proceeding, build a task list and continue to Phase 1 step 2. |
+   | **Small / Medium** | Clear scope, bounded change, usually under 10 files | Build a host-tracked task list from discovery and proceed to Phase 1 step 2. |
+   | **Large** | Cross-cutting, architectural, high-risk, or likely 10+ files, including auth, payments, migrations, or shared infra | Explain that the work would benefit from `$flywheel:brainstorm` or `$flywheel:plan` to surface edge cases and scope boundaries. Honor the user's choice. If proceeding, build a host-tracked task list and continue to Phase 1 step 2. |
 
 ### Phase 1: Quick Start
 
@@ -307,13 +311,15 @@ Use a meaningful branch name based on the work, for example
 - keeping the default branch clean matters
 - frequent branch switching is expected
 
-#### 3. Create Todo List
+#### 3. Create Task List
 
 Skip this step if Phase 0 already built the task list or if Phase 0 classified
 the work as Trivial.
 
-- Use the available task tracking mechanism to break the work into actionable
-  tasks.
+- Use the host task-tracking tool named in
+  `../references/host-interaction-contract.md` to break the work into
+  actionable tasks. If the host does not expose one, keep a concise visible
+  checklist in chat.
 - Derive tasks from the plan's implementation units, dependencies, files, test
   targets, and verification criteria.
 - Carry each unit's `Execution note` into the task when present.
@@ -562,7 +568,7 @@ If the work is UI-heavy and the task includes Figma designs:
 
 #### 7. Track Progress
 
-- Keep the task list current as work completes.
+- Keep the host task list current as work completes.
 - Note blockers and unexpected discoveries.
 - Create new tasks if scope legitimately expands.
 - Keep the user informed at major milestones.

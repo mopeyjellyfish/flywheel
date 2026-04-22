@@ -27,6 +27,10 @@ Use the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
+When the workflow spans multiple material steps, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a short task list.
+
 When more than one logging posture is viable:
 
 - present 2-4 predicted options at most

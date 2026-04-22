@@ -14,6 +14,18 @@ UX, or visual rough edges through short iteration.
 
 This skill uses `playwright-cli` as the browser-control surface.
 
+## Interaction Method
+
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
+When the polish loop spans multiple material steps, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a short task list.
+
 ## Workflow
 
 1. Get onto the correct branch or worktree. Prefer `$flywheel:worktree` over ad hoc

@@ -77,6 +77,8 @@ phase so the working context stays tight.
 
 ## Interaction Rules
 
+Follow `../references/host-interaction-contract.md`.
+
 1. **Ask one question at a time** - Do not batch several unrelated questions
    into one message.
 2. **Prefer single-select multiple choice** - Use single-select when choosing
@@ -89,12 +91,15 @@ phase so the working context stays tight.
    a question, prefer the host question tool named in the host interaction
    contract. Do not ask for raw numeric replies when the host already offers
    that surface.
-5. **Keep explicit options narrow** - When presenting answer choices, keep them
+5. **Use host task tracking for multi-step passes** - When the brainstorm spans
+   multiple material steps, create and maintain a short task list with the host
+   task-tracking tool named in the host interaction contract.
+6. **Keep explicit options narrow** - When presenting answer choices, keep them
    to 2-4 options. Default to 3 unless the task clearly needs fewer or more.
-6. **Lead with the recommendation, keep a freeform path available** - when
+7. **Lead with the recommendation, keep a freeform path available** - when
    presenting options, put the recommended choice first and rely on the host's
    native freeform final path when it exists.
-7. **Prefer targeted dialogue over silent inference** - ask at least one
+8. **Prefer targeted dialogue over silent inference** - ask at least one
    material question when the answer would sharpen the problem, scope,
    priorities, or success criteria.
 

@@ -168,11 +168,16 @@ make claude-refresh-project
 ### Validation
 
 ```bash
+make verify
 make doctor
 make validate
 node scripts/flywheel-doctor.js --host codex --codex-session-smoke
 node scripts/flywheel-doctor.js --host claude --smoke
 ```
+
+`make verify` is the full plugin verification pass for this repo: doctor smoke
+checks across the installed host surfaces, including eval-suite validation. Use
+`make doctor` or `make validate` when only one half of that loop is needed.
 
 For side-by-side local comparisons between Codex and Claude Code:
 
