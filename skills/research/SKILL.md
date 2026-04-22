@@ -1,6 +1,6 @@
 ---
 name: research
-description: "Investigate a topic with repo grounding plus current published sources, rank the evidence, and produce a reusable research brief when later shaping work should build on it. Use when the immediate job is topic research, current-practice discovery, or evidence gathering before ideation, brainstorming, or planning."
+description: "Investigate a topic with repo grounding plus current published sources, rank the evidence, and condense it into guidance that sharpens ideation, brainstorming, review, or planning. Use when the immediate job is topic research, current-practice discovery, or targeted evidence gathering."
 metadata:
   argument-hint: "[topic, question, feature, or problem to research]"
 ---
@@ -10,9 +10,14 @@ metadata:
 Use the actual current date from runtime context when dating saved research
 briefs and freshness notes.
 
-`$flywheel:research` is a support skill. It can be invoked directly, or pulled
-into `start`, `ideate`, `brainstorm`, or `plan` when better evidence is needed
-before the next shaping artifact is written.
+`$flywheel:research` is a helper skill first. Prefer pulling it into
+`ideate`, `brainstorm`, `review`, or `plan` when better evidence would sharpen
+that stage's real artifact. Use it directly when the user explicitly asks for
+research or when the main artifact should be a reusable research brief.
+
+Do not force a separate visible research stage when the real job is choosing a
+direction, sharpening ideas, or reviewing changed code. Research exists to
+improve that stage's output, not replace it.
 
 **When directly invoked, always research.** Do not stop at suggesting search
 terms or offering to browse later. Gather the evidence, rank what matters, and
@@ -170,6 +175,9 @@ Write a durable brief under `docs/research/` when:
 - the synthesis captures current best practices worth preserving for this repo
 
 For narrow one-off questions, return the brief inline and skip file creation.
+When the research happened in service of `ideate`, `brainstorm`, or `review`,
+fold the findings back into that stage instead of turning the response into a
+standalone report unless the user explicitly asked for one.
 
 When saving, ensure `docs/research/` exists first and use the brief contract in
 `../references/research/research-brief-contract.md`.

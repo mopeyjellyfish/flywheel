@@ -92,6 +92,11 @@ Do not preload every reference. Load only what the current phase needs:
   immediately before reviewer dispatch or serial reviewer execution.
 - Read `references/subagent-template.md` immediately before parallel reviewer
   dispatch.
+- Read `../references/research/activation-heuristics.md` and
+  `../references/research/source-ranking-and-synthesis.md` only when judging
+  the diff depends on current published guidance, external API or framework
+  behavior, standards, security guidance, or other facts not settled by repo
+  truth alone.
 - Read `../commit/references/evidence-bundle.md` only when an existing shared
   evidence bundle is present or the review artifact should feed `$flywheel:commit`.
 - Read `references/review-output-template.md` during synthesis and
@@ -427,6 +432,30 @@ Use that bundle to:
 - sharpen commit-readiness reasoning
 - decide whether this review should append its own verdict and artifact path for
   `$flywheel:commit`
+
+### Stage 2g: Gather Targeted External Context When Needed
+
+If review correctness depends on current external knowledge that the repo does
+not authoritatively answer, gather only the smallest targeted context needed.
+
+Typical triggers:
+
+- framework or library behavior changed recently
+- the diff relies on an external API contract or standards surface
+- security, privacy, or compliance guidance materially affects the finding
+- the review is checking whether the chosen approach matches current published
+  guidance rather than only local style
+
+Before broad browsing, look for a matching `docs/research/` brief if one is
+likely to exist. If no strong local brief exists, use a narrow research pass:
+
+- prefer official docs, primary sources, or authoritative standards
+- gather only the source set needed to support or reject the candidate finding
+- keep the notes compact and attach them to findings or verdict reasoning
+- do not turn `review` into a standalone research report or route away from
+  review just because lookup was needed
+
+Use this context to sharpen reviewer selection, severity, and final reasoning.
 
 ### Stage 3: Select Reviewers
 
