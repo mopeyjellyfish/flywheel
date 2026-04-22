@@ -31,11 +31,15 @@ When browser-visible, does it call for browser proof before completion?
 ### Workflow Closure
 
 Does it preserve the default path into review and commit while keeping helper-stage handoffs honest?
+Strong passes also keep task state and any plan-unit checkboxes synchronized by
+the time execution closes.
 
 ### Delegation Discipline
 
 When delegation or parallel work is mentioned, is it bounded, host-aware, and
 used only for independent work?
+Strong passes also use explicit plan-unit metadata such as dependencies and
+`parallel-ready` posture rather than hand-waving about parallelism.
 
 ### Restraint
 

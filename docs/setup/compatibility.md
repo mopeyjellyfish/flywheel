@@ -95,8 +95,12 @@ make validate
 ```
 
 `make verify` is the broad verification target for Flywheel itself. It runs the
-doctor smoke checks, including eval-suite validation. Use `make doctor` or
-`make validate` when only one surface needs to be checked.
+doctor smoke checks plus eval-suite validation. In this broad mode it validates
+repo packaging for both hosts, requires live smoke for the hosts currently
+enabled from this checkout, and skips the Claude installed-path smoke when this
+repo is not currently installed in Claude. Use `make claude-dev` followed by
+`node scripts/flywheel-doctor.js --host claude --smoke` when the installed
+Claude path itself must be checked.
 
 To confirm a freshly restarted Codex session has loaded the live Flywheel
 surface:

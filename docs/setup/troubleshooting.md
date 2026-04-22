@@ -112,6 +112,9 @@ Note:
 - Flywheel's Claude contract is `/flywheel:<stage>`
 - bare `/plan`, `/run`, or `/commit` commands can come from Claude built-ins or
   other plugins and are not proof of Flywheel registration by themselves
+- broad `make verify` skips the installed Claude smoke if this checkout is not
+  currently enabled in Claude; use the explicit `--host claude --smoke` path to
+  require the installed Claude surface
 
 ### Claude hook guardrails are missing
 

@@ -133,8 +133,12 @@ Every plan should contain:
 - explicit test file paths for feature-bearing implementation units
 - decisions with rationale, not just tasks
 - existing patterns or code references to follow
+- implementation units that are atomic enough to map cleanly to execution tasks
+  and likely commit boundaries
 - per implementation unit, an explicit test posture chosen from `tdd`,
   `characterization`, or `no-new-tests`, with a brief reason
+- per implementation unit, an explicit execution mode chosen from `serial` or
+  `parallel-ready`, with a brief reason
 - an explicit testing strategy that uses TDD where appropriate, aligns with
   `AGENTS.md`, `CLAUDE.md`, and local testing references when present, and
   assumes repo tooling exists even when command discovery is deferred
@@ -519,13 +523,17 @@ in `System-Wide Impact`.
 #### 3.3 Break Work into Implementation Units
 
 Break the work into logical implementation units. Each unit should usually be a
-meaningful change an implementer could land as an atomic commit.
+meaningful change an implementer could land as an atomic commit and track as
+one execution task.
 
 Good units are:
 
 - focused on one component, behavior, or integration seam
 - usually touching a small related file cluster
 - ordered by dependency
+- small enough that execution can track them one-for-one in the host task tool
+- independent enough that sibling units can be marked `parallel-ready` only
+  when their write sets and reasoning truly do not collide
 - concrete enough for execution without pre-writing code
 - checkable with `- [ ]` syntax
 
@@ -533,6 +541,9 @@ Avoid:
 
 - micro-steps
 - units spanning unrelated concerns
+- units that hide multiple independently completable changes behind one checkbox
+- units that almost certainly require shared-write reconciliation but still
+  pretend to be parallel-safe
 - units so vague an implementer still has to invent the plan
 
 #### 3.4 High-Level Technical Design (Optional)
@@ -577,6 +588,8 @@ For each unit, include:
 - **Goal**
 - **Requirements**
 - **Dependencies**
+- **Execution mode** — exactly one of `serial` or `parallel-ready`, with a
+  brief reason
 - **Files** — repo-relative file paths to create, modify, or test
 - **Test posture** — exactly one of `tdd`, `characterization`, or
   `no-new-tests`, with a brief reason
@@ -594,6 +607,18 @@ For each unit, include:
 
 Feature-bearing units and other materially testable code changes should include
 test file paths in `**Files:**`.
+
+Use `Execution mode` deliberately:
+
+- `serial` — keep the unit ordered or inline even if the file list looks small,
+  because it establishes shared decisions, touches cross-cutting seams, or is
+  otherwise not a good parallel batch candidate
+- `parallel-ready` — the unit is intentionally bounded so `$flywheel:work` may
+  consider it for concurrent execution after dependencies are satisfied and a
+  fresh shared-write safety check passes
+
+Default to `serial` unless the unit is genuinely independent enough that later
+execution should not have to infer that posture from scattered hints.
 
 For TDD-appropriate units, every meaningful hypothesis should be anchored to an
 existing or new test that can fail before the code change and pass after it.
@@ -623,6 +648,8 @@ event payloads, schema-visible behavior, and integration boundaries consumed by
 other systems.
 
 Use `Execution note` sparingly.
+Use `Execution mode` precisely. `parallel-ready` is permission for bounded
+concurrent execution later, not a vague hope that parallelism might work out.
 
 Do not turn units into verbose process theater. When TDD fits, capture the red
 and green proof points without spelling out full coding choreography.
@@ -750,6 +777,14 @@ deepened: YYYY-MM-DD  # optional, set when the confidence check substantively st
 - **Test patterns to mirror:** [Existing tests, helpers, fixtures, factories,
   or support utilities to extend]
 
+## Dependencies And Parallelism
+
+- **Critical path:** [Unit 1 -> Unit 3 -> Unit 4, or `straight-line`]
+- **Parallel-ready sets:** [After Unit 1, Units 2 and 3 may run in parallel, or
+  `none`]
+- **Serial-only units:** [Units that must stay ordered because they establish
+  shared seams, reconcile prior edits, or otherwise should not be batched]
+
 ## Open Questions
 
 ### Resolved During Planning
@@ -779,6 +814,8 @@ deepened: YYYY-MM-DD  # optional, set when the confidence check substantively st
 **Requirements:** [R1, R2]
 
 **Dependencies:** [None / Unit 1 / external prerequisite]
+
+**Execution mode:** [`serial` | `parallel-ready`] -- [one-sentence reason]
 
 **Files:**
 - Create: `path/to/new_file`
@@ -844,6 +881,8 @@ check passes when this unit is implemented correctly. Otherwise `n/a -- [reason]
 - prefer path plus class, component, or pattern references over brittle line
   numbers
 - keep units checkable with `- [ ]`
+- shape units so `$flywheel:work` can map them directly onto host task items
+  instead of inventing a second execution breakdown
 - do not include implementation code
 - pseudo-code sketches and Mermaid diagrams are allowed when they communicate
   design direction
@@ -883,6 +922,12 @@ Before finalizing, check:
   proof-point list
 - TDD-appropriate units provide clear red and green proof points so the worker
   has a concrete completion signal
+- implementation units are atomic enough to map cleanly to host-tracked
+  execution tasks and likely commit boundaries
+- each unit's `Execution mode` is explicit, justified, and consistent with its
+  dependencies and likely file overlap
+- the first serial unit or first eligible parallel-ready batch is obvious from
+  the plan when mixed execution modes exist
 - `Test scenarios`, `Red signal`, `Green signal`, and `Verification` are
   distinct rather than duplicated
 - each implementation unit is concrete, dependency-ordered, and ready for

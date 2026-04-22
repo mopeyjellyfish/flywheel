@@ -176,8 +176,12 @@ node scripts/flywheel-doctor.js --host claude --smoke
 ```
 
 `make verify` is the full plugin verification pass for this repo: doctor smoke
-checks across the installed host surfaces, including eval-suite validation. Use
-`make doctor` or `make validate` when only one half of that loop is needed.
+checks plus eval-suite validation. In broad verification it validates repo
+packaging for both hosts, requires live smoke for the hosts currently enabled
+from this checkout, and skips the Claude installed-path smoke when this repo is
+not currently installed in Claude. Use `make claude-dev` followed by
+`node scripts/flywheel-doctor.js --host claude --smoke` when the installed
+Claude path itself must be proven.
 
 For side-by-side local comparisons between Codex and Claude Code:
 

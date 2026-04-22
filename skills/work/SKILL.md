@@ -1,6 +1,6 @@
 ---
 name: work
-description: "Execute work efficiently while maintaining quality and finishing features. Use when a plan doc, specification, todo file, or clear implementation request is ready for execution, and the goal is to finish complete work with visible task tracking, repo-grounded validation, and disciplined follow-through into review and commit."
+description: "Execute work efficiently while maintaining quality and finishing features. Use when a plan doc, specification, todo file, or clear implementation request is ready for execution, and the goal is to finish complete work with visible task tracking, plan-aligned unit execution, safe parallelism when supported and requested, repo-grounded validation, and disciplined follow-through into review and commit."
 metadata:
   argument-hint: "[Plan doc path or description of work. Blank to auto use latest plan doc]"
 ---
@@ -131,6 +131,10 @@ Skip this step when arriving from Phase 0 with a bare prompt.
 - If the plan includes sections such as `Implementation Units`,
   `Work Breakdown`, `Requirements Trace`, `Files`, `Test Scenarios`, or
   `Verification`, use those as the primary source material for execution.
+- If the plan includes `Dependencies And Parallelism` or per-unit
+  `Execution mode`, use them as the default execution shape. Treat
+  `parallel-ready` as eligible rather than mandatory, and keep `serial` units
+  ordered.
 - Check for `Execution note` on each implementation unit. Carry that posture
   into the task, especially when it specifies `tdd`, `test-first`, or
   `characterization`.
@@ -143,6 +147,8 @@ Skip this step when arriving from Phase 0 with a bare prompt.
 - Check for a `Scope Boundaries` section and keep its explicit non-goals active
   while implementing.
 - Review any references or links provided in the plan.
+- If the plan already has checked implementation-unit checkboxes, treat those
+  units as already completed unless repo truth clearly contradicts them.
 - If the user explicitly asks for TDD, test-first, or characterization-first
   execution in this session, honor that request even if the plan is silent.
 - If anything important is unclear or ambiguous, ask clarifying questions now.
@@ -320,12 +326,23 @@ the work as Trivial.
   `../references/host-interaction-contract.md` to break the work into
   actionable tasks. If the host does not expose one, keep a concise visible
   checklist in chat.
+- For plan-driven work, default to one host task per remaining implementation
+  unit. Reuse the unit label in the task name so the task tool and plan stay
+  aligned.
+- Add separate tasks only for cross-cutting work not already represented by a
+  unit, such as initial bare-prompt discovery or the final quality gate.
 - Derive tasks from the plan's implementation units, dependencies, files, test
   targets, and verification criteria.
+- Use each unit's `Execution mode` plus `Dependencies` to determine whether it
+  is blocked, serial, or eligible for a later parallel-ready batch. If the plan
+  lacks `Execution mode`, default units to `serial`.
 - Carry each unit's `Execution note` into the task when present.
 - Read every unit's `Patterns to follow` field before implementing. Those
   references exist to keep execution aligned with the codebase.
 - Use each unit's `Verification` field as the primary "done" signal.
+- Keep the host task list and the plan document synchronized: the task tool
+  carries `in_progress` and `blocked`, while the plan checkbox flips to `[x]`
+  only after the unit's verification passes.
 - Do not expect the plan to contain implementation code, shell choreography, or
   micro-step TDD instructions.
 - Include testing and quality-check tasks, not just code-edit tasks.
@@ -343,14 +360,16 @@ subagents, or parallel agent work.
 | --- | --- |
 | **Inline** | 1-2 small tasks, tasks needing user interaction mid-flight, or any normal direct `$flywheel:work` request. This is the default for bare-prompt work. |
 | **Serial delegated units** | 3+ tasks with clear dependencies and plan-unit metadata strong enough to isolate execution cleanly. |
-| **Parallel delegated units** | 3+ independent tasks that pass the Parallel Safety Check and the user explicitly wants parallel agent work. |
+| **Parallel delegated units** | 3+ independent `parallel-ready` tasks that pass the Parallel Safety Check and the user explicitly wants parallel agent work. |
 
 **Parallel Safety Check** — required before any parallel dispatch:
 
-1. Build a file-to-unit mapping from every candidate unit's `Files:` section,
+1. Start only from units whose `Execution mode` is `parallel-ready` and whose
+   dependencies are already complete. `serial` units are never batched.
+2. Build a file-to-unit mapping from every candidate unit's `Files:` section,
    including create, modify, and test paths.
-2. Check for intersection. Any file appearing in 2+ units is overlap.
-3. If any overlap exists, downgrade to serial delegated units and log the
+3. Check for intersection. Any file appearing in 2+ units is overlap.
+4. If any overlap exists, downgrade to serial delegated units and log the
    reason.
 
 Even without planned overlap, parallel units sharing a working directory can
@@ -398,6 +417,10 @@ Give each delegated unit:
 
 #### 1. Task Execution Loop
 
+For plan-driven work, treat each unchecked implementation unit as the default
+task. Start with the first `serial` unit or the first dependency-cleared
+`parallel-ready` batch identified by the plan.
+
 For each task in priority order:
 
 ```text
@@ -432,6 +455,8 @@ while (tasks remain):
   - Keep repo-local commit gates visible when present, especially review-before-
     commit and browser-proof requirements
   - Mark task as completed
+  - If the task maps to a plan unit, flip that checkbox only after the unit's
+    verification and relevant tests pass
   - Evaluate for an incremental commit
 ```
 
@@ -569,6 +594,9 @@ If the work is UI-heavy and the task includes Figma designs:
 #### 7. Track Progress
 
 - Keep the host task list current as work completes.
+- When the input document is a plan, mirror completed unit state back into the
+  plan checkboxes and keep in-progress state in the host task tool rather than
+  faking an in-progress checkbox format.
 - Note blockers and unexpected discoveries.
 - Create new tasks if scope legitimately expands.
 - Keep the user informed at major milestones.
@@ -597,6 +625,10 @@ triggers are explicit instead of being squeezed into the final commit step.
 - **Guessing commands** — Touch Grass first and let repo truth drive checks.
 - **Testing only at the end** — continuous testing prevents surprise piles.
 - **Losing task state** — update progress as you go.
+- **Blind parallelism** — only batch units that are explicitly
+  `parallel-ready` and still pass a fresh overlap check.
+- **Premature checkbox flips** — do not mark a plan unit complete until its
+  verification and relevant tests pass.
 - **Stopping at 80%** — finish the feature and close the quality gate.
 - **Skipping review** — every change gets reviewed, even when the review is
   lightweight.

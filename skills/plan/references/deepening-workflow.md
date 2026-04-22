@@ -127,6 +127,10 @@ If the plan already has a `deepened:` date:
 - dependency order is unclear or likely wrong
 - file paths or test file paths are missing where they should be explicit
 - units are too large, too vague, or broken into micro-steps
+- units are not atomic enough to map cleanly to host-tracked execution tasks
+- `Execution mode` is missing, unjustified, or inconsistent with the unit's
+  dependencies and likely write-set overlap
+- the plan marks work `parallel-ready` without making independence believable
 - units do not declare an explicit test posture with a reason
 - approach notes are thin or do not name patterns to follow
 - units change public contracts without making the contract coverage explicit
@@ -195,7 +199,7 @@ Typical section-to-pass mapping:
   project idiom alignment
 - **High-Level Technical Design** — architecture validation and pattern grounding
 - **Implementation Units / Verification** — pattern consistency, sequencing, and
-  test coverage realism
+  concurrency readiness, and test coverage realism
 - **System-Wide Impact** — cross-boundary effect analysis
 - **Risks & Dependencies / Operational Notes** — specialist review aligned to the
   actual risk

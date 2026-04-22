@@ -6,6 +6,10 @@ or repairing output that is drifting from the required unit schema.
 These examples are about **shape**, not domain. Reuse the structure and field
 semantics. Adapt the file paths, patterns, and proof points to the actual repo.
 
+`Execution mode` signals whether `$flywheel:work` may treat a unit as
+`parallel-ready` after dependencies resolve. It is still subject to a fresh
+shared-write safety check during execution.
+
 ## Example: `tdd`
 
 Use this shape when the unit changes externally observable behavior and the
@@ -20,6 +24,10 @@ response for unique emails.
 **Requirements:** [R1, R3]
 
 **Dependencies:** Unit 1
+
+**Execution mode:** `parallel-ready` -- After Unit 1 establishes the shared
+validation seam, this unit stays within one service/controller/test cluster and
+can run alongside other non-overlapping follow-up units.
 
 **Files:**
 - Modify: `src/services/signup.ts`
@@ -72,6 +80,9 @@ changing the importer.
 
 **Dependencies:** None
 
+**Execution mode:** `serial` -- This unit establishes the current-behavior
+baseline that later follow-up units should trust before making changes.
+
 **Files:**
 - Test: `test/import/csv-normalizer.test.ts`
 
@@ -116,6 +127,9 @@ artifacts without changing application logic.
 **Requirements:** [R4]
 
 **Dependencies:** Unit 2
+
+**Execution mode:** `parallel-ready` -- Once Unit 2 lands, this manifest-only
+rename can be handled independently from other non-overlapping cleanup units.
 
 **Files:**
 - Modify: `deploy/kubernetes/api-deployment.yaml`

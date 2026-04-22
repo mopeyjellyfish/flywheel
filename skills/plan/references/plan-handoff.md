@@ -79,7 +79,8 @@ Before presenting options, summarize:
 - the most important decisions or tradeoffs that were locked in
 - any architecture or pattern decisions that later stages must preserve
 - what still needs user confirmation or is intentionally deferred
-- what execution would work on first
+- what execution would work on first, including the first serial unit or first
+  eligible parallel-ready batch when the plan defines both
 
 **Question:** "Plan ready at `docs/plans/YYYY-MM-DD-NNN-<type>-<name>-plan.md`.
 What would you like to do next?"

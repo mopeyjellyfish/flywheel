@@ -68,7 +68,8 @@ any criterion is uncertain, use Tier 2.
 
 Before commit, confirm:
 
-- all tasks are marked completed
+- all host tasks are marked completed and any plan-unit checkboxes reflect the
+  same completed state
 - testing is addressed: tests pass and new or changed behavior has matching
   test coverage, or there is an explicit justification for no tests
 - linting passes
@@ -209,7 +210,8 @@ rediscovery.
 Before creating a PR, verify:
 
 - [ ] All clarifying questions were asked and answered
-- [ ] All tasks are marked completed
+- [ ] All host tasks are marked completed and any plan-unit checkboxes reflect
+  the same completed state
 - [ ] Testing is addressed: tests pass and new or changed behavior has matching test coverage, or an explicit justification exists for why tests are not needed
 - [ ] Linting passes
 - [ ] Code follows existing patterns

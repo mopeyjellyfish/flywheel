@@ -53,7 +53,14 @@ the host provide the UI surface.
 - Use one task per material tool-driven step or phase, such as repo scan,
   editing, validation, synthesis, or handoff. Do not create one task per
   literal shell subcommand.
+- When a durable checklist artifact already exists, mirror that artifact
+  instead of inventing a competing breakdown. For `docs/plans/*-plan.md`,
+  default to one host task per remaining implementation unit plus any extra
+  cross-cutting quality-gate tasks not already represented in the plan.
 - Update task state as soon as a step completes, blocks, or materially expands.
+- Keep status surfaces honest: use the host task tool for `in_progress`,
+  `blocked`, and sequencing state, and flip document checkboxes only when the
+  underlying unit is actually complete.
 - If the host does not expose a dedicated task tool, keep a short visible
   checklist in chat and keep it current.
 - Do not reference legacy `TodoWrite` or `TodoRead`.
