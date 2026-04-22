@@ -126,12 +126,14 @@ needs:
    boundaries, present the current repo truth, likely failure modes, blast
    radius, viable options, and the recommended posture.
 11. **Make architecture and pattern choices explicit when warranted** — when
-   the work changes boundaries, ownership, named patterns, or distributed
-   posture, record the chosen option, rejected alternatives, and the clean-code
-   constraints `work` must preserve.
+    the work changes boundaries, ownership, named patterns, or distributed
+    posture, record the chosen option, rejected alternatives, and the clean-code
+    constraints `work` must preserve.
 12. **Prefer reusable research to redundant reruns** — match fresh
     `docs/research/` briefs first, then run only the narrow follow-up research
-    needed to close planning gaps.
+    needed to close planning gaps. Fold the decision-changing findings and
+    recommendation into plan decisions instead of creating a side report by
+    default.
 
 ## Plan Quality Bar
 
@@ -482,6 +484,7 @@ Summarize:
   follow-up that refreshed or narrowed them
 - organizational context from Slack, if gathered
 - external references and best practices, if gathered
+- the recommendation-bearing takeaway those research inputs imply for the plan
 - related issues, PRs, or prior art
 - constraints that materially shape the plan
 

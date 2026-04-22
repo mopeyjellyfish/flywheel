@@ -46,16 +46,19 @@ function deterministicIdeate(caseItem, output) {
   const claimsExternalResearch = mentionsAny(output, [/external research/i, /looked up/i, /searched/i]);
   const researchExpected = (caseItem.special_constraints || []).some((item) => /research is expected|published guidance matters/i.test(item));
   const researchSignal = mentionsAny(output, [/docs\/research/i, /saved research/i, /research brief/i, /fresh brief/i, /focused research pass/i, /targeted follow-?up research/i, /current published guidance/i]);
+  const recommendationSignal = hasSection(output, "Recommendation");
   if (noExternalResearch) {
     scores["Constraint Obedience"] = claimsExternalResearch ? 0 : 2;
     notes["Constraint Obedience"] = claimsExternalResearch
       ? "Claims external research despite explicit no-external-research constraint."
       : "No-external-research constraint appears respected.";
   } else if (researchExpected) {
-    scores["Constraint Obedience"] = researchSignal ? 2 : 0;
-    notes["Constraint Obedience"] = researchSignal
-      ? "Acknowledges the need for current-practice research."
-      : "Does not acknowledge the expected current-practice research posture.";
+    scores["Constraint Obedience"] = researchSignal && recommendationSignal ? 2 : researchSignal ? 1 : 0;
+    notes["Constraint Obedience"] = researchSignal && recommendationSignal
+      ? "Acknowledges current-practice research and still sharpens the shortlist recommendation."
+      : researchSignal
+        ? "Acknowledges research, but does not clearly connect it to the shortlist recommendation."
+        : "Does not acknowledge the expected current-practice research posture.";
   } else {
     scores["Constraint Obedience"] = 2;
     notes["Constraint Obedience"] = "No hard constraint violation detected deterministically.";

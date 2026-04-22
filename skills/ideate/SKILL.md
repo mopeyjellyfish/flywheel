@@ -116,7 +116,9 @@ Core tags:
    to optimize.
 8. **Prefer reusable research over redundant browsing** - if a fresh matching
    research brief already exists, use it before launching broad new external
-   research.
+   research. When new research is needed, fold only the decision-changing
+   findings into grounding and the final recommendation instead of emitting a
+   detached research report.
 
 ## Execution Flow
 
@@ -202,7 +204,8 @@ Gather grounding before generating ideas. Match the grounding to the mode:
    frontmatter and title before broad external research. Match on `topic`,
    `keywords`, `reuse_targets`, and title. Prefer a fresh brief whose
    `reuse_targets` include `ideate`. If the brief is stale or partial, reuse it
-   as context and add only the smallest follow-up research needed.
+   as context and add only the smallest follow-up research needed. Fold the
+   resulting findings into the shortlist rationale and recommendation.
 4. Verify any claim about current capabilities, missing pieces, or repo
    boundaries against actual files before using it as grounding.
 5. If the user explicitly asked for issue, bug, or feedback themes, gather them
@@ -220,7 +223,9 @@ Gather grounding before generating ideas. Match the grounding to the mode:
 3. Use web research or a matching saved research brief when the topic is
    unfamiliar, current-practice-sensitive, or otherwise evidence-light. Skip it
    when the user explicitly skips external research or when the user already
-   provided enough current context to shortlist responsibly.
+   provided enough current context to shortlist responsibly. Use only the
+   smallest decision-changing findings and absorb them into the shortlist and
+   recommendation.
 4. Treat repo-specific learnings as optional, not authoritative.
 
 #### Non-Software or General Topics

@@ -83,7 +83,9 @@ phase so the working context stays tight.
 8. **Use research to sharpen the brainstorm, not replace it** - when current
    published guidance materially changes the requirements, reuse a fresh
    matching brief first and otherwise run only the smallest focused research
-   pass needed before returning to requirements shaping.
+   pass needed before returning to requirements shaping. Fold the findings and
+   resulting recommendation back into the requirements and approach comparison
+   instead of emitting a side report.
 
 ## Interaction Rules
 
@@ -274,8 +276,9 @@ quality would otherwise be weak. Route by condition:
 - **Explicit no external research or local-only constraint**: Stay local, say
   that choice is intentional, and label any freshness limits.
 - **After research**: Fold the findings into questions, approach comparisons,
-  and requirement capture. Do not replace the brainstorm artifact with a
-  standalone research report.
+  and requirement capture. Carry forward the recommendation the evidence
+  supports. Do not replace the brainstorm artifact with a standalone research
+  report.
 
 **Slack context** (opt-in, Standard and Deep only) -- never auto-dispatch.
 Route by condition:
@@ -427,8 +430,8 @@ visual aid may materially improve comprehension, also read
 `references/visual-communication.md`.
 
 When research materially shaped the requirements, capture only the
-decision-changing conclusions or cite the saved brief. Do not turn the
-requirements document into a source dump.
+decision-changing conclusions, the recommended direction they support, or cite
+the saved brief. Do not turn the requirements document into a source dump.
 
 For **Lightweight** brainstorms, keep the document compact. Skip document
 creation when the user only needs brief alignment and no durable decisions

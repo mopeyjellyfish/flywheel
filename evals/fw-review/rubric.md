@@ -37,6 +37,9 @@ When judging the diff depends on current external guidance, does it allow
 targeted research or saved research-brief reuse without turning review into a
 standalone research stage?
 
+Strong passes attach that research to findings or verdict reasoning rather than
+leaving it as detached background.
+
 ### Commit Handoff
 
 Does it preserve commit as the downstream step?

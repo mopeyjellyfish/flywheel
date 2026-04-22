@@ -15,8 +15,9 @@ Ask:
    repo truth alone is weak?
 2. Is the immediate need evidence gathering rather than idea selection,
    requirements shaping, or implementation planning?
-3. Would a reusable brief likely compound into later `ideate`, `brainstorm`,
-   or `plan` work?
+3. Would a compact recommendation-bearing handback materially improve the next
+   stage, and would a reusable brief likely compound into later `ideate`,
+   `brainstorm`, `review`, or `plan` work?
 
 If the answer to those questions is mostly no, stay in the stage already in
 focus and avoid extra research ceremony.
@@ -49,6 +50,10 @@ Use when the immediate job is:
 - compare approaches before writing requirements or a plan
 - collect evidence that multiple shaping stages will likely reuse
 - answer "research this topic" or equivalent direct asks
+
+Default output: a compact in-turn brief with ranked findings, visible
+uncertainty, and a recommendation. Save a durable brief only when the topic is
+broad enough or reusable enough to warrant it.
 
 Strong signals:
 
@@ -124,6 +129,13 @@ turn planning into report writing.
 
 ## Persistence Heuristics
 
+The default research outcome is an ephemeral handback. It should usually carry:
+
+- key ranked findings
+- the source posture and uncertainty that materially affect trust
+- a clear recommendation for the caller or user
+- explicit save-or-skip guidance
+
 Write a durable brief under `docs/research/` when:
 
 - the topic is broad enough to benefit future shaping work
@@ -136,6 +148,7 @@ Prefer ephemeral inline output when:
 - the question is narrow and one-off
 - the answer will likely go stale before reuse
 - the repo already has a strong durable brief for the same topic
+- the main value is helping the current caller choose a direction now
 
 ## Parallel Research Heuristics
 

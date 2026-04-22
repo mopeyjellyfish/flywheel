@@ -15,6 +15,7 @@
     "Evidence Ranking",
     "Source Posture",
     "Uncertainty Discipline",
+    "Decision Guidance",
     "Reuse Value"
   ],
   "criticalDimensions": [
@@ -22,7 +23,8 @@
     "Execution Strategy",
     "Evidence Ranking",
     "Source Posture",
-    "Uncertainty Discipline"
+    "Uncertainty Discipline",
+    "Decision Guidance"
   ],
   "passAverage": 1.5,
   "strongPassAverage": 1.75,

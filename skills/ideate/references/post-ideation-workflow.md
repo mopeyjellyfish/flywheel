@@ -79,6 +79,7 @@ Before offering next steps, present a compact stage summary covering:
 - the primary opportunity or problem Flywheel now believes matters most
 - what changed from the user's starting frame
 - what remains open or uncertain
+- any decision-changing research takeaway that sharpened the shortlist
 - what the recommended next stage would do
 - what input Flywheel needs now, if any
 

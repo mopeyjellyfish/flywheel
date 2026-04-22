@@ -98,18 +98,46 @@ function deterministicResearch(caseItem, output) {
       ? "Has an uncertainty section, but the certainty labels are weak."
       : "Does not clearly distinguish certainty levels or conflicts.";
 
+  const hasRecommendation = hasSection(output, "Recommendation");
+  const recommendationDetail = mentionsAny(output, [/Recommended direction:/i, /\bWhy:\b/i, /Main tradeoff:/i, /\brecommend/i]);
+  scores["Decision Guidance"] = hasRecommendation && recommendationDetail ? 2 : hasRecommendation || recommendationDetail ? 1 : 0;
+  notes["Decision Guidance"] = hasRecommendation && recommendationDetail
+    ? "Ends with a recommendation grounded enough to drive a decision."
+    : hasRecommendation || recommendationDetail
+      ? "Contains recommendation language, but the decision guidance is weak."
+      : "Does not clearly give a recommendation.";
+
   const hasReuseGuidance = hasSection(output, "Reuse Guidance");
   const hasNextMove = hasSection(output, "Next Move");
   const shouldSaveBrief = (caseItem.special_constraints || []).some((item) => /should-save-brief/i.test(item));
   const savePathSignal = /docs\/research\/[^\s`]+-research\.md/i.test(output);
-  const stageReuseSignal = mentionsAtLeast(output, [/\bideate\b/i, /\bbrainstorm\b/i, /\bplan\b/i], 1);
-  const reuse = hasReuseGuidance && hasNextMove && stageReuseSignal && (!shouldSaveBrief || savePathSignal);
+  const stageReuseSignal = mentionsAtLeast(output, [/\bideate\b/i, /\bbrainstorm\b/i, /\breview\b/i, /\bplan\b/i], 1);
+  const ephemeralSignal = mentionsAny(output, [
+    /\bephemeral\b/i,
+    /return (it )?inline/i,
+    /skip file creation/i,
+    /no durable file/i,
+    /save only when/i,
+    /save only if/i,
+    /persist only when/i,
+    /persist only if/i,
+    /reuse is likely/i
+  ]);
+  const reuse = shouldSaveBrief
+    ? hasReuseGuidance && hasNextMove && stageReuseSignal && savePathSignal
+    : hasReuseGuidance && hasNextMove && ephemeralSignal && (stageReuseSignal || hasRecommendation);
   scores["Reuse Value"] = reuse ? 2 : hasReuseGuidance || hasNextMove ? 1 : 0;
-  notes["Reuse Value"] = reuse
-    ? "Shapes the result as something later Flywheel stages could reuse."
-    : hasReuseGuidance || hasNextMove
-      ? "Research exists, but the reuse or save guidance is weak."
-      : "Research exists, but the reuse story is weak.";
+  notes["Reuse Value"] = shouldSaveBrief
+    ? reuse
+      ? "Shapes the result as something later Flywheel stages could reuse and save."
+      : hasReuseGuidance || hasNextMove
+        ? "Research exists, but the save guidance is weak for a case that should persist."
+        : "Research exists, but the durable reuse story is weak."
+    : reuse
+      ? "Keeps persistence disciplined and shapes the result as a reusable handback."
+      : hasReuseGuidance || hasNextMove
+        ? "Research exists, but the inline-vs-save guidance is weak."
+        : "Research exists, but the reuse story is weak.";
 
   return { scores, notes };
 }

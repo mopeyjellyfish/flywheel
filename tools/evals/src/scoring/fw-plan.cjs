@@ -44,11 +44,12 @@ function deterministicPlan(caseItem, output) {
   if (researchExpected) {
     const researchSignal = mentionsAny(output, [/docs\/research/i, /saved research/i, /research brief/i, /fresh brief/i, /reuse/i, /targeted follow-?up research/i, /current published guidance/i]);
     const distinctionSignal = mentionsAtLeast(output, [/repo/i, /codebase/i, /external/i, /published guidance/i, /current practice/i, /deferred/i, /open question/i], 2);
-    scores["Repo Grounding"] = researchSignal ? (distinctionSignal ? 2 : 1) : 0;
+    const decisionSignal = mentionsAny(output, [/Key Technical Decisions/i, /\bdecision\b/i, /\brecommended\b/i, /\bchosen\b/i]);
+    scores["Repo Grounding"] = researchSignal ? (distinctionSignal && decisionSignal ? 2 : 1) : 0;
     notes["Repo Grounding"] = researchSignal
-      ? distinctionSignal
-        ? "Reuses or explicitly invokes research while keeping repo truth and external guidance distinct."
-        : "Acknowledges research, but does not clearly separate repo truth from external guidance."
+      ? distinctionSignal && decisionSignal
+        ? "Reuses or explicitly invokes research, keeps repo truth and external guidance distinct, and folds the takeaway into plan decisions."
+        : "Acknowledges research, but does not clearly separate repo truth from external guidance or carry the takeaway into plan decisions."
       : "Does not clearly reuse or invoke the expected research posture.";
   }
 

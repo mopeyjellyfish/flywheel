@@ -51,16 +51,18 @@ function deterministicReview(caseItem, output) {
     const helperSignal = mentionsAny(output, [
       /during review/i,
       /support (for )?(the )?findings/i,
+      /support (for )?(the )?verdict/i,
+      /verdict reasoning/i,
       /sharpen (the )?(findings|review)/i,
       /keep review (as )?(the )?(main|primary) artifact/i,
       /without turning (it|review) into (a )?standalone research/i
     ]);
     const routeAway = mentionsAny(output, [/belongs in .*flywheel:research/i, /route to .*flywheel:research/i]);
-    scores["Research Support"] = researchSignal && (helperSignal || !routeAway) ? 2 : researchSignal ? 1 : 0;
-    notes["Research Support"] = researchSignal && (helperSignal || !routeAway)
+    scores["Research Support"] = researchSignal && helperSignal && !routeAway ? 2 : researchSignal ? 1 : 0;
+    notes["Research Support"] = researchSignal && helperSignal && !routeAway
       ? "Uses research as targeted support for review rather than replacing review."
       : researchSignal
-        ? "Mentions research, but the helper relationship to review is not clear."
+        ? "Mentions research, but does not clearly tie it back to findings or verdict reasoning."
         : "Does not clearly allow targeted research support when current guidance matters.";
   }
 

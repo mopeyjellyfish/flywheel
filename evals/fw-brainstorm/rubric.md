@@ -21,8 +21,8 @@ leave a checkpoint summary the user can correct before planning?
 
 When current published guidance materially changes the requirements, strong
 passes either reuse a matching `docs/research/` brief or explicitly say they
-are doing a focused research pass, while still preserving the brainstorm
-artifact.
+are doing a focused research pass, fold only the decision-changing findings and
+recommendation into the brainstorm, and still preserve the brainstorm artifact.
 
 ### Plan Handoff
 

@@ -21,7 +21,9 @@ improve that stage's output, not replace it.
 
 **When directly invoked, always research.** Do not stop at suggesting search
 terms or offering to browse later. Gather the evidence, rank what matters, and
-return a concise research brief.
+return a concise research brief with a clear recommendation. Direct invocation
+does not imply file creation; most runs should return the brief inline and only
+persist when reuse is likely or explicitly requested.
 
 **IMPORTANT: All file references in saved research briefs must use repo-relative
 paths** such as `skills/plan/SKILL.md`, never absolute paths.
@@ -86,6 +88,9 @@ Do not load every reference by default. Load only what the current phase needs:
    orchestrate bounded parallel workers only for broad independent threads.
 10. **Start wide, then narrow** - begin with broad queries or scans that map
     the decision surface, then refine into targeted follow-up searches.
+11. **Always end with decision guidance** - every research pass should give the
+    caller or direct user a recommendation grounded in the ranked findings,
+    not just a pile of evidence.
 
 ## Workflow
 
@@ -165,6 +170,9 @@ For each material finding, identify:
 Surface disagreements explicitly. If sources conflict, say which source looks
 stronger and why, rather than flattening the conflict into false certainty.
 
+Then make one primary recommendation. Tie it to the strongest findings,
+identify the main tradeoff it accepts, and keep any weaker alternatives brief.
+
 ### Phase 4: Decide Whether To Persist
 
 Write a durable brief under `docs/research/` when:
@@ -174,10 +182,11 @@ Write a durable brief under `docs/research/` when:
 - the user asked for a saved artifact
 - the synthesis captures current best practices worth preserving for this repo
 
-For narrow one-off questions, return the brief inline and skip file creation.
+For most direct questions, return the brief inline and skip file creation.
 When the research happened in service of `ideate`, `brainstorm`, or `review`,
-fold the findings back into that stage instead of turning the response into a
-standalone report unless the user explicitly asked for one.
+fold the findings, uncertainty, and recommendation back into that stage instead
+of turning the response into a standalone report unless the user explicitly
+asked for one.
 
 When saving, ensure `docs/research/` exists first and use the brief contract in
 `../references/research/research-brief-contract.md`.
@@ -210,12 +219,18 @@ Return a concise research brief in this order:
 ## Conflicts And Uncertainty
 - [Disagreements, stale edges, or missing proof]
 
+## Recommendation
+- **Recommended direction:** [Best supported answer or posture]
+- **Why:** [Which findings most strongly support it]
+- **Main tradeoff:** [What this recommendation gives up or leaves unresolved]
+
 ## Reuse Guidance
-- [Whether this should be saved or reused by `ideate`, `brainstorm`, or `plan`]
+- [Whether this should stay ephemeral or be saved for reuse by `ideate`,
+  `brainstorm`, `review`, or `plan`]
 
 ## Next Move
 - [Which Flywheel stage should consume the result next]
 ```
 
-If a durable brief was written, include the repo-relative path in `Reuse
-guidance`.
+Most runs should return this brief inline. If a durable brief was written,
+include the repo-relative path in `Reuse guidance`.

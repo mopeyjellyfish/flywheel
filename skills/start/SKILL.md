@@ -371,8 +371,9 @@ Use these patterns to keep routing answers stable across frontier models:
 
 - **Research route:** "This belongs in `flywheel:research` because the
   immediate job is topic investigation and evidence gathering that should
-  sharpen the next stage's real output. The output should be a ranked research
-  brief, then the relevant handoff into `flywheel:ideate`,
+  sharpen the next stage's real output. The output should be a compact
+  recommendation-bearing research brief by default, with durable storage only
+  when reuse is warranted, then the relevant handoff into `flywheel:ideate`,
   `flywheel:brainstorm`, `flywheel:review`, or `flywheel:plan`."
 - **Brainstorm route:** "This should go through `flywheel:brainstorm` first because
   behavior or scope is still unclear. The output should be a short requirements

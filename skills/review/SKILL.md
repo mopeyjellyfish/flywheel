@@ -451,7 +451,8 @@ likely to exist. If no strong local brief exists, use a narrow research pass:
 
 - prefer official docs, primary sources, or authoritative standards
 - gather only the source set needed to support or reject the candidate finding
-- keep the notes compact and attach them to findings or verdict reasoning
+- keep the notes compact and attach them to findings or verdict reasoning,
+  including the recommendation or verdict they support
 - do not turn `review` into a standalone research report or route away from
   review just because lookup was needed
 

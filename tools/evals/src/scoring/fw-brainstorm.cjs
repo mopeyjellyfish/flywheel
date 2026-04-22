@@ -31,14 +31,15 @@ function deterministicBrainstorm(caseItem, output) {
 
   const researchExpected = (caseItem.special_constraints || []).some((item) => /published guidance matters|research on the user's behalf|research report/i.test(item));
   const researchSignal = mentionsAny(output, [/docs\/research/i, /saved research/i, /research brief/i, /focused research pass/i, /targeted follow-?up research/i, /current published guidance/i, /on your behalf/i]);
+  const recommendationSignal = mentionsAny(output, [/\brecommend/i, /recommended direction/i]);
   if (researchExpected) {
-    scores["Artifact Discipline"] = researchSignal && artifactSignal ? (summarySignal ? 2 : 1) : researchSignal || artifactSignal ? 1 : 0;
-    notes["Artifact Discipline"] = researchSignal && artifactSignal
+    scores["Artifact Discipline"] = researchSignal && artifactSignal && recommendationSignal ? (summarySignal ? 2 : 1) : researchSignal || artifactSignal ? 1 : 0;
+    notes["Artifact Discipline"] = researchSignal && artifactSignal && recommendationSignal
       ? summarySignal
-        ? "Uses or explicitly invokes research while preserving the durable brainstorm artifact."
-        : "Uses or explicitly invokes research and names the brainstorm artifact, but leaves only a weak checkpoint summary."
+        ? "Uses or explicitly invokes research, carries forward a recommendation, and preserves the durable brainstorm artifact."
+        : "Uses or explicitly invokes research and preserves the brainstorm artifact, but leaves only a weak checkpoint summary."
       : researchSignal
-        ? "Acknowledges the expected research posture, but does not clearly preserve the durable brainstorm artifact."
+        ? "Acknowledges the expected research posture, but does not clearly fold it into the brainstorm artifact and recommendation."
         : artifactSignal
           ? "Preserves the brainstorm artifact, but does not clearly acknowledge the expected research posture."
           : "Misses both the expected research posture and durable brainstorm artifact.";

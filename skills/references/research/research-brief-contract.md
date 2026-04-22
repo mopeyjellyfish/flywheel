@@ -1,7 +1,8 @@
 # Research Brief Contract
 
-Use this contract when `research` writes a durable brief under `docs/research/`
-or when later stages need a stable saved artifact to reuse.
+Use this contract only when `research` writes a durable brief under
+`docs/research/` or when later stages need a stable saved artifact to reuse.
+Most research runs should stay ephemeral and do not need this file shape.
 
 ## Filename
 
@@ -79,8 +80,14 @@ parallel threads]
 ## Conflicts And Uncertainty
 - [Conflicts, stale edges, or unresolved questions]
 
+## Recommendation
+- **Recommended direction:** [Best supported answer or posture]
+- **Why:** [Which findings most strongly support it]
+- **Main tradeoff:** [What this recommendation gives up or leaves unresolved]
+
 ## Reuse Guidance
-- [How later ideate, brainstorm, or plan work should consume this]
+- [Why this was saved, how later ideate, brainstorm, review, or plan work
+  should consume it, and when it should be refreshed]
 
 ## Next Move
 - [Which Flywheel stage should use this brief next]
@@ -91,6 +98,7 @@ parallel threads]
 - concise enough that later stages can reuse it quickly
 - explicit about what is fact versus inference
 - clear about freshness and source scope
+- explicit about the recommendation the evidence supports
 - portable across hosts and machines
 - grounded in repo-relative paths when local files are cited
 
@@ -98,6 +106,8 @@ parallel threads]
 
 - giant source dumps with no ranking
 - long essays that hide the actual decision-changing findings
+- saved briefs for narrow, disposable questions that should have stayed
+  ephemeral
 - fake certainty when sources disagree
 - absolute paths
 - implementation plans disguised as research briefs

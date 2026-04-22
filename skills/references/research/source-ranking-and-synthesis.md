@@ -69,6 +69,16 @@ When sources disagree:
 - keep the weaker-but-relevant view visible when it changes the decision
 - turn unresolved conflicts into open questions instead of burying them
 
+## Recommendation Synthesis
+
+After the ranked findings exist, make one recommendation that is explicit
+enough for the next stage or direct user to act on.
+
+- tie it to the highest-ranked findings rather than vague preference
+- state the main tradeoff or risk it accepts
+- keep alternatives brief unless the user explicitly asked for a comparison set
+- do not let the recommendation hide unresolved uncertainty
+
 ## Bounded Parallel Research
 
 Parallelize only when the threads are independent enough that each can be
@@ -91,6 +101,9 @@ Keep the synthesis step serial and explicit:
 
 ## Persistence Guidance
 
+Default to ephemeral handback. Most research should return a compact set of
+findings plus recommendation inline and stop there.
+
 Persist a durable brief when:
 
 - the synthesis is likely to matter again soon
@@ -102,3 +115,5 @@ Leave the result ephemeral when:
 - the question is narrow and disposable
 - the answer depends on one short-lived fact
 - the saved artifact would add more upkeep than future leverage
+- the main consumer is the current `ideate`, `brainstorm`, `review`, or `plan`
+  pass rather than future reuse

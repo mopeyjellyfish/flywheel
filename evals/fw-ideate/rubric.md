@@ -32,7 +32,9 @@ Is the output grounded in the right evidence surface?
   be reused when fresh, but should not replace repo truth
 - outside-repo software: user/product context without invented repo facts
 - outside-repo software when current practice matters: should use or explicitly
-  invoke current research rather than pretending stale intuition is enough
+  invoke current research rather than pretending stale intuition is enough, and
+  fold only the decision-changing findings into grounding and the final
+  recommendation
 - universal: topic-native context without software pollution
 
 Automatic fail if it invents repo facts or issue data.

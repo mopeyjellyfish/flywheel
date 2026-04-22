@@ -36,7 +36,19 @@ names, or repo-relative paths.
 Does it distinguish facts, inferences, open questions, or source conflicts
 instead of flattening uncertainty?
 
+### Decision Guidance
+
+Does it end with a clear recommendation grounded in the ranked findings instead
+of leaving the user or caller with raw evidence only?
+
+Strong passes also state the main tradeoff or unresolved edge attached to that
+recommendation.
+
 ### Reuse Value
 
 Does it produce a concise research-brief shape that later `ideate`,
-`brainstorm`, or `plan` work could plausibly reuse?
+`brainstorm`, `review`, or `plan` work could plausibly reuse?
+
+Strong passes also make persistence disciplined: inline or embedded handback by
+default, with a saved `docs/research/` artifact only when reuse is actually
+warranted.

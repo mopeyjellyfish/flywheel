@@ -20,7 +20,8 @@ than generic product advice?
 
 When current published guidance matters, strong passes reuse or explicitly
 invoke a matching `docs/research/` brief when available and keep repo truth
-distinct from external guidance.
+distinct from external guidance. They also integrate the research takeaway into
+plan decisions rather than drifting into a research report.
 
 ### Test Strategy
 
