@@ -36,6 +36,18 @@ Interpret the input as:
 - a reproduction sequence
 - unexpected behavior the user wants explained or fixed
 
+## Interaction Method
+
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
+When the debug pass spans multiple material steps, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a short task list.
+
 ## Core Principles
 
 1. **No fix without a causal chain** - explain how the trigger reaches the

@@ -89,9 +89,14 @@ make codex-refresh-local-force-link
 make claude-refresh-local
 make claude-refresh-local-force-source
 make claude-refresh-project
+make verify
 make doctor
 make validate
 ```
+
+`make verify` is the broad verification target for Flywheel itself. It runs the
+doctor smoke checks, including eval-suite validation. Use `make doctor` or
+`make validate` when only one surface needs to be checked.
 
 To confirm a freshly restarted Codex session has loaded the live Flywheel
 surface:

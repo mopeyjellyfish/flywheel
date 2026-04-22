@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: dev dev-force-link dev-all claude-dev claude-dev-force-source doctor validate codex-refresh-local codex-refresh-local-force-link codex-refresh-local-dry-run claude-refresh-local claude-refresh-local-force-source claude-refresh-project
+.PHONY: dev dev-force-link dev-all claude-dev claude-dev-force-source doctor validate verify codex-refresh-local codex-refresh-local-force-link codex-refresh-local-dry-run claude-refresh-local claude-refresh-local-force-source claude-refresh-project
 
 dev:
 	bash scripts/codex-refresh-local.sh
@@ -33,6 +33,9 @@ doctor:
 
 validate:
 	node scripts/flywheel-eval.js validate
+
+verify:
+	node scripts/flywheel-doctor.js --smoke
 
 codex-refresh-local:
 	bash scripts/codex-refresh-local.sh

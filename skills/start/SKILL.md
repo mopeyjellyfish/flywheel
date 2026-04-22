@@ -240,6 +240,10 @@ For fuzzy, product-shaping, or workflow-shaping requests:
 - prefer 2-4 explicit answer options, with the recommended option first and a
   host-native freeform final path when it exists, when the likely answer space
   is predictable
+- when routing expands into a multi-step pass because repo checks materially
+  affect the answer, use the host task-tracking tool named in
+  `../references/host-interaction-contract.md`; otherwise keep the router
+  lightweight and skip task tracking
 - ask an open question only when the answer space cannot be predicted
   responsibly
 - do not ask a question just to add ceremony when the route is already obvious

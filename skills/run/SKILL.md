@@ -14,6 +14,18 @@ than manually invoking every stage.
 
 This skill does not replace the stage skills. It coordinates them.
 
+## Interaction Method
+
+Follow `../references/host-interaction-contract.md`.
+
+Use the exact host question tool named in
+`../references/host-interaction-contract.md` when that tool is available. Do
+not ask for raw `1/2/3` replies when the host already offers a choice surface.
+
+Because this workflow coordinates multiple stages, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a task list for the remaining stages and major handoffs.
+
 ## Core Principles
 
 1. **Start at the earliest missing stage** - do not rerun already-complete work

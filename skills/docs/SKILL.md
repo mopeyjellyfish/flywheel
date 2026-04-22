@@ -28,6 +28,10 @@ Use the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
+When the workflow spans multiple material steps, use the host task-tracking
+tool named in `../references/host-interaction-contract.md` to create and
+maintain a short task list.
+
 Ask one question at a time. Prefer narrow choices when deciding between a
 change-scoped docs pass and a broader docs sweep. When the likely answer space
 is predictable, keep the choice labels recommended-first and rely on the
