@@ -7,7 +7,7 @@ problem_type: workflow_issue
 component: developer_workflow
 severity: medium
 doc_status: active
-last_updated: 2026-04-21
+last_updated: 2026-04-22
 files_touched:
   - skills/start/SKILL.md
   - .codex-plugin/plugin.json
@@ -34,6 +34,7 @@ related_docs:
   - docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md
   - docs/solutions/developer-experience/journey-evals-without-a-harness-redesign-2026-04-19.md
   - docs/solutions/workflow-issues/make-commit-the-user-facing-finish-stage-2026-04-21.md
+  - docs/solutions/workflow-issues/use-install-and-uninstall-for-local-plugin-make-targets-2026-04-22.md
 ---
 
 # Treat user-facing skill renames as contract sweeps

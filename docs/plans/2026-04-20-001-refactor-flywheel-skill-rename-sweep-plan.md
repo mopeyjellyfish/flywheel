@@ -79,7 +79,7 @@ update the skill path, docs, manifests, and eval prompts together.
   form for Claude. That makes `manifest.json` skill values part of the
   user-facing contract.
 - `scripts/codex-refresh-local.sh`, `scripts/flywheel-doctor.js`, and
-  `make dev` are now the repo's established local-plugin validation surfaces for
+  `make install/codex` are now the repo's established local-plugin validation surfaces for
   confirming that Codex actually exposes the expected skills after a refresh.
 
 ### Institutional Learnings
@@ -123,7 +123,7 @@ update the skill path, docs, manifests, and eval prompts together.
 - **Project testing idioms:** Flywheel validates command-surface changes through
   repo-local eval metadata, prompt rendering, and installed-plugin visibility.
   The existing validation surfaces are `node scripts/flywheel-eval.js validate`,
-  `node scripts/flywheel-doctor.js`, and the refresh path behind `make dev`.
+  `node scripts/flywheel-doctor.js`, and the refresh path behind `make install/codex`.
 - **Posture selection rule:** Every implementation unit in this plan uses
   `no-new-tests` because the work is a naming-contract refactor over prompts,
   manifests, and file layout. Coverage should come from existing eval suites and

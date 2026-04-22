@@ -246,7 +246,7 @@ async function runDoctor({ smoke = false, host = "all" } = {}) {
         ? claudeInstalled.detail
         : requireClaudeInstall
           ? claudeInstalled.detail
-          : `${claudeInstalled.detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make claude-dev\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`,
+          : `${claudeInstalled.detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make install/claude\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`,
     });
     checks.push({
       name: "Flywheel commands registered in Claude",
@@ -254,7 +254,7 @@ async function runDoctor({ smoke = false, host = "all" } = {}) {
       detail: claudeFlywheelCommands.ok
         ? claudeFlywheelCommands.detail
         : !requireClaudeInstall && !claudeInstalled.ok
-          ? `${claudeFlywheelCommands.detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make claude-dev\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`
+          ? `${claudeFlywheelCommands.detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make install/claude\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`
           : claudeFlywheelCommands.detail,
     });
   }

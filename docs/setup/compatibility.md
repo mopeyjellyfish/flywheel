@@ -34,13 +34,13 @@ final path when it exists.
 Claude installed local checkout:
 
 ```bash
-make claude-dev
+make install/claude
 ```
 
 The narrower Claude refresh helper is:
 
 ```bash
-make claude-refresh-local
+make install/claude/refresh
 ```
 
 For dev-only direct Claude loading:
@@ -57,38 +57,43 @@ commands rather than menu overlap.
 Codex local checkout from this repository:
 
 ```bash
-make dev
+make install/codex
 ```
 
-`make dev` refreshes the local Flywheel plugin install shape for this checkout,
-clears the local cache, ensures the local `flywheel@flywheel-local` Codex
-plugin entry is enabled, turns on the experimental Codex hooks feature, merges
-the Flywheel PreToolUse guardrail into `~/.codex/hooks.json`, runs the repo
-doctor, and validates all eval suites. Start a fresh Codex session afterward
-so the refreshed plugin and hook state is loaded.
+`make install/codex` refreshes the local Flywheel plugin install shape for this
+checkout, clears the local cache, ensures the local `flywheel@flywheel-local`
+Codex plugin entry is enabled, turns on the experimental Codex hooks feature,
+merges the Flywheel PreToolUse guardrail into `~/.codex/hooks.json`, runs the
+repo doctor, and validates all eval suites. Start a fresh Codex session
+afterward so the refreshed plugin and hook state is loaded.
 
 To switch to another Flywheel checkout or worktree:
 
 Claude:
 
 ```bash
-make claude-dev-force-source
+make install/claude/force-source
 ```
 
 Codex, from that checkout:
 
 ```bash
-make dev-force-link
+make install/codex/force-link
 ```
 
 Use the narrower targets when you only need one part of the loop:
 
 ```bash
-make codex-refresh-local
-make codex-refresh-local-force-link
-make claude-refresh-local
-make claude-refresh-local-force-source
-make claude-refresh-project
+make install/all
+make uninstall/all
+make install/codex/refresh
+make install/codex/refresh/force-link
+make install/codex/refresh/dry-run
+make uninstall/codex
+make install/claude/refresh
+make install/claude/refresh/force-source
+make install/claude/refresh/project
+make uninstall/claude
 make verify
 make doctor
 make validate
@@ -98,7 +103,7 @@ make validate
 doctor smoke checks plus eval-suite validation. In this broad mode it validates
 repo packaging for both hosts, requires live smoke for the hosts currently
 enabled from this checkout, and skips the Claude installed-path smoke when this
-repo is not currently installed in Claude. Use `make claude-dev` followed by
+repo is not currently installed in Claude. Use `make install/claude` followed by
 `node scripts/flywheel-doctor.js --host claude --smoke` when the installed
 Claude path itself must be checked.
 

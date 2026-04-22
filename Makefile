@@ -1,29 +1,29 @@
 SHELL := /bin/bash
 
-.PHONY: dev dev-force-link dev-all claude-dev claude-dev-force-source doctor validate verify codex-refresh-local codex-refresh-local-force-link codex-refresh-local-dry-run claude-refresh-local claude-refresh-local-force-source claude-refresh-project
+.PHONY: install/all install/codex install/codex/force-link install/codex/refresh install/codex/refresh/force-link install/codex/refresh/dry-run install/claude install/claude/force-source install/claude/refresh install/claude/refresh/force-source install/claude/refresh/project uninstall/all uninstall/codex uninstall/claude doctor validate verify
 
-dev:
+install/codex:
 	bash scripts/codex-refresh-local.sh
 	node scripts/flywheel-doctor.js --host codex
 	node scripts/flywheel-eval.js validate
 
-dev-force-link:
+install/codex/force-link:
 	bash scripts/codex-refresh-local.sh --force-link
 	node scripts/flywheel-doctor.js --host codex
 	node scripts/flywheel-eval.js validate
 
-dev-all:
+install/all:
 	bash scripts/codex-refresh-local.sh
 	bash scripts/claude-refresh-local.sh --scope local
 	node scripts/flywheel-doctor.js --smoke
 	node scripts/flywheel-eval.js validate
 
-claude-dev:
+install/claude:
 	bash scripts/claude-refresh-local.sh --scope local
 	node scripts/flywheel-doctor.js --host claude --smoke
 	node scripts/flywheel-eval.js validate
 
-claude-dev-force-source:
+install/claude/force-source:
 	bash scripts/claude-refresh-local.sh --scope local --force-source
 	node scripts/flywheel-doctor.js --host claude --smoke
 	node scripts/flywheel-eval.js validate
@@ -37,20 +37,30 @@ validate:
 verify:
 	node scripts/flywheel-doctor.js --smoke
 
-codex-refresh-local:
+uninstall/all:
+	bash scripts/codex-remove-local.sh
+	bash scripts/claude-remove-local.sh
+
+install/codex/refresh:
 	bash scripts/codex-refresh-local.sh
 
-codex-refresh-local-force-link:
+install/codex/refresh/force-link:
 	bash scripts/codex-refresh-local.sh --force-link
 
-codex-refresh-local-dry-run:
+install/codex/refresh/dry-run:
 	bash scripts/codex-refresh-local.sh --dry-run
 
-claude-refresh-local:
+uninstall/codex:
+	bash scripts/codex-remove-local.sh
+
+install/claude/refresh:
 	bash scripts/claude-refresh-local.sh --scope local
 
-claude-refresh-local-force-source:
+install/claude/refresh/force-source:
 	bash scripts/claude-refresh-local.sh --scope local --force-source
 
-claude-refresh-project:
+install/claude/refresh/project:
 	bash scripts/claude-refresh-local.sh --scope project
+
+uninstall/claude:
+	bash scripts/claude-remove-local.sh

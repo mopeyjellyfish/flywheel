@@ -8,7 +8,7 @@ in the local product shell is not ready.
 Run:
 
 ```bash
-make dev
+make install/codex
 ```
 
 If you need live CLI comparisons too:
@@ -16,6 +16,12 @@ If you need live CLI comparisons too:
 ```bash
 npm --prefix tools/evals install
 npm --prefix tools/evals run doctor
+```
+
+If a clean host state is more useful than a repair pass:
+
+```bash
+make uninstall/all
 ```
 
 ## Common Problems
@@ -30,7 +36,7 @@ Check:
 - `node scripts/flywheel-doctor.js --host codex`
 
 Fix:
-- rerun `make dev` so Flywheel can create or repair the local plugin entry, then
+- rerun `make install/codex` so Flywheel can create or repair the local plugin entry, then
   start a fresh Codex session
 
 ### Codex still shows stale Flywheel skill text after local edits
@@ -46,13 +52,13 @@ Check:
 Fix:
 
 ```bash
-make dev
+make install/codex
 ```
 
 If you only need the relink-and-cache-refresh step, use:
 
 ```bash
-make codex-refresh-local
+make install/codex/refresh
 ```
 
 Then start a fresh Codex session.
@@ -77,7 +83,7 @@ Check:
 Fix:
 
 ```bash
-make codex-refresh-local
+make install/codex/refresh
 ```
 
 Then start a fresh Codex session.
@@ -87,6 +93,29 @@ Note:
 - Codex can hard-block destructive Bash commands, but commit and push policy
   checkpoints may degrade to warnings when the host cannot honestly enforce an
   ask gate
+
+### Need a clean Flywheel install state before retesting
+
+Symptom:
+- `make install/codex`, `make install/claude`, or direct host checks are picking up earlier
+  Flywheel install state
+- a clean reinstall is easier than debugging the current host state
+
+Fix:
+
+```bash
+make uninstall/all
+```
+
+If only one host needs cleanup:
+
+```bash
+make uninstall/codex
+make uninstall/claude
+```
+
+Then rerun `make install/codex` or `make install/claude` and restart the relevant host
+session.
 
 ### Claude installed Flywheel is not available
 
@@ -102,10 +131,10 @@ Check:
 - `node scripts/flywheel-doctor.js --host claude --smoke`
 
 Fix:
-- rerun `make claude-dev`
+- rerun `make install/claude`
 - if the `flywheel` marketplace points at another checkout, rerun
-  `make claude-dev-force-source`
-- for a project-scoped install from this repo, run `make claude-refresh-project`
+  `make install/claude/force-source`
+- for a project-scoped install from this repo, run `make install/claude/refresh/project`
 - then run `/reload-plugins` in Claude Code or start a fresh Claude session
 
 Note:
@@ -128,7 +157,7 @@ Check:
 - `/hooks` in Claude Code shows Flywheel plugin hooks after install
 
 Fix:
-- rerun `make claude-dev`
+- rerun `make install/claude`
 - then run `/reload-plugins` in Claude Code or start a fresh Claude session
 
 Note:
