@@ -59,6 +59,9 @@ visible stages:
   update-time recovery when a later stage discovers a missing requirement,
   including trusted MCP posture and sandbox or devcontainer readiness
 - `flywheel:run` for optional end-to-end orchestration across the remaining stages
+- `flywheel:research` for topic investigation, current best-practice
+  discovery, and reusable evidence gathering before ideation, brainstorming,
+  or planning
 - `flywheel:incident` for production or runtime incidents that begin with live
   evidence and need mitigation vs rollback vs patch framing
 - `flywheel:deepen` for strengthening a reviewed plan before implementation
@@ -104,6 +107,9 @@ inside that blocked stage.
   steps, use `../plan/SKILL.md`.
 - If the user wants a better next bet, backlog shaping, or project leverage
   before entering the main loop, use `../ideate/SKILL.md`.
+- If the immediate job is researching a topic, gathering current published
+  guidance, or collecting evidence before choosing an idea, requirements, or
+  plan, use `../research/SKILL.md`.
 - If the user is shaping the current repo's development workflow, stage
   boundaries, or operating contract and the solution direction is not yet
   fixed, use
@@ -206,6 +212,9 @@ Apply these routing heuristics before doing repo exploration:
   solved problems, route to `../spin/SKILL.md`
 - if the input asks for the best next bets before choosing one problem, route
   to `../ideate/SKILL.md`
+- if the input explicitly asks to research a topic, gather current best
+  practices, or compare published approaches before shaping, route to
+  `../research/SKILL.md`
 - if the input is environment bootstrap, onboarding, or repo readiness, route
   to `../setup/SKILL.md`
 - if the input asks for isolated branch work, parallel checkouts, or worktree
@@ -360,6 +369,11 @@ current stage, its artifact, and the immediate next handoff.
 
 Use these patterns to keep routing answers stable across frontier models:
 
+- **Research route:** "This belongs in `flywheel:research` because the
+  immediate job is topic investigation and evidence gathering before the next
+  shaping artifact is chosen. The output should be a ranked research brief,
+  then the relevant handoff into `flywheel:ideate`, `flywheel:brainstorm`, or
+  `flywheel:plan`."
 - **Brainstorm route:** "This should go through `flywheel:brainstorm` first because
   behavior or scope is still unclear. The output should be a short requirements
   doc or requirements plan. Once that exists, move into `flywheel:plan`."

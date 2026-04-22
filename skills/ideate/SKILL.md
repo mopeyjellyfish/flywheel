@@ -66,6 +66,11 @@ If no argument is provided, proceed with open-ended ideation.
 
 Do not load every reference by default. Load only what the current phase needs:
 
+- Read `../references/research/activation-heuristics.md` when deciding whether
+  to reuse a saved research brief or trigger fresh research.
+- Read `../references/research/source-ranking-and-synthesis.md` when current
+  external knowledge would materially improve the shortlist or when a stale
+  brief needs targeted follow-up research.
 - Read `references/universal-ideation.md` only when the ideation topic has no
   meaningful repo surface or no software implementation surface.
 - Read `references/subagent-contract.md` only when you choose delegated
@@ -109,6 +114,9 @@ Core tags:
 7. **Challenge the starting frame** - when the user arrives with a proposed
    solution, test nearby reframings before treating that solution as the thing
    to optimize.
+8. **Prefer reusable research over redundant browsing** - if a fresh matching
+   research brief already exists, use it before launching broad new external
+   research.
 
 ## Execution Flow
 
@@ -183,27 +191,36 @@ Gather grounding before generating ideas. Match the grounding to the mode:
 2. Do a shallow repo scan:
    - top-level directories
    - directly relevant docs
-   - nearby `docs/brainstorms/`, `docs/plans/`, or active-repo
+   - nearby `docs/research/`, `docs/brainstorms/`, `docs/plans/`, or active-repo
      `docs/solutions/` artifacts
    - adjacent files or tests that reveal the current shape of the area
    - when the active repo has `docs/solutions/`, search that local store by
      `files_touched`, `module`, `tags`, `problem_type`, `component`, and title
      before reading full docs; prefer `doc_status: active` and follow
      `superseded_by` when present
-3. Verify any claim about current capabilities, missing pieces, or repo
+3. When the active repo has `docs/research/`, search that local store by
+   frontmatter and title before broad external research. Match on `topic`,
+   `keywords`, `reuse_targets`, and title. Prefer a fresh brief whose
+   `reuse_targets` include `ideate`. If the brief is stale or partial, reuse it
+   as context and add only the smallest follow-up research needed.
+4. Verify any claim about current capabilities, missing pieces, or repo
    boundaries against actual files before using it as grounding.
-4. If the user explicitly asked for issue, bug, or feedback themes, gather them
+5. If the user explicitly asked for issue, bug, or feedback themes, gather them
    from accessible local artifacts or issue tooling. If unavailable, say so and
    continue without blocking.
-5. Use web research when the user explicitly asks for it or when current
-   external signals materially affect the idea quality. Skip it when the user
-   says `no external research` or equivalent.
+6. Use web research when the user explicitly asks for it or when current
+   external signals materially affect the idea quality and no matching fresh
+   brief already covers the topic. Skip it when the user says
+   `no external research` or equivalent.
 
 #### Outside This Repo, Still Software
 
 1. Synthesize the user's context into a short topic summary.
 2. Ask only the questions that would materially change which ideas survive.
-3. Use web research by default unless the user explicitly skips it.
+3. Use web research or a matching saved research brief when the topic is
+   unfamiliar, current-practice-sensitive, or otherwise evidence-light. Skip it
+   when the user explicitly skips external research or when the user already
+   provided enough current context to shortlist responsibly.
 4. Treat repo-specific learnings as optional, not authoritative.
 
 #### Non-Software or General Topics

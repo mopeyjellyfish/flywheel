@@ -1,8 +1,20 @@
-const { mentionsAny } = require("./shared.cjs");
+const { mentionsAny, mentionsAtLeast } = require("./shared.cjs");
 
 function deterministicPlan(caseItem, output) {
   const scores = {};
   const notes = {};
+
+  const planningSignal = mentionsAny(output, [/\btechnical plan\b/i, /\bimplementation unit\b/i, /\bUnit 1\b/i, /docs\/plans/i, /\bplan\b/i]);
+  scores["Planning Discipline"] = planningSignal ? 2 : 0;
+  notes["Planning Discipline"] = planningSignal
+    ? "Reads like a planning artifact rather than execution."
+    : "Does not clearly read like a technical plan.";
+
+  const repoGroundingSignal = mentionsAny(output, [/AGENTS\.md/i, /docs\/solutions/i, /repo/i, /codebase/i, /tests/i, /patterns/i]);
+  scores["Repo Grounding"] = repoGroundingSignal ? 2 : 1;
+  notes["Repo Grounding"] = repoGroundingSignal
+    ? "Mentions repo truth or existing patterns."
+    : "Repo grounding is present but weak.";
 
   const handoffToWork = mentionsAny(output, [/\$flywheel:work\b/i, /\/flywheel:work\b/i, /\/flywheel:work\b/i]);
   const handoffToDeepen = mentionsAny(output, [/\$flywheel:deepen\b/i, /\/flywheel:deepen\b/i, /\bdeepen the plan\b/i]);
@@ -27,6 +39,18 @@ function deterministicPlan(caseItem, output) {
   notes["Test Strategy"] = mentionsTests
     ? "Mentions testing or verification strategy."
     : "Does not clearly mention testing or verification.";
+
+  const researchExpected = (caseItem.special_constraints || []).some((item) => /published guidance matters|research brief|targeted follow-up research|research report/i.test(item));
+  if (researchExpected) {
+    const researchSignal = mentionsAny(output, [/docs\/research/i, /saved research/i, /research brief/i, /fresh brief/i, /reuse/i, /targeted follow-?up research/i, /current published guidance/i]);
+    const distinctionSignal = mentionsAtLeast(output, [/repo/i, /codebase/i, /external/i, /published guidance/i, /current practice/i, /deferred/i, /open question/i], 2);
+    scores["Repo Grounding"] = researchSignal ? (distinctionSignal ? 2 : 1) : 0;
+    notes["Repo Grounding"] = researchSignal
+      ? distinctionSignal
+        ? "Reuses or explicitly invokes research while keeping repo truth and external guidance distinct."
+        : "Acknowledges research, but does not clearly separate repo truth from external guidance."
+      : "Does not clearly reuse or invoke the expected research posture.";
+  }
 
   const runtimeCase = (caseItem.special_constraints || []).some((item) => /runtime/i.test(item));
   if (runtimeCase) {

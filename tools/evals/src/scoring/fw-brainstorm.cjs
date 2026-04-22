@@ -29,6 +29,21 @@ function deterministicBrainstorm(caseItem, output) {
       : "Mentions the durable brainstorm artifact, but not a clear checkpoint summary."
     : "Keeps the output conversational but does not clearly name the artifact.";
 
+  const researchExpected = (caseItem.special_constraints || []).some((item) => /published guidance matters|research on the user's behalf|research report/i.test(item));
+  const researchSignal = mentionsAny(output, [/docs\/research/i, /saved research/i, /research brief/i, /focused research pass/i, /targeted follow-?up research/i, /current published guidance/i, /on your behalf/i]);
+  if (researchExpected) {
+    scores["Artifact Discipline"] = researchSignal && artifactSignal ? (summarySignal ? 2 : 1) : researchSignal || artifactSignal ? 1 : 0;
+    notes["Artifact Discipline"] = researchSignal && artifactSignal
+      ? summarySignal
+        ? "Uses or explicitly invokes research while preserving the durable brainstorm artifact."
+        : "Uses or explicitly invokes research and names the brainstorm artifact, but leaves only a weak checkpoint summary."
+      : researchSignal
+        ? "Acknowledges the expected research posture, but does not clearly preserve the durable brainstorm artifact."
+        : artifactSignal
+          ? "Preserves the brainstorm artifact, but does not clearly acknowledge the expected research posture."
+          : "Misses both the expected research posture and durable brainstorm artifact.";
+  }
+
   const handoffSignal = mentionsAny(output, [/\$flywheel:plan\b/i, /\/flywheel:plan\b/i, /\/flywheel:plan\b/i]);
   scores["Plan Handoff"] = handoffSignal ? 2 : 0;
   notes["Plan Handoff"] = handoffSignal

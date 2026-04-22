@@ -1,4 +1,4 @@
 interface:
   display_name: "$flywheel:plan"
   short_description: "Turn requirements into technical plans"
-  default_prompt: "Use $flywheel:plan to turn this requirements doc or idea into a technical plan that agents or humans can execute, with atomic implementation units, explicit execution dependencies, and architecture or pattern decisions when boundaries or named abstractions materially matter."
+  default_prompt: "Use $flywheel:plan to turn this requirements doc or idea into a technical plan that agents or humans can execute, reuse matching saved research, run only targeted follow-up research when current practice materially affects the plan, and include atomic implementation units, explicit execution dependencies, and architecture or pattern decisions when boundaries or named abstractions materially matter."

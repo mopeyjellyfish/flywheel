@@ -10,10 +10,17 @@ Does the response stay in planning instead of drifting into implementation?
 Strong passes also break the work into atomic implementation units instead of
 vague phases.
 
+When research is involved, strong passes stay plan-shaped rather than turning
+into a research report.
+
 ### Repo Grounding
 
 Does it sound grounded in repo files, patterns, or validation surfaces rather
 than generic product advice?
+
+When current published guidance matters, strong passes reuse or explicitly
+invoke a matching `docs/research/` brief when available and keep repo truth
+distinct from external guidance.
 
 ### Test Strategy
 

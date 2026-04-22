@@ -28,9 +28,9 @@ steps?
 - plan before work when execution details still need structure, and planning
   runs document review before the user chooses deepen or work
 - shape -> work -> review -> commit as the compact backbone for software-project work
-- helper surfaces such as architecture strategy, pattern recognition,
-  maintainability, or simplify can be selected when they are the most direct
-  fit, without turning them into mandatory visible stages
+- helper surfaces such as research, architecture strategy, pattern
+  recognition, maintainability, or simplify can be selected when they are the
+  most direct fit, without turning them into mandatory visible stages
 - review before merge when code changed or when work completes on the current branch
 - spin after work or commit when lessons should be preserved
 

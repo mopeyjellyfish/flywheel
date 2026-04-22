@@ -57,6 +57,7 @@ Bug reports often come from an installed plugin rather than the current checkout
 ## Repository Docs Convention
 - Requirements exploration lives in `docs/brainstorms/`.
 - Saved ideation artifacts from `ideate` live in `docs/ideation/` when they are worth keeping.
+- Saved research briefs from `research` live in `docs/research/` when they are worth keeping.
 - Implementation plans and execution-ready follow-ups live in `docs/plans/`.
 - Setup, compatibility, and troubleshooting guidance for working on Flywheel itself live in `docs/setup/`.
 - Durable lessons captured by `spin` live in `docs/solutions/`.
