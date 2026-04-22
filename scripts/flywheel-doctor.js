@@ -12,6 +12,11 @@ const requestedHost = hostArgIndex >= 0 ? process.argv[hostArgIndex + 1] : "all"
 const host = ["all", "codex", "claude"].includes(requestedHost) ? requestedHost : "all";
 const includeCodex = host === "all" || host === "codex";
 const includeClaude = host === "all" || host === "claude";
+const requireClaudeInstall = host === "claude";
+
+function optionalClaudeInstallDetail(detail) {
+  return `${detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make claude-dev\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`;
+}
 
 function run(command, args, options = {}) {
   return spawnSync(command, args, {
@@ -331,13 +336,39 @@ function main() {
     checks.push(codexSessionSmokeCheck());
   }
   if (includeClaude) {
+    const claudeInstalled = checkFlywheelVisibleToClaude();
+    const claudeCommands = checkClaudeFlywheelCommands();
     checks.push(checkClaudePluginValidation());
-    checks.push(checkFlywheelVisibleToClaude());
-    checks.push(checkClaudeFlywheelCommands());
-  }
-
-  if (smoke && includeClaude) {
-    checks.push(checkFlywheelCallableInClaude());
+    checks.push({
+      name: claudeInstalled.name,
+      ok: claudeInstalled.ok || !requireClaudeInstall,
+      detail: claudeInstalled.ok
+        ? claudeInstalled.detail
+        : requireClaudeInstall
+          ? claudeInstalled.detail
+          : optionalClaudeInstallDetail(claudeInstalled.detail),
+    });
+    checks.push({
+      name: claudeCommands.name,
+      ok: claudeCommands.ok || !requireClaudeInstall && !claudeInstalled.ok,
+      detail: claudeCommands.ok
+        ? claudeCommands.detail
+        : !requireClaudeInstall && !claudeInstalled.ok
+          ? optionalClaudeInstallDetail(claudeCommands.detail)
+          : claudeCommands.detail,
+    });
+    if (smoke) {
+      const claudeCallable = claudeInstalled.ok
+        ? checkFlywheelCallableInClaude()
+        : {
+            name: "Flywheel callable in Claude",
+            ok: !requireClaudeInstall,
+            detail: requireClaudeInstall
+              ? "skipped because this checkout is not currently installed in Claude"
+              : "skipped in broad verification because this checkout is not currently installed in Claude",
+          };
+      checks.push(claudeCallable);
+    }
   }
 
   const ok = checks.every((check) => check.ok);

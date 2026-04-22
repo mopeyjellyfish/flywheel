@@ -196,6 +196,7 @@ async function runDoctor({ smoke = false, host = "all" } = {}) {
   const normalizedHost = ["all", "codex", "claude"].includes(host) ? host : "all";
   const includeCodex = normalizedHost === "all" || normalizedHost === "codex";
   const includeClaude = normalizedHost === "all" || normalizedHost === "claude";
+  const requireClaudeInstall = normalizedHost === "claude";
 
   const codexVersion = includeCodex ? await binaryVersion("codex") : { ok: true, text: "skipped" };
   const claudeVersion = includeClaude ? await binaryVersion("claude") : { ok: true, text: "skipped" };
@@ -227,6 +228,7 @@ async function runDoctor({ smoke = false, host = "all" } = {}) {
   }
 
   if (includeClaude) {
+    const claudeInstalled = claudeFlywheelStatus;
     checks.push({
       name: "claude binary",
       ok: claudeVersion.ok,
@@ -239,13 +241,21 @@ async function runDoctor({ smoke = false, host = "all" } = {}) {
     });
     checks.push({
       name: "Flywheel enabled in Claude",
-      ok: claudeFlywheelStatus.ok,
-      detail: claudeFlywheelStatus.detail,
+      ok: claudeInstalled.ok || !requireClaudeInstall,
+      detail: claudeInstalled.ok
+        ? claudeInstalled.detail
+        : requireClaudeInstall
+          ? claudeInstalled.detail
+          : `${claudeInstalled.detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make claude-dev\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`,
     });
     checks.push({
       name: "Flywheel commands registered in Claude",
-      ok: claudeFlywheelCommands.ok,
-      detail: claudeFlywheelCommands.detail,
+      ok: claudeFlywheelCommands.ok || !requireClaudeInstall && !claudeInstalled.ok,
+      detail: claudeFlywheelCommands.ok
+        ? claudeFlywheelCommands.detail
+        : !requireClaudeInstall && !claudeInstalled.ok
+          ? `${claudeFlywheelCommands.detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make claude-dev\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`
+          : claudeFlywheelCommands.detail,
     });
   }
 
@@ -277,7 +287,14 @@ async function runDoctor({ smoke = false, host = "all" } = {}) {
       detail: claudeHelp.ok ? "help output includes --plugin-dir" : claudeHelp.stderr.trim(),
     });
 
-    const claudeSmoke = await smokeClaudeFlywheelInvocation();
+    const claudeSmoke = claudeFlywheelStatus.ok
+      ? await smokeClaudeFlywheelInvocation()
+      : {
+          ok: !requireClaudeInstall,
+          detail: requireClaudeInstall
+            ? "skipped because this checkout is not currently installed in Claude"
+            : "skipped in broad verification because this checkout is not currently installed in Claude",
+        };
     checks.push({
       name: "Flywheel callable in Claude",
       ok: claudeSmoke.ok,
