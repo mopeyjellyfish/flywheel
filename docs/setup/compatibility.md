@@ -93,6 +93,13 @@ make doctor
 make validate
 ```
 
+To confirm a freshly restarted Codex session has loaded the live Flywheel
+surface:
+
+```bash
+node scripts/flywheel-doctor.js --host codex --codex-session-smoke
+```
+
 For live local comparisons:
 
 ```bash

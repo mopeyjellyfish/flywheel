@@ -163,6 +163,7 @@ make claude-refresh-project
 ```bash
 make doctor
 make validate
+node scripts/flywheel-doctor.js --host codex --codex-session-smoke
 node scripts/flywheel-doctor.js --host claude --smoke
 ```
 

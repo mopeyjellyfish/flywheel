@@ -27,6 +27,7 @@ Symptom:
 
 Check:
 - `~/.codex/config.toml`
+- `node scripts/flywheel-doctor.js --host codex`
 
 Fix:
 - rerun `make dev` so Flywheel can create or repair the local plugin entry, then
@@ -55,6 +56,12 @@ make codex-refresh-local
 ```
 
 Then start a fresh Codex session.
+
+To verify the restarted session now exposes Flywheel:
+
+```bash
+node scripts/flywheel-doctor.js --host codex --codex-session-smoke
+```
 
 ### Codex hook guardrails are not active
 
