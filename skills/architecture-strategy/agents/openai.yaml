@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:architecture-strategy"
+  short_description: "Choose the right system shape"
+  default_prompt: "Use $flywheel:architecture-strategy to compare boundary, service-shape, hexagonal, and distributed-system options, then recommend the minimum durable architecture grounded in this repo."

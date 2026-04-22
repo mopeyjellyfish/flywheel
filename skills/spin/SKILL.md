@@ -175,6 +175,9 @@ Good spin candidates include:
 - a bug with a non-obvious root cause
 - a workflow or tooling improvement that removed friction
 - a reusable testing or validation pattern
+- a chosen or rejected architecture or pattern decision that future work in the
+  repo should reuse
+- a simplification or maintainability heuristic that reduced durable complexity
 - a clarified repo rule that future planning or implementation should follow
 - a repeated preference or constraint revealed during `ideate`, `brainstorm`,
   or `plan` that future project work should inherit

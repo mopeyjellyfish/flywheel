@@ -1,0 +1,4 @@
+interface:
+  display_name: "$flywheel:pattern-recognition"
+  short_description: "Decide when a pattern is justified"
+  default_prompt: "Use $flywheel:pattern-recognition to map this problem to existing repo patterns or justified named patterns, and say clearly when a simpler design is better."

@@ -52,6 +52,12 @@ function deterministicSpin(caseItem, output) {
     notes["Capture Discipline"] = candidateSignal
       ? "Treats blank input as candidate discovery."
       : "Does not clearly do candidate discovery for blank input.";
+  } else {
+    const directCapture = mentionsAny(output, [/docs\/solutions\//i, /lesson/i, /guidance/i, /capture/i]);
+    scores["Capture Discipline"] = directCapture ? 2 : 1;
+    notes["Capture Discipline"] = directCapture
+      ? "Treats direct input as a concrete lesson-capture workflow."
+      : "Direct capture posture is present but weak.";
   }
 
   return { scores, notes };

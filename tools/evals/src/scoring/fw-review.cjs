@@ -38,6 +38,15 @@ function deterministicReview(caseItem, output) {
       : "Misses browser-proof handoff on a browser-visible diff.";
   }
 
+  const specialistCase = (caseItem.special_constraints || []).some((item) => /pattern-heavy|boundary-change/i.test(item));
+  if (specialistCase) {
+    const specialistSignal = mentionsAtLeast(output, [/pattern-recognition/i, /architecture/i, /maintainability/i, /simplicity/i], 2);
+    scores["Specialist Suite"] = specialistSignal ? 2 : 0;
+    notes["Specialist Suite"] = specialistSignal
+      ? "Makes the relevant specialist review lenses visible."
+      : "Does not clearly activate or name the specialist review suite for a pattern-heavy diff.";
+  }
+
   return { scores, notes };
 }
 

@@ -85,7 +85,10 @@ Do not preload every support file. Load only what the current phase needs:
    no-impact rationale.
 6. **Preserve branch safety** - do not commit directly to the default branch
    without explicit user approval.
-7. **Offer spin only when it earns its keep** - after the branch is finished,
+7. **Carry only the material architecture and code-quality story** - PR text
+   should explain the relevant boundary, pattern, simplification, or
+   maintainability decisions without replaying raw specialist analysis.
+8. **Offer spin only when it earns its keep** - after the branch is finished,
    suggest knowledge capture only when the work surfaced durable project value.
 
 ## Workflow
@@ -179,6 +182,8 @@ Assemble the payload for commit, push, and PR steps from:
 
 - current diff and recent commits
 - plan summary and key decisions when `plan:<path>` is available
+- the material architecture, pattern, simplification, or maintainability story
+  when those decisions materially affect the branch summary
 - testing notes
 - review outcomes and residual caveats
 - rollout artifact contents when present

@@ -14,7 +14,8 @@ For each section, compute:
 - **Risk bonus** — add 1 if the topic is high-risk and the section is materially
   relevant to that risk
 - **Critical-section bonus** — add 1 for `Key Technical Decisions`,
-  `Testing Strategy`, `Implementation Units`, `System-Wide Impact`,
+  `Architecture and Pattern Decisions`, `Testing Strategy`,
+  `Implementation Units`, `System-Wide Impact`,
   `Risks & Dependencies`, or `Open Questions` in `Standard` or `Deep` plans
 
 Treat a section as a candidate if:
@@ -59,6 +60,16 @@ If the plan already has a `deepened:` date:
   recommending a new posture
 - the plan names a reliability-sensitive decision but never compares the viable
   options or explains the recommendation
+
+**Architecture and Pattern Decisions**
+
+- the section names patterns or boundary changes without citing current repo
+  truth
+- the plan recommends a named pattern but never explains the seam or failure
+  mode it solves
+- the simpler local option is not considered
+- the heavier architectural option is not considered
+- clean-code constraints for `work` are missing or too vague
 
 **Testing Strategy**
 

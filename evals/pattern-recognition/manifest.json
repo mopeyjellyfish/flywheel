@@ -1,0 +1,30 @@
+{
+  "id": "pattern-recognition",
+  "skill": "pattern-recognition",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Repo Pattern Grounding",
+    "Pattern Fit",
+    "Anti-Pattern Discipline",
+    "Restraint"
+  ],
+  "criticalDimensions": [
+    "Repo Pattern Grounding",
+    "Pattern Fit",
+    "Anti-Pattern Discipline"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "dto_ports_repository_boundary",
+    "builder_vs_plain_construction",
+    "ddd_vs_crud_modeling"
+  ]
+}

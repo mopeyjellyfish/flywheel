@@ -29,6 +29,8 @@ and those details are themselves the subject of the decision.
 - Alternatives considered
 - High-level technical direction only when the work is inherently technical and
   the direction is part of the product or architecture decision
+- Architecture or pattern direction only when it materially changes scope,
+  ownership, service shape, or user-visible behavior
 
 **Document structure:** Use this template and omit clearly inapplicable
 optional sections:
@@ -61,6 +63,10 @@ topic: <kebab-case-topic>
 
 ## Key Decisions
 - [Decision]: [Rationale]
+
+## High-Level Technical Direction
+- [Only include when the brainstorm is inherently technical, architectural, or
+  pattern-bearing]
 
 ## Dependencies / Assumptions
 - [Only include if material]
@@ -114,6 +120,9 @@ Before finalizing, check:
 - Are any unresolved items actually product decisions rather than planning
   questions?
 - Did implementation details leak in when they should not have?
+- If architecture direction is included, does it stay at the level of boundary,
+  service shape, or pattern posture instead of dropping into implementation
+  mechanics?
 - Do any requirements claim that infrastructure is absent without that claim
   having been verified against the codebase? If so, verify now or label as an
   unverified assumption.

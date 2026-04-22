@@ -1,7 +1,9 @@
 const { runLocalJudge } = require("../lib/judge.cjs");
+const { deterministicArchitectureStrategy } = require("./architecture-strategy.cjs");
 const { deterministicConventionalCommit } = require("./conventional-commit.cjs");
 const { deterministicDocumentReview } = require("./document-review.cjs");
 const { deterministicFlywheel } = require("./flywheel.cjs");
+const { deterministicFlywheelArchitectureChange } = require("./flywheel-architecture-change.cjs");
 const { deterministicFlywheelIncidentResponse } = require("./flywheel-incident-response.cjs");
 const { deterministicFlywheelRuntimeChange } = require("./flywheel-runtime-change.cjs");
 const { deterministicBrainstorm } = require("./fw-brainstorm.cjs");
@@ -20,10 +22,16 @@ const { deterministicSpin } = require("./fw-spin.cjs");
 const { deterministicWork } = require("./fw-work.cjs");
 const { deterministicWorktree } = require("./fw-worktree.cjs");
 const { deterministicLogging } = require("./logging.cjs");
+const { deterministicMaintainability } = require("./maintainability.cjs");
 const { deterministicObservability } = require("./observability.cjs");
+const { deterministicPatternRecognition } = require("./pattern-recognition.cjs");
+const { deterministicSimplify } = require("./simplify.cjs");
 const { deterministicVerification } = require("./verification-before-completion.cjs");
 
 function getDeterministicSuiteScorer(suiteId) {
+  if (suiteId === "architecture-strategy") {
+    return deterministicArchitectureStrategy;
+  }
   if (suiteId === "conventional-commit") {
     return deterministicConventionalCommit;
   }
@@ -32,6 +40,9 @@ function getDeterministicSuiteScorer(suiteId) {
   }
   if (suiteId === "flywheel") {
     return deterministicFlywheel;
+  }
+  if (suiteId === "flywheel-architecture-change") {
+    return deterministicFlywheelArchitectureChange;
   }
   if (suiteId === "flywheel-runtime-change") {
     return deterministicFlywheelRuntimeChange;
@@ -87,8 +98,17 @@ function getDeterministicSuiteScorer(suiteId) {
   if (suiteId === "logging") {
     return deterministicLogging;
   }
+  if (suiteId === "maintainability") {
+    return deterministicMaintainability;
+  }
   if (suiteId === "observability") {
     return deterministicObservability;
+  }
+  if (suiteId === "pattern-recognition") {
+    return deterministicPatternRecognition;
+  }
+  if (suiteId === "simplify") {
+    return deterministicSimplify;
   }
   if (suiteId === "verification-before-completion") {
     return deterministicVerification;

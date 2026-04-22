@@ -37,6 +37,15 @@ function deterministicPlan(caseItem, output) {
       : "Missing runtime, rollout, or observability awareness for a runtime-risky case.";
   }
 
+  const architectureCase = (caseItem.special_constraints || []).some((item) => /architecture-bearing/i.test(item));
+  if (architectureCase) {
+    const architectureAware = mentionsAtLeast(output, [/architecture/i, /pattern/i, /boundary/i, /rejected/i, /clean-code/i], 3);
+    scores["Repo Grounding"] = architectureAware ? 2 : scores["Repo Grounding"];
+    notes["Repo Grounding"] = architectureAware
+      ? "Includes explicit architecture or pattern decisions grounded for later execution."
+      : notes["Repo Grounding"];
+  }
+
   return { scores, notes };
 }
 

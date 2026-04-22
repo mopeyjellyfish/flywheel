@@ -23,6 +23,7 @@ groups:
     - learnings-researcher
   cross_cutting_conditionals:
     - architecture
+    - pattern-recognition
     - simplicity
     - observability
     - security
@@ -93,7 +94,13 @@ personas:
     dispatch_type: structured
     output_mode: schema_json
     default_group: cross_cutting_conditionals
-    select_when: module boundaries, ownership, dependency direction, layering, or new abstraction seams are materially changing
+    select_when: module boundaries, ownership, dependency direction, layering, service shape, or new abstraction seams are materially changing
+  pattern-recognition:
+    path: references/personas/pattern-recognition.md
+    dispatch_type: structured
+    output_mode: schema_json
+    default_group: cross_cutting_conditionals
+    select_when: the diff introduces or reshapes named patterns such as DTO, repository, ports/adapters, builder, DDD terms, or boundary-heavy abstractions whose justification should be tested
   simplicity:
     path: references/personas/simplicity.md
     dispatch_type: structured

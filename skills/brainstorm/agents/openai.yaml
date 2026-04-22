@@ -1,4 +1,4 @@
 interface:
   display_name: "$flywheel:brainstorm"
   short_description: "Refine ideas into a requirements plan"
-  default_prompt: "Use $flywheel:brainstorm to turn this idea into a right-sized requirements doc before planning."
+  default_prompt: "Use $flywheel:brainstorm to turn this idea into a right-sized requirements doc before planning, pulling in high-level architecture direction only when boundaries or pattern choices materially affect scope or behavior."

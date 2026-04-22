@@ -22,6 +22,11 @@ Does it prioritize bugs, regressions, missing tests, and merge risk?
 
 When a plan is provided, does it account for plan-backed completeness checks?
 
+### Specialist Suite
+
+When the diff is pattern-heavy or boundary-changing, does it make the relevant
+specialist reviewer set visible without turning the report into a scorecard?
+
 ### Browser Proof Handoff
 
 When browser-visible behavior changed, does it offer browser proof before commit?

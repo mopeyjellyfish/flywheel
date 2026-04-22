@@ -17,6 +17,8 @@ Focus on:
 - multi-step flows that could stay local and obvious
 - clever or overly configurable code that obscures a small requirement
 - "just in case" extensibility that increases carrying cost today
+- architecture or pattern layers that are heavier than the current change
+  requires, after boundary ownership is otherwise clear
 
 Confidence:
 - **High (0.80+)** when the unnecessary layer or abstraction is directly
@@ -29,6 +31,8 @@ Suppress:
 - style-only preferences
 - large rewrites that are not justified by a concrete maintenance win
 - simplification ideas that would cross the current scope boundary
+- boundary-ownership disputes that belong to `architecture`
+- whether a named pattern is justified when `pattern-recognition` should own it
 
 Evidence discipline:
 - explain what can be removed, collapsed, or localized

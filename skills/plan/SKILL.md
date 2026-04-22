@@ -59,6 +59,14 @@ needs:
 - Read `references/visual-communication.md` only when the plan structure would
   materially benefit from a dependency graph, interaction diagram, or
   comparison table.
+- Read `../references/architecture-code-quality/activation-heuristics.md` when
+  deciding whether the work is architecture-bearing enough to need explicit
+  boundary or pattern decisions.
+- Read `../references/architecture-code-quality/pattern-families.md` when the
+  plan must compare named patterns or architectural styles.
+- Read `../references/architecture-code-quality/output-contract.md` when
+  drafting `Architecture and Pattern Decisions` or equivalent specialist
+  sections.
 - Read `references/unit-examples.md` only when drafting implementation units,
   choosing test posture, or repairing output that is drifting from the required
   unit schema.
@@ -106,6 +114,10 @@ needs:
    fallbacks, queue behavior, health checks, or other operationally meaningful
    boundaries, present the current repo truth, likely failure modes, blast
    radius, viable options, and the recommended posture.
+11. **Make architecture and pattern choices explicit when warranted** — when
+   the work changes boundaries, ownership, named patterns, or distributed
+   posture, record the chosen option, rejected alternatives, and the clean-code
+   constraints `work` must preserve.
 
 ## Plan Quality Bar
 
@@ -128,6 +140,10 @@ Every plan should contain:
   event, or integration behavior
 - enumerated test scenarios for each feature-bearing unit
 - clear dependencies and sequencing
+- for architecture-bearing work, an explicit `Architecture and Pattern
+  Decisions` section or equivalent that names current repo truth, candidate
+  options, the chosen direction, rejected lighter/heavier options, and clean-
+  code constraints for execution
 - for runtime-risky work, an explicit decision surface covering current
   behavior, top failure modes, blast radius, viable options, and the chosen
   recommendation

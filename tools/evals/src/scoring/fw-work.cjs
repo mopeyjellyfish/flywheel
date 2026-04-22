@@ -38,6 +38,15 @@ function deterministicWork(caseItem, output) {
       : "Misses browser-proof handoff on a browser-visible case.";
   }
 
+  const architectureCase = (caseItem.special_constraints || []).some((item) => /architecture-bearing|abstraction-heavy/i.test(item));
+  if (architectureCase) {
+    const architectureAware = mentionsAtLeast(output, [/architecture/i, /pattern/i, /boundary/i, /simplify/i, /maintainability/i], 2);
+    scores["Repo Grounding"] = architectureAware ? 2 : scores["Repo Grounding"];
+    notes["Repo Grounding"] = architectureAware
+      ? "Preserves planned architecture or code-quality constraints during execution."
+      : notes["Repo Grounding"];
+  }
+
   return { scores, notes };
 }
 

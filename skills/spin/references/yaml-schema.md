@@ -61,6 +61,11 @@ Optional when useful:
 - **root_cause**
 - **resolution_type**
 
+For architecture and code-quality lessons, common values include
+`premature_abstraction`, `boundary_mismatch`, `pattern_mismatch`,
+`architecture_change`, and `simplification` when they are the most accurate
+fit.
+
 ## Optional Fields
 
 - **related_components**: other components involved

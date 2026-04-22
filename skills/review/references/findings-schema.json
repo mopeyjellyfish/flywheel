@@ -124,6 +124,29 @@
           "type": "array",
           "description": "Missing test coverage the reviewer identified",
           "items": { "type": "string" }
+        },
+        "quality_dimensions": {
+          "type": "object",
+          "description": "Optional internal synthesis metadata for specialist review dimensions. Do not render as a user-facing scorecard by default.",
+          "properties": {
+            "simplicity": {
+              "type": "string",
+              "enum": ["strong", "mixed", "weak"]
+            },
+            "maintainability": {
+              "type": "string",
+              "enum": ["strong", "mixed", "weak"]
+            },
+            "architecture_fit": {
+              "type": "string",
+              "enum": ["strong", "mixed", "weak"]
+            },
+            "pattern_justification": {
+              "type": "string",
+              "enum": ["strong", "mixed", "weak"]
+            }
+          },
+          "additionalProperties": false
         }
       }
     },

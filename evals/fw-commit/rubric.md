@@ -28,6 +28,9 @@ Does it protect the default branch?
 
 Does it preserve commit honesty and breaking-change checks?
 
+For architecture-heavy work, strong passes keep only the material boundary,
+pattern, or simplification story rather than replaying raw specialist output.
+
 ### Spin Offer Discipline
 
 After commit, does it offer `spin` only when a durable project lesson is

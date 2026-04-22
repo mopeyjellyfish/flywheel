@@ -25,9 +25,11 @@ live harness runs rather than relying on host defaults.
 
 Current suites:
 
+- `architecture-strategy`
 - `conventional-commit`
 - `document-review`
 - `flywheel`
+- `flywheel-architecture-change`
 - `flywheel-runtime-change`
 - `flywheel-incident-response`
 - `fw-brainstorm`
@@ -46,8 +48,11 @@ Current suites:
 - `fw-commit`
 - `fw-spin`
 - `fw-optimize`
+- `maintainability`
 - `logging`
 - `observability`
+- `pattern-recognition`
+- `simplify`
 - `verification-before-completion`
 
 ## Suite Contract

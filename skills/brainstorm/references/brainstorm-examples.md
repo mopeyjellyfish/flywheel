@@ -128,3 +128,50 @@ Users receive digest emails on a fixed cadence today and cannot choose frequency
 ## Next Steps
 -> Resume $flywheel:brainstorm to resolve blocking questions before planning
 ```
+
+## Example: Architecture-Bearing Requirements Doc
+
+Use this shape when system boundaries or pattern posture materially affect the
+feature definition.
+
+```markdown
+---
+date: 2026-04-22
+topic: billing-bounded-context-direction
+---
+
+# Right-Size Billing Boundaries
+
+## Problem Frame
+Billing logic is spreading across the app, and new payment-webhook behavior
+will increase coordination cost unless the boundary is clarified first.
+
+## Requirements
+
+**Boundary Direction**
+- R1. Billing rules must have a clearer ownership boundary than the current
+  scattered helper shape.
+- R2. Payment-webhook transport details must not define the billing domain
+  model directly.
+
+**Scope**
+- R3. The first pass must preserve one deployable unless independent deployment
+  is clearly required.
+
+## Success Criteria
+- Planning can implement billing changes without inventing the ownership model.
+- The team has an explicit answer for whether this is a module boundary,
+  bounded-context split, or service split.
+
+## Scope Boundaries
+- No immediate microservice split by default.
+- No low-level transport or persistence implementation details in this
+  requirements doc.
+
+## High-Level Technical Direction
+- Recommended direction: a stronger bounded context inside the current
+  deployable, with external payment-webhook behavior isolated at the boundary.
+
+## Next Steps
+-> $flywheel:plan for structured implementation planning
+```

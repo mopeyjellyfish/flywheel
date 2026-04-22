@@ -77,6 +77,7 @@ Before presenting options, summarize:
 - what the plan now covers
 - what changed or sharpened during planning
 - the most important decisions or tradeoffs that were locked in
+- any architecture or pattern decisions that later stages must preserve
 - what still needs user confirmation or is intentionally deferred
 - what execution would work on first
 

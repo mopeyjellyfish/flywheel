@@ -47,6 +47,15 @@ function deterministicCommit(caseItem, output) {
       : "Does not clearly offer spin as a bounded optional post-commit step."
     : "No post-commit spin offer was required for this case.";
 
+  const architectureStoryCase = (caseItem.special_constraints || []).some((item) => /architecture-story/i.test(item));
+  if (architectureStoryCase) {
+    const architectureStory = mentionsAtLeast(output, [/architecture/i, /pattern/i, /simplif/i, /maintainability/i, /material/i, /PR-safe/i], 2);
+    scores["Commit Honesty"] = architectureStory ? 2 : 0;
+    notes["Commit Honesty"] = architectureStory
+      ? "Carries only the material architecture or code-quality story."
+      : "Does not clearly summarize the material architecture or code-quality story.";
+  }
+
   return { scores, notes };
 }
 

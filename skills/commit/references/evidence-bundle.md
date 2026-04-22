@@ -72,6 +72,9 @@ Promote:
 
 - screenshots or snapshots that prove changed browser behavior
 - review verdicts, artifact paths, and safe summaries
+- concise architecture or code-quality summaries when later PR readers need the
+  chosen boundary, simplification, or pattern decision but not the full helper
+  output
 - optimization baselines, guardrails, winning change summaries, and query or
   dashboard names
 - verification claims, proof commands, and fresh results

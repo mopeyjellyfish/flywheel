@@ -16,6 +16,9 @@ Focus on:
 - shared surfaces that mix unrelated concerns or hide contract ownership
 - parallel paths that bypass an existing boundary instead of extending it
 - structural drift that makes future changes harder across modules or services
+- right-sized bounded-context or service boundaries instead of cargo-cult
+  microservice splits
+- ports/adapters or hexagonal boundaries only when they isolate a real seam
 
 Confidence:
 - **High (0.80+)** when the boundary violation or cycle is directly visible.
@@ -26,6 +29,8 @@ Confidence:
 Suppress:
 - purely local refactors with no boundary, dependency, or ownership impact
 - abstract "clean architecture" preferences not grounded in this repo
+- whether a named pattern such as DTO, repository, or builder is justified at
+  all when the main issue is pattern fit rather than boundary shape
 
 Evidence discipline:
 - cite the affected boundary, layer, or dependency edge
