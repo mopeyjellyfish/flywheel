@@ -47,3 +47,6 @@ Does it explain how the captured lesson helps future Flywheel stages?
 - work
 - review
 - debug
+
+Architecture, pattern, simplification, or maintainability guidance should read
+like durable repo knowledge, not like a one-off chat recap.

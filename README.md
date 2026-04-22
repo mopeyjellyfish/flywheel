@@ -95,9 +95,15 @@ writes the implementation path. Before `work` starts, Flywheel runs
 `document-review` on the plan and lets the user choose whether to `deepen` the
 plan or start execution.
 
+When boundaries, pattern choices, or code-quality pressure are the real
+question, Flywheel can pull in focused helper surfaces such as
+`architecture-strategy`, `pattern-recognition`, `maintainability`, and
+`simplify` without turning them into new mandatory visible stages.
+
 `work` is the execution stage. It can pull in `docs`, `debug`, `browser-test`,
-`verify`, `rollout`, `observability`, `logging`, `optimize`, or `worktree`
-when the task actually needs them.
+`verify`, `rollout`, `observability`, `logging`, `architecture-strategy`,
+`pattern-recognition`, `maintainability`, `simplify`, `optimize`, or
+`worktree` when the task actually needs them.
 
 `review` is the default gate after work. `commit` finishes the branch cleanly.
 `spin` is how Flywheel stores the lesson so the next task starts with more repo
@@ -107,6 +113,7 @@ Common starts:
 
 - new feature or vague idea: `$flywheel:start`, `$flywheel:ideate`, or `$flywheel:brainstorm`
 - known scoped change: `$flywheel:plan`
+- architecture or pattern decision: `$flywheel:architecture-strategy` or `$flywheel:pattern-recognition`
 - bug with an unclear cause: `$flywheel:debug`
 - one bounded pass through the remaining stages: `$flywheel:run`
 
@@ -163,6 +170,7 @@ make claude-refresh-project
 ```bash
 make doctor
 make validate
+node scripts/flywheel-doctor.js --host codex --codex-session-smoke
 node scripts/flywheel-doctor.js --host claude --smoke
 ```
 

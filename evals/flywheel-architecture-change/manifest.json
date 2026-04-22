@@ -1,0 +1,41 @@
+{
+  "id": "flywheel-architecture-change",
+  "skill": "flywheel:start",
+  "suiteType": "journey",
+  "journeyStages": [
+    "brainstorm",
+    "plan",
+    "work",
+    "review",
+    "commit",
+    "spin"
+  ],
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_start",
+    "expected_path",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Earliest Stage",
+    "Journey Coherence",
+    "Architecture Carry",
+    "Specialist Activation",
+    "Closure"
+  ],
+  "criticalDimensions": [
+    "Earliest Stage",
+    "Journey Coherence",
+    "Architecture Carry",
+    "Closure"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "fuzzy_architecture_bearing_change",
+    "requirements_to_pattern_aware_plan"
+  ]
+}

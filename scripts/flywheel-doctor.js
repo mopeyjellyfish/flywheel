@@ -6,6 +6,7 @@ const { spawnSync } = require("child_process");
 
 const repoRoot = path.resolve(__dirname, "..");
 const smoke = process.argv.includes("--smoke");
+const codexSessionSmoke = process.argv.includes("--codex-session-smoke");
 const hostArgIndex = process.argv.indexOf("--host");
 const requestedHost = hostArgIndex >= 0 ? process.argv[hostArgIndex + 1] : "all";
 const host = ["all", "codex", "claude"].includes(requestedHost) ? requestedHost : "all";
@@ -112,6 +113,22 @@ function checkFlywheelVisibleToCodex() {
         : visible
           ? "codex debug prompt-input includes flywheel:start"
           : "codex debug prompt-input is missing flywheel:start; refresh the local cache and restart Codex",
+  };
+}
+
+function codexSessionSmokeCheck() {
+  if (!codexSessionSmoke) {
+    return {
+      name: "Flywheel visible to current Codex session",
+      ok: true,
+      detail: "skipped; rerun with --codex-session-smoke after restarting Codex to verify live prompt visibility",
+    };
+  }
+
+  const visibility = checkFlywheelVisibleToCodex();
+  return {
+    ...visibility,
+    name: "Flywheel visible to current Codex session",
   };
 }
 
@@ -311,7 +328,7 @@ function main() {
   if (includeCodex) {
     checks.push(checkCodexHooksFeatureEnabled());
     checks.push(checkCodexHooksInstalled());
-    checks.push(checkFlywheelVisibleToCodex());
+    checks.push(codexSessionSmokeCheck());
   }
   if (includeClaude) {
     checks.push(checkClaudePluginValidation());

@@ -1,0 +1,30 @@
+{
+  "id": "maintainability",
+  "skill": "maintainability",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Current Structure",
+    "Future Edit Cost",
+    "Concrete Guidance",
+    "Restraint"
+  ],
+  "criticalDimensions": [
+    "Current Structure",
+    "Future Edit Cost",
+    "Concrete Guidance"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "wrapper_sprawl",
+    "naming_and_ownership",
+    "multi_file_orchestration"
+  ]
+}

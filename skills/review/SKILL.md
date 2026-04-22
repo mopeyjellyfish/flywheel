@@ -617,7 +617,11 @@ parallel stack-pack reviewers.
      `release`
 9. **Sort** by severity, then confidence descending, then file path, then line.
 10. **Collect coverage data** by unioning residual risks and testing gaps.
-11. **Preserve Flywheel agent artifacts** alongside the merged findings.
+11. **Track internal quality dimensions** across merged findings for
+    simplicity, maintainability, architecture fit, and pattern justification.
+    Use this metadata to sharpen synthesis only. Do not turn it into a
+    user-facing scorecard.
+12. **Preserve Flywheel agent artifacts** alongside the merged findings.
 
 ### Stage 6: Synthesize And Present
 
@@ -625,6 +629,9 @@ Read `references/review-output-template.md`.
 
 Use pipe-delimited markdown tables for interactive findings output. Do not
 present findings as prose blocks.
+
+Keep any internal quality-dimension tracking out of the interactive score
+surface unless the user explicitly asks for it.
 
 Interactive output should contain:
 

@@ -1,0 +1,30 @@
+{
+  "id": "architecture-strategy",
+  "skill": "architecture-strategy",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Repo Truth",
+    "Boundary Judgment",
+    "Pattern Posture",
+    "Right-Sizing"
+  ],
+  "criticalDimensions": [
+    "Repo Truth",
+    "Boundary Judgment",
+    "Right-Sizing"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "service_boundary_vs_modular_monolith",
+    "hexagonal_integration_boundary",
+    "distributed_failure_posture"
+  ]
+}

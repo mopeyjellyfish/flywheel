@@ -147,3 +147,14 @@ on a new test transition`
 - All touched manifests and checked-in env references use the same variable
   name with no stale references left behind.
 ```
+
+## Example: Architecture-Bearing Execution Note
+
+Use this add-on shape when a unit must preserve an earlier architecture or
+pattern decision.
+
+```markdown
+**Execution note:** Preserve the ports/adapters boundary from the plan: keep
+DTO mapping at the transport edge and do not let repository or transport types
+leak into domain rules.
+```

@@ -159,6 +159,8 @@ and a complete PR description.
 When providing PR-description context, include:
 
 - the plan's summary and key decisions
+- only the material architecture, pattern, simplification, or maintainability
+  story that later reviewers need to understand the diff
 - testing notes, including tests added or modified and any manual validation
 - the evidence context from step 1
 - the Figma design link when applicable

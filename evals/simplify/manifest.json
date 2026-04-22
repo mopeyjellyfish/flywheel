@@ -1,0 +1,30 @@
+{
+  "id": "simplify",
+  "skill": "simplify",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Scoped Simplification",
+    "Complexity Reduction",
+    "Behavior Safety",
+    "Restraint"
+  ],
+  "criticalDimensions": [
+    "Scoped Simplification",
+    "Complexity Reduction",
+    "Behavior Safety"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "recent_wrapper_cleanup",
+    "one_use_abstraction",
+    "bounded_cleanup"
+  ]
+}

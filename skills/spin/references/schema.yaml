@@ -161,6 +161,9 @@ track_rules:
           - workflow_gap
           - stale_documentation
           - incomplete_setup
+          - premature_abstraction
+          - boundary_mismatch
+          - pattern_mismatch
           - logic_error
         description: "Fundamental technical cause of the problem"
       resolution_type:
@@ -173,6 +176,8 @@ track_rules:
           - test_fix
           - infrastructure_change
           - observability_update
+          - architecture_change
+          - simplification
           - workflow_improvement
           - documentation_update
           - tooling_addition
@@ -211,6 +216,9 @@ track_rules:
           - workflow_gap
           - stale_documentation
           - incomplete_setup
+          - premature_abstraction
+          - boundary_mismatch
+          - pattern_mismatch
           - logic_error
         description: "Underlying cause, if there is a specific one"
       resolution_type:
@@ -223,6 +231,8 @@ track_rules:
           - test_fix
           - infrastructure_change
           - observability_update
+          - architecture_change
+          - simplification
           - workflow_improvement
           - documentation_update
           - tooling_addition

@@ -14,7 +14,7 @@ Use pipe-delimited markdown tables. Do not use ASCII box-drawing characters.
 **Intent:** Add order export endpoint with CSV and JSON format support
 **Mode:** autofix
 
-**Reviewers:** correctness, testing, maintainability, security, api-contract
+**Reviewers:** correctness, testing, maintainability, pattern-recognition, security, api-contract
 - security -- new public endpoint accepts user-provided format parameter
 - api-contract -- public export route changed its response contract
 
@@ -135,6 +135,8 @@ blockquote verdict.
 - Pre-existing Issues is a separate table
 - Learnings & Past Solutions, Agent-Native Gaps, Service Readiness Notes,
   Schema Drift Check, and Deployment Notes are conditional sections
+- internal quality-dimension metadata stays out of the interactive report by
+  default; findings remain primary
 - Coverage includes suppressed count, residual risks, testing gaps, and failed
   reviewers
 - use a horizontal rule before the verdict

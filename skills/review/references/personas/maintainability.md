@@ -16,6 +16,8 @@ Focus on:
 - dead code, stale compatibility shims, or unreachable branches
 - confusing ownership, file placement, or high-friction naming
 - coupling that forces unrelated modules to change together
+- DTO, repository, adapter, or helper use that increases future edit cost after
+  the pattern choice is already made
 
 Confidence:
 - **High (0.80+)** when the structural cost is directly provable.
@@ -27,6 +29,8 @@ Suppress:
 - style-only opinions
 - domain complexity that is genuinely required by the problem
 - refactor suggestions without a concrete maintenance downside
+- arguments about whether a named pattern should exist at all when
+  `pattern-recognition` is the better owner
 
 Evidence discipline:
 - explain the specific future-edit cost, not just that the code feels messy

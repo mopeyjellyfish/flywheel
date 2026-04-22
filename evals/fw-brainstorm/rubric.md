@@ -27,6 +27,10 @@ Does it carry the outcome into `fw-plan` rather than stopping at ideas?
 
 When the prompt invites over-design, does it apply YAGNI or simplicity pressure?
 
+For architecture-bearing brainstorms, strong passes keep architecture guidance
+high level and tied to scope or behavior rather than drifting into
+implementation mechanics.
+
 ### Interaction Quality
 
 Does it use structured, bounded choice surfaces without drifting into raw-number

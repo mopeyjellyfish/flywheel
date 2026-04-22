@@ -16,6 +16,10 @@ Does it rely on repo truth, commands, or patterns?
 
 Does it make checks, tests, or verification part of the work loop?
 
+For architecture-bearing work, strong passes preserve planned boundary or
+pattern constraints and use simplification or maintainability pressure when the
+implementation starts to overgrow.
+
 ### Runtime Support Awareness
 
 When runtime-sensitive, does it acknowledge observability or service-readiness?

@@ -17,6 +17,9 @@ than generic product advice?
 
 Does it include testing posture, verification, or red/green expectations?
 
+For architecture-bearing work, strong passes also make the relevant boundary or
+pattern decisions explicit enough that work does not have to rediscover them.
+
 ### Runtime Awareness
 
 For runtime-risky work, does it account for observability, rollout, or blast

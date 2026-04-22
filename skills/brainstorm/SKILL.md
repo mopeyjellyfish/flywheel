@@ -39,6 +39,12 @@ phase so the working context stays tight.
   fast path, preparing the synthesis checkpoint, structuring approach
   comparisons, drafting the requirements document, or repairing output that is
   drifting from the expected shape.
+- Read `../references/architecture-code-quality/activation-heuristics.md` when
+  the brainstorm is explicitly about technical boundaries, architecture, or
+  named pattern choices that may materially affect scope or behavior.
+- Read `../references/architecture-code-quality/pattern-families.md` only when
+  a technical brainstorm needs help comparing candidate patterns or
+  architectural styles at a requirements level.
 - Read `references/visual-communication.md` when deciding whether a diagram,
   table, or other visual aid would make the requirements or approach
   comparison easier to understand.
@@ -56,8 +62,8 @@ phase so the working context stays tight.
    implementation belongs in planning.
 4. **Keep implementation out of the requirements doc by default** - Do not
    include libraries, schemas, endpoints, file layouts, or code-level design
-   unless the brainstorm itself is inherently about a technical or
-   architectural change.
+   unless the brainstorm itself is inherently about a technical,
+   architectural, or pattern-selection change.
 5. **Right-size the artifact** - Simple work gets a compact requirements
    document or brief alignment. Larger work gets a fuller document. Do not add
    ceremony that does not help planning.
@@ -230,6 +236,10 @@ govern technical depth during the scan:
    belong in planning, not here -- unless the brainstorm is itself about a
    technical or architectural decision, in which case those details are the
    subject of the brainstorm and should be explored.
+3. **Architecture-bearing brainstorms stay high level** -- when boundaries,
+   bounded contexts, named patterns, or distributed posture affect scope or
+   behavior, capture the decision surface and recommended direction, but leave
+   file-level implementation and execution sequencing for planning.
 
 **Slack context** (opt-in, Standard and Deep only) -- never auto-dispatch.
 Route by condition:

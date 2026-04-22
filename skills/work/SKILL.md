@@ -20,7 +20,8 @@ review and commit.
 `$flywheel:brainstorm` defines **WHAT** to build. `$flywheel:plan` defines **HOW** to build
 it. `$flywheel:work` executes the plan, stays grounded in the repo, and absorbs
 helper-stage selection for things like docs, browser proof, rollout, verify,
-observability, or logging when the work needs those surfaces before review.
+observability, logging, architecture strategy, maintainability, or
+simplification when the work needs those surfaces before review.
 
 **When directly invoked, always execute.** Do not treat a direct invocation as
 "not an execution task" and exit. If the work is large or underdefined enough
@@ -129,6 +130,9 @@ Skip this step when arriving from Phase 0 with a bare prompt.
 - Check for `Execution note` on each implementation unit. Carry that posture
   into the task, especially when it specifies `tdd`, `test-first`, or
   `characterization`.
+- If the plan includes `Architecture and Pattern Decisions` or an equivalent
+  section, carry those boundary, pattern, and clean-code constraints into the
+  task instead of rediscovering them ad hoc.
 - Check for `Deferred to Implementation` or `Implementation-Time Unknowns`.
   These are questions intentionally left for execution. Note them before
   starting so they guide the work instead of surprising you mid-flight.
@@ -536,12 +540,17 @@ for simplification opportunities:
 - consolidate duplicated patterns
 - extract shared helpers where the repo already favors that shape
 - improve reuse and efficiency when it reduces real complexity
+- route to `maintainability` when the issue is future edit cost rather than
+  removable complexity
+- route to `architecture-strategy` or `pattern-recognition` when current repo
+  truth invalidates a planned boundary or named-pattern choice
 
 Do not simplify after every single task. Early duplication can still be
 intentional until the shape of the work is clear.
 
-If a simplify skill or equivalent exists, use it. Otherwise perform the review
-yourself.
+If a simplify skill or equivalent exists, use it. If the main issue is future
+edit cost rather than removable complexity, use a maintainability pass instead.
+Otherwise perform the review yourself.
 
 #### 6. Figma Design Sync
 

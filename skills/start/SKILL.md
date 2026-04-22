@@ -74,6 +74,15 @@ visible stages:
   including the default plan-review pass at the end of shaping
 - `flywheel:observability` for runtime signal, blast radius, and rollout validation design
 - `flywheel:logging` for structured event and log-shape design
+- `flywheel:architecture-strategy` for boundary, service-shape, hexagonal, or
+  distributed-system decisions that need a focused architecture brief
+- `flywheel:pattern-recognition` for repo-grounded pattern fit decisions such
+  as DTO, repository, ports/adapters, builder, DDD, or distributed reliability
+  posture
+- `flywheel:maintainability` for future-edit-cost checks around naming,
+  cohesion, ownership, and helper sprawl
+- `flywheel:simplify` for bounded removal of accidental complexity in recent or
+  changed work
 - `flywheel:verify` for fresh proof before claiming a task is done
 - `flywheel:commit` for finish-stage commit, push, PR creation or refresh, and conditional spin offers
 - `flywheel:commit-message` for conventional commit-message drafting and breaking-change checks
@@ -144,6 +153,15 @@ inside that blocked stage.
   validation, use `../observability/SKILL.md`.
 - If the work is specifically about structured application logs and event
   design, use `../logging/SKILL.md`.
+- If the user explicitly asks how to size a boundary, bounded context, service,
+  or hexagonal or distributed-system posture, use
+  `../architecture-strategy/SKILL.md`.
+- If the user explicitly asks whether a named pattern fits, or which existing
+  repo pattern to follow, use `../pattern-recognition/SKILL.md`.
+- If the user explicitly asks for maintainability guidance around structure,
+  naming, cohesion, or future edit cost, use `../maintainability/SKILL.md`.
+- If the user explicitly asks to simplify or remove accidental complexity from
+  recent work, use `../simplify/SKILL.md`.
 - If the user is about to claim completion and the main need is evidence for
   that claim, use `../verify/SKILL.md`.
 
@@ -192,6 +210,16 @@ Apply these routing heuristics before doing repo exploration:
   to `../setup/SKILL.md`
 - if the input asks for isolated branch work, parallel checkouts, or worktree
   cleanup, route to `../worktree/SKILL.md`
+- if the input explicitly asks for boundary sizing, service shape, hexagonal
+  architecture, bounded contexts, or distributed-system posture, route to
+  `../architecture-strategy/SKILL.md`
+- if the input explicitly asks whether DTOs, repositories, ports/adapters,
+  builders, DDD, or other named patterns are justified, route to
+  `../pattern-recognition/SKILL.md`
+- if the input explicitly asks for maintainability or clean-code structure
+  guidance, route to `../maintainability/SKILL.md`
+- if the input explicitly asks to simplify recent or changed work, route to
+  `../simplify/SKILL.md`
 
 Do not do a broad repo scan just to choose between these routes. Read files or
 search the repo only when:

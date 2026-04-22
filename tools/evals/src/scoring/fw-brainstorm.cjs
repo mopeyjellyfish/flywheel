@@ -44,6 +44,15 @@ function deterministicBrainstorm(caseItem, output) {
       : "Misses the explicit simplicity pressure.";
   }
 
+  const architectureCase = (caseItem.special_constraints || []).some((item) => /architecture-bearing/i.test(item));
+  if (architectureCase) {
+    const architectureSignal = mentionsAtLeast(output, [/architecture/i, /pattern/i, /boundary/i, /scope/i, /behavior/i], 2);
+    scores["Artifact Discipline"] = architectureSignal && artifactSignal ? 2 : scores["Artifact Discipline"];
+    notes["Artifact Discipline"] = architectureSignal && artifactSignal
+      ? "Keeps architecture-bearing guidance high level inside a durable brainstorm artifact."
+      : notes["Artifact Discipline"];
+  }
+
   return { scores, notes };
 }
 
