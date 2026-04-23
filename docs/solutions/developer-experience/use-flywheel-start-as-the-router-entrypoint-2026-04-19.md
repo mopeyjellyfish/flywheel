@@ -31,6 +31,7 @@ tags:
 related_docs:
   - docs/solutions/workflow-issues/treat-user-facing-skill-renames-as-contract-sweeps-2026-04-19.md
   - docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md
+  - docs/solutions/developer-experience/protect-authored-skills-during-npx-skills-cleanup-2026-04-23.md
 ---
 
 # Use $fw and $fw:start as Flywheel router entrypoints
@@ -71,6 +72,11 @@ $fw:spin
 Do not use a router skill name that simply repeats the plugin namespace when
 the runtime will expose that repetition directly to users.
 
+If Codex still shows `$start` after the plugin cache exposes `fw:start`, do not
+rework the router naming first. Check for stale standalone Flywheel skills under
+`~/.agents/skills` and rerun `make install/codex`; Codex can load those
+standalone skills separately from the plugin-bundled `fw:*` surface.
+
 ## Why This Matters
 
 A distinct router name removes namespace stutter, while a bare `$fw` root alias
@@ -84,6 +90,8 @@ stable.
 - when a plugin root invocation should enter the umbrella router
 - when the plugin namespace and the default router name would otherwise collide
 - when docs, prompts, or eval inputs need one explicit router command
+- when stale standalone skills could make Codex show an older unnamespaced
+  command alongside the correct plugin command
 
 ## Examples
 
@@ -112,3 +120,4 @@ $fw:flywheel
 
 - [Treat user-facing skill renames as contract sweeps](docs/solutions/workflow-issues/treat-user-facing-skill-renames-as-contract-sweeps-2026-04-19.md)
 - [Keep eval suite IDs separate from runtime skill names](docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md)
+- [Protect Authored Skills During npx skills Cleanup](docs/solutions/developer-experience/protect-authored-skills-during-npx-skills-cleanup-2026-04-23.md)
