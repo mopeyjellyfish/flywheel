@@ -1,6 +1,6 @@
 {
   "id": "flywheel-incident-response",
-  "skill": "flywheel:run",
+  "skill": "fw:run",
   "suiteType": "journey",
   "journeyStages": [
     "incident",

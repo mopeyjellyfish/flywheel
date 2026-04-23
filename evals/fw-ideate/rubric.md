@@ -80,8 +80,8 @@ listed?
 
 Does the response preserve the Flywheel workflow?
 
-- ideation should route to `/flywheel:brainstorm` when action is selected
-- it should not skip straight to `/flywheel:plan` or implementation by default
+- ideation should route to `/fw:brainstorm` when action is selected
+- it should not skip straight to `/fw:plan` or implementation by default
 - it should make the recommended next user choice or next input legible
 
 ### 7. Constraint Obedience

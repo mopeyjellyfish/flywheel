@@ -2,7 +2,20 @@ function escapeRegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function normalizeSkill(skill) {
+  if (skill.startsWith("flywheel:")) {
+    return `fw:${skill.slice("flywheel:".length)}`;
+  }
+  return skill;
+}
+
 function skillForms(skill) {
+  if (skill.startsWith("fw:")) {
+    return [skill, `flywheel:${skill.slice("fw:".length)}`];
+  }
+  if (skill.startsWith("flywheel:")) {
+    return [normalizeSkill(skill), skill];
+  }
   return [skill];
 }
 
@@ -23,17 +36,18 @@ function stripSkillLead(rawArguments, skill) {
 }
 
 function renderSubjectPrompt({ runner, skill, rawArguments }) {
+  const normalizedSkill = normalizeSkill(skill);
   const payload = stripSkillLead(rawArguments, skill);
   if (runner === "claude") {
-    if (skill.startsWith("flywheel:")) {
-      const stage = skill.slice("flywheel:".length);
-      return payload ? `/flywheel:${stage} ${payload}` : `/flywheel:${stage}`;
+    if (normalizedSkill.startsWith("fw:")) {
+      const stage = normalizedSkill.slice("fw:".length);
+      return payload ? `/fw:${stage} ${payload}` : `/fw:${stage}`;
     }
-    return payload ? `/${skill} ${payload}` : `/${skill}`;
+    return payload ? `/${normalizedSkill} ${payload}` : `/${normalizedSkill}`;
   }
 
   if (runner === "codex") {
-    return payload ? `Use $${skill} ${payload}` : `Use $${skill}`;
+    return payload ? `Use $${normalizedSkill} ${payload}` : `Use $${normalizedSkill}`;
   }
 
   return rawArguments;

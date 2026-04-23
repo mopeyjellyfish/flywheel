@@ -1,6 +1,6 @@
 {
   "id": "fw-work",
-  "skill": "flywheel:work",
+  "skill": "fw:work",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

@@ -1,6 +1,6 @@
 {
   "id": "fw-rollout",
-  "skill": "flywheel:rollout",
+  "skill": "fw:rollout",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

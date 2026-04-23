@@ -13,9 +13,25 @@ const host = ["all", "codex", "claude"].includes(requestedHost) ? requestedHost 
 const includeCodex = host === "all" || host === "codex";
 const includeClaude = host === "all" || host === "claude";
 const requireClaudeInstall = host === "claude";
+const claudePluginName = "fw";
+const claudeInstalledPluginName = "flywheel";
+const claudeMarketplaceName = "flywheel";
+const claudePluginId = `${claudeInstalledPluginName}@${claudeMarketplaceName}`;
+const claudeCommandPrefix = `/${claudePluginName}:`;
 
 function optionalClaudeInstallDetail(detail) {
   return `${detail}; skipped in broad verification because this checkout is not currently installed in Claude. Run \`make install/claude\` and rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require the installed Claude path.`;
+}
+
+function isClaudeAuthenticationFailure(detail) {
+  return /(?:API Error:\s*401|authentication_error|Invalid authentication credentials|Failed to authenticate)/i.test(
+    String(detail || ""),
+  );
+}
+
+function optionalClaudeAuthenticationDetail(detail) {
+  const errorKind = /\b401\b/.test(String(detail || "")) ? "API authentication error (401)" : "API authentication error";
+  return `skipped in broad verification because Claude returned an ${errorKind}. Plugin install and /fw:* command registration were verified. Run \`claude auth status\`, fix Claude auth, then rerun \`node scripts/flywheel-doctor.js --host claude --smoke\` to require live Claude invocation.`;
 }
 
 function run(command, args, options = {}) {
@@ -107,7 +123,7 @@ function checkFlywheelVisibleToCodex() {
   }
 
   const output = `${promptInput.stdout || ""}\n${promptInput.stderr || ""}`;
-  const visible = /\bflywheel:start\b/.test(output);
+  const visible = /\bfw:start\b/.test(output);
 
   return {
     name: "Flywheel visible to Codex",
@@ -116,8 +132,8 @@ function checkFlywheelVisibleToCodex() {
       promptInput.status !== 0
         ? output.trim() || "codex debug prompt-input failed"
         : visible
-          ? "codex debug prompt-input includes flywheel:start"
-          : "codex debug prompt-input is missing flywheel:start; refresh the local cache and restart Codex",
+          ? "codex debug prompt-input includes fw:start"
+          : "codex debug prompt-input is missing fw:start; refresh the local cache and restart Codex",
   };
 }
 
@@ -139,7 +155,7 @@ function codexSessionSmokeCheck() {
 
 function findFlywheelClaudePlugin(plugins) {
   return plugins.find((plugin) => {
-    if (!plugin || plugin.id !== "flywheel@flywheel" || plugin.enabled === false) {
+    if (!plugin || plugin.id !== claudePluginId || plugin.enabled === false) {
       return false;
     }
 
@@ -188,12 +204,12 @@ function checkFlywheelVisibleToClaude() {
     ok: Boolean(plugin),
     detail: plugin
       ? `found ${plugin.id} at ${plugin.scope} scope`
-      : "no enabled flywheel@flywheel install found for this repo in claude plugin list",
+      : `no enabled ${claudePluginId} install found for this repo in claude plugin list`,
   };
 }
 
 function checkFlywheelCallableInClaude() {
-  const prompt = "/flywheel:start route this small bugfix into the right Flywheel stage";
+  const prompt = `${claudeCommandPrefix}start route this small bugfix into the right Flywheel stage`;
   const invoke = run(
     "claude",
     [
@@ -221,19 +237,20 @@ function checkFlywheelCallableInClaude() {
 
   const payload = parseJson(invoke.stdout);
   const output = typeof payload?.result === "string" ? payload.result : String(invoke.stdout || "").trim();
-  const ok = invoke.status === 0 && !/Unknown command:\s*\/flywheel:start/i.test(output);
+  const unknownCommand = new RegExp(`Unknown command:\\s*${claudeCommandPrefix.replace("/", "\\/")}start`, "i");
+  const ok = invoke.status === 0 && !unknownCommand.test(output);
 
   return {
     name: "Flywheel callable in Claude",
     ok,
     detail: ok
-      ? "/flywheel:start executed through the installed Claude plugin"
+      ? `${claudeCommandPrefix}start executed through the installed Claude plugin`
       : output || String(invoke.stderr || "").trim() || "claude invocation failed",
   };
 }
 
 function checkClaudeFlywheelCommands() {
-  const inspect = run(process.execPath, ["scripts/claude-slash-commands.js", "--plugin", "flywheel"], {
+  const inspect = run(process.execPath, ["scripts/claude-slash-commands.js", "--plugin", claudePluginName], {
     timeoutMs: 60 * 1000,
     maxBuffer: 10 * 1024 * 1024,
   });
@@ -269,10 +286,10 @@ function checkClaudeFlywheelCommands() {
     name: "Flywheel commands registered in Claude",
     ok,
     detail: ok
-      ? `registered ${payload.pluginCommands.length} flywheel:* commands (${sample})`
+      ? `registered ${payload.pluginCommands.length} ${claudePluginName}:* commands (${sample})`
       : payload.missingSkillCommands.length > 0
         ? `missing ${payload.missingSkillCommands.join(", ")}`
-        : "flywheel plugin metadata did not include registered commands",
+        : `${claudePluginName} plugin metadata did not include registered commands`,
   };
 }
 
@@ -367,7 +384,16 @@ function main() {
               ? "skipped because this checkout is not currently installed in Claude"
               : "skipped in broad verification because this checkout is not currently installed in Claude",
           };
-      checks.push(claudeCallable);
+      const authSkipped = !requireClaudeInstall && isClaudeAuthenticationFailure(claudeCallable.detail);
+      checks.push({
+        name: claudeCallable.name,
+        ok: claudeCallable.ok || authSkipped,
+        detail: claudeCallable.ok
+          ? claudeCallable.detail
+          : authSkipped
+            ? optionalClaudeAuthenticationDetail(claudeCallable.detail)
+            : claudeCallable.detail,
+      });
     }
   }
 

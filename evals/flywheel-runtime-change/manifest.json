@@ -1,6 +1,6 @@
 {
   "id": "flywheel-runtime-change",
-  "skill": "flywheel:run",
+  "skill": "fw:run",
   "suiteType": "journey",
   "journeyStages": [
     "work",

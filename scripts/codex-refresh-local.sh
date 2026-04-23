@@ -7,9 +7,9 @@ Usage:
   codex-refresh-local.sh [--dry-run] [--force-link]
 
 Refresh the local Flywheel plugin install for Codex development by:
-  1. ensuring ~/.codex/plugins/flywheel points at this repo
+  1. ensuring ~/.codex/plugins/fw points at this repo
   2. refreshing the local Flywheel plugin cache
-  3. ensuring ~/.codex/config.toml enables flywheel@flywheel-local and codex hooks
+  3. ensuring ~/.codex/config.toml enables fw@fw-local and codex hooks
   4. merging the Flywheel Codex hook guardrail into ~/.codex/hooks.json
 
 This is a development helper for working on Flywheel itself. It does not hot
@@ -25,13 +25,15 @@ EOF
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
-PLUGIN_NAME="flywheel"
-PLUGIN_LINK="$CODEX_HOME_DIR/plugins/$PLUGIN_NAME"
-CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/${PLUGIN_NAME}-local"
-CACHE_PLUGIN_DIR="$CACHE_ROOT/$PLUGIN_NAME/local"
+PLUGIN_SOURCE_NAME="fw"
+PLUGIN_LINK="$CODEX_HOME_DIR/plugins/$PLUGIN_SOURCE_NAME"
+CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/${PLUGIN_SOURCE_NAME}-local"
+CACHE_PLUGIN_DIR="$CACHE_ROOT/$PLUGIN_SOURCE_NAME/local"
+LEGACY_PLUGIN_LINK="$CODEX_HOME_DIR/plugins/flywheel"
+LEGACY_CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/flywheel-local"
 CONFIG_FILE="$CODEX_HOME_DIR/config.toml"
 HOOKS_FILE="$CODEX_HOME_DIR/hooks.json"
-PLUGIN_CONFIG_SECTION='[plugins."flywheel@flywheel-local"]'
+PLUGIN_CONFIG_SECTION='[plugins."fw@fw-local"]'
 FEATURES_SECTION='[features]'
 DRY_RUN=0
 FORCE_LINK=0
@@ -106,6 +108,18 @@ ensure_plugin_link() {
   run rm -rf "$PLUGIN_LINK"
   run ln -s "$REPO_ROOT" "$PLUGIN_LINK"
   echo "OK  local plugin link now points at $REPO_ROOT"
+}
+
+remove_legacy_install_paths() {
+  if [ -L "$LEGACY_PLUGIN_LINK" ] || [ -e "$LEGACY_PLUGIN_LINK" ]; then
+    run rm -rf "$LEGACY_PLUGIN_LINK"
+    echo "OK  removed legacy Codex plugin link at $LEGACY_PLUGIN_LINK"
+  fi
+
+  if [ -e "$LEGACY_CACHE_ROOT" ]; then
+    run rm -rf "$LEGACY_CACHE_ROOT"
+    echo "OK  removed legacy Codex plugin cache at $LEGACY_CACHE_ROOT"
+  fi
 }
 
 refresh_plugin_cache() {
@@ -201,17 +215,93 @@ write_plugin_config_block() {
   run mv "$temp_file" "$CONFIG_FILE"
 }
 
+remove_legacy_plugin_config() {
+  local outcome outcome_file
+  outcome_file="$(mktemp)"
+
+  CONFIG_FILE="$CONFIG_FILE" DRY_RUN="$DRY_RUN" node <<'NODE' > "$outcome_file"
+const fs = require("fs");
+
+const configFile = process.env.CONFIG_FILE;
+const dryRun = process.env.DRY_RUN === "1";
+
+if (!fs.existsSync(configFile)) {
+  process.stdout.write("missing");
+  process.exit(0);
+}
+
+const text = fs.readFileSync(configFile, "utf8");
+const lines = text.split(/\r?\n/);
+const output = [];
+let removing = false;
+let removedSections = 0;
+
+for (const line of lines) {
+  const trimmed = line.trim();
+  const isSectionHeader = /^\[.*\]$/.test(trimmed);
+
+  if (/^\[plugins\."(?:flywheel@[^"]+|fw@flywheel-local)"\]$/.test(trimmed)) {
+    removing = true;
+    removedSections += 1;
+    continue;
+  }
+
+  if (removing && isSectionHeader) {
+    removing = false;
+  }
+
+  if (!removing) {
+    output.push(line);
+  }
+}
+
+if (removedSections === 0) {
+  process.stdout.write("none");
+  process.exit(0);
+}
+
+let nextText = output.join("\n")
+  .replace(/\n{3,}/g, "\n\n")
+  .replace(/^\n+/, "");
+if (nextText.length > 0 && !nextText.endsWith("\n")) {
+  nextText += "\n";
+}
+
+if (!dryRun) {
+  fs.writeFileSync(configFile, nextText);
+}
+
+process.stdout.write(`removed:${removedSections}`);
+NODE
+  outcome="$(cat "$outcome_file")"
+  rm -f "$outcome_file"
+
+  case "$outcome" in
+    missing|none)
+      return 0
+      ;;
+    removed:*)
+      echo "OK  removed legacy [plugins.\"flywheel@...\"] or [plugins.\"fw@flywheel-local\"] entries from $CONFIG_FILE"
+      ;;
+    *)
+      echo "ERROR: unexpected Codex legacy-plugin cleanup result: $outcome" >&2
+      exit 1
+      ;;
+  esac
+}
+
 ensure_plugin_config() {
   run mkdir -p "$(dirname "$CONFIG_FILE")"
+  remove_legacy_plugin_config
 
   if config_section_enabled; then
-    echo "OK  Codex config enables [plugins.\"flywheel@flywheel-local\"]"
+    echo "OK  Codex config enables [plugins.\"fw@fw-local\"]"
     return 0
   fi
 
   if [ ! -f "$CONFIG_FILE" ]; then
     if [ "$DRY_RUN" -eq 1 ]; then
-      echo "DRY_RUN: create $CONFIG_FILE with [plugins.\"flywheel@flywheel-local\"] enabled"
+      echo "DRY_RUN: create $CONFIG_FILE with [plugins.\"fw@fw-local\"] enabled"
     else
       cat > "$CONFIG_FILE" <<EOF
 $PLUGIN_CONFIG_SECTION
@@ -223,7 +313,7 @@ EOF
   fi
 
   write_plugin_config_block
-  echo "OK  updated $CONFIG_FILE to enable [plugins.\"flywheel@flywheel-local\"]"
+  echo "OK  updated $CONFIG_FILE to enable [plugins.\"fw@fw-local\"]"
 }
 
 features_section_enabled() {
@@ -417,6 +507,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 ensure_repo_shape
+remove_legacy_install_paths
 ensure_plugin_link
 refresh_plugin_cache
 ensure_plugin_config

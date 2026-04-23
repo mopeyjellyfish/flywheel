@@ -22,8 +22,8 @@ function deterministicDeepenPlan(caseItem, output) {
     ? "Mentions repo truth or prior learnings."
     : "Grounding is present but weak.";
 
-  const workSignal = mentionsAny(output, [/\$flywheel:work\b/i, /\/flywheel:work\b/i, /\/flywheel:work\b/i]);
-  const deepenSignal = mentionsAny(output, [/\$flywheel:deepen\b/i, /\/flywheel:deepen\b/i, /\bdeepen pass\b/i]);
+  const workSignal = mentionsAny(output, [/\$fw:work\b/i, /\/fw:work\b/i, /\/fw:work\b/i]);
+  const deepenSignal = mentionsAny(output, [/\$fw:deepen\b/i, /\/fw:deepen\b/i, /\bdeepen pass\b/i]);
   const handoffScore = workSignal ? 2 : deepenSignal ? 1 : 0;
   scores["Work Handoff"] = handoffScore;
   notes["Work Handoff"] =

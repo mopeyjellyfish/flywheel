@@ -1,6 +1,6 @@
 {
   "id": "fw-incident",
-  "skill": "flywheel:incident",
+  "skill": "fw:incident",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

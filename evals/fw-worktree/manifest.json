@@ -1,6 +1,6 @@
 {
   "id": "fw-worktree",
-  "skill": "flywheel:worktree",
+  "skill": "fw:worktree",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

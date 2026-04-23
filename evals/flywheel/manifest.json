@@ -1,6 +1,6 @@
 {
   "id": "flywheel",
-  "skill": "flywheel:start",
+  "skill": "fw:start",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

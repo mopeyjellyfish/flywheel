@@ -1,6 +1,6 @@
 {
   "id": "fw-polish",
-  "skill": "flywheel:polish",
+  "skill": "fw:polish",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

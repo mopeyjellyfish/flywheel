@@ -1,6 +1,6 @@
 {
   "id": "fw-ideate",
-  "skill": "flywheel:ideate",
+  "skill": "fw:ideate",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

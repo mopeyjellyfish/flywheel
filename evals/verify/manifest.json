@@ -1,6 +1,6 @@
 {
   "id": "verification-before-completion",
-  "skill": "flywheel:verify",
+  "skill": "fw:verify",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

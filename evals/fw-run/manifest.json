@@ -1,6 +1,6 @@
 {
   "id": "fw-run",
-  "skill": "flywheel:run",
+  "skill": "fw:run",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

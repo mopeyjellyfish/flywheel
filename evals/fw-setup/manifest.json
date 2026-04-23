@@ -1,6 +1,6 @@
 {
   "id": "fw-setup",
-  "skill": "flywheel:setup",
+  "skill": "fw:setup",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

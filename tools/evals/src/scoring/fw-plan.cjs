@@ -16,8 +16,8 @@ function deterministicPlan(caseItem, output) {
     ? "Mentions repo truth or existing patterns."
     : "Repo grounding is present but weak.";
 
-  const handoffToWork = mentionsAny(output, [/\$flywheel:work\b/i, /\/flywheel:work\b/i, /\/flywheel:work\b/i]);
-  const handoffToDeepen = mentionsAny(output, [/\$flywheel:deepen\b/i, /\/flywheel:deepen\b/i, /\bdeepen the plan\b/i]);
+  const handoffToWork = mentionsAny(output, [/\$fw:work\b/i, /\/fw:work\b/i, /\/fw:work\b/i]);
+  const handoffToDeepen = mentionsAny(output, [/\$fw:deepen\b/i, /\/fw:deepen\b/i, /\bdeepen the plan\b/i]);
   const documentReview = mentionsAny(output, [/document-review/i, /reviewed plan/i, /plan review/i]);
   const approvalGate = mentionsAny(output, [/approve/i, /approval/i, /review the plan/i, /review the plan first/i, /explicit/i, /go-ahead/i, /ready to start work/i, /choose between/i]);
   const reviewSummary = mentionsAny(output, [/what changed/i, /what (the )?review found/i, /execution would (start|work) on first/i, /start with/i, /first slice/i]);
