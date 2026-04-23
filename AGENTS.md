@@ -22,7 +22,7 @@ tools/evals/      Isolated eval harness workspace and CLI
 - `make install/codex/force-link` repoints the Codex install to this checkout when another repo or worktree is linked.
 - `make install/claude` refreshes the local Claude marketplace install and runs the same validation loop for Claude.
 - `make install/claude/force-source` repoints the Claude marketplace source to this checkout.
-- `make install/skills/global` installs Flywheel through `npx skills add` from the local checkout's `skills/` package and fails fast if that local package is missing or empty.
+- `make install/skills/global` installs Flywheel through `npx skills add` from the local checkout's `skills/` package for non-Codex skills-CLI hosts and fails fast if that local package is missing or empty. Codex should use the plugin install because standalone global skills appear as unnamespaced commands such as `$start`.
 - `make install/skills/project` is a safe repo-root no-op after validating the local `skills/` source because project scope resolves to `./skills`, which is Flywheel's authored source tree.
 - `make uninstall/skills` removes Flywheel `npx skills` installs from global scope and treats repo-root project scope as metadata cleanup/no-op so it never deletes the authored `skills/` tree.
 - `make uninstall/all` removes Flywheel from Codex and Claude and also clears Flywheel `npx skills` installs so a later install starts from a clean host state.
@@ -51,10 +51,10 @@ Bug reports often come from an installed plugin rather than the current checkout
 
 ## Naming Conventions
 - Use lowercase kebab-case for skill directories, frontmatter `name`, helper script names, and most user-facing identifiers.
-- Prefer short single-word stage names when clarity stays intact. The canonical core loop is `start`, `brainstorm`, `plan`, `work`, `review`, `commit`, and `spin`.
+- Prefer short single-word stage names when clarity stays intact. The canonical visible loop is `start`, `shape`, `work`, `review`, `commit`, and `spin`; `shape` owns the internal `ideate`, `brainstorm`, `plan`, and `deepen` modes.
 - Keep explicit compounds when shortening would make the surface worse, for example `browser-test`, `document-review`, `commit-message`, and `worktree`.
 - Keep runtime skill names and eval suite ids separate when that improves clarity. Runtime commands stay `fw:<name>`; eval suites may stay prefixed, such as `fw-review`.
-- Use the namespaced Flywheel command surface in docs and prompts: `$fw:<stage>` in Codex and `/fw:<stage>` in Claude Code. Do not reintroduce legacy `/flywheel:*`, `$flywheel:*`, or ambiguous unnamespaced built-ins.
+- Use the namespaced Flywheel command surface in docs and prompts: `$fw` or `$fw:<stage>` in Codex and `/fw:<stage>` in Claude Code. Bare `$flywheel` is accepted only as a root-router text alias for `$fw:start`; do not reintroduce legacy `/flywheel:*`, `$flywheel:*`, or ambiguous unnamespaced stage forms.
 - Treat user-facing renames as contract sweeps across the repo, not single-file edits.
 
 ## Repository Docs Convention

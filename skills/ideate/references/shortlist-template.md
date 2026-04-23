@@ -34,7 +34,7 @@ Treating this as [repo-grounded ideation | outside-repo software ideation | univ
 - Downsides: <one line>
 - Confidence: <0-100%>
 - Complexity: <Low | Medium | High>
-- Next step: `$flywheel:brainstorm` | `stay in ideation` | `save for later`
+- Next step: `$fw:brainstorm` | `stay in ideation` | `save for later`
 
 ### 2. <Idea Title>
 ...

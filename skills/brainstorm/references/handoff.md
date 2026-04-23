@@ -17,7 +17,7 @@ Before presenting the menu, summarize:
 - what Flywheel now believes the problem or opportunity is
 - what changed from the user's starting frame
 - what remains open, if anything
-- what `$flywheel:plan` would work on first
+- what `$fw:plan` would work on first
 
 If no requirements document exists, present that summary as a compact synthesis
 block in chat that also includes:
@@ -46,7 +46,7 @@ would you like to do next?"
 
 Present only the options that apply, keeping the total at 4 or fewer:
 
-- **Proceed to planning (Recommended)** - Move to `$flywheel:plan` for structured
+- **Proceed to planning (Recommended)** - Move to `$fw:plan` for structured
   implementation planning. Shown only when `Resolve Before Planning` is empty.
 - **Continue the brainstorm** - Answer more clarifying questions to tighten
   scope, edge cases, and preferences. Always shown.
@@ -67,7 +67,7 @@ review pass in prose. Do not add it to the option list.
 
 **If user selects "Proceed to planning (Recommended)":**
 
-Immediately run `$flywheel:plan` in the current session. Pass the requirements
+Immediately run `$fw:plan` in the current session. Pass the requirements
 document path when one exists; otherwise pass a concise summary of the finalized
 brainstorm decisions using the synthesis block format above. Do not print the
 closing summary first.
@@ -91,7 +91,7 @@ When available, load the `proof` skill in HITL-review mode with:
 - **source file:** `docs/brainstorms/YYYY-MM-DD-<topic>-requirements.md`
 - **doc title:** `Requirements: <topic title>`
 - **identity:** `ai:flywheel` / `Flywheel`
-- **recommended next step:** `$flywheel:plan`
+- **recommended next step:** `$fw:plan`
 
 Follow the proof skill's review workflow and then re-render the Phase 4 options
 using the updated document state.
@@ -128,7 +128,7 @@ What changed:
 - [Clarification or correction 1]
 - [Clarification or correction 2]
 
-Recommended next step: `$flywheel:plan`
+Recommended next step: `$fw:plan`
 ```
 
 If the user pauses with `Resolve Before Planning` still populated, display:
@@ -146,5 +146,5 @@ What changed so far:
 - [Clarification or correction 1]
 - [Clarification or correction 2]
 
-Resume with `$flywheel:brainstorm` when ready to resolve these before planning.
+Resume with `$fw:brainstorm` when ready to resolve these before planning.
 ```

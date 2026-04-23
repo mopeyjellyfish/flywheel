@@ -9,7 +9,7 @@ metadata:
 
 Use this helper when the main question is pattern fit.
 
-`$flywheel:pattern-recognition` should identify what the repo already does,
+`$fw:pattern-recognition` should identify what the repo already does,
 which named patterns fit the actual problem, and when a simpler local design is
 better.
 

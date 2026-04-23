@@ -10,7 +10,7 @@ metadata:
 Use the actual current date from runtime context when dating solution documents or
 refreshing older learnings.
 
-`$flywheel:spin` is the Flywheel knowledge-capture stage. It turns verified
+`$fw:spin` is the Flywheel knowledge-capture stage. It turns verified
 session learnings into searchable documentation under the active repo's
 `docs/solutions/`.
 
@@ -19,7 +19,7 @@ durable workflow improvement, a clarified repo rule, or a user correction that
 changed how Flywheel should behave on project work should not stay trapped in
 one session if it will matter again.
 
-`$flywheel:spin` may be called directly, or offered after `$flywheel:commit`
+`$fw:spin` may be called directly, or offered after `$fw:commit`
 finishes when the completed project work exposed a durable lesson worth
 keeping.
 
@@ -92,8 +92,8 @@ Interpret the input as one of:
 
 ## Upstream Handoff Contract
 
-When another Flywheel stage launches `$flywheel:spin`, pass the already selected
-lesson as the argument instead of calling `$flywheel:spin` blank.
+When another Flywheel stage launches `$fw:spin`, pass the already selected
+lesson as the argument instead of calling `$fw:spin` blank.
 
 Good upstream arguments look like:
 
@@ -102,7 +102,7 @@ Good upstream arguments look like:
 - `Capture the compact plan-work-commit correction for Flywheel's project workflow`
 - `Refresh docs/solutions/workflow-issues/test-fixture-setup-2026-04-18.md`
 
-If the input clearly names a selected candidate from `$flywheel:work` or another
+If the input clearly names a selected candidate from `$fw:work` or another
 stage, **skip candidate rediscovery in Phase 0** and move straight into capture.
 
 ## What It Writes

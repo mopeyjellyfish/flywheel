@@ -7,7 +7,7 @@ metadata:
 
 # Optimize With Measurement
 
-`$flywheel:optimize` is Flywheel's optimization workflow.
+`$fw:optimize` is Flywheel's optimization workflow.
 
 Use it when the question is:
 
@@ -58,7 +58,7 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `references/lgtm-path.md` only when the OTel-native path is selected.
 - Read `references/optimization-loop.md` only when execution planning begins.
 - Read `../commit/references/evidence-bundle.md` only when a measured result
-  should be handed off into `$flywheel:review` or `$flywheel:commit`.
+  should be handed off into `$fw:review` or `$fw:commit`.
 - Read `../observability/references/service-readiness-matrix.md` only when the
   optimization target is runtime-risky or blast-radius-sensitive.
 
@@ -235,8 +235,8 @@ For each experiment:
 Use local worktrees when isolated iteration will reduce confusion or protect
 the current checkout.
 
-If the change survives the optimization gate, route through `$flywheel:review` and
-`$flywheel:commit` before calling it complete.
+If the change survives the optimization gate, route through `$fw:review` and
+`$fw:commit` before calling it complete.
 
 When the measurement result should feed later stages, create or update a shared
 evidence bundle under:
@@ -271,7 +271,7 @@ Return a concise optimization brief:
 8. **Residual risks or missing signal**
 9. **Evidence bundle** - shared bundle path when one was created, otherwise
    `not created`
-10. **Next Flywheel handoff** - `$flywheel:work`, `$flywheel:review`, `$flywheel:commit`, or
+10. **Next Flywheel handoff** - `$fw:work`, `$fw:review`, `$fw:commit`, or
     another optimization iteration
 
 ---

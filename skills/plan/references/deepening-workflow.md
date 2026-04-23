@@ -89,7 +89,7 @@ If the plan already has a `deepened:` date:
 - project testing idioms from `AGENTS.md`, `CLAUDE.md`, local tests, or durable
   references are missing or ignored
 - the plan hardcodes exact test or coverage commands instead of deferring that
-  detail to repo instructions or `$flywheel:work`
+  detail to repo instructions or `$fw:work`
 - config-only, mechanical, or weakly testable work is being forced into
   unnecessary TDD language instead of recording a proportionate exception
 - changed public contracts are not named or not matched to coverage strategy
@@ -318,4 +318,4 @@ or scope:
 
 - do not silently decide it here
 - record it under `Open Questions`
-- recommend `$flywheel:brainstorm` if the gap is truly product-defining
+- recommend `$fw:brainstorm` if the gap is truly product-defining

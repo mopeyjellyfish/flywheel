@@ -10,7 +10,7 @@ metadata:
 Use this helper after code has a concrete shape and the question becomes: what
 can we remove, collapse, or localize without changing behavior?
 
-`$flywheel:simplify` is not a whole-repo cleanup pass. It is a bounded
+`$fw:simplify` is not a whole-repo cleanup pass. It is a bounded
 simplification pass over recent or changed work.
 
 **When directly invoked, always do simplification work.** Stay scoped, name the

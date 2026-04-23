@@ -7,7 +7,7 @@ metadata:
 
 # Incident Response
 
-`$flywheel:incident` is Flywheel's incident-first workflow.
+`$fw:incident` is Flywheel's incident-first workflow.
 
 Use it when the work starts from a live or recently live problem and the first
 question is:
@@ -71,8 +71,8 @@ Do not preload every reference. Load only what the current phase needs:
    with different risks.
 4. **Preserve the evidence trail** - later debug and rollout work should not
    depend on memory or chat alone.
-5. **Route as soon as the next job is clear** - use `$flywheel:debug`, `$flywheel:rollout`,
-   `$flywheel:plan`, `$flywheel:work`, or `$flywheel:commit` once the incident posture is decided.
+5. **Route as soon as the next job is clear** - use `$fw:debug`, `$fw:rollout`,
+   `$fw:plan`, `$fw:work`, or `$fw:commit` once the incident posture is decided.
 
 ## Workflow
 
@@ -123,7 +123,7 @@ Choose one of:
   path while keeping service up
 - **Roll back** - revert or disable the recent change when a rollback lever is
   safer than patching live
-- **Patch now** - route into `$flywheel:debug` when a quick local causal proof
+- **Patch now** - route into `$fw:debug` when a quick local causal proof
   and fix path is realistic
 - **Observe briefly** - only when impact is low or confidence is too low for a
   stronger move, and only with an explicit time box
@@ -158,10 +158,10 @@ Preserve only what later stages need:
 
 Then route cleanly:
 
-- **mitigate or patch** -> `$flywheel:debug`
-- **rollback or staged disablement** -> `$flywheel:rollout` or `$flywheel:commit`
-- **design-level follow-up after stabilization** -> `$flywheel:plan` or
-  `$flywheel:brainstorm`
+- **mitigate or patch** -> `$fw:debug`
+- **rollback or staged disablement** -> `$fw:rollout` or `$fw:commit`
+- **design-level follow-up after stabilization** -> `$fw:plan` or
+  `$fw:brainstorm`
 
 ## Output Contract
 
@@ -173,8 +173,8 @@ Return a concise incident brief:
 4. **Recommended immediate path** - mitigate, roll back, patch, or observe
 5. **Artifact paths** - incident artifact path and shared evidence-bundle path
    when created
-6. **Next handoff** - `$flywheel:debug`, `$flywheel:rollout`, `$flywheel:plan`, `$flywheel:work`, or
-   `$flywheel:commit`
+6. **Next handoff** - `$fw:debug`, `$fw:rollout`, `$fw:plan`, `$fw:work`, or
+   `$fw:commit`
 
 ---
 

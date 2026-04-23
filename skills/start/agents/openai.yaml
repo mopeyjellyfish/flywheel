@@ -1,4 +1,4 @@
 interface:
-  display_name: "Flywheel"
+  display_name: "$fw:start"
   short_description: "Route work through the Flywheel dev flow"
-  default_prompt: "Use $flywheel:start to route this task through the right Flywheel stage or helper surface, including research, shaping, architecture decisions, review, commit, and captured lessons."
+  default_prompt: "Use $fw or $fw:start to route this task through the right Flywheel stage or helper surface, including research, shaping, architecture decisions, review, commit, and captured lessons."

@@ -7,7 +7,7 @@ metadata:
 
 # Roll Out Runtime-Risky Changes
 
-`$flywheel:rollout` is Flywheel's change-management stage for runtime-risky work.
+`$fw:rollout` is Flywheel's change-management stage for runtime-risky work.
 
 Use it when the question is not "how do we code this?" but:
 
@@ -46,7 +46,7 @@ Interpret the input as:
 - a blank request to inspect current work and decide whether rollout is needed
 
 If the change is clearly not runtime-facing or the blast radius is trivial,
-say so plainly and hand off to `$flywheel:commit` with a grounded no-rollout rationale.
+say so plainly and hand off to `$fw:commit` with a grounded no-rollout rationale.
 
 ## Reference Loading Map
 
@@ -60,7 +60,7 @@ Do not preload every reference. Load only what the current phase needs:
   change crosses contracts, state, retries, queues, migrations, or other
   blast-radius-sensitive boundaries.
 - Read `../commit/references/evidence-bundle.md` when rollout proof should
-  feed `$flywheel:commit`.
+  feed `$fw:commit`.
 
 ## Core Principles
 
@@ -113,7 +113,7 @@ Use rollout when one or more of these are true:
 - the repo or team already expects staged enablement for this surface
 
 If none apply and the runtime impact is small, say that a dedicated rollout
-stage is not needed and hand off to `$flywheel:commit` with the exact rationale.
+stage is not needed and hand off to `$fw:commit` with the exact rationale.
 
 ### Phase 3: Choose Rollout Posture
 
@@ -188,7 +188,7 @@ Return a concise rollout brief:
    rollback trigger, owner, and validation window
 6. **Artifacts** - rollout artifact path and shared evidence-bundle path when
    created
-7. **Next handoff** - usually `$flywheel:commit`, or `$flywheel:work` or `$flywheel:plan` if the
+7. **Next handoff** - usually `$fw:commit`, or `$fw:work` or `$fw:plan` if the
    rollout assumptions are not yet satisfiable
 
 ---

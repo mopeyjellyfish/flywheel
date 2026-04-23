@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:simplify"
+  display_name: "$fw:simplify"
   short_description: "Remove accidental complexity from recent work"
-  default_prompt: "Use $flywheel:simplify to review recent or changed code, identify removable complexity, and recommend the smallest behavior-safe simplification pass."
+  default_prompt: "Use $fw:simplify to review recent or changed code, identify removable complexity, and recommend the smallest behavior-safe simplification pass."

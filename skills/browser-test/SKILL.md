@@ -7,7 +7,7 @@ metadata:
 
 # Browser Test
 
-`$flywheel:browser-test` is Flywheel's browser-proof workflow.
+`$fw:browser-test` is Flywheel's browser-proof workflow.
 
 Use it when the work changes observable browser behavior and you need fresh
 evidence rather than assumptions.
@@ -102,7 +102,7 @@ Prefer this order:
 1. `playwright-cli`
 2. `npx --no-install playwright-cli`
 
-If neither is available, stop and route to `$flywheel:setup browser` with the
+If neither is available, stop and route to `$fw:setup browser` with the
 repo-proven install path or a pinned fallback chosen there:
 
 ```text
@@ -147,7 +147,7 @@ Keep evidence under a local artifact directory, preferably:
 
 Read `references/evidence-contract.md` before deciding what to save.
 Read `../commit/references/evidence-bundle.md` when the run should leave a
-reusable handoff for `$flywheel:review` or `$flywheel:commit`.
+reusable handoff for `$fw:review` or `$fw:commit`.
 
 Default to the smallest safe evidence set. Unless failure analysis or the user
 clearly requires more, prefer screenshots or snapshots over raw console,
@@ -159,8 +159,8 @@ or in the final report. Payloads, traces, or request examples may be shared
 when you are above 90% confident they contain no secrets and no meaningful PII.
 If a failing scenario truly requires network or trace data but that confidence
 is not there, keep it local, summarize the useful signal, and redact or replace
-sensitive fields with dummy values before handing it to `$flywheel:review` or
-`$flywheel:commit`.
+sensitive fields with dummy values before handing it to `$fw:review` or
+`$fw:commit`.
 
 When the run produces proof that downstream stages should reuse, create or
 update a shared evidence bundle under:
@@ -189,13 +189,13 @@ Return a concise browser-proof brief:
    confidence is high enough, otherwise use redacted or dummy-substituted
    examples
 5. **Observed issues** - concrete failures, regressions, or surprises
-6. **Next move** - `$flywheel:work`, `$flywheel:review`, `$flywheel:commit`, or another test pass
+6. **Next move** - `$fw:work`, `$fw:review`, `$fw:commit`, or another test pass
 
 If the browser-visible change passed, call that out plainly so review and
 commit can reuse the evidence.
 
 If the run is blocked because browser tooling is missing, say that plainly and
-route to `$flywheel:setup browser` instead of implying the app or test flow failed.
+route to `$fw:setup browser` instead of implying the app or test flow failed.
 
 ---
 

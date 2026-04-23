@@ -60,7 +60,7 @@ for one.
 ## Reference Loading Map
 
 Do not preload support files. Read `../commit/references/evidence-bundle.md`
-only when the verified claim should feed `$flywheel:review` or `$flywheel:commit`.
+only when the verified claim should feed `$fw:review` or `$fw:commit`.
 
 ## Core Rule
 

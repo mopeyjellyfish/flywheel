@@ -81,8 +81,8 @@ topic: <kebab-case-topic>
 - [Affects R2][Needs research] [Question that likely requires research during planning]
 
 ## Next Steps
-[If `Resolve Before Planning` is empty: `-> $flywheel:plan` for structured implementation planning by default; when the direct-to-work gate is clearly satisfied, `-> $flywheel:work` is also acceptable]
-[If `Resolve Before Planning` is not empty: `-> Resume $flywheel:brainstorm` to resolve blocking questions before planning]
+[If `Resolve Before Planning` is empty: `-> $fw:plan` for structured implementation planning by default; when the direct-to-work gate is clearly satisfied, `-> $fw:work` is also acceptable]
+[If `Resolve Before Planning` is not empty: `-> Resume $fw:brainstorm` to resolve blocking questions before planning]
 ```
 
 **Visual communication** — Include a visual aid when the requirements would be
@@ -115,7 +115,7 @@ requirements document is better than a bloated one.
 
 Before finalizing, check:
 
-- What would `$flywheel:plan` still have to invent if this brainstorm ended now?
+- What would `$fw:plan` still have to invent if this brainstorm ended now?
 - Do any requirements depend on something claimed to be out of scope?
 - Are any unresolved items actually product decisions rather than planning
   questions?

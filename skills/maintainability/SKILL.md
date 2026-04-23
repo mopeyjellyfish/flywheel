@@ -9,7 +9,7 @@ metadata:
 
 Use this helper when the main question is future edit cost.
 
-`$flywheel:maintainability` is for structure, locality, naming, and coupling.
+`$fw:maintainability` is for structure, locality, naming, and coupling.
 It is not a generic style checker.
 
 **When directly invoked, always do maintainability work.** Ground the current

@@ -10,11 +10,11 @@ metadata:
 Use the actual current date from runtime context when dating ideation
 documents.
 
-`$flywheel:ideate` precedes `$flywheel:brainstorm`.
+`$fw:ideate` precedes `$fw:brainstorm`.
 
-- `$flywheel:ideate` answers: "What are the strongest ideas worth exploring?"
-- `$flywheel:brainstorm` answers: "What should one chosen idea mean?"
-- `$flywheel:plan` answers: "How should it be built?"
+- `$fw:ideate` answers: "What are the strongest ideas worth exploring?"
+- `$fw:brainstorm` answers: "What should one chosen idea mean?"
+- `$fw:plan` answers: "How should it be built?"
 
 This workflow produces a ranked ideation artifact in `docs/ideation/` when
 persistence is requested. It does **not** write requirements, plans, or code.
@@ -105,7 +105,7 @@ Core tags:
 3. **Prefer leverage over novelty** - Strong ideas make future work easier,
    safer, or faster.
 4. **Route action into brainstorming** - Ideation finds promising directions;
-   `$flywheel:brainstorm` defines one chosen direction precisely enough for planning.
+   `$fw:brainstorm` defines one chosen direction precisely enough for planning.
 5. **Persistence is opt-in** - The conversation loop is already useful. Save
    only when the user wants a durable artifact or a handoff.
 6. **Use the user's context, not just repo evidence** - interactive answers can
@@ -351,12 +351,12 @@ Before finishing, check:
 - survivors materially beat a naive "give me ideas" list
 - if the user started from a proposed solution, the shortlist still tested
   whether a better framing exists
-- chosen follow-up routes to `$flywheel:brainstorm`, not directly to implementation
+- chosen follow-up routes to `$fw:brainstorm`, not directly to implementation
 - any saved artifact uses repo-relative paths and remains portable
 
 ## Example Prompts
 
-- "Use $flywheel:ideate to find the highest-leverage improvements in this repo."
-- "Use $flywheel:ideate on `skills/review/` and give me the top 3 next bets."
-- "Use $flywheel:ideate to propose quick wins for our onboarding flow."
-- "Use $flywheel:ideate to surface what would make the next month of work easier."
+- "Use $fw:ideate to find the highest-leverage improvements in this repo."
+- "Use $fw:ideate on `skills/review/` and give me the top 3 next bets."
+- "Use $fw:ideate to propose quick wins for our onboarding flow."
+- "Use $fw:ideate to surface what would make the next month of work easier."

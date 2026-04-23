@@ -3,8 +3,7 @@
   "skill": "fw:start",
   "suiteType": "journey",
   "journeyStages": [
-    "brainstorm",
-    "plan",
+    "shape",
     "work",
     "review",
     "commit",

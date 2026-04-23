@@ -21,7 +21,7 @@ You produce up to two outputs depending on whether a run ID was provided:
 
 1. Artifact file (when run ID is present). If a Run ID appears in
    <review-context> below, write your full analysis as JSON to:
-   .context/flywheel$flywheel:review/{run_id}/{reviewer_name}.json
+   .context/flywheel/review/{run_id}/{reviewer_name}.json
    This is the one write operation you are permitted to make. If the write
    fails, continue. If no Run ID is provided, skip this step entirely.
 

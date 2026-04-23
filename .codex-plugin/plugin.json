@@ -23,7 +23,8 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use $fw:start to route this task through the right Flywheel stage.",
+      "Use $fw or $fw:start to route this task through the right Flywheel stage. Treat a bare $flywheel request as the same start router, then render follow-up stages as $fw:<stage>.",
+      "Use $fw:shape to move rough or known-scoped work through ideation, brainstorming, planning, or plan-deepening before execution.",
       "Use $fw:research when the immediate job is topic investigation or current best-practice discovery that should sharpen ideation, brainstorming, review, or planning.",
       "Use $fw:setup to prove repo and machine readiness before work starts.",
       "Use $fw:run to coordinate one bounded task through the remaining Flywheel stages.",

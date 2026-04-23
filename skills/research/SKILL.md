@@ -10,7 +10,7 @@ metadata:
 Use the actual current date from runtime context when dating saved research
 briefs and freshness notes.
 
-`$flywheel:research` is a helper skill first. Prefer pulling it into
+`$fw:research` is a helper skill first. Prefer pulling it into
 `ideate`, `brainstorm`, `review`, or `plan` when better evidence would sharpen
 that stage's real artifact. Use it directly when the user explicitly asks for
 research or when the main artifact should be a reusable research brief.

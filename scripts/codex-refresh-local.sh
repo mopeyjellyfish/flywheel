@@ -7,10 +7,11 @@ Usage:
   codex-refresh-local.sh [--dry-run] [--force-link]
 
 Refresh the local Flywheel plugin install for Codex development by:
-  1. ensuring ~/.codex/plugins/fw points at this repo
-  2. refreshing the local Flywheel plugin cache
-  3. ensuring ~/.codex/config.toml enables fw@fw-local and codex hooks
-  4. merging the Flywheel Codex hook guardrail into ~/.codex/hooks.json
+  1. removing standalone global Flywheel skills that Codex would expose as $start
+  2. ensuring ~/.codex/plugins/fw points at this repo
+  3. refreshing the local Flywheel plugin cache
+  4. ensuring ~/.codex/config.toml enables fw@fw-local and codex hooks
+  5. merging the Flywheel Codex hook guardrail into ~/.codex/hooks.json
 
 This is a development helper for working on Flywheel itself. It does not hot
 reload an already-running Codex session.
@@ -120,6 +121,15 @@ remove_legacy_install_paths() {
     run rm -rf "$LEGACY_CACHE_ROOT"
     echo "OK  removed legacy Codex plugin cache at $LEGACY_CACHE_ROOT"
   fi
+}
+
+remove_standalone_global_skills() {
+  local args=("--scope" "global")
+  if [ "$DRY_RUN" -eq 1 ]; then
+    args+=("--dry-run")
+  fi
+
+  bash "$REPO_ROOT/scripts/skills-remove.sh" "${args[@]}"
 }
 
 refresh_plugin_cache() {
@@ -507,6 +517,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 ensure_repo_shape
+remove_standalone_global_skills
 remove_legacy_install_paths
 ensure_plugin_link
 refresh_plugin_cache

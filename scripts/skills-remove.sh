@@ -103,7 +103,18 @@ function localSkillNames() {
     .sort();
 }
 
-function installedSkillLooksLikeFlywheel(name) {
+function installedSkillNames() {
+  if (!installDir || !fs.existsSync(installDir)) {
+    return [];
+  }
+
+  return fs.readdirSync(installDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+}
+
+function installedSkillLooksLikeFlywheel(name, localNames) {
   if (!installDir) {
     return false;
   }
@@ -118,7 +129,12 @@ function installedSkillLooksLikeFlywheel(name) {
     .map((file) => fs.readFileSync(file, "utf8"))
     .join("\n");
 
-  return /\bFlywheel\b|\$flywheel:|\/flywheel:|\$fw:|\/fw:/i.test(text);
+  const hasFlywheelCommand = /(?:\$|\/)(?:flywheel|fw)(?::[a-z0-9-]+)?\b/i.test(text);
+  if (localNames.has(name)) {
+    return /\bFlywheel\b/i.test(text) || hasFlywheelCommand;
+  }
+
+  return /\bFlywheel\b/i.test(text) && hasFlywheelCommand;
 }
 
 if (lockFile && fs.existsSync(lockFile)) {
@@ -135,8 +151,9 @@ if (lockFile && fs.existsSync(lockFile)) {
   }
 }
 
-for (const name of localSkillNames()) {
-  if (installedSkillLooksLikeFlywheel(name)) {
+const localNames = new Set(localSkillNames());
+for (const name of new Set([...localNames, ...installedSkillNames()])) {
+  if (installedSkillLooksLikeFlywheel(name, localNames)) {
     matches.add(name);
   }
 }

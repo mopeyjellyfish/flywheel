@@ -20,7 +20,8 @@ Use it to verify that Flywheel feels coherent from idea to working PR:
 
 This pack focuses on top-level workflow behavior:
 
-- correct first-stage selection
+- correct first-stage selection, including `shape` as the main pre-work stage
+- bare `$fw` and `$flywheel` root aliases routing through the start router
 - correct handoff target
 - respect for the Flywheel order of operations
 - sensible direct-to-work shortcuts only when the task is truly ready
@@ -33,7 +34,8 @@ manual or integration testing in a live repo.
 ## Manual Use
 
 1. Open `skills/start/SKILL.md`.
-2. Run `$fw:start` with each `item.arguments` value from `cases.jsonl`.
+2. Run the command form shown in each `item.arguments` value from
+   `cases.jsonl`.
 3. Grade the result with `rubric.md`.
 
 For a repeatable harness-driven run, use:
@@ -47,10 +49,12 @@ node scripts/flywheel-eval.js summarize flywheel path/to/results.jsonl
 
 Run these first:
 
-- `idea_to_brainstorm`
-- `requirements_to_plan`
+- `idea_to_shape`
+- `root_fw_to_shape`
+- `requirements_to_shape`
 - `plan_to_work`
 - `code_to_review`
+- `root_flywheel_to_review`
 - `done_to_spin`
 
 If those pass, run the full set.

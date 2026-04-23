@@ -28,12 +28,14 @@
   "passAverage": 1.5,
   "strongPassAverage": 1.75,
   "suggestedFirstPass": [
-    "idea_to_brainstorm",
-    "repo_workflow_contract_to_ideate",
+    "root_fw_to_shape",
+    "idea_to_shape",
+    "repo_workflow_contract_to_shape",
     "docs_after_work",
-    "requirements_to_plan",
+    "requirements_to_shape",
     "plan_to_work",
     "code_to_review",
+    "root_flywheel_to_review",
     "done_to_spin"
   ]
 }

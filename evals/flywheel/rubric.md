@@ -18,16 +18,21 @@ Did the router choose the correct immediate Flywheel stage?
 
 Automatic fail if it routes to the wrong stage.
 
+For root-invocation cases, `$fw` and bare `$flywheel` must behave as aliases
+for the start router rather than as separate stages or legacy stage namespaces.
+
 ### 2. Workflow Coherence
 
 Does the answer preserve the Flywheel sequence instead of skipping necessary
 steps?
 
-- ideate before brainstorm when the problem is idea selection
-- brainstorm before plan when behavior and scope are unclear
-- plan before work when execution details still need structure, and planning
-  runs document review before the user chooses deepen or work
-- shape -> work -> review -> commit as the compact backbone for software-project work
+- shape before work when the request still needs idea selection, requirements
+  shaping, planning, or plan deepening
+- inside shape, ideate before brainstorm when the problem is idea selection
+- inside shape, brainstorm before plan when behavior and scope are unclear
+- inside shape, plan before work when execution details still need structure,
+  and planning runs document review before the user chooses deepen or work
+- shape -> work -> review -> commit -> spin as the compact backbone for software-project work
 - helper surfaces such as research, architecture strategy, pattern
   recognition, maintainability, or simplify can be selected when they are the
   most direct fit, without turning them into mandatory visible stages
@@ -51,8 +56,8 @@ ambiguity.
 
 Expected examples:
 
-- brainstorming -> requirements doc -> planning
-- planning -> reviewed technical plan -> deepen or work
+- shape -> ranked shortlist, requirements doc, reviewed technical plan, or
+  strengthened plan -> work
 - work -> implementation, helper checks as needed, review, commit, optional spin
 
 ### 5. Repo Grounding

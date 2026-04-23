@@ -41,10 +41,10 @@ related_docs:
 
 ## Context
 
-Flywheel added `npx skills` support so `make install/all` could install the
-same local checkout through the public `skills` CLI used for Codex, Claude Code,
-and OpenCode. The first implementation treated project scope like an isolated
-install output and treated the global skills lock as authoritative.
+Flywheel added `npx skills` support so the same local checkout could be
+installed through the public `skills` CLI used by skills-CLI hosts. The first
+implementation treated project scope like an isolated install output and
+treated the global skills lock as authoritative.
 
 Both assumptions were wrong for this repo. The `skills` CLI project scope writes
 to the current directory's `skills/` tree, which is Flywheel's authored product
@@ -61,7 +61,13 @@ scope non-destructive.
 Use these rules:
 
 - `make install/all` may install the local checkout globally through
-  `npx skills add <repo>/skills --global --skill '*' --agent codex --agent claude-code --agent opencode --yes`.
+  host-specific plugin paths, but it should not leave standalone global
+  Flywheel skills visible to Codex.
+- Codex should use the Flywheel plugin install. Standalone global skills expose
+  entries such as `$start`, which conflicts with the canonical `$fw:start`
+  plugin surface.
+- `make install/skills/global` may install the local checkout through
+  `npx skills add <repo>/skills --global --skill '*' --agent claude-code --agent opencode --yes`.
 - `make install/skills/project` from the Flywheel repo root should validate
   `./skills` and exit successfully without running `skills add`, because the
   destination is the same authored source tree.
@@ -71,8 +77,11 @@ Use these rules:
   installs, but it must never invoke `skills remove` against repo-root
   `./skills`.
 - global uninstall should combine lock-file matches with an on-disk fingerprint
-  fallback for stale Flywheel directories. Match only local Flywheel skill names
-  whose installed files contain Flywheel command text or related markers.
+  fallback for stale Flywheel directories. Scan installed skill directories so
+  old renamed Flywheel skills are removed too. For current local skill names,
+  Flywheel branding or Flywheel command text is enough; for unknown stale names,
+  require both Flywheel branding and Flywheel command text before treating an
+  unlocked directory as a stale Flywheel install.
 
 ## Why This Matters
 

@@ -19,7 +19,7 @@ brainstorm about a straightforward feature may not.
 - The diagram would just restate the requirements in visual form without
   adding comprehension value.
 - The visual describes implementation architecture, data schemas, state
-  machines, or code structure. That belongs in `$flywheel:plan`.
+  machines, or code structure. That belongs in `$fw:plan`.
 - The brainstorm is simple and linear with no multi-step flows, mode
   comparisons, or multi-participant interactions.
 

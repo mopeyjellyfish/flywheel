@@ -1,6 +1,6 @@
 ---
 name: commit-message
-description: "Draft Conventional Commit messages for workflow-driven and direct commit requests. Use when choosing a commit header, body, or footer, especially inside `$flywheel:commit` or before a raw `git commit`."
+description: "Draft Conventional Commit messages for workflow-driven and direct commit requests. Use when choosing a commit header, body, or footer, especially inside `$fw:commit` or before a raw `git commit`."
 metadata:
   argument-hint: "[Summary of the change or blank to infer from current work context]"
 ---

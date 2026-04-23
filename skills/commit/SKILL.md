@@ -7,7 +7,7 @@ metadata:
 
 # Commit The Work
 
-`$flywheel:commit` closes Flywheel's compact project loop between "the repo
+`$fw:commit` closes Flywheel's compact project loop between "the repo
 change is ready enough to finish" and "a clean local branch or PR exists."
 
 It is the finishing workflow for:
@@ -18,10 +18,10 @@ It is the finishing workflow for:
 - an existing PR whose description should be refreshed
 - a branch that surfaced durable lessons worth offering to `spin`
 
-Use it after `$flywheel:work` or after `$flywheel:review` reaches a clean
-enough verdict. For runtime-risky changes, use it after `$flywheel:rollout`
+Use it after `$fw:work` or after `$fw:review` reaches a clean
+enough verdict. For runtime-risky changes, use it after `$fw:rollout`
 sets the activation, validation, and rollback posture. If the user invokes
-`$flywheel:commit` directly, treat that as permission to run the finish-stage
+`$fw:commit` directly, treat that as permission to run the finish-stage
 workflow rather than as a reason to reject the request because earlier stages
 were skipped.
 
@@ -77,7 +77,7 @@ Do not preload every support file. Load only what the current phase needs:
 
 1. **Finish from repo truth** - branch status, open PR state, test evidence,
    and review outcomes outrank memory or optimism.
-2. **Commit honestly** - use `$flywheel:commit-message` for each logical unit
+2. **Commit honestly** - use `$fw:commit-message` for each logical unit
    being committed. If the helper is unavailable, draft the conventional header
    directly and ask before marking breaking changes.
 3. **Prefer one coherent finish flow** - local commits, push, PR state, and
@@ -147,20 +147,20 @@ create a feature branch first unless the user explicitly approves committing on
 the default branch.
 
 If a clean isolated checkout is preferable before finishing, use
-`$flywheel:worktree` instead of switching the shared checkout ad hoc.
+`$fw:worktree` instead of switching the shared checkout ad hoc.
 
 ### Phase 3: Run Missing Readiness Checks
 
 Before creating commits or a PR, confirm:
 
 - tests and linting were addressed, using the repo-grounded commands already
-  discovered during `$flywheel:work` or local setup
+  discovered during `$fw:work` or local setup
 - browser-visible changes have fresh acceptance proof from
-  `$flywheel:browser-test`, repo-native browser tests, or an explicit user
+  `$fw:browser-test`, repo-native browser tests, or an explicit user
   decision to continue without that proof
 - if the change is runtime-risky and activation sequence, validation window, or
   rollback trigger are still unresolved, stop and route through
-  `$flywheel:rollout` before continuing
+  `$fw:rollout` before continuing
 - the change's runtime impact has either:
   - concrete monitoring and validation notes, or
   - a clear no-impact rationale
@@ -169,10 +169,10 @@ Before creating commits or a PR, confirm:
 
 Review handling:
 
-- if `$flywheel:review` already ran and the latest verdict is clean enough,
+- if `$fw:review` already ran and the latest verdict is clean enough,
   reuse it
 - if review has not run and finish-stage confidence depends on it, run
-  `$flywheel:review` now instead of blocking only because the user skipped it
+  `$fw:review` now instead of blocking only because the user skipped it
 - if unresolved `P0` or `P1` gated or manual findings remain after review, stop
   instead of continuing into commit or PR creation
 - if local policy requires review before commit, stop only when the review pass
@@ -230,7 +230,7 @@ window, owner, and rollback trigger instead of rebuilding those decisions from
 memory during PR preparation.
 
 If the change is browser-visible and fresh proof is still missing, route
-through `$flywheel:browser-test` before final PR preparation unless the user
+through `$fw:browser-test` before final PR preparation unless the user
 explicitly wants to continue without it.
 
 Read `references/pr-body-template.md` and fill it with concrete repo facts.
@@ -250,7 +250,7 @@ If the worktree is dirty:
 4. if the diff is too entangled for a clean split, say so and prefer one
    honest commit
 5. stage only the files for each chosen unit
-6. use `$flywheel:commit-message` for each conventional header, plus body or
+6. use `$fw:commit-message` for each conventional header, plus body or
    footers when useful
 7. commit the unit before moving to the next one
 
@@ -321,7 +321,7 @@ Then report:
 1. what finished
 2. the branch and PR URL when available
 3. any residual follow-up
-4. whether a bounded `$flywheel:spin` offer is warranted
+4. whether a bounded `$fw:spin` offer is warranted
 
 If one or more candidates are worth preserving, present a small choice surface:
 
@@ -330,11 +330,11 @@ If one or more candidates are worth preserving, present a small choice surface:
 3. **Full spin**
 
 Recommend the strongest candidate explicitly. If the user wants to continue,
-launch `$flywheel:spin` with the selected candidate summary instead of calling
+launch `$fw:spin` with the selected candidate summary instead of calling
 it blank.
 
 If the branch finished from a `.worktrees/` checkout and no longer needs that
-checkout, suggest `$flywheel:worktree cleanup <branch>` as the cleanup path.
+checkout, suggest `$fw:worktree cleanup <branch>` as the cleanup path.
 
 ---
 

@@ -7,7 +7,7 @@ metadata:
 
 # Code Review
 
-`$flywheel:review` reviews code changes with a risk-first, structured workflow.
+`$fw:review` reviews code changes with a risk-first, structured workflow.
 It selects reviewers from diff evidence, dispatches them in parallel when the
 host supports it, keeps synthesis centralized, and keeps mutation bounded.
 
@@ -98,7 +98,7 @@ Do not preload every reference. Load only what the current phase needs:
   behavior, standards, security guidance, or other facts not settled by repo
   truth alone.
 - Read `../commit/references/evidence-bundle.md` only when an existing shared
-  evidence bundle is present or the review artifact should feed `$flywheel:commit`.
+  evidence bundle is present or the review artifact should feed `$fw:commit`.
 - Read `references/review-output-template.md` during synthesis and
   presentation.
 
@@ -129,7 +129,7 @@ This skill is optimized for Codex and Claude Code style hosts:
 
 - Skip all user questions after scope is established.
 - Apply only `safe_auto -> review-fixer` findings.
-- Write a run artifact under `.context/flywheel$flywheel:review/<run-id>/`.
+- Write a run artifact under `.context/flywheel/review/<run-id>/`.
 - Create durable todo files only for unresolved actionable findings whose final
   owner is `downstream-resolver`.
 - Never commit, push, or create a PR from autofix mode.
@@ -138,7 +138,7 @@ This skill is optimized for Codex and Claude Code style hosts:
 
 - Skip all user questions.
 - Never edit files or externalize work.
-- Do not write `.context/flywheel$flywheel:review/<run-id>/`.
+- Do not write `.context/flywheel/review/<run-id>/`.
 - Safe for parallel read-only verification on the same checkout.
 - Do not switch the shared checkout. If a caller wants another branch or PR in
   report-only mode, it must run from an isolated checkout or worktree.
@@ -155,7 +155,7 @@ This skill is optimized for Codex and Claude Code style hosts:
 
 - Apply only `safe_auto -> review-fixer` findings in a single pass.
 - Return all non-auto findings as structured text output.
-- Write a run artifact under `.context/flywheel$flywheel:review/<run-id>/`.
+- Write a run artifact under `.context/flywheel/review/<run-id>/`.
 - Do not create todo files.
 - Do not switch the shared checkout. If a caller passes an explicit PR or
   branch target in headless mode on a shared checkout, emit:
@@ -382,7 +382,7 @@ Use that frame to sharpen:
 - reviewer selection, especially observability, reliability, performance,
   data-access, api-contract, data-migrations, and deployment verification
 - verdict reasoning
-- any final handoff into `$flywheel:rollout` or `$flywheel:commit`
+- any final handoff into `$fw:rollout` or `$fw:commit`
 
 ### Stage 2d: Discover Local Prior Learnings
 
@@ -416,7 +416,7 @@ Use these local policy gates to sharpen:
 
 - verdict reasoning
 - residual-work vs commit-readiness language
-- final handoff into `$flywheel:commit`
+- final handoff into `$fw:commit`
 
 Absent config is not a policy violation. Treat local policy as an explicit
 overlay, not a universal Flywheel default.
@@ -431,7 +431,7 @@ Use that bundle to:
 - avoid re-describing browser or verification proof that already exists
 - sharpen commit-readiness reasoning
 - decide whether this review should append its own verdict and artifact path for
-  `$flywheel:commit`
+  `$fw:commit`
 
 ### Stage 2g: Gather Targeted External Context When Needed
 
@@ -556,7 +556,7 @@ dispatching reviewers:
 
 ```bash
 RUN_ID=$(date +%Y%m%d-%H%M%S)-$(head -c4 /dev/urandom | od -An -tx1 | tr -d ' ')
-mkdir -p ".context/flywheel$flywheel:review/$RUN_ID"
+mkdir -p ".context/flywheel/review/$RUN_ID"
 ```
 
 Report-only mode skips run-id generation and file writes.
@@ -605,7 +605,7 @@ Reviewer passes are read-only with respect to project code. The one permitted
 write is the reviewer artifact file under:
 
 ```text
-.context/flywheel$flywheel:review/{run_id}/{reviewer_name}.json
+.context/flywheel/review/{run_id}/{reviewer_name}.json
 ```
 
 Each reviewer writes full JSON to disk when a run ID exists and returns compact
@@ -711,7 +711,7 @@ Scope: <scope-line>
 Intent: <intent-summary>
 Reviewers: <reviewer-list with conditional justifications>
 Verdict: <Ready to merge | Ready with fixes | Not ready>
-Artifact: .context/flywheel$flywheel:review/<run-id>/
+Artifact: .context/flywheel/review/<run-id>/
 
 Applied N safe_auto fixes.
 
@@ -843,7 +843,7 @@ Before delivering the review, verify:
 In interactive, autofix, and headless modes, write a per-run artifact under:
 
 ```text
-.context/flywheel$flywheel:review/<run-id>/
+.context/flywheel/review/<run-id>/
 ```
 
 Include:
@@ -869,7 +869,7 @@ In autofix mode, create durable todo files only for unresolved actionable
 findings whose final owner is `downstream-resolver`.
 
 If a shared evidence bundle already exists, or if this review is clearly
-feeding `$flywheel:commit`, read `../commit/references/evidence-bundle.md` and append
+feeding `$fw:commit`, read `../commit/references/evidence-bundle.md` and append
 one short review entry to:
 
 ```text
@@ -882,22 +882,22 @@ Record only what later stages need:
 - review artifact path
 - any PR-safe summary of blocking or residual findings
 
-Keep full reviewer detail in `.context/flywheel$flywheel:review/<run-id>/` and link
+Keep full reviewer detail in `.context/flywheel/review/<run-id>/` and link
 to it from the shared bundle instead of duplicating large findings payloads.
 
 ### Step 5: Final Next Steps
 
 Interactive mode only:
 
-- PR mode: offer `$flywheel:commit` to push and refresh the PR, or `Exit`
-- Feature-branch mode: offer `$flywheel:commit`, `Continue without finishing the branch`, or `Exit`
+- PR mode: offer `$fw:commit` to push and refresh the PR, or `Exit`
+- Feature-branch mode: offer `$fw:commit`, `Continue without finishing the branch`, or `Exit`
 - Base/default-branch mode: offer `Continue` or `Exit`
 - If the diff changes browser-visible behavior and no fresh acceptance proof was
-  captured yet, offer `$flywheel:browser-test` before `$flywheel:commit`.
+  captured yet, offer `$fw:browser-test` before `$fw:commit`.
 - If the diff is runtime-risky and rollout posture is still unresolved, offer
-  `$flywheel:rollout` before `$flywheel:commit`.
+  `$fw:rollout` before `$fw:commit`.
 - If the dominant residual work is performance, throughput, build-time, or
-  cost tuning rather than correctness, offer `$flywheel:optimize` as the next handoff.
+  cost tuning rather than correctness, offer `$fw:optimize` as the next handoff.
 
 Autofix, report-only, and headless modes stop after report, artifact emission,
 and residual-work handoff.

@@ -7,7 +7,7 @@ metadata:
 
 # Deepen
 
-`$flywheel:deepen` is the plan-strengthening path.
+`$fw:deepen` is the plan-strengthening path.
 
 Use it when a plan already exists but needs a more rigorous pass before
 implementation starts.
@@ -66,7 +66,7 @@ Before rewriting the plan:
 - inspect the active repo's `docs/solutions/` for prior learnings
 - confirm likely file paths, tests, patterns, and validation surfaces
 
-When the plan changes runtime behavior or blast radius, load `$flywheel:observability`
+When the plan changes runtime behavior or blast radius, load `$fw:observability`
 concepts and tighten the readiness, rollout, and validation shape.
 
 ### Phase 4: Strengthen The Plan In Place
@@ -95,5 +95,5 @@ Return:
 1. **Plan deepened**
 2. **Main gaps fixed**
 3. **Residual review findings or open questions**
-4. **Recommended next move** — either another `$flywheel:deepen` pass or
-   `$flywheel:work`
+4. **Recommended next move** — either another `$fw:deepen` pass or
+   `$fw:work`

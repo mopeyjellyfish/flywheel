@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:logging"
+  display_name: "$fw:logging"
   short_description: "Design structured logging that explains live behavior"
-  default_prompt: "Use $flywheel:logging to inspect existing logging truth, choose the right event shape, present predicted options plus Custom when tradeoffs are real, and return a concrete logging design, audit, or migration sketch."
+  default_prompt: "Use $fw:logging to inspect existing logging truth, choose the right event shape, present predicted options plus Custom when tradeoffs are real, and return a concrete logging design, audit, or migration sketch."

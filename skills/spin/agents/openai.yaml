@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:spin"
+  display_name: "$fw:spin"
   short_description: "Capture solved lessons into docs/solutions"
-  default_prompt: "Use $flywheel:spin to turn solved lessons from this session into searchable docs/solutions entries, including durable guidance about architecture, patterns, simplification, or maintainability when they will help future repo work."
+  default_prompt: "Use $fw:spin to turn solved lessons from this session into searchable docs/solutions entries, including durable guidance about architecture, patterns, simplification, or maintainability when they will help future repo work."

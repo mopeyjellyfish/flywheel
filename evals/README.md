@@ -40,6 +40,7 @@ Current suites:
 - `fw-polish`
 - `fw-run`
 - `fw-setup`
+- `fw-shape`
 - `fw-work`
 - `fw-worktree`
 - `fw-review`

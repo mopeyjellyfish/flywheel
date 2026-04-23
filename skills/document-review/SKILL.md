@@ -77,7 +77,7 @@ review, or find the most recent document in `docs/brainstorms/` or
 
 ```text
 Review failed: headless mode requires a document path.
-Re-invoke with: $flywheel:document-review mode:headless <path>
+Re-invoke with: $fw:document-review mode:headless <path>
 ```
 
 Do not dispatch reviewers.

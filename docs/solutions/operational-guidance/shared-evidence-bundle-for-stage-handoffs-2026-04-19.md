@@ -63,7 +63,7 @@ The bundle should carry only what downstream stages need:
 - whether the item is `clean`, `redacted`, or `local-only`
 - whether the item is safe for PR reuse or summary-only
 
-`$flywheel:commit` should read the bundle first when it exists and include only
+`$fw:commit` should read the bundle first when it exists and include only
 sanitized, PR-safe items in the PR story.
 
 ## Why This Matters

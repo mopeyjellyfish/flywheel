@@ -8,12 +8,12 @@ description: "Write or refresh project documentation using the Diataxis framewor
 Use the actual current date from runtime context when dating newly created
 documentation or updating dated docs.
 
-`$flywheel:docs` is Flywheel's documentation stage. It turns repo truth into
+`$fw:docs` is Flywheel's documentation stage. It turns repo truth into
 clear project docs organized by Diataxis: tutorial, how-to, reference, and
 explanation.
 
 Use it directly when the user asks for docs work, or as an optional handoff
-after `$flywheel:work` when implementation likely changed what users, operators,
+after `$fw:work` when implementation likely changed what users, operators,
 or other developers need to read.
 
 **When directly invoked, always do the docs work.** If the honest answer is
@@ -38,7 +38,7 @@ is predictable, keep the choice labels recommended-first and rely on the
 host's native freeform final path when it exists.
 
 When the stage is being *offered* from another workflow, get the user's approval
-before writing docs. When the user invoked `$flywheel:docs` directly, proceed
+before writing docs. When the user invoked `$fw:docs` directly, proceed
 unless a broad rewrite needs explicit scope confirmation.
 
 ## Reference Loading Map
@@ -79,12 +79,12 @@ Interpret the input as one of:
 
 ## Upstream Handoff Contract
 
-When another Flywheel stage offers `$flywheel:docs`, it should ask first:
+When another Flywheel stage offers `$fw:docs`, it should ask first:
 
 - "Do you want a Diataxis docs pass before review?"
 
 If the user agrees, pass a change-scoped argument instead of calling
-`$flywheel:docs` blank when possible.
+`$fw:docs` blank when possible.
 
 Good upstream arguments look like:
 
@@ -190,10 +190,10 @@ When the docs pass is complete:
 
 1. summarize what changed and which Diataxis quadrants were touched
 2. call out any intentionally deferred docs work
-3. if code changes are still waiting, hand back to `$flywheel:review` and then
-   `$flywheel:commit`
+3. if code changes are still waiting, hand back to `$fw:review` and then
+   `$fw:commit`
 4. if the work is otherwise complete and the docs pass surfaced a durable repo
-   lesson, offer `$flywheel:spin`
+   lesson, offer `$fw:spin`
 
 If no docs update was needed, say so plainly and cite the repo evidence behind
 that decision.

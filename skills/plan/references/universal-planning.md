@@ -1,13 +1,13 @@
 # Universal Planning Workflow
 
-This file is loaded when `$flywheel:plan` detects a non-software planning task. It
+This file is loaded when `$fw:plan` detects a non-software planning task. It
 replaces the software-specific phases with a domain-agnostic planning workflow.
 
 ## Before Starting: Verify Classification
 
 Confirm the task is actually non-software before proceeding:
 
-- if it is really a software task, return to the main `$flywheel:plan` workflow
+- if it is really a software task, return to the main `$fw:plan` workflow
 - if it is a quick-help request rather than a planning task, respond directly
 - in automated software-only pipelines, say plainly that the pipeline expects
   software work and stop
@@ -94,4 +94,4 @@ Options:
 3. **Save to disk AND open in Proof**
    - only when the proof skill or equivalent exists
 
-Do not offer `$flywheel:work` for non-software plans.
+Do not offer `$fw:work` for non-software plans.

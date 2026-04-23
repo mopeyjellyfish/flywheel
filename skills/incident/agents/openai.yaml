@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:incident"
+  display_name: "$fw:incident"
   short_description: "Respond to incidents from runtime evidence"
-  default_prompt: "Use $flywheel:incident to frame the incident, choose mitigation vs rollback vs patch, and hand the work into the right next Flywheel stage."
+  default_prompt: "Use $fw:incident to frame the incident, choose mitigation vs rollback vs patch, and hand the work into the right next Flywheel stage."

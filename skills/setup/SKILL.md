@@ -7,7 +7,7 @@ metadata:
 
 # Setup And Bootstrap
 
-`$flywheel:setup` is the environment and workflow bootstrap pass for Flywheel.
+`$fw:setup` is the environment and workflow bootstrap pass for Flywheel.
 
 After Flywheel is installed, this should usually be the first command run in a
 new repository.
@@ -97,7 +97,7 @@ Do not load support files until needed:
 6. **Present fixes in tiers** - fastest path first, then fuller setup if the
    user wants it.
 7. **Setup recovery belongs here** - if another Flywheel stage discovers a
-   missing requirement, send the user back to `$flywheel:setup <focus>` instead of
+   missing requirement, send the user back to `$fw:setup <focus>` instead of
    teaching every downstream stage to bootstrap itself differently.
 8. **Trust external surfaces deliberately** - only recommend trusted MCP
    servers, trusted telemetry paths, and explicit browser evidence capture.
@@ -172,7 +172,7 @@ Typical surfaces to check, but only when repo evidence supports them:
 - `playwright-cli`, local `npx playwright-cli`, or repo-native Playwright test surfaces
 - `psql`, `redis-cli`, or `kcat` only when repo evidence suggests those local
   debugging surfaces matter
-- worktree support through `$flywheel:worktree`
+- worktree support through `$fw:worktree`
 
 Also check workflow-specific readiness:
 
@@ -262,7 +262,7 @@ If the user wants you to make changes, do so conservatively:
 - create ignored local directories only when needed
 - prefer `.flywheel/config.local.yaml` for durable machine-local workflow
   settings
-- use `$flywheel:worktree` for worktree bootstrap rather than ad hoc git commands
+- use `$fw:worktree` for worktree bootstrap rather than ad hoc git commands
 - keep secret-bearing files local and ignored
 
 When Flywheel will be used repeatedly in this repo, offer to bootstrap
@@ -309,7 +309,7 @@ playwright-cli install --skills
 If no pinned version is available and the repo has no local path, present a
 short choice surface instead of silently defaulting to `@latest`.
 
-When the user wants you to fix the browser gap now, `$flywheel:setup browser` should
+When the user wants you to fix the browser gap now, `$fw:setup browser` should
 offer to run the chosen install path directly instead of merely documenting it.
 
 When optimization is likely to matter for this repo, ask whether the user wants
@@ -359,4 +359,4 @@ explicitly in both **Required now** and **Browser proof readiness**, and include
 the next runnable setup command.
 
 If the repo is already ready, say so clearly and name the next usable workflow
-surface, such as `$flywheel:plan`, `$flywheel:work`, `$flywheel:review`, or `$flywheel:commit`.
+surface, such as `$fw:plan`, `$fw:work`, `$fw:review`, or `$fw:commit`.

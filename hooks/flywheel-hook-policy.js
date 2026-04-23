@@ -248,7 +248,7 @@ function hasBrowserProof(repoRoot) {
 }
 
 function hasReviewArtifact(repoRoot, currentBranch) {
-  const reviewRoot = path.join(repoRoot, ".context", "flywheel$flywheel:review");
+  const reviewRoot = path.join(repoRoot, ".context", "flywheel", "review");
   if (!fs.existsSync(reviewRoot)) {
     return false;
   }

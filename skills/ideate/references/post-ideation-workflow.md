@@ -56,7 +56,7 @@ For each survivor, include:
 - downsides
 - confidence
 - estimated complexity
-- recommended next step: `$flywheel:brainstorm`, `stay in ideation`, or `save for
+- recommended next step: `$fw:brainstorm`, `stay in ideation`, or `save for
   later`
 
 Then include a brief rejection summary so the user can see what was considered
@@ -90,7 +90,7 @@ Offer these next steps:
 2. **Save the ideation doc** — write a durable artifact and stop, or leave it
    ready for later follow-up.
 3. **Brainstorm a selected idea** — save first when a durable handoff will
-   help, then load `$flywheel:brainstorm` using the chosen idea as the seed.
+   help, then load `$fw:brainstorm` using the chosen idea as the seed.
 4. **Stop here without saving** — valid no-save exit.
 
 ### 5.1 File Save
@@ -134,7 +134,7 @@ Treating this as [repo-grounded ideation | outside-repo software ideation | univ
 - Confidence: <0-100%>
 - Complexity: <Low | Medium | High>
 - Status: <Unexplored | Selected | Explored>
-- Next step: `$flywheel:brainstorm` | `stay in ideation` | `save for later`
+- Next step: `$fw:brainstorm` | `stay in ideation` | `save for later`
 
 ## Rejection Summary
 
@@ -169,9 +169,9 @@ When the user chooses **Brainstorm a selected idea**:
   planning or review
 - mark the chosen idea as `Selected` or `Explored` in the saved artifact when
   one exists
-- load `$flywheel:brainstorm` with the chosen idea as the seed
+- load `$fw:brainstorm` with the chosen idea as the seed
 
-Do **not** skip straight from ideation to `$flywheel:plan` unless the user explicitly
+Do **not** skip straight from ideation to `$fw:plan` unless the user explicitly
 overrides the normal workflow and the missing brainstorm step would add no real
 value.
 
@@ -180,5 +180,5 @@ value.
 Do not commit ideation docs by default.
 
 If the user explicitly asks to commit a saved ideation document, load
-`$flywheel:commit` first, stage only the ideation doc, and use a clean
+`$fw:commit` first, stage only the ideation doc, and use a clean
 conventional message. Ask before using a breaking-change marker.

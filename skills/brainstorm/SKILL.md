@@ -11,7 +11,7 @@ Use the actual current date from runtime context when dating requirements
 documents.
 
 Brainstorming helps answer **WHAT** to build through collaborative dialogue. It
-precedes `$flywheel:plan`, which answers **HOW** to build it.
+precedes `$fw:plan`, which answers **HOW** to build it.
 
 The durable output of this workflow is a **requirements document**. In other
 workflows this might be called a lightweight PRD or feature brief. In Flywheel,

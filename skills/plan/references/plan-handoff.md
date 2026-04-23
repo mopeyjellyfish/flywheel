@@ -90,9 +90,9 @@ Present 2-4 explicit options with the recommended choice first.
 If the review pass surfaced material findings, unresolved tradeoffs, or the
 user asked for more rigor, use:
 
-1. **Deepen the plan** (recommended) — run `$flywheel:deepen` on this reviewed
+1. **Deepen the plan** (recommended) — run `$fw:deepen` on this reviewed
    plan before execution
-2. **Start `$flywheel:work` now** — begin implementing this plan in the current
+2. **Start `$fw:work` now** — begin implementing this plan in the current
    session
 3. **Create Issue** — create a tracked issue from this plan in the configured
    issue tracker
@@ -100,9 +100,9 @@ user asked for more rigor, use:
 
 If the reviewed plan is clean and the remaining uncertainty is low, use:
 
-1. **Start `$flywheel:work` now** (recommended) — begin implementing this plan
+1. **Start `$fw:work` now** (recommended) — begin implementing this plan
    in the current session
-2. **Deepen the plan** — run `$flywheel:deepen` on this reviewed plan before
+2. **Deepen the plan** — run `$fw:deepen` on this reviewed plan before
    execution
 3. **Create Issue** — create a tracked issue from this plan in the configured
    issue tracker
@@ -119,8 +119,8 @@ offer another review pass in prose. Do not add it to the option list.
 
 Based on selection:
 
-- **Deepen the plan** → call `$flywheel:deepen` with the plan path
-- **Start `$flywheel:work` now** → call `$flywheel:work` with the plan path
+- **Deepen the plan** → call `$fw:deepen` with the plan path
+- **Start `$fw:work` now** → call `$fw:work` with the plan path
 - **Create Issue** → follow the issue creation section below
 - **Done for now** → confirm the plan file is saved and end the turn
 - **If the user asks for another document review** → rerun `document-review`
@@ -144,4 +144,4 @@ When the user selects `Create Issue`, detect the project tracker:
 After issue creation:
 
 - display the issue URL
-- ask whether to proceed to `$flywheel:work`
+- ask whether to proceed to `$fw:work`

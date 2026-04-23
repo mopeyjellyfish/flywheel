@@ -154,7 +154,7 @@ Note:
 ### Local `make install/all` fell back to the published skills package
 
 Symptom:
-- `make install/all` or `make install/skills/global` installs `mopeyjellyfish/flywheel`
+- `make install/skills/global` installs `mopeyjellyfish/flywheel`
   instead of the current checkout
 - local edits under this repo are not reflected in the `npx skills` install
 
@@ -165,12 +165,32 @@ Check:
 Fix:
 - restore or regenerate the local `skills/` tree so this checkout actually has
   installable `skills/*/SKILL.md` entries
-- rerun `make install/skills/global` or `make install/all`
+- rerun `make install/skills/global`
 
 Note:
 - local development targets now fail fast when `skills/` is missing or empty
 - use the published `npx skills add mopeyjellyfish/flywheel ...` command only
   when the goal is explicitly to test the remote package
+- Codex should use `make install/codex`; standalone global Flywheel skills show
+  up in Codex as unnamespaced commands such as `$start`
+
+### Codex still shows `$start`
+
+Symptom:
+- Codex lists a plain `start` skill from `~/.agents/skills/start`
+- the same session also sees the correct plugin skill at
+  `~/.codex/plugins/cache/fw-local/fw/local/skills/start/SKILL.md`
+
+Cause:
+- standalone global Flywheel skills were installed through the `skills` CLI,
+  usually from the published package, and Codex loads them as unnamespaced
+  skills
+
+Fix:
+- run `make install/codex`
+- start a fresh Codex session
+- verify with `node scripts/flywheel-doctor.js --host codex`; the
+  `No standalone Flywheel skills in Codex` check should pass
 
 ### Claude installed Flywheel is not available
 

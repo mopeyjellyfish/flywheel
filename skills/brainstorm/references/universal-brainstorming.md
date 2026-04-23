@@ -91,7 +91,7 @@ asking for raw numeric replies.
 
 **Question:** "Brainstorm wrapped. What would you like to do next?"
 
-- **Create a plan** → hand off to `$flywheel:plan` with the decided goal and
+- **Create a plan** → hand off to `$fw:plan` with the decided goal and
   constraints.
 - **Save summary to disk** → write the summary as a markdown file in the
   current working directory.

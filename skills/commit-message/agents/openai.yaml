@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:commit-message"
+  display_name: "$fw:commit-message"
   short_description: "Draft Conventional Commit messages"
-  default_prompt: "Use $flywheel:commit-message to draft a Conventional Commit message for this change, and ask before marking it as breaking."
+  default_prompt: "Use $fw:commit-message to draft a Conventional Commit message for this change, and ask before marking it as breaking."

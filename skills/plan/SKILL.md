@@ -10,8 +10,8 @@ metadata:
 Use the actual current date from runtime context when dating plans and
 searching for recent documentation.
 
-`$flywheel:brainstorm` defines **WHAT** to build. `$flywheel:plan` defines **HOW** to build
-it. `$flywheel:work` executes the plan only after the user explicitly approves
+`$fw:brainstorm` defines **WHAT** to build. `$fw:plan` defines **HOW** to build
+it. `$fw:work` executes the plan only after the user explicitly approves
 that next step. A prior brainstorm is useful context but not required —
 planning can start from a requirements doc, a bug report, a feature idea, or a
 rough description.
@@ -25,7 +25,7 @@ This workflow produces a durable implementation plan. It is a read-only,
 collaborative stage. It does **not** implement code, run tests, or silently
 transition into execution-time work. After the plan file exists and the
 confidence check completes, it must run `document-review` on that plan and end
-with a user choice between `$flywheel:deepen` and `$flywheel:work`.
+with a user choice between `$fw:deepen` and `$fw:work`.
 
 ## Interaction Method
 
@@ -91,7 +91,7 @@ needs:
 
 ## Core Principles
 
-1. **Use requirements as the source of truth** — if `$flywheel:brainstorm` produced a
+1. **Use requirements as the source of truth** — if `$fw:brainstorm` produced a
    requirements document, planning should build from it rather than re-inventing
    behavior.
 2. **Decisions, not code** — capture approach, boundaries, files, dependencies,
@@ -118,7 +118,7 @@ needs:
    plan should state how new or changed behavior will be tested, which existing
    test idioms to follow, whether to extend current tests or add new ones, and
    which public contracts must stay protected. Exact test or coverage commands
-   belong to the host project's instructions or `$flywheel:work`, not the plan. When
+   belong to the host project's instructions or `$fw:work`, not the plan. When
    TDD fits, each material hypothesis should map to a concrete red signal and a
    green completion signal.
 10. **Make runtime tradeoffs explicit** — when a plan changes retries,
@@ -175,8 +175,8 @@ Every plan should contain:
 
 A plan is ready when an implementer can start confidently without needing the
 plan to write the code for them, and when the user can review what execution
-would do before deciding whether to `$flywheel:deepen` the plan or start
-`$flywheel:work`. The handoff should also make it easy for the user to see what
+would do before deciding whether to `$fw:deepen` the plan or start
+`$fw:work`. The handoff should also make it easy for the user to see what
 changed during planning, what remains open, what the review pass found, and
 what execution would start with.
 
@@ -280,7 +280,7 @@ If no relevant requirements document exists, or the input needs more structure:
 - assess whether the request is already clear enough for direct technical
   planning
 - if the ambiguity is mainly product framing, user behavior, or scope
-  definition, recommend `$flywheel:brainstorm` as a suggestion — but still offer to
+  definition, recommend `$fw:brainstorm` as a suggestion — but still offer to
   continue planning here
 - if the user wants to continue here, establish:
   - problem frame
@@ -293,14 +293,14 @@ Keep the bootstrap brief.
 
 If major product questions remain unresolved:
 
-- recommend `$flywheel:brainstorm` again
+- recommend `$fw:brainstorm` again
 - if the user still wants to continue, require explicit assumptions before
   proceeding
 
 If the request turns out to be a symptom without a known root cause, say so
 clearly and do a brief investigation first rather than pretending planning can
 start responsibly. If the issue is already understood and the fix is obvious,
-suggest `$flywheel:work` as a faster alternative while still allowing planning.
+suggest `$fw:work` as a faster alternative while still allowing planning.
 
 #### 0.5 Classify Outstanding Questions Before Planning
 
@@ -316,7 +316,7 @@ If true product blockers remain:
 
 - surface them clearly
 - ask whether to:
-  1. resume `$flywheel:brainstorm` to resolve them
+  1. resume `$fw:brainstorm` to resolve them
   2. convert them into explicit assumptions or decisions and continue
 
 Do not continue planning while true blockers remain unresolved.
@@ -420,7 +420,7 @@ sequencing or risk and cannot be responsibly inferred.
 
 Do not turn this into exact command choreography. If test or coverage tooling is
 not already documented in repo instructions, assume it exists and let
-`$flywheel:work` discover the concrete command path during execution.
+`$fw:work` discover the concrete command path during execution.
 
 When TDD fits, frame the work as a red -> green -> refactor loop at plan level:
 
@@ -643,7 +643,7 @@ Use `Execution mode` deliberately:
 - `serial` — keep the unit ordered or inline even if the file list looks small,
   because it establishes shared decisions, touches cross-cutting seams, or is
   otherwise not a good parallel batch candidate
-- `parallel-ready` — the unit is intentionally bounded so `$flywheel:work` may
+- `parallel-ready` — the unit is intentionally bounded so `$fw:work` may
   consider it for concurrent execution after dependencies are satisfied and a
   fresh shared-write safety check passes
 
@@ -802,7 +802,7 @@ deepened: YYYY-MM-DD  # optional, set when the confidence check substantively st
   existing or new failing test to start from and the passing condition that
   proves the hypothesis]
 - **Tooling assumption:** [Assume repo test and coverage tooling exists. Use
-  documented project instructions when present; otherwise let `$flywheel:work`
+  documented project instructions when present; otherwise let `$fw:work`
   discover the concrete commands]
 - **Public contracts to protect:** [User-facing flows, APIs, CLI flags, event
   payloads, schema-visible behavior, integrations]
@@ -916,7 +916,7 @@ check passes when this unit is implemented correctly. Otherwise `n/a -- [reason]
 - prefer path plus class, component, or pattern references over brittle line
   numbers
 - keep units checkable with `- [ ]`
-- shape units so `$flywheel:work` can map them directly onto host task items
+- shape units so `$fw:work` can map them directly onto host task items
   instead of inventing a second execution breakdown
 - do not include implementation code
 - pseudo-code sketches and Mermaid diagrams are allowed when they communicate
@@ -943,7 +943,7 @@ read `references/visual-communication.md`.
 Before finalizing, check:
 
 - the plan does not invent product behavior that should have been defined in
-  `$flywheel:brainstorm`
+  `$fw:brainstorm`
 - if there was no origin document, the planning bootstrap established enough
   product clarity to plan responsibly
 - every major decision is grounded in the origin document or research
@@ -975,7 +975,7 @@ Before finalizing, check:
 - the plan contains enough detail for the next implementer to start without
   re-deriving the project's testing approach
 - the plan does not hardcode exact test or coverage command recipes that belong
-  in repo instructions or `$flywheel:work`
+  in repo instructions or `$fw:work`
 - deferred items are explicit and not hidden as fake certainty
 - any high-level technical design is directional rather than copy-paste-ready
 - if the plan originated from a requirements document, every meaningful section

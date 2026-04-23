@@ -7,10 +7,11 @@ Usage:
   codex-remove-local.sh [--dry-run]
 
 Remove Flywheel from the local Codex development install by:
-  1. removing ~/.codex/plugins/fw and any legacy ~/.codex/plugins/flywheel link
-  2. removing ~/.codex/plugins/cache/fw-local and any legacy ~/.codex/plugins/cache/flywheel-local cache
-  3. removing Flywheel plugin entries from ~/.codex/config.toml
-  4. removing the Flywheel hook guardrail from ~/.codex/hooks.json
+  1. removing standalone global Flywheel skills that Codex would expose as $start
+  2. removing ~/.codex/plugins/fw and any legacy ~/.codex/plugins/flywheel link
+  3. removing ~/.codex/plugins/cache/fw-local and any legacy ~/.codex/plugins/cache/flywheel-local cache
+  4. removing Flywheel plugin entries from ~/.codex/config.toml
+  5. removing the Flywheel hook guardrail from ~/.codex/hooks.json
 
 Options:
   --dry-run     Print the actions without changing anything
@@ -19,6 +20,8 @@ EOF
 }
 
 CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 PLUGIN_LINK="$CODEX_HOME_DIR/plugins/fw"
 LEGACY_PLUGIN_LINK="$CODEX_HOME_DIR/plugins/flywheel"
 CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/fw-local"
@@ -49,6 +52,15 @@ remove_path() {
   else
     echo "OK  $missing_detail"
   fi
+}
+
+remove_standalone_global_skills() {
+  local args=("--scope" "global")
+  if [ "$DRY_RUN" -eq 1 ]; then
+    args+=("--dry-run")
+  fi
+
+  bash "$REPO_ROOT/scripts/skills-remove.sh" "${args[@]}"
 }
 
 remove_plugin_config() {
@@ -238,6 +250,7 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
+remove_standalone_global_skills
 remove_path "$PLUGIN_LINK" \
   "removed Codex plugin link at $PLUGIN_LINK" \
   "no Codex plugin link found at $PLUGIN_LINK"

@@ -7,7 +7,7 @@ metadata:
 
 # Run The Flow
 
-`$flywheel:run` is Flywheel's optional orchestration wrapper.
+`$fw:run` is Flywheel's optional orchestration wrapper.
 
 Use it when the task is bounded enough that one coordinated pass is more useful
 than manually invoking every stage.
@@ -42,16 +42,16 @@ maintain a task list for the remaining stages and major handoffs.
 
 ### Phase 0: Determine The Earliest Missing Stage
 
-Use the same routing logic as `flywheel`, then continue instead of stopping.
+Use the same routing logic as `fw:start`, then continue instead of stopping.
 
 Typical starts:
 
-- fuzzy request -> `$flywheel:brainstorm`
-- existing requirements doc -> `$flywheel:plan`
-- existing plan -> `$flywheel:work`
-- runtime incident or live evidence -> `$flywheel:incident`
-- changed code -> `$flywheel:review`
-- ready branch -> `$flywheel:commit`
+- fuzzy request -> `$fw:shape`
+- existing requirements doc -> `$fw:shape`
+- existing plan -> `$fw:work`
+- runtime incident or live evidence -> `$fw:incident`
+- changed code -> `$fw:review`
+- ready branch -> `$fw:commit`
 
 ### Phase 1: Run The Remaining Stages
 
@@ -65,32 +65,31 @@ Continue through the remaining path until one of these stop points:
 - review finds blocking issues or release decisions that need user direction
 - commit is complete
 
-If the run reaches `flywheel:plan`, do not cross into `flywheel:work` unless
-the user explicitly asked for implementation in the same request or explicitly
-approves the reviewed plan when presented. Let the plan stage complete its
-mandatory `document-review` pass and preserve the user's `deepen` vs `work`
-choice instead of flattening that boundary.
+If the run reaches `fw:shape` and its selected mode is `fw:plan`, do not cross
+into `fw:work` unless the user explicitly asked for implementation in the same
+request or explicitly approves the reviewed plan when presented. Let the plan
+stage complete its mandatory `document-review` pass and preserve the user's
+`deepen` vs `work` choice instead of flattening that boundary.
 
 When relevant:
 
 - use `document-review` before work when the plan or requirements doc needs
   hardening
-- when the run goes through `$flywheel:plan`, treat the reviewed-plan handoff as
-  part of shape: let the user choose between `$flywheel:deepen` and
-  `$flywheel:work`
-- move from `$flywheel:work` into `$flywheel:review` by default before commit;
+- when the run goes through `$fw:shape` and plan mode, let the user choose
+  between `$fw:deepen` and `$fw:work`
+- move from `$fw:work` into `$fw:review` by default before commit;
   use inline self-review only when the narrower work contract explicitly allows it
-- use `$flywheel:docs` after `$flywheel:work` when the change altered setup, public
+- use `$fw:docs` after `$fw:work` when the change altered setup, public
   APIs, CLI flows, configuration, or user workflows and the user wants docs
   refreshed before review
-- use `$flywheel:incident` before `$flywheel:debug` when the task begins with live
+- use `$fw:incident` before `$fw:debug` when the task begins with live
   degradation, alerts, logs, traces, or metrics rather than a settled local bug
-- use `$flywheel:browser-test` before review or commit for browser-visible changes
-- use `$flywheel:rollout` after review and before commit when the change is
+- use `$fw:browser-test` before review or commit for browser-visible changes
+- use `$fw:rollout` after review and before commit when the change is
   runtime-risky and release posture is still unresolved
 - use `observability` or `logging` when runtime support shape needs deliberate
   design
-- use `$flywheel:optimize` when the dominant remaining work is measured tuning
+- use `$fw:optimize` when the dominant remaining work is measured tuning
 
 ### Phase 2: Close Cleanly
 
@@ -100,4 +99,4 @@ When the branch is finished or paused at a deliberate handoff, summarize:
 2. artifacts created or updated
 3. what was completed
 4. what still needs user approval or follow-up
-5. whether `$flywheel:spin` should run now
+5. whether `$fw:spin` should run now

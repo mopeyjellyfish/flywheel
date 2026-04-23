@@ -9,7 +9,7 @@ metadata:
 
 Use this helper when the main question is system shape.
 
-`$flywheel:architecture-strategy` is a support skill. It can be invoked
+`$fw:architecture-strategy` is a support skill. It can be invoked
 directly, or pulled into `brainstorm`, `plan`, `work`, or `review` when the
 task introduces real boundary or ownership decisions.
 
@@ -91,7 +91,7 @@ Clarify what is actually changing:
 - dependency direction or layering
 
 If the decision is really local code cleanup, say so and route toward
-`$flywheel:maintainability` or `$flywheel:simplify` instead.
+`$fw:maintainability` or `$fw:simplify` instead.
 
 ### Phase 3: Compare Viable Shapes
 
