@@ -33,7 +33,7 @@ manual or integration testing in a live repo.
 ## Manual Use
 
 1. Open `skills/start/SKILL.md`.
-2. Run `$flywheel:start` with each `item.arguments` value from `cases.jsonl`.
+2. Run `$fw:start` with each `item.arguments` value from `cases.jsonl`.
 3. Grade the result with `rubric.md`.
 
 For a repeatable harness-driven run, use:

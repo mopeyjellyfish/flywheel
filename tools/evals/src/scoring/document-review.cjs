@@ -31,7 +31,7 @@ function deterministicDocumentReview(caseItem, output) {
       : "Does not clearly respect headless mode.";
   }
 
-  const handoffSignal = mentionsAny(output, [/\$flywheel:plan\b/i, /\/flywheel:plan\b/i, /\$flywheel:work\b/i, /\/flywheel:work\b/i]);
+  const handoffSignal = mentionsAny(output, [/\$fw:plan\b/i, /\/fw:plan\b/i, /\$fw:work\b/i, /\/fw:work\b/i]);
   scores["Workflow Fit"] = handoffSignal ? 2 : 1;
   notes["Workflow Fit"] = handoffSignal
     ? "Carries the document forward into plan or work."

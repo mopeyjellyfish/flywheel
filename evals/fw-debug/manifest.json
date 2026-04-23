@@ -1,6 +1,6 @@
 {
   "id": "fw-debug",
-  "skill": "flywheel:debug",
+  "skill": "fw:debug",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

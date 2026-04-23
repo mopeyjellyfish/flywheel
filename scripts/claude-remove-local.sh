@@ -7,7 +7,7 @@ Usage:
   claude-remove-local.sh [--dry-run]
 
 Remove Flywheel from Claude Code by:
-  1. uninstalling flywheel@flywheel from every installed scope
+  1. uninstalling flywheel@flywheel and any legacy fw@flywheel installs from every installed scope
   2. removing the flywheel marketplace entry
 
 Options:
@@ -16,7 +16,8 @@ Options:
 EOF
 }
 
-PLUGIN_ID="flywheel@flywheel"
+PRIMARY_PLUGIN_ID="flywheel@flywheel"
+LEGACY_PLUGIN_ID="fw@flywheel"
 MARKETPLACE_NAME="flywheel"
 DRY_RUN=0
 
@@ -32,10 +33,11 @@ run() {
 }
 
 installed_scopes() {
+  local plugin_id="$1"
   local json
   json="$(claude plugin list --json 2>/dev/null || echo '[]')"
 
-  CLAUDE_PLUGIN_LIST_JSON="$json" PLUGIN_ID="$PLUGIN_ID" node <<'NODE'
+  CLAUDE_PLUGIN_LIST_JSON="$json" PLUGIN_ID="$plugin_id" node <<'NODE'
 const items = JSON.parse(process.env.CLAUDE_PLUGIN_LIST_JSON || "[]");
 const pluginId = process.env.PLUGIN_ID;
 const order = { local: 0, project: 1, user: 2 };
@@ -63,24 +65,30 @@ process.stdout.write(found ? "yes" : "no");
 NODE
 }
 
-remove_installed_plugins() {
+remove_plugin_id() {
+  local plugin_id="$1"
   local scopes=()
   local scope
   while IFS= read -r scope; do
     if [ -n "$scope" ]; then
       scopes+=("$scope")
     fi
-  done < <(installed_scopes)
+  done < <(installed_scopes "$plugin_id")
 
   if [ "${#scopes[@]}" -eq 0 ]; then
-    echo "OK  no installed $PLUGIN_ID plugin found in Claude"
+    echo "OK  no installed $plugin_id plugin found in Claude"
     return 0
   fi
 
   for scope in "${scopes[@]}"; do
-    run claude plugin uninstall "$PLUGIN_ID" --scope "$scope"
-    echo "OK  removed $PLUGIN_ID install at $scope scope"
+    run claude plugin uninstall "$plugin_id" --scope "$scope"
+    echo "OK  removed $plugin_id install at $scope scope"
   done
+}
+
+remove_installed_plugins() {
+  remove_plugin_id "$PRIMARY_PLUGIN_ID"
+  remove_plugin_id "$LEGACY_PLUGIN_ID"
 }
 
 remove_marketplace() {

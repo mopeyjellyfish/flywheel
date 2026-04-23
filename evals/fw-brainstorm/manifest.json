@@ -1,6 +1,6 @@
 {
   "id": "fw-brainstorm",
-  "skill": "flywheel:brainstorm",
+  "skill": "fw:brainstorm",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

@@ -12,7 +12,7 @@ function deterministicBrowserTest(caseItem, output) {
 
   const blockedCase = (caseItem.special_constraints || []).some((item) => /missing-playwright/i.test(item));
   if (blockedCase) {
-    const blockedSignal = mentionsAny(output, [/blocked/i, /playwright-cli.*not found/i, /\$flywheel:setup browser\b/i, /\/flywheel:setup browser\b/i]);
+    const blockedSignal = mentionsAny(output, [/blocked/i, /playwright-cli.*not found/i, /\$fw:setup browser\b/i, /\/fw:setup browser\b/i]);
     scores["Blocked Handling"] = blockedSignal ? 2 : 0;
     notes["Blocked Handling"] = blockedSignal
       ? "Routes missing browser tooling through setup."
@@ -25,7 +25,7 @@ function deterministicBrowserTest(caseItem, output) {
     ? "Mentions evidence handling and sensitive-data hygiene."
     : "Does not clearly address evidence hygiene.";
 
-  const handoffSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i, /\$flywheel:commit\b/i, /\/flywheel:commit\b/i]);
+  const handoffSignal = mentionsAny(output, [/\$fw:review\b/i, /\/fw:review\b/i, /\$fw:commit\b/i, /\/fw:commit\b/i]);
   scores["Workflow Handoff"] = handoffSignal ? 2 : 0;
   notes["Workflow Handoff"] = handoffSignal
     ? "Carries browser proof into review or commit."

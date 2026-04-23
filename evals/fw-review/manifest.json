@@ -1,6 +1,6 @@
 {
   "id": "fw-review",
-  "skill": "flywheel:review",
+  "skill": "fw:review",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

@@ -1,6 +1,6 @@
 {
   "id": "fw-commit",
-  "skill": "flywheel:commit",
+  "skill": "fw:commit",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

@@ -7,8 +7,8 @@ Usage:
   codex-remove-local.sh [--dry-run]
 
 Remove Flywheel from the local Codex development install by:
-  1. removing ~/.codex/plugins/flywheel
-  2. removing ~/.codex/plugins/cache/flywheel-local
+  1. removing ~/.codex/plugins/fw and any legacy ~/.codex/plugins/flywheel link
+  2. removing ~/.codex/plugins/cache/fw-local and any legacy ~/.codex/plugins/cache/flywheel-local cache
   3. removing Flywheel plugin entries from ~/.codex/config.toml
   4. removing the Flywheel hook guardrail from ~/.codex/hooks.json
 
@@ -19,8 +19,10 @@ EOF
 }
 
 CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
-PLUGIN_LINK="$CODEX_HOME_DIR/plugins/flywheel"
-CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/flywheel-local"
+PLUGIN_LINK="$CODEX_HOME_DIR/plugins/fw"
+LEGACY_PLUGIN_LINK="$CODEX_HOME_DIR/plugins/flywheel"
+CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/fw-local"
+LEGACY_CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/flywheel-local"
 CONFIG_FILE="$CODEX_HOME_DIR/config.toml"
 HOOKS_FILE="$CODEX_HOME_DIR/hooks.json"
 DRY_RUN=0
@@ -74,7 +76,7 @@ for (const line of lines) {
   const trimmed = line.trim();
   const isSectionHeader = /^\[.*\]$/.test(trimmed);
 
-  if (/^\[plugins\."flywheel@[^"]+"\]$/.test(trimmed)) {
+  if (/^\[plugins\."(?:flywheel|fw)@[^"]+"\]$/.test(trimmed)) {
     removing = true;
     removedSections += 1;
     continue;
@@ -239,9 +241,15 @@ done
 remove_path "$PLUGIN_LINK" \
   "removed Codex plugin link at $PLUGIN_LINK" \
   "no Codex plugin link found at $PLUGIN_LINK"
+remove_path "$LEGACY_PLUGIN_LINK" \
+  "removed legacy Codex plugin link at $LEGACY_PLUGIN_LINK" \
+  "no legacy Codex plugin link found at $LEGACY_PLUGIN_LINK"
 remove_path "$CACHE_ROOT" \
   "removed Codex plugin cache at $CACHE_ROOT" \
   "no Codex plugin cache found at $CACHE_ROOT"
+remove_path "$LEGACY_CACHE_ROOT" \
+  "removed legacy Codex plugin cache at $LEGACY_CACHE_ROOT" \
+  "no legacy Codex plugin cache found at $LEGACY_CACHE_ROOT"
 remove_plugin_config
 remove_hooks_config
 

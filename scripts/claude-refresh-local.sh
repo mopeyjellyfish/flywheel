@@ -26,7 +26,8 @@ EOF
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 MARKETPLACE_NAME="flywheel"
-PLUGIN_ID="flywheel@flywheel"
+PRIMARY_PLUGIN_ID="flywheel@flywheel"
+LEGACY_PLUGIN_ID="fw@flywheel"
 CLAUDE_SCOPE="local"
 FORCE_SOURCE=0
 
@@ -78,10 +79,11 @@ NODE
 }
 
 plugin_installed_at_scope() {
+  local plugin_id="$1"
   local json
   json="$(claude plugin list --json 2>/dev/null || echo '[]')"
 
-  CLAUDE_PLUGIN_LIST_JSON="$json" PLUGIN_ID="$PLUGIN_ID" CLAUDE_SCOPE="$CLAUDE_SCOPE" node <<'NODE'
+  CLAUDE_PLUGIN_LIST_JSON="$json" PLUGIN_ID="$plugin_id" CLAUDE_SCOPE="$CLAUDE_SCOPE" node <<'NODE'
 const items = JSON.parse(process.env.CLAUDE_PLUGIN_LIST_JSON || "[]");
 const pluginId = process.env.PLUGIN_ID;
 const scope = process.env.CLAUDE_SCOPE;
@@ -122,13 +124,18 @@ ensure_marketplace() {
 }
 
 reinstall_plugin() {
-  if [ "$(plugin_installed_at_scope)" = "yes" ]; then
-    claude plugin uninstall "$PLUGIN_ID" --scope "$CLAUDE_SCOPE" >/dev/null
-    echo "OK  removed existing $PLUGIN_ID install at $CLAUDE_SCOPE scope"
+  if [ "$(plugin_installed_at_scope "$PRIMARY_PLUGIN_ID")" = "yes" ]; then
+    claude plugin uninstall "$PRIMARY_PLUGIN_ID" --scope "$CLAUDE_SCOPE" >/dev/null
+    echo "OK  removed existing $PRIMARY_PLUGIN_ID install at $CLAUDE_SCOPE scope"
   fi
 
-  claude plugin install "$PLUGIN_ID" --scope "$CLAUDE_SCOPE"
-  echo "OK  installed $PLUGIN_ID at $CLAUDE_SCOPE scope"
+  if [ "$(plugin_installed_at_scope "$LEGACY_PLUGIN_ID")" = "yes" ]; then
+    claude plugin uninstall "$LEGACY_PLUGIN_ID" --scope "$CLAUDE_SCOPE" >/dev/null
+    echo "OK  removed legacy $LEGACY_PLUGIN_ID install at $CLAUDE_SCOPE scope"
+  fi
+
+  claude plugin install "$PRIMARY_PLUGIN_ID" --scope "$CLAUDE_SCOPE"
+  echo "OK  installed $PRIMARY_PLUGIN_ID at $CLAUDE_SCOPE scope"
 }
 
 while [ "$#" -gt 0 ]; do

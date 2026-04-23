@@ -1,6 +1,6 @@
 {
   "id": "fw-docs",
-  "skill": "flywheel:docs",
+  "skill": "fw:docs",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

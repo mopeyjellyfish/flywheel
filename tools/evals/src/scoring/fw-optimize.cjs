@@ -13,7 +13,7 @@ function deterministicOptimize(caseItem, output) {
     ? "Mentions metric contract, baseline, or guardrails."
     : "Does not clearly define a metric contract.";
 
-  const handoffSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i, /\$flywheel:commit\b/i, /\/flywheel:commit\b/i]);
+  const handoffSignal = mentionsAny(output, [/\$fw:review\b/i, /\/fw:review\b/i, /\$fw:commit\b/i, /\/fw:commit\b/i]);
   scores["Workflow Handoff"] = handoffSignal ? 2 : 0;
   notes["Workflow Handoff"] = handoffSignal
     ? "Preserves review or commit as downstream handoff."

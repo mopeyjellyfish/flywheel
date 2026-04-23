@@ -45,7 +45,7 @@ function deterministicBrainstorm(caseItem, output) {
           : "Misses both the expected research posture and durable brainstorm artifact.";
   }
 
-  const handoffSignal = mentionsAny(output, [/\$flywheel:plan\b/i, /\/flywheel:plan\b/i, /\/flywheel:plan\b/i]);
+  const handoffSignal = mentionsAny(output, [/\$fw:plan\b/i, /\/fw:plan\b/i, /\/fw:plan\b/i]);
   scores["Plan Handoff"] = handoffSignal ? 2 : 0;
   notes["Plan Handoff"] = handoffSignal
     ? "Preserves the handoff into planning."

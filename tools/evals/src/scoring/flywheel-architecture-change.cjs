@@ -1,10 +1,10 @@
 const { mentionsAny, mentionsAtLeast } = require("./shared.cjs");
 
 function stagePatterns(stage) {
-  const slug = String(stage || "").replace(/^flywheel:/, "");
+  const slug = String(stage || "").replace(/^fw:/, "");
   return [
-    new RegExp(`\\$flywheel:${slug}\\b`, "i"),
-    new RegExp(`/flywheel:${slug}\\b`, "i"),
+    new RegExp(`\\$fw:${slug}\\b`, "i"),
+    new RegExp(`/fw:${slug}\\b`, "i"),
     new RegExp(`\\b${slug}\\b`, "i"),
   ];
 }
@@ -36,7 +36,7 @@ function deterministicFlywheelArchitectureChange(caseItem, output) {
     ? "Keeps architecture and pattern decisions visible across later stages."
     : "Does not clearly carry architecture or pattern decisions forward.";
 
-  const specialistActivation = mentionsAtLeast(output, [/\$flywheel:architecture-strategy\b/i, /\$flywheel:pattern-recognition\b/i, /\$flywheel:maintainability\b/i, /\$flywheel:simplify\b/i], 1) ||
+  const specialistActivation = mentionsAtLeast(output, [/\$fw:architecture-strategy\b/i, /\$fw:pattern-recognition\b/i, /\$fw:maintainability\b/i, /\$fw:simplify\b/i], 1) ||
     mentionsAtLeast(output, [/architecture-strategy/i, /pattern-recognition/i, /maintainability/i, /simplify/i], 2);
   scores["Specialist Activation"] = specialistActivation ? 2 : 1;
   notes["Specialist Activation"] = specialistActivation

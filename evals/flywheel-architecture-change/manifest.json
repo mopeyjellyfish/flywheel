@@ -1,6 +1,6 @@
 {
   "id": "flywheel-architecture-change",
-  "skill": "flywheel:start",
+  "skill": "fw:start",
   "suiteType": "journey",
   "journeyStages": [
     "brainstorm",

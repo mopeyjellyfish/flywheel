@@ -1,5 +1,7 @@
 .context/
 .worktrees/
+.agents/skills/
 .flywheel/*.local.yaml
 .playwright-cli/
+skills-lock.json
 tools/evals/node_modules/

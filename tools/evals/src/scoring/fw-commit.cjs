@@ -29,7 +29,7 @@ function deterministicCommit(caseItem, output) {
 
   const browserCase = (caseItem.special_constraints || []).some((item) => /browser/i.test(item));
   if (browserCase) {
-    const browserProof = mentionsAny(output, [/\$flywheel:browser-test\b/i, /\/flywheel:browser-test\b/i, /browser proof/i]);
+    const browserProof = mentionsAny(output, [/\$fw:browser-test\b/i, /\/fw:browser-test\b/i, /browser proof/i]);
     scores["Browser Proof Discipline"] = browserProof ? 2 : 0;
     notes["Browser Proof Discipline"] = browserProof
       ? "Requires or offers browser proof for browser-visible work."
@@ -38,7 +38,7 @@ function deterministicCommit(caseItem, output) {
 
   const spinOfferCase = (caseItem.special_constraints || []).some((item) => /spin-offer/i.test(item));
   const spinOffer =
-    mentionsAny(output, [/\$flywheel:spin\b/i, /\/flywheel:spin\b/i, /\bspin\b/i]) &&
+    mentionsAny(output, [/\$fw:spin\b/i, /\/fw:spin\b/i, /\bspin\b/i]) &&
     mentionsAny(output, [/\bskip\b/i, /\bquick spin\b/i, /\bfull spin\b/i, /\bcandidate\b/i, /\blesson\b/i, /\bcorrection\b/i]);
   scores["Spin Offer Discipline"] = spinOfferCase ? (spinOffer ? 2 : 0) : 2;
   notes["Spin Offer Discipline"] = spinOfferCase

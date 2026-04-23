@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`skills/` is the product. Each Flywheel stage or helper lives in `skills/<name>/SKILL.md` with optional `agents/`, `references/`, `scripts/`, or `assets/`. Shared host guidance lives in `skills/references/host-interaction-contract.md`. `scripts/` contains repo-local maintenance and validation helpers such as `flywheel-doctor.js` and `flywheel-eval.js`. `evals/` stores suite definitions as `manifest.json`, `cases.jsonl`, and `rubric.md`. `docs/` holds durable repo knowledge under `brainstorms/`, `plans/`, `setup/`, and `solutions/`. Host packaging lives in `.codex-plugin/`, `.claude-plugin/`, `.agents/plugins/`, and `plugins/flywheel/`.
+`skills/` is the product. Each Flywheel stage or helper lives in `skills/<name>/SKILL.md` with optional `agents/`, `references/`, `scripts/`, or `assets/`. Shared host guidance lives in `skills/references/host-interaction-contract.md`. `scripts/` contains repo-local maintenance and validation helpers such as `flywheel-doctor.js` and `flywheel-eval.js`. `evals/` stores suite definitions as `manifest.json`, `cases.jsonl`, and `rubric.md`. `docs/` holds durable repo knowledge under `brainstorms/`, `plans/`, `setup/`, and `solutions/`. Host packaging lives in `.codex-plugin/`, `.claude-plugin/`, and `.agents/plugins/`.
 
 ## Directory Layout
 ```text
@@ -12,8 +12,7 @@ hooks/            Shared hook policy script and Claude hook pack
 docs/             Brainstorms, ideation captures, plans, setup docs, solutions
 tools/evals/      Isolated eval harness workspace and CLI
 .claude-plugin/   Claude plugin manifest and marketplace metadata
-.codex-plugin/    Codex plugin manifest
-plugins/flywheel/ Codex marketplace wrapper for this repo
+.codex-plugin/    Codex plugin manifest reused by the repo marketplace
 .agents/plugins/  Repo marketplace metadata used by Codex
 .flywheel/        Local config example and repo-level Flywheel settings
 ```
@@ -23,7 +22,10 @@ plugins/flywheel/ Codex marketplace wrapper for this repo
 - `make install/codex/force-link` repoints the Codex install to this checkout when another repo or worktree is linked.
 - `make install/claude` refreshes the local Claude marketplace install and runs the same validation loop for Claude.
 - `make install/claude/force-source` repoints the Claude marketplace source to this checkout.
-- `make uninstall/all` removes Flywheel from Codex and Claude so a later install starts from a clean host state.
+- `make install/skills/global` installs Flywheel through `npx skills add` from the local checkout's `skills/` package and fails fast if that local package is missing or empty.
+- `make install/skills/project` is a safe repo-root no-op after validating the local `skills/` source because project scope resolves to `./skills`, which is Flywheel's authored source tree.
+- `make uninstall/skills` removes Flywheel `npx skills` installs from global scope and treats repo-root project scope as metadata cleanup/no-op so it never deletes the authored `skills/` tree.
+- `make uninstall/all` removes Flywheel from Codex and Claude and also clears Flywheel `npx skills` installs so a later install starts from a clean host state.
 - `make doctor` runs repository health checks without reinstalling anything.
 - `make validate` validates every eval suite through `node scripts/flywheel-eval.js validate`.
 - `make verify` runs the broad plugin verification pass: `node scripts/flywheel-doctor.js --smoke`, which includes eval-suite validation.
@@ -40,7 +42,7 @@ plugins/flywheel/ Codex marketplace wrapper for this repo
 ## Debugging Plugin Bugs
 Bug reports often come from an installed plugin rather than the current checkout. Start by identifying the execution path: installed plugin, direct `--plugin-dir` load, or raw repo edits.
 
-- Codex development installs point `~/.codex/plugins/flywheel` at this repo and serve from the cache under `~/.codex/plugins/cache/flywheel-local/flywheel/local/`. Use `make install/codex` to refresh both.
+- Codex development installs point `~/.codex/plugins/fw` at this repo and serve from the cache under `~/.codex/plugins/cache/fw-local/fw/local/`. Use `make install/codex` to refresh both.
 - Claude development installs use this repo as the marketplace source and reinstall `flywheel@flywheel`. Use `make install/claude` to refresh that state.
 - If another checkout or worktree is active, use `make install/codex/force-link` or `make install/claude/force-source` before debugging code.
 - Check `git status --short` early. A dirty tree can mean the repo, the installed copy, and the cached copy all differ.
@@ -51,8 +53,8 @@ Bug reports often come from an installed plugin rather than the current checkout
 - Use lowercase kebab-case for skill directories, frontmatter `name`, helper script names, and most user-facing identifiers.
 - Prefer short single-word stage names when clarity stays intact. The canonical core loop is `start`, `brainstorm`, `plan`, `work`, `review`, `commit`, and `spin`.
 - Keep explicit compounds when shortening would make the surface worse, for example `browser-test`, `document-review`, `commit-message`, and `worktree`.
-- Keep runtime skill names and eval suite ids separate when that improves clarity. Runtime commands stay `flywheel:<name>`; eval suites may stay prefixed, such as `fw-review`.
-- Use the namespaced Flywheel command surface in docs and prompts: `$flywheel:<stage>` in Codex and `/flywheel:<stage>` in Claude Code. Do not reintroduce legacy `fw:` forms or ambiguous unnamespaced built-ins.
+- Keep runtime skill names and eval suite ids separate when that improves clarity. Runtime commands stay `fw:<name>`; eval suites may stay prefixed, such as `fw-review`.
+- Use the namespaced Flywheel command surface in docs and prompts: `$fw:<stage>` in Codex and `/fw:<stage>` in Claude Code. Do not reintroduce legacy `/flywheel:*`, `$flywheel:*`, or ambiguous unnamespaced built-ins.
 - Treat user-facing renames as contract sweeps across the repo, not single-file edits.
 
 ## Repository Docs Convention

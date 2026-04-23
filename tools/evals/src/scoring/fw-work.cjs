@@ -18,8 +18,8 @@ function deterministicWork(caseItem, output) {
     ? "Mentions checks or continuous validation."
     : "Does not clearly mention checks or validation.";
 
-  const reviewSignal = mentionsAny(output, [/\$flywheel:review\b/i, /\/flywheel:review\b/i, /\breview\b/i]);
-  const commitSignal = mentionsAny(output, [/\$flywheel:commit\b/i, /\/flywheel:commit\b/i, /\bcommit\b/i, /\bpull request\b/i, /\bPR\b/i]);
+  const reviewSignal = mentionsAny(output, [/\$fw:review\b/i, /\/fw:review\b/i, /\breview\b/i]);
+  const commitSignal = mentionsAny(output, [/\$fw:commit\b/i, /\/fw:commit\b/i, /\bcommit\b/i, /\bpull request\b/i, /\bPR\b/i]);
   const closureScore = reviewSignal && commitSignal ? 2 : reviewSignal || commitSignal ? 1 : 0;
   scores["Workflow Closure"] = closureScore;
   notes["Workflow Closure"] =
@@ -31,7 +31,7 @@ function deterministicWork(caseItem, output) {
 
   const browserCase = (caseItem.special_constraints || []).some((item) => /browser/i.test(item));
   if (browserCase) {
-    const browserAware = mentionsAny(output, [/\$flywheel:browser-test\b/i, /\/flywheel:browser-test\b/i]);
+    const browserAware = mentionsAny(output, [/\$fw:browser-test\b/i, /\/fw:browser-test\b/i]);
     scores["Browser Proof Awareness"] = browserAware ? 2 : 0;
     notes["Browser Proof Awareness"] = browserAware
       ? "Calls for browser proof on browser-visible work."

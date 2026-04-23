@@ -1,10 +1,10 @@
 const { mentionsAny, mentionsAtLeast } = require("./shared.cjs");
 
 function stagePatterns(stage) {
-  const slug = String(stage || "").replace(/^flywheel:/, "");
+  const slug = String(stage || "").replace(/^fw:/, "");
   return [
-    new RegExp(`\\$flywheel:${slug}\\b`, "i"),
-    new RegExp(`/flywheel:${slug}\\b`, "i"),
+    new RegExp(`\\$fw:${slug}\\b`, "i"),
+    new RegExp(`/fw:${slug}\\b`, "i"),
     new RegExp(`\\b${slug}\\b`, "i"),
   ];
 }

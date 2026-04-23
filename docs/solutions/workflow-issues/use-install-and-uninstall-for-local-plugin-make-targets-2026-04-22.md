@@ -1,6 +1,7 @@
 ---
 title: Use install and uninstall for local plugin Make targets
 date: 2026-04-22
+last_updated: 2026-04-23
 category: workflow-issues
 module: flywheel-local-plugin-make-targets
 problem_type: workflow_issue
@@ -32,6 +33,8 @@ tags:
   - command-surface
 related_docs:
   - docs/solutions/workflow-issues/treat-user-facing-skill-renames-as-contract-sweeps-2026-04-19.md
+  - docs/solutions/developer-experience/protect-authored-skills-during-npx-skills-cleanup-2026-04-23.md
+  - docs/solutions/developer-experience/treat-claude-auth-as-environmental-in-broad-doctor-smoke-2026-04-23.md
 ---
 
 # Use install and uninstall for local plugin Make targets
@@ -114,3 +117,5 @@ tools/evals/src/doctor.cjs
 ## Related
 
 - [Treat user-facing skill renames as contract sweeps](docs/solutions/workflow-issues/treat-user-facing-skill-renames-as-contract-sweeps-2026-04-19.md)
+- [Protect authored skills during npx skills cleanup](docs/solutions/developer-experience/protect-authored-skills-during-npx-skills-cleanup-2026-04-23.md)
+- [Treat Claude auth as environmental in broad doctor smoke](docs/solutions/developer-experience/treat-claude-auth-as-environmental-in-broad-doctor-smoke-2026-04-23.md)

@@ -1,6 +1,6 @@
 {
   "id": "fw-deepen-plan",
-  "skill": "flywheel:deepen",
+  "skill": "fw:deepen",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

@@ -1,6 +1,6 @@
 {
   "id": "fw-browser-test",
-  "skill": "flywheel:browser-test",
+  "skill": "fw:browser-test",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

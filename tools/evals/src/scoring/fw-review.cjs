@@ -13,7 +13,7 @@ function deterministicReview(caseItem, output) {
     ? "Mentions review structure or outputs."
     : "Does not clearly present a review-shaped output.";
 
-  const shipSignal = mentionsAny(output, [/\$flywheel:commit\b/i, /\/flywheel:commit\b/i, /\/flywheel:commit\b/i]);
+  const shipSignal = mentionsAny(output, [/\$fw:commit\b/i, /\/fw:commit\b/i, /\/fw:commit\b/i]);
   scores["Commit Handoff"] = shipSignal ? 2 : 0;
   notes["Commit Handoff"] = shipSignal
     ? "Preserves commit as the downstream handoff."
@@ -31,7 +31,7 @@ function deterministicReview(caseItem, output) {
 
   const browserCase = (caseItem.special_constraints || []).some((item) => /browser/i.test(item));
   if (browserCase) {
-    const browserAware = mentionsAny(output, [/\$flywheel:browser-test\b/i, /\/flywheel:browser-test\b/i]);
+    const browserAware = mentionsAny(output, [/\$fw:browser-test\b/i, /\/fw:browser-test\b/i]);
     scores["Browser Proof Handoff"] = browserAware ? 2 : 0;
     notes["Browser Proof Handoff"] = browserAware
       ? "Calls for browser proof on a browser-visible diff."

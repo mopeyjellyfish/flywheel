@@ -1,6 +1,6 @@
 {
   "id": "fw-plan",
-  "skill": "flywheel:plan",
+  "skill": "fw:plan",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

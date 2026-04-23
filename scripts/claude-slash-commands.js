@@ -4,9 +4,17 @@ const fs = require("fs");
 const path = require("path");
 
 const repoRoot = path.resolve(__dirname, "..");
+const claudePluginManifestPath = path.join(repoRoot, ".claude-plugin", "plugin.json");
+const defaultPluginName = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(claudePluginManifestPath, "utf8")).name || "fw";
+  } catch {
+    return "fw";
+  }
+})();
 const pluginName = process.argv.includes("--plugin")
   ? process.argv[process.argv.indexOf("--plugin") + 1]
-  : "flywheel";
+  : defaultPluginName;
 
 function fail(message) {
   console.error(message);

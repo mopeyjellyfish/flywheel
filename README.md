@@ -37,16 +37,27 @@ npx skills add mopeyjellyfish/flywheel --global --skill '*' --agent codex --agen
 This installs Flywheel outside the current project by default and limits the
 install to those three agent targets.
 
+From a Flywheel checkout, the matching Make target is:
+
+```bash
+make install/skills/global
+```
+
+That target uses `npx skills add` too, but it is local-checkout only. It
+expects this repo to expose an installable `skills/` package and fails fast if
+the local `skills/` tree is missing or empty. It does not silently fall back to
+the published GitHub package.
+
 Then in your tool of choice:
 
 ```text
-flywheel:setup
+fw:setup
 ```
 
 Use the host's native syntax:
 
-- Codex: `$flywheel:<stage>`
-- Claude Code: `/flywheel:<stage>`
+- Codex: `$fw:<stage>`
+- Claude Code: `/fw:<stage>`
 
 Flywheel's interaction contract is shared across hosts: use the host's
 structured choice UI instead of asking for raw `1/2/3` replies. Claude Code
@@ -58,7 +69,8 @@ user-global rather than plugin-bundled.
 
 ### Getting started
 
-Run `$flywheel:setup` in any project after installing. It inspects the repo,
+Run `fw:setup` in any project after installing. Use `$fw:setup` in
+Codex or `/fw:setup` in Claude Code. It inspects the repo,
 checks the local workflow surface, and shows what is missing before you start
 shaping or finish-stage work.
 
@@ -79,15 +91,15 @@ shape -> work -> review -> commit -> spin -> repeat
 
 | Command | Purpose |
 | --- | --- |
-| `$flywheel:start` | Route a repo task into the right stage when you do not want to pick one yourself. |
-| `$flywheel:ideate` | Surface and rank the strongest next bets when the work is not chosen yet. |
-| `$flywheel:brainstorm` | Clarify one direction through user questions, tradeoffs, and requirement shaping. |
-| `$flywheel:plan` | Turn a chosen direction into an implementation plan. |
-| `$flywheel:deepen` | Strengthen a reviewed plan before execution starts. |
-| `$flywheel:work` | Execute the plan against repo truth and pull in helper stages when the task needs them. |
-| `$flywheel:review` | Review the finished diff with reviewer personas selected from the change. |
-| `$flywheel:commit` | Commit, push, and create or refresh the PR with the right context. |
-| `$flywheel:spin` | Capture durable lessons in `docs/solutions/` so later work starts faster. |
+| `$fw:start` | Route a repo task into the right stage when you do not want to pick one yourself. |
+| `$fw:ideate` | Surface and rank the strongest next bets when the work is not chosen yet. |
+| `$fw:brainstorm` | Clarify one direction through user questions, tradeoffs, and requirement shaping. |
+| `$fw:plan` | Turn a chosen direction into an implementation plan. |
+| `$fw:deepen` | Strengthen a reviewed plan before execution starts. |
+| `$fw:work` | Execute the plan against repo truth and pull in helper stages when the task needs them. |
+| `$fw:review` | Review the finished diff with reviewer personas selected from the change. |
+| `$fw:commit` | Commit, push, and create or refresh the PR with the right context. |
+| `$fw:spin` | Capture durable lessons in `docs/solutions/` so later work starts faster. |
 
 `shape` is the interactive front half of the loop. `ideate` helps choose among
 multiple bets. `brainstorm` sharpens one direction with the user. `plan`
@@ -114,13 +126,13 @@ knowledge than the last one.
 
 Common starts:
 
-- new feature or vague idea: `$flywheel:start`, `$flywheel:ideate`, or `$flywheel:brainstorm`
-- research a topic or current best practices: `$flywheel:start`, or
-  `$flywheel:research` when the research brief itself is the main artifact
-- known scoped change: `$flywheel:plan`
-- architecture or pattern decision: `$flywheel:architecture-strategy` or `$flywheel:pattern-recognition`
-- bug with an unclear cause: `$flywheel:debug`
-- one bounded pass through the remaining stages: `$flywheel:run`
+- new feature or vague idea: `$fw:start`, `$fw:ideate`, or `$fw:brainstorm`
+- research a topic or current best practices: `$fw:start`, or
+  `$fw:research` when the research brief itself is the main artifact
+- known scoped change: `$fw:plan`
+- architecture or pattern decision: `$fw:architecture-strategy` or `$fw:pattern-recognition`
+- bug with an unclear cause: `$fw:debug`
+- one bounded pass through the remaining stages: `$fw:run`
 
 ---
 
@@ -145,6 +157,27 @@ make install/codex
 ```
 
 Restart the host session after either command finishes.
+
+To install the Flywheel skills through `npx skills` instead of the host-specific
+plugin helpers:
+
+```bash
+make install/skills/global
+```
+
+To install them at project scope in another repo:
+
+```bash
+cd /path/to/target-repo
+/path/to/flywheel/scripts/skills-install.sh --scope project --source local
+```
+
+Project scope in the `skills` CLI writes to the current directory's `skills/`
+tree. Inside the Flywheel repo that path is the authored product source, so the
+repo-local project target validates the local source and exits without running
+`skills add` back into the same tree. Local-source targets fail instead of
+falling back to the published package when this checkout does not expose
+`skills/*/SKILL.md`.
 
 `make install/codex` now refreshes the local Flywheel plugin install shape,
 turns on the experimental Codex hooks feature, and merges the Flywheel Bash
@@ -176,6 +209,11 @@ To remove Flywheel from both hosts and retest a clean local install:
 make uninstall/all
 ```
 
+That cleanup now removes host-specific plugin installs plus Flywheel `npx skills`
+global installs, including stale global skill directories whose lock entries are
+missing. From this repo root it treats project scope as source-tree metadata and
+never deletes the authored `skills/` files.
+
 ### Validation
 
 ```bash
@@ -189,10 +227,10 @@ node scripts/flywheel-doctor.js --host claude --smoke
 `make verify` is the full plugin verification pass for this repo: doctor smoke
 checks plus eval-suite validation. In broad verification it validates repo
 packaging for both hosts, requires live smoke for the hosts currently enabled
-from this checkout, and skips the Claude installed-path smoke when this repo is
-not currently installed in Claude. Use `make install/claude` followed by
-`node scripts/flywheel-doctor.js --host claude --smoke` when the installed
-Claude path itself must be proven.
+from this checkout, and skips the Claude live invocation when this repo is not
+currently installed in Claude or Claude's API credentials are invalid. Use
+`make install/claude` followed by `node scripts/flywheel-doctor.js --host claude --smoke`
+when the installed Claude path itself must be proven.
 
 For side-by-side local comparisons between Codex and Claude Code:
 
@@ -210,12 +248,11 @@ Setup and troubleshooting notes:
 ### Repository layout
 
 - `.agents/plugins/marketplace.json` - Codex marketplace manifest for this repo
-- `.codex-plugin/plugin.json` - Codex plugin manifest
+- `.codex-plugin/plugin.json` - Codex plugin manifest used directly and by the repo marketplace
 - `.claude-plugin/plugin.json` - Claude plugin manifest
 - `.claude-plugin/marketplace.json` - Claude marketplace manifest for this repo
 - `.flywheel/config.local.example.yaml` - local config template
 - `hooks/` - shared hook policy script and Claude plugin hook pack
-- `plugins/flywheel/` - Codex marketplace plugin wrapper
 - `skills/` - shared Flywheel workflow skills
 - `docs/setup/` - compatibility and troubleshooting notes
 - `docs/solutions/` - searchable knowledge captured by `spin`

@@ -24,7 +24,7 @@ The eval focuses on the behavior we most recently tightened:
 - repo grounding vs. outside-repo grounding
 - output structure consistency
 - shortlist quality
-- routing to `/flywheel:brainstorm` instead of skipping the workflow
+- routing to `/fw:brainstorm` instead of skipping the workflow
 - restraint on narrow prompts and quick-shortlist prompts
 - honoring explicit constraints such as `no external research`
 
