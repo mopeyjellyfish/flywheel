@@ -1,6 +1,46 @@
-# flywheel
+# Flywheel
 
-This repository contains the Flywheel plugin for Codex and Claude Code.
+A workflow skillset for turning repo work into a flywheel of recoverable energy.
+
+## Install
+
+Install Flywheel with the `skills` CLI:
+
+```bash
+npx skills add mopeyjellyfish/flywheel --global --skill '*' --agent claude-code --agent opencode --yes
+```
+
+Then go to a project where you want Flywheel to help and run setup:
+
+Claude Code:
+
+```text
+/fw:setup
+```
+
+OpenCode:
+
+```text
+fw:setup
+```
+
+Setup reads that project, checks the tools and workflow surfaces it actually
+uses, reports missing dependencies, and prepares Flywheel to guide the first
+real task there.
+
+After setup, start normal work with:
+
+Claude Code:
+
+```text
+/fw
+```
+
+OpenCode:
+
+```text
+fw
+```
 
 ## Philosophy
 
@@ -13,11 +53,11 @@ comments, or memory.
 
 Flywheel keeps the loop compact:
 
-- shapes the change with the user before coding
-- works from a reviewed plan
-- reviews the diff before commit
-- finishes the branch cleanly
-- spins durable lessons back into the repo
+- shape the change before coding
+- work from a reviewed plan
+- review the diff before commit
+- finish the branch cleanly
+- spin durable lessons back into the repo
 
 In Flywheel, docs are stored energy. Plans, solutions, workflow rules, rollout
 notes, and user corrections are not side artifacts. They are repo knowledge
@@ -26,141 +66,34 @@ that later work can recover instead of rediscovering.
 That is the point of the product: finish the current task and make the next
 one faster.
 
-## Install
-
-### Codex
-
-```bash
-make install/codex
-```
-
-Codex should use the Flywheel plugin install. The standalone `skills` CLI
-install exposes each skill without the plugin namespace, which makes Codex show
-commands such as `$start` instead of `$fw:start`.
-
-From this checkout, `make install/codex` refreshes the local plugin cache and
-removes standalone global Flywheel skills from `~/.agents/skills` so the
-namespaced `$fw:*` command surface is the only Flywheel surface Codex sees.
-
-### Skills CLI for Claude Code and OpenCode
-
-```bash
-npx skills add mopeyjellyfish/flywheel --global --skill '*' --agent claude-code --agent opencode --yes
-```
-
-From a Flywheel checkout, the matching Make target is:
-
-```bash
-make install/skills/global
-```
-
-That target uses `npx skills add` too, but it is local-checkout only and avoids
-the Codex agent target. It expects this repo to expose an installable `skills/`
-package and fails fast if the local `skills/` tree is missing or empty. It does
-not silently fall back to the published GitHub package.
-
-Then in your tool of choice:
-
-```text
-fw:setup
-```
-
-Use the host's native syntax:
-
-- Codex: `$fw:<stage>`
-- Claude Code: `/fw:<stage>`
-
-In Codex, bare `$fw` is the root router alias for `$fw:start`: it chooses the
-earliest useful stage across `shape -> work -> review -> optional spin -> commit`.
-If a user writes bare `$flywheel`, treat it as the same root request but keep
-follow-up commands on the canonical `$fw:<stage>` surface.
-
-Flywheel's interaction contract is shared across hosts: use the host's
-structured choice UI instead of asking for raw `1/2/3` replies. Claude Code
-uses `AskUserQuestion`, Codex uses `request_user_input` when the active runtime
-exposes it, and portable menus default to 2-3 choices so they fit both surfaces.
-That choice surface is a tool call, not a markdown menu; chat options are only
-the fallback when the host tool is unavailable or errors. OpenCode uses
-`question`. Risky-edge hook guardrails are
-bundled with the Claude plugin install. Codex uses an optional global
-`~/.codex/hooks.json` guardrail because current Codex hooks are repo-local or
-user-global rather than plugin-bundled.
-
-### Getting started
-
-Run `fw:setup` in any project after installing. Use `$fw:setup` in
-Codex or `/fw:setup` in Claude Code. It inspects the repo,
-checks the local workflow surface, and shows what is missing before you start
-shaping or finish-stage work.
-
-If you want repo-local defaults for browser proof, finish-stage policy, optimization, or
-workflow gates, copy:
-
-```text
-.flywheel/config.local.example.yaml -> .flywheel/config.local.yaml
-```
-
 ## Workflow
 
 ```text
 shape -> work -> review -> optional spin -> commit -> repeat
 ```
 
-That is the critical path. `shape` owns ideation, brainstorming, planning, and
-plan deepening before implementation starts. `$fw` / `$fw:start` is the root
-router for choosing the earliest useful stage; it is not a workflow stage.
-`$fw:run` is an optional wrapper for one bounded coordinated pass through the
-remaining stages.
+`fw` routes a task into the earliest useful stage. Use a specific stage when
+the next step is already clear.
 
 | Command | Purpose |
 | --- | --- |
-| `$fw` or `$fw:start` | Route a repo task into the right stage, then stop at that handoff. |
-| `$fw:shape` | Shape the work through ideation, brainstorming, planning, or plan-deepening before execution. |
-| `$fw:work` | Execute the plan against repo truth and pull in helper stages when the task needs them. |
-| `$fw:review` | Review the finished diff with reviewer personas selected from the change. |
-| `$fw:spin` | Capture durable lessons in `docs/solutions/` before commit when reuse is warranted. |
-| `$fw:commit` | Run the pre-commit spin checkpoint, then commit, push, and create or refresh the PR with the right context. |
-
-`shape` is the first main workflow stage. Inside it, `ideate` helps choose
-among multiple bets, `brainstorm` sharpens one direction with the user, `plan`
-writes the implementation path, and `deepen` strengthens a reviewed plan when
-needed. Requirements and spec artifacts can be reviewed for simplification,
-feasibility, and scope before planning; plans are reviewed before `work`, and
-the user chooses whether to address findings, deepen, or start execution.
-
-When topic investigation or current best practices are the real question,
-Flywheel can pull in `research` inside shaping or review to sharpen the next
-artifact or finding set. When
-boundaries, pattern choices, or code-quality pressure are the real question,
-Flywheel can pull in focused helper surfaces such as `architecture-strategy`,
-`pattern-recognition`, `maintainability`, and `simplify` without turning any
-of them into new mandatory visible stages.
-
-`work` is the execution stage. It can pull in `docs`, `debug`, `browser-test`,
-`verify`, `test-driven-development`, `rollout`, `observability`, `logging`,
-`architecture-strategy`, `pattern-recognition`, `maintainability`, `simplify`,
-`optimize`, or `worktree` when the task actually needs them.
-
-`review` is the default gate after work. `spin` runs only when there is a durable
-lesson worth preserving, and it runs before `commit` so the solution note can be
-included with the same branch changes. `commit` finishes the branch by default:
-create or confirm the commit, push the branch, and open or refresh the PR. Pass
-`local-only` only when publishing should be skipped.
-
-Main stages use a compact handoff card when a boundary matters: `Stage`,
-`Artifact`, `Ready`, `Open decisions`, `Evidence`, and `Next`. The card keeps
-plans, proof, review verdicts, and commit readiness portable across Codex,
-Claude Code, and later hosts without adding visible stages.
+| `fw` or `fw:start` | Route a repo task into the right stage. |
+| `fw:shape` | Clarify an idea, compare options, write a plan, or deepen an existing plan. |
+| `fw:work` | Implement the planned change against repo truth. |
+| `fw:review` | Review the finished diff for bugs, regressions, missing tests, and readiness gaps. |
+| `fw:spin` | Capture durable lessons in `docs/solutions/` when the work teaches something reusable. |
+| `fw:commit` | Verify readiness, commit, push, and create or refresh the PR. |
 
 Common starts:
 
-- new feature or vague idea: `$fw` or `$fw:shape`
-- research a topic or current best practices: `$fw`, or
-  `$fw:research` when the research brief itself is the main artifact
-- known scoped change: `$fw:shape`
-- architecture or pattern decision: `$fw:architecture-strategy` or `$fw:pattern-recognition`
-- bug with an unclear cause: `$fw:debug`
-- one bounded coordinated pass through the remaining stages: `$fw:run`
+- Vague idea or new feature: `fw`
+- Known scoped change: `fw:shape`
+- Bug with an unclear cause: `fw:debug`
+- Architecture or pattern decision: `fw:architecture-strategy` or `fw:pattern-recognition`
+- One bounded pass through the remaining stages: `fw:run`
+
+Use the host prefix when required: `/fw:work` in Claude Code and `fw:work` in
+OpenCode.
 
 ---
 
