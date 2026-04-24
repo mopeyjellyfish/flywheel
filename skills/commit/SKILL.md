@@ -16,7 +16,7 @@ It is the finishing workflow for:
 - committed work that needs pushing
 - a feature branch that needs a PR
 - an existing PR whose description should be refreshed
-- a branch that surfaced durable lessons worth offering to `spin`
+- a branch that surfaced durable lessons worth capturing before commit
 
 Use it after `$fw:work` or after `$fw:review` reaches a clean
 enough verdict. For runtime-risky changes, use it after `$fw:rollout`
@@ -92,8 +92,9 @@ Do not preload every support file. Load only what the current phase needs:
 7. **Carry only the material architecture and code-quality story** - PR text
    should explain the relevant boundary, pattern, simplification, or
    maintainability decisions without replaying raw specialist analysis.
-8. **Offer spin only when it earns its keep** - after the branch is finished,
-   suggest knowledge capture only when the work surfaced durable project value.
+8. **Capture durable lessons before commit** - when the branch surfaced durable
+   project value, offer `spin` before staging and committing so the solution doc
+   can land in the same logical change.
 
 ## Workflow
 
@@ -180,11 +181,45 @@ Review handling:
 
 If the branch is not actually ready, stop and say what remains.
 
-### Phase 4: Build The Finish Payload
+### Phase 4: Run The Pre-Commit Spin Checkpoint
+
+Before building the final commit payload or staging files, infer at most **3**
+candidate spin lessons from:
+
+- execution evidence such as review findings, validation work, or non-obvious
+  fixes
+- repo changes that altered setup, CLI, API, config, docs, or workflow
+  contracts
+- answers and clarified preferences surfaced during `ideate`, `brainstorm`, or
+  `plan` when they materially changed the repo workflow or project direction
+- user corrections from this session that materially changed how Flywheel
+  should behave for project work
+
+Only keep candidates that look durable and project-specific. If nothing
+non-trivial surfaced, continue without forcing a spin offer.
+
+If one or more candidates are worth preserving, call the host question tool with
+a small choice surface. Put the recommended option first:
+
+1. **Quick spin** - capture the strongest lesson in a compact solution note
+2. **Full spin** - run `$fw:spin` with the selected candidate summary
+3. **Skip** - finish without capturing a solution entry
+
+Recommend the strongest candidate explicitly when capture is warranted. Recommend
+`Skip` only when the value is marginal.
+
+If the user wants to continue, launch `$fw:spin` with the selected candidate
+summary and the selected capture depth instead of calling it blank. For quick
+capture, pass a lightweight-mode hint with the summary. When `$fw:spin` creates
+or updates `docs/solutions/`, treat those files as part of the same finish
+payload and include them in the commit plan.
+
+### Phase 5: Build The Finish Payload
 
 Assemble the payload for commit, push, and PR steps from:
 
 - current diff and recent commits
+- any `docs/solutions/` changes created by the pre-commit spin checkpoint
 - plan summary and key decisions when `plan:<path>` is available
 - the material architecture, pattern, simplification, or maintainability story
   when those decisions materially affect the branch summary
@@ -235,7 +270,7 @@ explicitly wants to continue without it.
 
 Read `references/pr-body-template.md` and fill it with concrete repo facts.
 
-### Phase 5: Plan And Create Commit(s)
+### Phase 6: Plan And Create Commit(s)
 
 If the worktree is dirty:
 
@@ -260,7 +295,7 @@ If the most honest message would be breaking, ask before using `!` or
 Default to one commit unless there are clearly separate concerns worth
 splitting.
 
-### Phase 6: Push
+### Phase 7: Push
 
 If the path is `local-only`, skip this phase and say so explicitly.
 
@@ -272,7 +307,7 @@ git push --set-upstream origin HEAD
 
 If the branch already has an upstream, use `git push`.
 
-### Phase 7: Create Or Refresh The PR
+### Phase 8: Create Or Refresh The PR
 
 If the path is `local-only`, skip this phase and report that no PR work was
 requested.
@@ -297,42 +332,22 @@ No additional operational monitoring required.
 Reason: <one line grounded in the actual change>
 ```
 
-### Phase 8: Close The Loop
+### Phase 9: Close The Loop
 
 When `plan:<path>` is available and the plan frontmatter contains
 `status: active`, update it to `status: completed`.
-
-Before the final report, infer at most **3** candidate spin lessons from:
-
-- execution evidence such as review findings, validation work, or non-obvious
-  fixes
-- repo changes that altered setup, CLI, API, config, docs, or workflow
-  contracts
-- answers and clarified preferences surfaced during `ideate`, `brainstorm`, or
-  `plan` when they materially changed the repo workflow or project direction
-- user corrections from this session that materially changed how Flywheel
-  should behave for project work
-
-Only keep candidates that look durable and project-specific. If nothing
-non-trivial surfaced, end cleanly without forcing a spin offer.
 
 Then report:
 
 1. what finished
 2. the branch and PR URL when available
 3. any residual follow-up
-4. whether a bounded `$fw:spin` offer is warranted
+4. whether the pre-commit spin checkpoint captured, skipped, or found no durable
+   lesson
 
-If one or more candidates are worth preserving, call the host question tool with
-a small choice surface:
-
-1. **Skip** - finish without capturing a solution entry
-2. **Quick spin** - capture the strongest lesson in a compact solution note
-3. **Full spin** - run `$fw:spin` with the selected candidate summary
-
-Recommend the strongest candidate explicitly. If the user wants to continue,
-launch `$fw:spin` with the selected candidate summary instead of calling
-it blank.
+Do not make a normal post-commit spin offer. If push, PR creation, CI, or
+reviewer feedback after commit reveals a new durable lesson, treat that as a new
+follow-up change and capture it in a later commit.
 
 If the branch finished from a `.worktrees/` checkout and no longer needs that
 checkout, suggest `$fw:worktree cleanup <branch>` as the cleanup path.

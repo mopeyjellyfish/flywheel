@@ -33,8 +33,8 @@ pattern, or simplification story rather than replaying raw specialist output.
 
 ### Spin Offer Discipline
 
-After commit, does it offer `spin` only when a durable project lesson is
-worth preserving?
+Before the final commit, does it offer `spin` only when a durable project lesson
+is worth preserving so the solution entry can land in the same commit set?
 
 ### Hook-Gate Honesty
 

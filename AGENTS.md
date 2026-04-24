@@ -51,7 +51,7 @@ Bug reports often come from an installed plugin rather than the current checkout
 
 ## Naming Conventions
 - Use lowercase kebab-case for skill directories, frontmatter `name`, helper script names, and most user-facing identifiers.
-- Prefer short single-word stage names when clarity stays intact. The canonical visible loop is `start`, `shape`, `work`, `review`, `commit`, and `spin`; `shape` owns the internal `ideate`, `brainstorm`, `plan`, and `deepen` modes.
+- Prefer short single-word stage names when clarity stays intact. The canonical visible loop is `start` routing into `shape`, `work`, `review`, optional `spin`, and `commit`; `shape` owns the internal `ideate`, `brainstorm`, `plan`, and `deepen` modes.
 - Keep explicit compounds when shortening would make the surface worse, for example `browser-test`, `document-review`, `commit-message`, and `worktree`.
 - Keep runtime skill names and eval suite ids separate when that improves clarity. Runtime commands stay `fw:<name>`; eval suites may stay prefixed, such as `fw-review`.
 - Use the namespaced Flywheel command surface in docs and prompts: `$fw` or `$fw:<stage>` in Codex and `/fw:<stage>` in Claude Code. Bare `$flywheel` is accepted only as a root-router text alias for `$fw:start`; do not reintroduce legacy `/flywheel:*`, `$flywheel:*`, or ambiguous unnamespaced stage forms.

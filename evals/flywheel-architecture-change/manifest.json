@@ -6,8 +6,8 @@
     "shape",
     "work",
     "review",
-    "commit",
-    "spin"
+    "spin",
+    "commit"
   ],
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",

@@ -213,6 +213,31 @@ function checkHostInteractionQuestionToolContract() {
   };
 }
 
+function checkSpinBeforeCommitContract() {
+  const files = [
+    ["README workflow", "README.md", /shape -> work -> review -> optional spin -> commit/i],
+    ["start backbone", "skills/start/SKILL.md", /optional fw:spin -> fw:commit|optional `fw:spin`, and `fw:commit`|optional spin -> fw:commit/i],
+    ["run backbone", "skills/run/SKILL.md", /shape -> work -> review -> optional spin -> commit/i],
+    ["commit checkpoint", "skills/commit/SKILL.md", /Pre-Commit Spin Checkpoint/i],
+    ["work handoff", "skills/work/references/commit-workflow.md", /Pre-Commit Spin Checkpoint/i],
+    ["commit eval case", "evals/fw-commit/cases.jsonl", /pre_commit_spin_checkpoint/i],
+  ];
+  const missing = files
+    .filter(([, relativePath, pattern]) => {
+      const fullPath = path.join(repoRoot, relativePath);
+      return !fs.existsSync(fullPath) || !pattern.test(fs.readFileSync(fullPath, "utf8"));
+    })
+    .map(([label]) => label);
+
+  return {
+    name: "Spin before commit contract",
+    ok: missing.length === 0,
+    detail: missing.length === 0
+      ? "workflow surfaces keep optional spin before final commit"
+      : `spin-before-commit contract missing from: ${missing.join(", ")}`,
+  };
+}
+
 function checkCodexRootRouterPrompt() {
   const manifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
   const manifest = fs.existsSync(manifestPath)
@@ -517,6 +542,7 @@ function main() {
     checkSkillDescriptionBudget(),
     checkSkillDescriptionDiscriminators(),
     checkHostInteractionQuestionToolContract(),
+    checkSpinBeforeCommitContract(),
   ];
 
   if (includeCodex) {

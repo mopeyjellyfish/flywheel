@@ -6,8 +6,8 @@
     "incident",
     "debug",
     "rollout",
-    "commit",
-    "spin"
+    "spin",
+    "commit"
   ],
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",

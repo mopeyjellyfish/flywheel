@@ -46,8 +46,8 @@ function deterministicRun(caseItem, output) {
 
   scores["Spin Awareness"] = spinMention ? 2 : 0;
   notes["Spin Awareness"] = spinMention
-    ? "Keeps spin in the closing path."
-    : "Does not clearly mention spin as the final capture step.";
+    ? "Keeps spin in the pre-commit closing path."
+    : "Does not clearly mention spin as the optional pre-commit capture step.";
 
   return { scores, notes };
 }

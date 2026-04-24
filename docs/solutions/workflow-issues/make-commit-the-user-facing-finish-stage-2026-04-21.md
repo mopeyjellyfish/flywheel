@@ -1,6 +1,7 @@
 ---
 title: Make commit the user-facing finish stage and move message drafting into a helper
 date: 2026-04-21
+last_updated: 2026-04-24
 category: workflow-issues
 module: flywheel-finish-stage
 problem_type: workflow_issue
@@ -10,10 +11,15 @@ doc_status: active
 files_touched:
   - README.md
   - skills/start/SKILL.md
+  - skills/run/SKILL.md
   - skills/commit/SKILL.md
+  - skills/spin/SKILL.md
+  - skills/shape/SKILL.md
   - skills/commit-message/SKILL.md
   - skills/work/references/commit-workflow.md
+  - evals/flywheel/
   - evals/fw-commit/manifest.json
+  - tools/evals/src/scoring/fw-commit.cjs
 applies_when:
   - the branch-finishing command no longer matches the word developers naturally reach for
   - a finish-stage rename also changes what the stage owns and how downstream handoffs work
@@ -43,10 +49,11 @@ Flywheel originally taught `ship` as the final branch-finishing stage while
 harder to remember at the point where developers most often want a single
 command: finish the branch cleanly.
 
-The migration from `ship` to `commit` was not just a rename. It changed the
-visible workflow to `shape -> work -> review -> commit -> spin`, promoted
-`commit` into the full finish-stage command, and moved commit-message drafting
-into a helper skill.
+The migration from `ship` to `commit` was not just a rename. It promoted
+`commit` into the full finish-stage command and moved commit-message drafting
+into a helper skill. A later workflow correction kept `commit` as the remembered
+finish command, but moved conditional `spin` before the final commit so solution
+docs created from the session can land in the same logical change set.
 
 ## Guidance
 
@@ -56,8 +63,11 @@ rewrite, not a wording pass.
 Use these rules:
 
 - make the user-facing finish-stage command own the whole branch-finishing job:
-  logical commit planning, local commits, push, PR create or refresh, and the
-  post-commit `spin` offer
+  pre-commit spin checkpoint, logical commit planning, local commits, push, and
+  PR create or refresh
+- run conditional `spin` before staging and committing when the completed work
+  surfaced a durable project lesson, so the `docs/solutions/` update is reviewed
+  and committed with the work that produced it
 - keep narrower support concerns in helpers; for commit flows, message drafting
   belongs in `commit-message`, called by `commit`
 - keep direct `commit` invocation moving forward; auto-run missing finish-stage
@@ -107,14 +117,15 @@ tools/evals/src/scoring/fw-commit.cjs
 The resulting product loop became:
 
 ```text
-shape -> work -> review -> commit -> spin
+shape -> work -> review -> optional spin -> commit
 ```
 
 With that contract:
 
 - `commit` is the single remembered finish-stage command
 - `commit-message` is an internal helper used by `commit`
-- `spin` stays post-commit and captures durable lessons worth keeping
+- `spin` stays conditional and captures durable lessons worth keeping before the
+  final commit is made
 
 ## Related
 

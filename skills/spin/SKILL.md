@@ -19,9 +19,10 @@ durable workflow improvement, a clarified repo rule, or a user correction that
 changed how Flywheel should behave on project work should not stay trapped in
 one session if it will matter again.
 
-`$fw:spin` may be called directly, or offered after `$fw:commit`
-finishes when the completed project work exposed a durable lesson worth
-keeping.
+`$fw:spin` may be called directly, or offered by the finish path after review
+and before commit when the completed project work exposed a durable lesson worth
+keeping. Pre-commit capture lets the resulting `docs/solutions/` change land in
+the same logical commit as the work that produced the lesson.
 
 **When directly invoked, always spin.** If the lesson is still vague or the
 problem is not actually solved, clarify or defer. Do not silently skip the
@@ -71,8 +72,8 @@ Do not preload every support file. Load only what the current phase needs:
    `work` can consult them in that same repo.
 6. **Prefer project-specific guidance over abstract reflection** - capture what
    will help future repo work, not generic commentary about agents.
-7. **Offer spin, do not force it** - when `spin` is merely being suggested at
-   the end of another workflow, get the user's approval before writing docs.
+7. **Offer spin, do not force it** - when `spin` is merely being suggested by
+   another workflow, get the user's approval before writing docs.
 8. **Every spin includes bounded housekeeping** - refresh nearby discoverability
    and contradiction markers while the context is fresh.
 9. **Prefer one canonical answer per lesson family** - update, supersede, or
@@ -102,8 +103,9 @@ Good upstream arguments look like:
 - `Capture the compact plan-work-commit correction for Flywheel's project workflow`
 - `Refresh docs/solutions/workflow-issues/test-fixture-setup-2026-04-18.md`
 
-If the input clearly names a selected candidate from `$fw:work` or another
-stage, **skip candidate rediscovery in Phase 0** and move straight into capture.
+If the input clearly names a selected candidate from `$fw:commit`, `$fw:work`, or
+another stage, **skip candidate rediscovery in Phase 0** and move straight into
+capture.
 
 ## What It Writes
 
@@ -162,7 +164,7 @@ If `<spin_input>` is blank:
    - the current diff
    - the latest plan in `docs/plans/`
    - resolved review findings
-   - the commit summary or PR story
+   - the planned commit summary or PR story
    - the final implementation summary
    - the tests or validation work that proved the fix
    - answers and preferences surfaced during `ideate`, `brainstorm`, or `plan`
@@ -372,5 +374,8 @@ Summarize:
 - the lesson captured
 - what future task should now be easier
 - any additional candidate learnings still worth spinning
+
+When `spin` was launched from the finish path, hand back to `$fw:commit` so the
+solution document can be included in the same commit set.
 
 If multiple good candidates remain, offer to spin the next one.

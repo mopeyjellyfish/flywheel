@@ -102,7 +102,7 @@ Touch Grass instead of generic placeholders.
 If there is truly no production or runtime impact, still include the section
 with `No additional operational monitoring required` and a one-line reason.
 
-## Phase 4: Commit It
+## Phase 4: Spin And Commit It
 
 ### 1. Prepare Evidence Context
 
@@ -129,6 +129,38 @@ If the input document has YAML frontmatter with a `status` field, update it to
 ```text
 status: active  ->  status: completed
 ```
+
+### 3. Prepare The Pre-Commit Spin Checkpoint
+
+Before any final git commit is created, identify up to **3** non-trivial solved
+problems or durable lessons that `$fw:commit` should consider capturing in the
+active repo's `docs/solutions/`.
+
+Good candidates include:
+
+- a bug with a non-obvious root cause
+- a workflow or tooling improvement that removed friction
+- a reusable testing or validation pattern
+- a clarified project rule or integration gotcha
+- a repeated dead end that future work should avoid
+
+When handing off to `$fw:commit`, pass these candidates as finish-stage context
+instead of asking a duplicate question. `$fw:commit` owns the actual spin choice
+surface and should run `$fw:spin` before staging and committing when the user
+approves capture.
+
+If no host helper exists and this workflow is performing the direct git fallback
+itself, present each candidate in one line with why it is worth preserving, then
+ask whether to run `$fw:spin` before committing. Unless the user explicitly asked
+for `$fw:spin`, do not silently write new active-repo `docs/solutions/` entries.
+If spin writes or refreshes solution docs, include those files in the same branch
+and commit plan as the work that produced the lesson.
+
+If the user wants to spin multiple candidates, handle them one at a time in
+priority order rather than passing a blank prompt that forces candidate
+rediscovery.
+
+### 4. Choose Commit Messages And Finish
 
 Choose conventional commit messages for the final commit step. Prefer
 `$fw:commit-message` when available. If the helper is unavailable, draft the
@@ -171,39 +203,14 @@ If the user prefers to commit without creating a PR, `$fw:commit` should still
 choose a conventional message first, prefer `$fw:commit-message` when
 available, and then either use the host helper or a direct `git commit`.
 
-### 3. Notify User
+### 5. Notify User
 
 - Summarize what was completed.
 - Link to the PR when one was created.
 - Note any follow-up work.
+- State whether the pre-commit spin checkpoint captured, skipped, or found no
+  durable lesson.
 - Suggest next steps when useful.
-
-### 4. Offer Spin
-
-Before ending the session, identify up to **3** non-trivial solved problems or
-durable lessons worth capturing in the active repo's `docs/solutions/`.
-
-Good candidates include:
-
-- a bug with a non-obvious root cause
-- a workflow or tooling improvement that removed friction
-- a reusable testing or validation pattern
-- a clarified project rule or integration gotcha
-- a repeated dead end that future work should avoid
-
-Present each candidate in one line with why it is worth preserving, then ask
-whether to run `$fw:spin` now.
-
-Unless the user explicitly asked for `$fw:spin`, do not silently write
-new active-repo `docs/solutions/` entries as part of commit.
-
-If the user agrees to spin a specific candidate, invoke `$fw:spin` with that
-selected candidate summary as the argument. Do not call `$fw:spin` blank after
-the user already chose a candidate in this commit step.
-
-If the user wants to spin multiple candidates, handle them one at a time in
-priority order rather than passing a blank prompt that forces candidate
-rediscovery.
 
 ## Quality Checklist
 

@@ -8,7 +8,7 @@ Use it to verify that Flywheel feels coherent from idea to working PR:
 1. the router chooses the right next stage
 2. the handoff does not skip necessary workflow steps
 3. the flow stays grounded in repo artifacts when they exist
-4. the terminal path still reaches review, commit, and spin
+4. the terminal path still reaches review, optional spin, and commit
 
 ## Files
 
@@ -25,7 +25,8 @@ This pack focuses on top-level workflow behavior:
 - correct handoff target
 - respect for the Flywheel order of operations
 - sensible direct-to-work shortcuts only when the task is truly ready
-- awareness of review and spin as part of the final path to a PR
+- awareness of review and optional pre-commit spin as part of the final path to
+  a PR
 
 It does **not** fully verify hidden orchestration details like actual tool
 calls, actual branch creation, or PR creation mechanics. Those still need

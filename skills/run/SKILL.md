@@ -18,7 +18,7 @@ This skill does not replace the stage skills. It coordinates them.
 The critical path remains:
 
 ```text
-shape -> work -> review -> commit -> optional spin
+shape -> work -> review -> optional spin -> commit
 ```
 
 `run` uses the same routing logic as `start`, then continues across the
@@ -74,6 +74,7 @@ Continue through the remaining path until one of these stop points:
 - the repo is not ready
 - the work reveals a design problem that must route upstream
 - review finds blocking issues or release decisions that need user direction
+- a pre-commit spin choice needs user direction
 - commit is complete
 
 If the run reaches `fw:shape` and its selected mode is `fw:plan`, do not cross
@@ -98,6 +99,8 @@ When relevant:
 - use `$fw:browser-test` before review or commit for browser-visible changes
 - use `$fw:rollout` after review and before commit when the change is
   runtime-risky and release posture is still unresolved
+- use `$fw:spin` after review or rollout and before commit when the completed
+  work surfaced a durable project-specific lesson worth preserving
 - use `observability` or `logging` when runtime support shape needs deliberate
   design
 - use `$fw:optimize` when the dominant remaining work is measured tuning
@@ -110,4 +113,5 @@ When the branch is finished or paused at a deliberate handoff, summarize:
 2. artifacts created or updated
 3. what was completed
 4. what still needs user approval or follow-up
-5. whether `$fw:spin` should run now
+5. whether the pre-commit `$fw:spin` checkpoint captured, skipped, or found no
+   durable lesson

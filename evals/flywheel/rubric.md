@@ -34,14 +34,15 @@ steps?
   source artifact may need simplification or feasibility checks; planning runs
   document review before the user chooses whether to address findings, deepen,
   or work
-- shape -> work -> review -> commit -> spin as the compact backbone for software-project work
+- shape -> work -> review -> optional spin -> commit as the compact backbone for software-project work
 - `$fw:start` is the router, not a backbone stage; `$fw:run` is an explicit
   optional orchestration wrapper, not a default critical-path stage
 - helper surfaces such as research, architecture strategy, pattern
   recognition, maintainability, or simplify can be selected when they are the
   most direct fit, without turning them into mandatory visible stages
 - review before merge when code changed or when work completes on the current branch
-- spin after work or commit when lessons should be preserved
+- spin after review and before commit when lessons should be preserved in the
+  same branch changes
 
 ### 3. Shortcut Discipline
 
@@ -62,7 +63,7 @@ Expected examples:
 
 - shape -> ranked shortlist, requirements doc, reviewed technical plan, or
   strengthened plan -> work
-- work -> implementation, helper checks as needed, review, commit, optional spin
+- work -> implementation, helper checks as needed, review, optional spin, commit
 
 ### 5. Repo Grounding
 

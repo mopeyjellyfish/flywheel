@@ -1,6 +1,6 @@
 ---
 name: start
-description: "Route project work through Flywheel. Use to pick the earliest useful stage across shape, work, review, commit, and spin, then stop."
+description: "Route project work through Flywheel. Use to pick the earliest useful stage from shape, work, review, spin, or commit."
 ---
 
 # Flywheel
@@ -36,8 +36,8 @@ For software-project work, Flywheel's critical path is:
 1. `fw:shape`
 2. `fw:work`
 3. `fw:review`
-4. `fw:commit`
-5. conditional `fw:spin`
+4. conditional `fw:spin`
+5. `fw:commit`
 
 `fw:start` is not itself a backbone stage. It is the root router for choosing
 the earliest useful stage on that path or a focused helper when the task clearly
@@ -62,8 +62,9 @@ When multiple materially different routes or artifacts are plausible, ask one
 material challenge question before final handoff so the user can correct the
 framing early.
 
-After `fw:commit`, offer `fw:spin` only when the completed work
-revealed durable project-specific guidance worth preserving.
+After `fw:review` and before `fw:commit`, offer `fw:spin` only when the
+completed work revealed durable project-specific guidance worth preserving. This
+keeps the captured solution entry in the same branch and commit set.
 
 Shape-mode helper surfaces, used inside `fw:shape` or as direct expert
 entrypoints when the user names them:
@@ -109,7 +110,8 @@ mandatory visible stages:
 - `fw:simplify` for bounded removal of accidental complexity in recent or
   changed work
 - `fw:verify` for fresh proof before claiming a task is done
-- `fw:commit` for finish-stage commit, push, PR creation or refresh, and conditional spin offers
+- `fw:commit` for the pre-commit spin checkpoint, finish-stage commit, push, and
+  PR creation or refresh
 - `fw:commit-message` for conventional commit-message drafting and breaking-change checks
 
 Do not force every request through every stage. Route to the earliest missing
@@ -337,37 +339,38 @@ Preferred stage-to-handoff wording:
 - `fw:brainstorm` -> produce a requirements doc or requirements plan -> then
   move into `fw:plan`
 - `fw:run` -> optional wrapper, not a backbone stage -> produce the remaining
-  stage artifacts through a bounded coordinated pass -> then stop at commit, a
-  post-commit spin offer, or an approval gate
+  stage artifacts through a bounded coordinated pass -> then stop at a
+  pre-commit spin checkpoint, commit, or an approval gate
 - `fw:deepen` -> produce a stronger reviewed technical plan -> then let
   the user choose between another deepen pass and `fw:work`
 - `fw:plan` -> produce a technical implementation plan, run
   `document-review`, pause for user review, and then let the user choose
   whether to address review findings, run `fw:deepen`, or enter `fw:work`
 - `fw:docs` -> produce updated project docs mapped to the right Diataxis
-  quadrants -> then continue into `fw:review` and `fw:commit`
+  quadrants -> then continue into `fw:review`, optional `fw:spin`, and
+  `fw:commit`
 - `document-review` -> produce prioritized document findings and fix direction
   -> then revise the doc, continue into `fw:plan`, continue into
   `fw:deepen` if the reviewed document is a plan that needs
   strengthening, or continue into `fw:work` if the reviewed plan is
   accepted
 - `fw:browser-test` -> produce fresh browser-proof artifacts -> then continue
-  into `fw:review` and `fw:commit`
+  into `fw:review`, optional `fw:spin`, and `fw:commit`
 - `fw:polish` -> produce tightened browser-visible behavior plus fresh browser
-  proof -> then continue into `fw:review` and `fw:commit`
+  proof -> then continue into `fw:review`, optional `fw:spin`, and `fw:commit`
 - `fw:work` -> produce implemented, validated repo changes, pulling in
   `fw:docs`, `fw:browser-test`, `fw:rollout`, or
   `fw:verify` only when the work needs them -> then continue into
-  `fw:review` and `fw:commit`
+  `fw:review`, optional `fw:spin`, and `fw:commit`
 - `fw:debug` -> produce a proved causal chain and either a red-to-green fix or
   a handoff back to `fw:brainstorm` or `fw:plan`
 - `fw:review` -> produce findings and fix decisions from the
   diff-selected reviewer set, dispatching personas in parallel when the host
   supports it -> then update the branch, route through `fw:rollout`
-  when the change is runtime-risky, then push or create/update the PR through
-  `fw:commit`
+  when the change is runtime-risky, run the pre-commit `fw:spin` checkpoint when
+  durable lessons surfaced, then push or create/update the PR through `fw:commit`
 - `fw:rollout` -> produce a rollout brief with activation, validation, and
-  rollback posture -> then continue into `fw:commit`
+  rollback posture -> then continue through optional `fw:spin` into `fw:commit`
 - `fw:incident` -> produce an incident brief with blast radius, evidence, and
   mitigation or rollback posture -> then continue into `fw:debug`,
   `fw:rollout`, `fw:plan`, or `fw:commit`
@@ -378,15 +381,14 @@ Preferred stage-to-handoff wording:
 - `logging` -> produce a concrete logging design or gap report -> then feed
   `fw:plan`, `fw:work`, or `fw:review`
 - `verify` -> produce fresh proof and honest status ->
-  then either continue through `fw:review`, `fw:commit`,
-  `fw:spin`, or back to `fw:work`
+  then either continue through `fw:review`, optional `fw:spin`, `fw:commit`, or
+  back to `fw:work`
 - `commit-message` -> produce a conventional commit message -> then
   continue through `fw:commit` or the user's chosen git step
-- `fw:commit` -> produce a committed branch or PR with testing and operational
-  validation notes -> then offer `fw:spin` only when the finished work
-  surfaced a durable project lesson
+- `fw:commit` -> run the pre-commit spin checkpoint when warranted, then produce
+  a committed branch or PR with testing and operational validation notes
 - `fw:spin` -> produce or update an active-repo `docs/solutions/` entry
-  -> then start the next task with that stored context
+  -> then return to `fw:commit` when called from the finish path
 
 If the user asks for routing help only, do not dump every stage. Name the
 current stage, its artifact, and the immediate next handoff.
@@ -475,8 +477,8 @@ Use these patterns to keep routing answers stable across frontier models:
   The output should be an honest status against the claim."
 - **Commit route:** "This belongs in `fw:commit` because the code is ready to leave
   the workstation. The output should be a committed branch or PR with testing
-  notes and post-deploy validation, then a spin offer if the finished work
-  surfaced a durable project lesson."
+  notes and post-deploy validation, after a pre-commit spin checkpoint if the
+  finished work surfaced a durable project lesson."
 - **Spin route:** "This belongs in `fw:spin` because the work is complete and
   the value now is preserving what was learned. The output should be a durable
   active-repo `docs/solutions/` entry."
@@ -484,7 +486,7 @@ Use these patterns to keep routing answers stable across frontier models:
 ## Operating Principles
 
 - Prefer stored-repo improvements over novelty.
-- Treat `fw:shape -> fw:work -> fw:review -> fw:commit -> fw:spin` as the
+- Treat `fw:shape -> fw:work -> fw:review -> optional fw:spin -> fw:commit` as the
   compact backbone for software-project work, where `fw:shape` selects
   `fw:ideate`, `fw:brainstorm`, `fw:plan`, or `fw:deepen` as needed.
 - Use `fw:brainstorm` before `fw:plan` only when behavior or scope is
@@ -500,7 +502,7 @@ Use these patterns to keep routing answers stable across frontier models:
 - Let evidence beat optimism. Plans, implementation, and review should all be
   grounded in the codebase and actual checks.
 - End each stage with a clear handoff to the next one, and treat `fw:spin`
-  as a conditional post-commit capture step rather than default extra ceremony.
+  as a conditional pre-commit capture step rather than default extra ceremony.
 
 ## Expected Outputs
 
@@ -528,7 +530,8 @@ Use these patterns to keep routing answers stable across frontier models:
 - `observability`: a concrete signal, failure-mode, and rollout-validation plan.
 - `logging`: a structured logging design, migration sketch, or audit gap report.
 - `verify`: a claim, a fresh proof run, and honest status.
-- `commit`: a commit, push, PR, or PR refresh with operational validation notes and a conditional spin offer when warranted.
+- `commit`: a pre-commit spin decision when warranted, then a commit, push, PR,
+  or PR refresh with operational validation notes.
 - `spin`: a new or updated active-repo `docs/solutions/` entry that reduces
   repeated future effort.
 - `commit-message`: a commit header, optional body or footers, and an

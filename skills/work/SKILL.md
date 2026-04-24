@@ -77,7 +77,8 @@ Do not preload every reference. Load only what the current phase needs:
 6. **Keep progress visible** — maintain task state, note blockers, and finish
    with a clean quality gate.
 7. **Prefer fewer extra visible handoffs** — use helper workflows when they add
-   real value beyond the default shape -> work -> review -> commit loop.
+   real value beyond the default shape -> work -> review -> optional spin ->
+   commit loop.
 
 ## Input Document
 

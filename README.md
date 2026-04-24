@@ -71,8 +71,8 @@ Use the host's native syntax:
 - Claude Code: `/fw:<stage>`
 
 In Codex, bare `$fw` is the root router alias for `$fw:start`: it chooses the
-earliest useful stage across `shape -> work -> review -> commit -> spin`. If a
-user writes bare `$flywheel`, treat it as the same root request but keep
+earliest useful stage across `shape -> work -> review -> optional spin -> commit`.
+If a user writes bare `$flywheel`, treat it as the same root request but keep
 follow-up commands on the canonical `$fw:<stage>` surface.
 
 Flywheel's interaction contract is shared across hosts: use the host's
@@ -103,7 +103,7 @@ workflow gates, copy:
 ## Workflow
 
 ```text
-shape -> work -> review -> commit -> optional spin -> repeat
+shape -> work -> review -> optional spin -> commit -> repeat
 ```
 
 That is the critical path. `shape` owns ideation, brainstorming, planning, and
@@ -118,8 +118,8 @@ remaining stages.
 | `$fw:shape` | Shape the work through ideation, brainstorming, planning, or plan-deepening before execution. |
 | `$fw:work` | Execute the plan against repo truth and pull in helper stages when the task needs them. |
 | `$fw:review` | Review the finished diff with reviewer personas selected from the change. |
-| `$fw:commit` | Commit, push, and create or refresh the PR with the right context. |
-| `$fw:spin` | Capture durable lessons in `docs/solutions/` so later work starts faster. |
+| `$fw:spin` | Capture durable lessons in `docs/solutions/` before commit when reuse is warranted. |
+| `$fw:commit` | Run the pre-commit spin checkpoint, then commit, push, and create or refresh the PR with the right context. |
 
 `shape` is the first main workflow stage. Inside it, `ideate` helps choose
 among multiple bets, `brainstorm` sharpens one direction with the user, `plan`
@@ -141,9 +141,9 @@ of them into new mandatory visible stages.
 `pattern-recognition`, `maintainability`, `simplify`, `optimize`, or
 `worktree` when the task actually needs them.
 
-`review` is the default gate after work. `commit` finishes the branch cleanly.
-`spin` is how Flywheel stores the lesson so the next task starts with more repo
-knowledge than the last one.
+`review` is the default gate after work. `spin` runs only when there is a durable
+lesson worth preserving, and it runs before `commit` so the solution note can be
+included with the same branch changes. `commit` finishes the branch cleanly.
 
 Common starts:
 

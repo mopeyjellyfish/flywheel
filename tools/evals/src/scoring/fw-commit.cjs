@@ -43,9 +43,9 @@ function deterministicCommit(caseItem, output) {
   scores["Spin Offer Discipline"] = spinOfferCase ? (spinOffer ? 2 : 0) : 2;
   notes["Spin Offer Discipline"] = spinOfferCase
     ? spinOffer
-      ? "Offers a bounded post-commit spin choice for a durable lesson."
-      : "Does not clearly offer spin as a bounded optional post-commit step."
-    : "No post-commit spin offer was required for this case.";
+      ? "Offers a bounded pre-commit spin choice for a durable lesson."
+      : "Does not clearly offer spin as a bounded optional pre-commit step."
+    : "No pre-commit spin offer was required for this case.";
 
   const architectureStoryCase = (caseItem.special_constraints || []).some((item) => /architecture-story/i.test(item));
   if (architectureStoryCase) {

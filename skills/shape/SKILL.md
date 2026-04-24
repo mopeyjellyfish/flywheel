@@ -10,7 +10,7 @@ metadata:
 Use this skill as the public shaping entrypoint for Flywheel's compact loop:
 
 ```text
-shape -> work -> review -> commit -> spin
+shape -> work -> review -> optional spin -> commit
 ```
 
 Invoke it as `fw:shape` using the current host's native syntax:
