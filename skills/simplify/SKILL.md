@@ -1,6 +1,6 @@
 ---
 name: simplify
-description: "Reduce accidental complexity in recent or changed code without widening scope. Use during work or review when wrappers, abstractions, or orchestration layers no longer earn their keep."
+description: "Reduce accidental complexity in recent code. Use when wrappers, abstractions, or orchestration no longer earn their keep."
 metadata:
   argument-hint: "[path, diff, recent changes, or simplification target]"
 ---
@@ -10,7 +10,7 @@ metadata:
 Use this helper after code has a concrete shape and the question becomes: what
 can we remove, collapse, or localize without changing behavior?
 
-`$flywheel:simplify` is not a whole-repo cleanup pass. It is a bounded
+`$fw:simplify` is not a whole-repo cleanup pass. It is a bounded
 simplification pass over recent or changed work.
 
 **When directly invoked, always do simplification work.** Stay scoped, name the
@@ -20,7 +20,7 @@ removable complexity, and protect behavior.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

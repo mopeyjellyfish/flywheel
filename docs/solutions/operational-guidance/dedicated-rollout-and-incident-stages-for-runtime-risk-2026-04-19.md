@@ -48,18 +48,18 @@ too implicit.
 
 Use dedicated stages for the decisions that are unique to live systems:
 
-- `$flywheel:rollout` for staged release posture on runtime-risky changes
-- `$flywheel:incident` for live issues that start from runtime evidence and need
+- `$fw:rollout` for staged release posture on runtime-risky changes
+- `$fw:incident` for live issues that start from runtime evidence and need
   mitigation versus rollback versus patch framing
 
-Do not hide those decisions inside `$flywheel:commit` or `$flywheel:debug`.
+Do not hide those decisions inside `$fw:commit` or `$fw:debug`.
 
 Preferred downstream paths:
 
 ```text
-$flywheel:review -> $flywheel:rollout -> $flywheel:commit
-$flywheel:incident -> $flywheel:debug
-$flywheel:incident -> $flywheel:rollout -> $flywheel:commit
+$fw:review -> $fw:rollout -> $fw:commit
+$fw:incident -> $fw:debug
+$fw:incident -> $fw:rollout -> $fw:commit
 ```
 
 ## Why This Matters
@@ -90,24 +90,24 @@ ordinary bug-fix flows from skipping the stabilizing step.
 Use rollout for risky release planning:
 
 ```text
-$flywheel:review -> $flywheel:rollout -> $flywheel:commit
+$fw:review -> $fw:rollout -> $fw:commit
 ```
 
 Use incident before debug when a live problem is still being framed:
 
 ```text
-$flywheel:incident -> $flywheel:debug
+$fw:incident -> $fw:debug
 ```
 
 Use incident plus rollout when disablement or rollback is safer than immediate
 patching:
 
 ```text
-$flywheel:incident -> $flywheel:rollout -> $flywheel:commit
+$fw:incident -> $fw:rollout -> $fw:commit
 ```
 
 ## Related
 
 - [Shared evidence bundle for stage handoffs](docs/solutions/operational-guidance/shared-evidence-bundle-for-stage-handoffs-2026-04-19.md)
 - [Journey evals without a harness redesign](docs/solutions/developer-experience/journey-evals-without-a-harness-redesign-2026-04-19.md)
-- [Use $flywheel:start as the Flywheel router entrypoint](docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md)
+- [Use $fw and $fw:start as Flywheel router entrypoints](docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md)

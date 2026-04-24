@@ -1,6 +1,6 @@
 ---
 name: spin
-description: "Capture solved problems and durable lessons into the active repo's docs/solutions/ so future ideate, brainstorm, plan, and work runs in that repo can reuse them. Use at the end of completed work, after a verified fix, or when a repeated pattern should become searchable repo knowledge."
+description: "Capture durable lessons in docs/solutions. Use after completed work, verified fixes, or repeated repo-specific patterns."
 metadata:
   argument-hint: "[lesson, problem, file path, or blank to infer from the recent session]"
 ---
@@ -10,7 +10,7 @@ metadata:
 Use the actual current date from runtime context when dating solution documents or
 refreshing older learnings.
 
-`$flywheel:spin` is the Flywheel knowledge-capture stage. It turns verified
+`$fw:spin` is the Flywheel knowledge-capture stage. It turns verified
 session learnings into searchable documentation under the active repo's
 `docs/solutions/`.
 
@@ -19,9 +19,10 @@ durable workflow improvement, a clarified repo rule, or a user correction that
 changed how Flywheel should behave on project work should not stay trapped in
 one session if it will matter again.
 
-`$flywheel:spin` may be called directly, or offered after `$flywheel:commit`
-finishes when the completed project work exposed a durable lesson worth
-keeping.
+`$fw:spin` may be called directly, or offered by the finish path after review
+and before commit when the completed project work exposed a durable lesson worth
+keeping. Pre-commit capture lets the resulting `docs/solutions/` change land in
+the same logical commit as the work that produced the lesson.
 
 **When directly invoked, always spin.** If the lesson is still vague or the
 problem is not actually solved, clarify or defer. Do not silently skip the
@@ -31,7 +32,7 @@ workflow.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -54,6 +55,8 @@ Do not preload every support file. Load only what the current phase needs:
   fields.
 - Read `assets/resolution-template.md` only when assembling or refreshing the
   final solution document.
+- Read `../references/workflow-gates.md` when handing a captured solution back
+  to `$fw:commit`.
 
 ## Core Principles
 
@@ -71,8 +74,8 @@ Do not preload every support file. Load only what the current phase needs:
    `work` can consult them in that same repo.
 6. **Prefer project-specific guidance over abstract reflection** - capture what
    will help future repo work, not generic commentary about agents.
-7. **Offer spin, do not force it** - when `spin` is merely being suggested at
-   the end of another workflow, get the user's approval before writing docs.
+7. **Offer spin, do not force it** - when `spin` is merely being suggested by
+   another workflow, get the user's approval before writing docs.
 8. **Every spin includes bounded housekeeping** - refresh nearby discoverability
    and contradiction markers while the context is fresh.
 9. **Prefer one canonical answer per lesson family** - update, supersede, or
@@ -92,8 +95,8 @@ Interpret the input as one of:
 
 ## Upstream Handoff Contract
 
-When another Flywheel stage launches `$flywheel:spin`, pass the already selected
-lesson as the argument instead of calling `$flywheel:spin` blank.
+When another Flywheel stage launches `$fw:spin`, pass the already selected
+lesson as the argument instead of calling `$fw:spin` blank.
 
 Good upstream arguments look like:
 
@@ -102,8 +105,9 @@ Good upstream arguments look like:
 - `Capture the compact plan-work-commit correction for Flywheel's project workflow`
 - `Refresh docs/solutions/workflow-issues/test-fixture-setup-2026-04-18.md`
 
-If the input clearly names a selected candidate from `$flywheel:work` or another
-stage, **skip candidate rediscovery in Phase 0** and move straight into capture.
+If the input clearly names a selected candidate from `$fw:commit`, `$fw:work`, or
+another stage, **skip candidate rediscovery in Phase 0** and move straight into
+capture.
 
 ## What It Writes
 
@@ -162,7 +166,7 @@ If `<spin_input>` is blank:
    - the current diff
    - the latest plan in `docs/plans/`
    - resolved review findings
-   - the commit summary or PR story
+   - the planned commit summary or PR story
    - the final implementation summary
    - the tests or validation work that proved the fix
    - answers and preferences surfaced during `ideate`, `brainstorm`, or `plan`
@@ -372,5 +376,10 @@ Summarize:
 - the lesson captured
 - what future task should now be easier
 - any additional candidate learnings still worth spinning
+
+When `spin` was launched from the finish path, hand back to `$fw:commit` so the
+solution document can be included in the same commit set. Use the canonical
+handoff card from `../references/workflow-gates.md` with `Stage: fw:spin`,
+the solution document as `Artifact`, and `Next: fw:commit`.
 
 If multiple good candidates remain, offer to spin the next one.

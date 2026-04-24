@@ -1,5 +1,5 @@
 ---
-title: Use $flywheel:start as the Flywheel router entrypoint
+title: Use $fw and $fw:start as Flywheel router entrypoints
 date: 2026-04-19
 category: developer-experience
 module: flywheel-command-surface
@@ -14,10 +14,12 @@ files_touched:
   - evals/flywheel/
 applies_when:
   - the plugin needs one canonical router command for stage selection
+  - a bare plugin-root invocation should choose the right workflow stage
   - the plugin namespace and the umbrella router skill would otherwise share the same name
 symptoms:
-  - the umbrella router surfaced as $flywheel:flywheel
+  - the umbrella router surfaced as $fw:flywheel
   - repo docs and prompts implied a simpler router command than the runtime exposed
+  - users expect bare $fw or $flywheel to enter the main router instead of naming a stage
 root_cause: contract_mismatch
 resolution_type: workflow_improvement
 tags:
@@ -29,73 +31,93 @@ tags:
 related_docs:
   - docs/solutions/workflow-issues/treat-user-facing-skill-renames-as-contract-sweeps-2026-04-19.md
   - docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md
+  - docs/solutions/developer-experience/protect-authored-skills-during-npx-skills-cleanup-2026-04-23.md
 ---
 
-# Use $flywheel:start as the Flywheel router entrypoint
+# Use $fw and $fw:start as Flywheel router entrypoints
 
 ## Context
 
 Flywheel already had a clean plugin namespace, `flywheel`, but its umbrella
 router skill was also named `flywheel`. That produced the awkward invocation
-`$flywheel:flywheel` while the repo docs and prompts were teaching a simpler
-router concept.
+`$fw:flywheel` while the repo docs and prompts were teaching a simpler
+router concept. Later, users also expected the plugin root itself to behave as
+the router rather than forcing a stage suffix before Flywheel can route the
+request.
 
 ## Guidance
 
 Keep the plugin namespace and the umbrella router skill distinct.
 
-For Flywheel, the canonical router entrypoint is:
+For Flywheel, the canonical router entrypoints are:
 
 ```text
-$flywheel:start
+$fw
+$fw:start
 ```
+
+If a user writes bare `$flywheel` as plain text, treat it the same way, then
+keep rendering follow-up commands as `$fw:<stage>`.
 
 Keep stage skills under the same namespace:
 
 ```text
-$flywheel:plan
-$flywheel:work
-$flywheel:spin
+$fw:shape
+$fw:work
+$fw:review
+$fw:commit
+$fw:spin
 ```
 
 Do not use a router skill name that simply repeats the plugin namespace when
 the runtime will expose that repetition directly to users.
 
+If Codex still shows `$start` after the plugin cache exposes `fw:start`, do not
+rework the router naming first. Check for stale standalone Flywheel skills under
+`~/.agents/skills` and rerun `make install/codex`; Codex can load those
+standalone skills separately from the plugin-bundled `fw:*` surface.
+
 ## Why This Matters
 
-A distinct router name removes namespace stutter, makes the command surface
-more legible, and aligns the plugin package model with the callable skill
-model. It also gives the repo one stable string to teach everywhere.
+A distinct router name removes namespace stutter, while a bare `$fw` root alias
+keeps the easiest entrypoint ergonomic. The repo still teaches one canonical
+stage namespace, `$fw:<stage>`, so follow-up commands remain explicit and
+stable.
 
 ## When to Apply
 
 - when a plugin exposes one umbrella router plus multiple stage skills
+- when a plugin root invocation should enter the umbrella router
 - when the plugin namespace and the default router name would otherwise collide
 - when docs, prompts, or eval inputs need one explicit router command
+- when stale standalone skills could make Codex show an older unnamespaced
+  command alongside the correct plugin command
 
 ## Examples
 
 Preferred router:
 
 ```text
-$flywheel:start
+$fw
+$fw:start
 ```
 
 Stage execution stays explicit:
 
 ```text
-$flywheel:start
-$flywheel:brainstorm
-$flywheel:plan
+$fw:shape
+$fw:work
+$fw:review
 ```
 
 Avoid the repeated form:
 
 ```text
-$flywheel:flywheel
+$fw:flywheel
 ```
 
 ## Related
 
 - [Treat user-facing skill renames as contract sweeps](docs/solutions/workflow-issues/treat-user-facing-skill-renames-as-contract-sweeps-2026-04-19.md)
 - [Keep eval suite IDs separate from runtime skill names](docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md)
+- [Protect Authored Skills During npx skills Cleanup](docs/solutions/developer-experience/protect-authored-skills-during-npx-skills-cleanup-2026-04-23.md)

@@ -1,17 +1,17 @@
 ---
 name: debug
-description: "Investigate bugs systematically, prove the causal hypothesis, and either fix them with a red failing test or route the design problem back into brainstorming or planning. Use for test failures, regressions, production bugs, stack traces, and 'why is this broken?' work."
+description: "Investigate and fix bugs from evidence. Use for failures, regressions, stack traces, or unclear broken behavior."
 metadata:
   argument-hint: "[issue, stack trace, failing test, reproduction steps, or broken behavior]"
 ---
 
 # Debug and Prove
 
-`$flywheel:debug` is the Flywheel bug-investigation path.
+`$fw:debug` is the Flywheel bug-investigation path.
 
 If the work starts from live operational evidence and the immediate job is to
-choose mitigation, rollback, or patch posture, start with `$flywheel:incident`
-instead. Use `$flywheel:debug` after the incident frame is clear enough to pursue a
+choose mitigation, rollback, or patch posture, start with `$fw:incident`
+instead. Use `$fw:debug` after the incident frame is clear enough to pursue a
 causal proof.
 
 The goal is not to guess a fix. The goal is to:
@@ -20,7 +20,7 @@ The goal is not to guess a fix. The goal is to:
 2. trace the causal chain
 3. prove the hypothesis
 4. either fix it with a red failing test or route the deeper design problem
-   into `$flywheel:brainstorm` or `$flywheel:plan`
+   into `$fw:brainstorm` or `$fw:plan`
 
 **When directly invoked, always debug.** Do not skip to code changes just
 because the failure "looks obvious."
@@ -40,7 +40,7 @@ Interpret the input as:
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -60,10 +60,10 @@ maintain a short task list.
    prove it with a failing test or equivalent failing reproducer before the
    implementation.
 5. **Design problems route upstream** - if the root cause reveals the design is
-   wrong or underspecified, capture that and route into `$flywheel:brainstorm` or
-   `$flywheel:plan` instead of papering over it.
+   wrong or underspecified, capture that and route into `$fw:brainstorm` or
+   `$fw:plan` instead of papering over it.
 6. **No completion claims without fresh verification** - use
-   `$flywheel:verify` discipline before saying the bug is fixed.
+   `$fw:verify` discipline before saying the bug is fixed.
 7. **Reuse prior lessons without trusting them blindly** - when the active
    repo's `docs/solutions/` contains a closely related failure or workaround,
    use it to avoid repeating dead ends, then verify that the current bug is
@@ -130,11 +130,11 @@ If the system crosses multiple components, add targeted diagnostic
 instrumentation at boundaries before proposing a fix.
 
 If the investigation turns into telemetry or instrumentation design, load
-`$flywheel:observability` instead of improvising a support strategy from memory. If the
-main gap is log-event shape or logging quality, load `$flywheel:logging`.
+`$fw:observability` instead of improvising a support strategy from memory. If the
+main gap is log-event shape or logging quality, load `$fw:logging`.
 
 If the issue is still live, the blast radius is not yet bounded, or rollback
-vs patch is still an open decision, route to `$flywheel:incident` before continuing
+vs patch is still an open decision, route to `$fw:incident` before continuing
 with local bug-fix work.
 
 ### Phase 2: State the Causal Hypothesis
@@ -162,11 +162,15 @@ the red signal exists or route the work upstream.
 
 Required sequence:
 
-1. create or isolate the red failing test or reproducer
-2. confirm it fails for the reason your hypothesis predicts
-3. implement the minimal fix
-4. rerun the red test until it turns green
-5. run the broader relevant checks
+1. load `test-driven-development` unless the reproducer is a non-test
+   executable proof such as a CLI command or manual fixture
+2. create or isolate the red failing test or reproducer
+3. confirm it fails for the reason your hypothesis predicts
+4. implement the minimal fix
+5. rerun the red test until it turns green
+6. refactor only after green when cleanup is useful, then rerun the target
+   proof
+7. run the broader relevant checks
 
 #### Route B: Design or Requirements Problem
 
@@ -179,8 +183,8 @@ Use this route when:
 In that case:
 
 - summarize the root cause and why it is a design problem
-- route to `$flywheel:brainstorm` if the behavior or scope is still unclear
-- route to `$flywheel:plan` if the desired behavior is clear but the execution shape
+- route to `$fw:brainstorm` if the behavior or scope is still unclear
+- route to `$fw:plan` if the desired behavior is clear but the execution shape
   needs redesign
 - carry forward the failing test or reproducer that the later implementation
   must satisfy

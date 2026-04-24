@@ -30,6 +30,7 @@ Current suites:
 - `document-review`
 - `flywheel`
 - `flywheel-architecture-change`
+- `flywheel-handoff-gates`
 - `flywheel-runtime-change`
 - `flywheel-incident-response`
 - `fw-brainstorm`
@@ -40,6 +41,7 @@ Current suites:
 - `fw-polish`
 - `fw-run`
 - `fw-setup`
+- `fw-shape`
 - `fw-work`
 - `fw-worktree`
 - `fw-review`
@@ -47,6 +49,7 @@ Current suites:
 - `fw-docs`
 - `fw-commit`
 - `fw-spin`
+- `fw-test-driven-development`
 - `fw-optimize`
 - `maintainability`
 - `logging`

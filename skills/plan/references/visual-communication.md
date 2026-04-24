@@ -1,6 +1,6 @@
 # Visual Communication in Plan Documents
 
-Section 3.4 of `$flywheel:plan` covers diagrams about the *solution being planned*.
+Section 3.4 of `$fw:plan` covers diagrams about the *solution being planned*.
 This guidance covers a different concern: visual aids that help readers
 *navigate and comprehend the plan document itself* — dependency graphs,
 interaction diagrams, and comparison tables.

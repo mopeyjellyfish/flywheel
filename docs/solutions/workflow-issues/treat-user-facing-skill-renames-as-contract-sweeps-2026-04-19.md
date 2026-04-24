@@ -80,7 +80,7 @@ runtime, and eval coverage stops testing the canonical user path.
 
 ## Examples
 
-For the router rename to `$flywheel:start`, the sweep touched:
+For the router rename to `$fw:start`, the sweep touched:
 
 ```text
 skills/start/SKILL.md
@@ -93,7 +93,7 @@ evals/flywheel/README.md
 
 ## Related
 
-- [Use $flywheel:start as the Flywheel router entrypoint](docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md)
+- [Use $fw and $fw:start as Flywheel router entrypoints](docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md)
 - [Keep eval suite IDs separate from runtime skill names](docs/solutions/developer-experience/keep-eval-suite-ids-separate-from-runtime-skill-names-2026-04-19.md)
 - [Journey evals without a harness redesign](docs/solutions/developer-experience/journey-evals-without-a-harness-redesign-2026-04-19.md)
 - [Make commit the user-facing finish stage and move message drafting into a helper](docs/solutions/workflow-issues/make-commit-the-user-facing-finish-stage-2026-04-21.md)

@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:review"
+  display_name: "$fw:review"
   short_description: "Run structured pre-merge review"
-  default_prompt: "Use $flywheel:review to run a structured pre-merge code review with confidence-gated findings, specialist personas for simplicity, maintainability, patterns, and architecture when warranted, and a clear merge verdict."
+  default_prompt: "Use $fw:review to run a structured pre-merge code review with confidence-gated findings, specialist personas for simplicity, maintainability, patterns, and architecture when warranted, and a clear merge verdict."

@@ -24,3 +24,6 @@ When `mode:headless` appears, does it respect headless constraints?
 ### Workflow Fit
 
 Does it route the reviewed document into the correct downstream workflow?
+Strong passes distinguish requirements findings that should return to questions
+or brainstorming from plan findings that should revise, deepen, or block work
+until explicitly accepted.

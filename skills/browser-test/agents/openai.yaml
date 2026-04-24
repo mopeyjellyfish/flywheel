@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:browser-test"
+  display_name: "$fw:browser-test"
   short_description: "Run browser acceptance checks with playwright-cli"
-  default_prompt: "Use $flywheel:browser-test to prove browser-visible changes with fresh playwright-cli evidence before review or commit."
+  default_prompt: "Use $fw:browser-test to prove browser-visible changes with fresh playwright-cli evidence before review or commit."

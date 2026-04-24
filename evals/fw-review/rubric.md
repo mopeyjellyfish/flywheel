@@ -17,6 +17,9 @@ when the diff evidence justifies it.
 ### Risk Focus
 
 Does it prioritize bugs, regressions, missing tests, and merge risk?
+Strong passes also treat missing red/green/refactor evidence for plan units
+marked `tdd` as a concrete testing or requirements-completeness risk unless a
+valid exception was recorded.
 
 ### Requirements Completeness
 
@@ -43,6 +46,8 @@ leaving it as detached background.
 ### Commit Handoff
 
 Does it preserve commit as the downstream step?
+Strong passes carry review verdict, blocking status, evidence, and any residual
+work into the canonical handoff card before commit.
 
 ### Review Budget Discipline
 

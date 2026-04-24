@@ -1,0 +1,4 @@
+interface:
+  display_name: "$fw:shape"
+  short_description: "Shape repo work before implementation"
+  default_prompt: "Use $fw:shape to choose the right ideation, brainstorming, planning, or deepening path, produce the next shaping artifact, and hand ready work to $fw:work."

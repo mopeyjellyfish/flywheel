@@ -17,4 +17,4 @@ Always decide explicitly:
 - what signal or time box would force a different decision
 
 If a rollback or disablement changes live behavior materially, route through
-`$flywheel:rollout` so validation and rollback posture stay explicit.
+`$fw:rollout` so validation and rollback posture stay explicit.

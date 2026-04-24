@@ -22,7 +22,7 @@ tools/evals/      Isolated eval harness workspace and CLI
 - `make install/codex/force-link` repoints the Codex install to this checkout when another repo or worktree is linked.
 - `make install/claude` refreshes the local Claude marketplace install and runs the same validation loop for Claude.
 - `make install/claude/force-source` repoints the Claude marketplace source to this checkout.
-- `make install/skills/global` installs Flywheel through `npx skills add` from the local checkout's `skills/` package and fails fast if that local package is missing or empty.
+- `make install/skills/global` installs Flywheel through `npx skills add` from the local checkout's `skills/` package for non-Codex skills-CLI hosts and fails fast if that local package is missing or empty. Codex should use the plugin install because standalone global skills appear as unnamespaced commands such as `$start`.
 - `make install/skills/project` is a safe repo-root no-op after validating the local `skills/` source because project scope resolves to `./skills`, which is Flywheel's authored source tree.
 - `make uninstall/skills` removes Flywheel `npx skills` installs from global scope and treats repo-root project scope as metadata cleanup/no-op so it never deletes the authored `skills/` tree.
 - `make uninstall/all` removes Flywheel from Codex and Claude and also clears Flywheel `npx skills` installs so a later install starts from a clean host state.
@@ -51,10 +51,10 @@ Bug reports often come from an installed plugin rather than the current checkout
 
 ## Naming Conventions
 - Use lowercase kebab-case for skill directories, frontmatter `name`, helper script names, and most user-facing identifiers.
-- Prefer short single-word stage names when clarity stays intact. The canonical core loop is `start`, `brainstorm`, `plan`, `work`, `review`, `commit`, and `spin`.
+- Prefer short single-word stage names when clarity stays intact. The canonical visible loop is `start` routing into `shape`, `work`, `review`, optional `spin`, and `commit`; `shape` owns the internal `ideate`, `brainstorm`, `plan`, and `deepen` modes.
 - Keep explicit compounds when shortening would make the surface worse, for example `browser-test`, `document-review`, `commit-message`, and `worktree`.
 - Keep runtime skill names and eval suite ids separate when that improves clarity. Runtime commands stay `fw:<name>`; eval suites may stay prefixed, such as `fw-review`.
-- Use the namespaced Flywheel command surface in docs and prompts: `$fw:<stage>` in Codex and `/fw:<stage>` in Claude Code. Do not reintroduce legacy `/flywheel:*`, `$flywheel:*`, or ambiguous unnamespaced built-ins.
+- Use the namespaced Flywheel command surface in docs and prompts: `$fw` or `$fw:<stage>` in Codex and `/fw:<stage>` in Claude Code. Bare `$flywheel` is accepted only as a root-router text alias for `$fw:start`; do not reintroduce legacy `/flywheel:*`, `$flywheel:*`, or ambiguous unnamespaced stage forms.
 - Treat user-facing renames as contract sweeps across the repo, not single-file edits.
 
 ## Repository Docs Convention
@@ -81,6 +81,10 @@ When in doubt:
 - Every skill must include YAML frontmatter with `name` and `description`.
 - Keep `name` aligned with the directory name.
 - Write `description` as “what it does” plus “when to use it.” Quote the value if it contains a colon.
+- Keep `description` concise because hosts load the skill catalog before loading
+  any individual skill. Target less than 150 characters on average and less than
+  180 characters for any single skill; `make doctor` enforces this context
+  budget.
 - Prefer backtick path references such as `` `references/file.md` `` or `` `../references/file.md` `` inside `SKILL.md` files. Avoid markdown links for local reference files; they are harder for agents to resolve correctly.
 - Keep large or conditional reference material in `references/` instead of inlining it into the main skill body.
 - When one skill refers to another, prefer semantic wording such as “load the `document-review` skill” unless the text is intentionally teaching the published command syntax.
@@ -116,7 +120,8 @@ When a skill needs user input, default to the host’s blocking question tool an
 - Known equivalents are `AskUserQuestion` in Claude Code, `request_user_input` in Codex, and `ask_user` in Gemini.
 - In Claude Code, `AskUserQuestion` is a deferred tool. If its schema is not already loaded, load it through `ToolSearch` with `select:AskUserQuestion` before falling back. A pending schema load is not a valid reason to ask in plain text.
 - In Codex, use `request_user_input` when the active runtime exposes it. Some edit-mode sessions do not expose that tool.
-- Ask one question at a time. Default to 2-4 options, recommended option first, and rely on the host’s native free-form path when it exists.
+- A structured choice means a blocking tool call, not a markdown menu in chat. Ask one question at a time. Default to 2-3 portable options, recommended option first, and rely on the host’s native free-form path when it exists. Use a fourth explicit option only when the active host schema supports it; Codex `request_user_input` currently expects 2-3 explicit choices and provides its own free-form path.
+- Claude Code supports multi-select with `AskUserQuestion.multiSelect`; Codex `request_user_input` is currently mutually exclusive, so use sequential single-select questions or the fallback chat protocol for genuine multi-select choices.
 - If no blocking question tool exists in the active harness, or the tool call errors, present numbered options in chat and wait for the user’s reply before continuing. Never silently skip the question.
 - Narrow exception: if there are 5 or more genuinely relevant options and trimming them would hide real user choice, use a numbered chat list instead of forcing the menu into the 4-option cap. Apply that only after verifying that no option can be removed, merged, or moved into nearby prose. Include a free-form hint such as “Pick a number or describe what you want.”
 - Platform note: this guidance reflects current behavior as of April 2026. `AskUserQuestion` is currently deferred in Claude Code, and `request_user_input` in Codex is currently limited to plan-capable modes. Re-verify these constraints before carrying the workaround forward.

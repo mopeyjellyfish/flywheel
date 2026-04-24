@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:polish"
+  display_name: "$fw:polish"
   short_description: "Iterate on browser-visible features with playwright-cli"
-  default_prompt: "Use $flywheel:polish to run an interactive browser polish loop with playwright-cli, then finish with fresh browser proof."
+  default_prompt: "Use $fw:polish to run an interactive browser polish loop with playwright-cli, then finish with fresh browser proof."

@@ -1,6 +1,6 @@
 # Persona Loading Guide
 
-This file defines the loading order for `$flywheel:review`. The goal is to make review
+This file defines the loading order for `$fw:review`. The goal is to make review
 selection deterministic for frontier models and cheap to extend over time.
 
 The ordering is deliberate:
@@ -74,4 +74,4 @@ When adding a new reviewer:
 4. keep `SKILL.md` orchestration generic; do not hardcode every new reviewer
    into the main workflow body
 
-This keeps `$flywheel:review` stable while the reviewer library grows.
+This keeps `$fw:review` stable while the reviewer library grows.

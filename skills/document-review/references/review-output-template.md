@@ -34,7 +34,7 @@ appears separately; stack rank is work ordering, not a replacement for severity.
 
 - Fixed stale section reference from "Phase 3.2" to "Phase 3.5" (coherence)
 - Standardized "brainstorm doc" to "requirements document" where the doc used both terms interchangeably (coherence)
-- Added missing next-step arrow to `$flywheel:plan` in `## Next Steps` because it was mechanically implied by the resolved blockers state (feasibility)
+- Added missing next-step arrow to `$fw:plan` in `## Next Steps` because it was mechanically implied by the resolved blockers state (feasibility)
 
 ### P1 -- Should Fix
 

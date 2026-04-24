@@ -1,0 +1,33 @@
+{
+  "id": "fw-shape",
+  "skill": "fw:shape",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_mode",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Mode Selection",
+    "Artifact Discipline",
+    "Workflow Boundary",
+    "Handoff Quality",
+    "Interaction Fit"
+  ],
+  "criticalDimensions": [
+    "Mode Selection",
+    "Artifact Discipline",
+    "Workflow Boundary",
+    "Handoff Quality"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "vague_feature_to_brainstorm",
+    "requirements_doc_to_plan",
+    "existing_plan_to_deepen"
+  ]
+}

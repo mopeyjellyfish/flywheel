@@ -6,7 +6,7 @@ usage() {
 Usage:
   skills-install.sh [--scope global|project] [--source auto|local|published] [--dry-run]
 
-Install Flywheel through the `skills` CLI for Codex, Claude Code, and OpenCode.
+Install Flywheel through the `skills` CLI for Claude Code and OpenCode.
 
 Options:
   --scope <scope>    Install scope: global or project (default: global)
@@ -17,6 +17,8 @@ Options:
 Notes:
   - local source uses the repo's `skills/` directory directly
   - auto prefers local source and falls back to the published GitHub package
+  - Codex should use the Flywheel plugin install instead; standalone global
+    skills appear in Codex as unnamespaced commands such as $start
   - project scope installs into the current working directory's `skills/`
   - project scope is a no-op when that directory is this repo's authored source tree
 EOF
@@ -155,7 +157,7 @@ if [ "$INSTALL_SCOPE" = "project" ] && same_existing_dir "$PROJECT_SKILLS_DIR" "
   exit 1
 fi
 
-CMD=(npx -y skills add "$SOURCE" --skill '*' --agent codex --agent claude-code --agent opencode --yes)
+CMD=(npx -y skills add "$SOURCE" --skill '*' --agent claude-code --agent opencode --yes)
 
 if [ "$INSTALL_SCOPE" = "global" ]; then
   CMD+=(--global)

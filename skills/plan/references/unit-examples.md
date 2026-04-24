@@ -6,7 +6,7 @@ or repairing output that is drifting from the required unit schema.
 These examples are about **shape**, not domain. Reuse the structure and field
 semantics. Adapt the file paths, patterns, and proof points to the actual repo.
 
-`Execution mode` signals whether `$flywheel:work` may treat a unit as
+`Execution mode` signals whether `$fw:work` may treat a unit as
 `parallel-ready` after dependencies resolve. It is still subject to a fresh
 shared-write safety check during execution.
 

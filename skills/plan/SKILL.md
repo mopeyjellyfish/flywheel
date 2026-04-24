@@ -1,6 +1,6 @@
 ---
 name: plan
-description: "Create structured implementation plans from a requirements document, bug report, feature idea, or rough description. Planning is read-only: it should produce a plan the user can review before any execution starts. Also deepen existing plans when the user explicitly asks."
+description: "Create read-only implementation plans. Use for requirements, bug reports, feature ideas, or rough tasks before execution."
 metadata:
   argument-hint: "[optional: feature description, requirements doc path, plan path to deepen, or task to plan]"
 ---
@@ -10,8 +10,8 @@ metadata:
 Use the actual current date from runtime context when dating plans and
 searching for recent documentation.
 
-`$flywheel:brainstorm` defines **WHAT** to build. `$flywheel:plan` defines **HOW** to build
-it. `$flywheel:work` executes the plan only after the user explicitly approves
+`$fw:brainstorm` defines **WHAT** to build. `$fw:plan` defines **HOW** to build
+it. `$fw:work` executes the plan only after the user explicitly approves
 that next step. A prior brainstorm is useful context but not required —
 planning can start from a requirements doc, a bug report, a feature idea, or a
 rough description.
@@ -25,13 +25,19 @@ This workflow produces a durable implementation plan. It is a read-only,
 collaborative stage. It does **not** implement code, run tests, or silently
 transition into execution-time work. After the plan file exists and the
 confidence check completes, it must run `document-review` on that plan and end
-with a user choice between `$flywheel:deepen` and `$flywheel:work`.
+with a user choice to address review findings, deepen the plan, or start
+`$fw:work`.
+
+When planning starts from a requirements, spec, or design document whose review
+state is unknown, offer source document review before drafting the plan. Use that
+review to catch simplification, feasibility, scope, and supportability issues
+that should be resolved by questions or brainstorming before planning continues.
 
 ## Interaction Method
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -46,7 +52,7 @@ When multiple implementation or reliability postures are viable, present a
 short predicted choice list with the recommended label first and rely on the
 host's native freeform final path when it exists.
 When a planning question has a predictable answer space, prefer the same
-recommended-first 2-4 option shape instead of a broad open-ended prompt.
+recommended-first portable option shape instead of a broad open-ended prompt.
 
 Prefer to ask at least one targeted planning question when the answer would
 materially improve scope, sequencing, tradeoffs, or execution safety. Treat the
@@ -85,13 +91,15 @@ needs:
   plan should be strengthened after the first draft is written.
 - Read `references/plan-handoff.md` only after the plan file exists on disk and
   the confidence check is complete.
+- Read `../references/workflow-gates.md` after the plan file exists and before
+  presenting the final user choice.
 - Read `../observability/references/service-readiness-matrix.md` only when the
   work changes runtime behavior, contracts, retries, queues, migrations, or
   other blast-radius-sensitive service boundaries.
 
 ## Core Principles
 
-1. **Use requirements as the source of truth** — if `$flywheel:brainstorm` produced a
+1. **Use requirements as the source of truth** — if `$fw:brainstorm` produced a
    requirements document, planning should build from it rather than re-inventing
    behavior.
 2. **Decisions, not code** — capture approach, boundaries, files, dependencies,
@@ -108,17 +116,18 @@ needs:
    instructions.
 7. **Keep planning approval-gated** — a plan should be understandable enough
    for the user to review what will be worked on before `work` begins.
-8. **Use TDD where it materially fits** — plans should prefer a test-first
-   posture for meaningful feature work and for code paths that are already
-   reasonably testable. Do not force TDD onto configuration-only changes,
-   purely mechanical edits, or areas where the repo shape makes upfront tests
-   disproportionate. When a different posture is better, state it briefly and
-   explain why.
+8. **Default behavior changes to TDD** — feature work, bug fixes, public
+   contract changes, regression-prone paths, and behavior-preserving refactors
+   should plan a `tdd` posture unless an explicit exception applies. Use
+   `characterization` for fragile existing behavior that must be pinned first,
+   and `no-new-tests` only for generated, configuration-only, documentation-
+   only, trivial mechanical, or otherwise disproportionate units. State the
+   exception and verification path whenever the unit is not `tdd`.
 9. **Plan the testing strategy, not just the code changes** — every software
    plan should state how new or changed behavior will be tested, which existing
    test idioms to follow, whether to extend current tests or add new ones, and
    which public contracts must stay protected. Exact test or coverage commands
-   belong to the host project's instructions or `$flywheel:work`, not the plan. When
+   belong to the host project's instructions or `$fw:work`, not the plan. When
    TDD fits, each material hypothesis should map to a concrete red signal and a
    green completion signal.
 10. **Make runtime tradeoffs explicit** — when a plan changes retries,
@@ -151,9 +160,10 @@ Every plan should contain:
   `characterization`, or `no-new-tests`, with a brief reason
 - per implementation unit, an explicit execution mode chosen from `serial` or
   `parallel-ready`, with a brief reason
-- an explicit testing strategy that uses TDD where appropriate, aligns with
-  `AGENTS.md`, `CLAUDE.md`, and local testing references when present, and
-  assumes repo tooling exists even when command discovery is deferred
+- an explicit testing strategy that defaults behavior-bearing work to TDD,
+  aligns with `AGENTS.md`, `CLAUDE.md`, and local testing references when
+  present, and assumes repo tooling exists even when command discovery is
+  deferred
 - for `tdd` units, 1-3 material hypotheses with explicit red and green proof
   points grounded in existing or new tests
 - clear public-contract coverage for any changed user-facing, API, CLI, schema,
@@ -175,8 +185,8 @@ Every plan should contain:
 
 A plan is ready when an implementer can start confidently without needing the
 plan to write the code for them, and when the user can review what execution
-would do before deciding whether to `$flywheel:deepen` the plan or start
-`$flywheel:work`. The handoff should also make it easy for the user to see what
+would do before deciding whether to `$fw:deepen` the plan or start
+`$fw:work`. The handoff should also make it easy for the user to see what
 changed during planning, what remains open, what the review pass found, and
 what execution would start with.
 
@@ -280,7 +290,7 @@ If no relevant requirements document exists, or the input needs more structure:
 - assess whether the request is already clear enough for direct technical
   planning
 - if the ambiguity is mainly product framing, user behavior, or scope
-  definition, recommend `$flywheel:brainstorm` as a suggestion — but still offer to
+  definition, recommend `$fw:brainstorm` as a suggestion — but still offer to
   continue planning here
 - if the user wants to continue here, establish:
   - problem frame
@@ -293,14 +303,14 @@ Keep the bootstrap brief.
 
 If major product questions remain unresolved:
 
-- recommend `$flywheel:brainstorm` again
+- recommend `$fw:brainstorm` again
 - if the user still wants to continue, require explicit assumptions before
   proceeding
 
 If the request turns out to be a symptom without a known root cause, say so
 clearly and do a brief investigation first rather than pretending planning can
 start responsibly. If the issue is already understood and the fix is obvious,
-suggest `$flywheel:work` as a faster alternative while still allowing planning.
+suggest `$fw:work` as a faster alternative while still allowing planning.
 
 #### 0.5 Classify Outstanding Questions Before Planning
 
@@ -315,13 +325,48 @@ If the origin document contains `Resolve Before Planning` or similar blockers:
 If true product blockers remain:
 
 - surface them clearly
-- ask whether to:
-  1. resume `$flywheel:brainstorm` to resolve them
-  2. convert them into explicit assumptions or decisions and continue
+- call the host question tool:
+  1. **Resume `$fw:brainstorm` (Recommended)** - resolve behavior, scope, or
+     success criteria before planning
+  2. **Continue with assumptions** - convert each blocker into an explicit
+     assumption or decision, then continue planning
 
 Do not continue planning while true blockers remain unresolved.
 
-#### 0.6 Assess Plan Depth
+#### 0.6 Offer Source Document Review Before Planning
+
+If the primary input is a requirements, spec, or design document and it was not
+just reviewed in the current session, ask:
+
+```text
+Review the source document before planning?
+```
+
+Call the host question tool with a portable `2-3` option menu:
+
+1. **Review first (Recommended)** - run `document-review` on the source document
+   to find simplification, feasibility, scope, and supportability issues before
+   drafting the implementation plan
+2. **Continue planning** - draft the plan from the current document and capture
+   any uncertainty as explicit assumptions or deferred planning questions
+3. **Return to brainstorm** - resolve product or scope questions before planning;
+   include this option only when the source document has material ambiguity
+
+Skip the prompt only when the document was already reviewed in this session, the
+document contains clear recent review evidence, or the user explicitly asks to
+plan without another review.
+
+If the user chooses review first, run `document-review` on the source document.
+Use `mode:headless` in automated or pipeline contexts. After review:
+
+- route product behavior, scope, success criteria, or definition-of-done findings
+  back to `$fw:brainstorm` or explicit user questions before planning
+- carry technical feasibility, sequencing, validation, rollout, and supportability
+  findings into the plan as constraints or implementation units
+- if residual `P0` or `P1` findings remain, ask whether to resolve them first or
+  continue with explicit assumptions before drafting the plan
+
+#### 0.7 Assess Plan Depth
 
 Classify the work into one of these depths:
 
@@ -384,15 +429,18 @@ when the change is local and low-blast-radius.
 #### 1.1b Detect Execution Posture Signals
 
 Decide whether the plan should carry a lightweight execution posture signal.
-Prefer TDD for substantial feature work and for code that is already easy to
-exercise. Use another posture when the change is config-only, mechanical, or
+Default to TDD for behavior-bearing units. Use another posture only when the
+change is generated, configuration-only, documentation-only, mechanical,
+styling/text-only with no unit-testable behavior, characterization-first, or
 not reasonably testable at planning time.
 
 For each implementation unit, choose exactly one test posture:
 
 - `tdd` — use when the unit changes externally observable behavior, a public
-  contract, or a regression-prone code path that is reasonably testable now.
-  This posture requires explicit red and green proof points.
+  contract, a bug fix, a regression-prone code path, or a behavior-preserving
+  refactor that is reasonably testable now. This posture requires explicit red
+  and green proof points and tells `$fw:work` to load the
+  `test-driven-development` skill before implementation.
 - `characterization` — use when the first planning need is to lock current
   behavior in a fragile, legacy, or poorly understood area before changing it.
   State what behavior must be pinned and why a test-first failing proof point is
@@ -405,7 +453,8 @@ Look for:
 
 - repo instructions already prescribing TDD or another testing flow
 - explicit TDD or test-first requests
-- feature work large enough that a red-green-refactor loop will improve quality
+- feature work, bug fixes, public contract changes, or refactors where a
+  red-green-refactor loop will improve quality
 - characterization-first needs in fragile or legacy areas
 - configuration-only or infrastructure-only edits with little direct behavioral
   surface
@@ -420,7 +469,7 @@ sequencing or risk and cannot be responsibly inferred.
 
 Do not turn this into exact command choreography. If test or coverage tooling is
 not already documented in repo instructions, assume it exists and let
-`$flywheel:work` discover the concrete command path during execution.
+`$fw:work` discover the concrete command path during execution.
 
 When TDD fits, frame the work as a red -> green -> refactor loop at plan level:
 
@@ -643,7 +692,7 @@ Use `Execution mode` deliberately:
 - `serial` — keep the unit ordered or inline even if the file list looks small,
   because it establishes shared decisions, touches cross-cutting seams, or is
   otherwise not a good parallel batch candidate
-- `parallel-ready` — the unit is intentionally bounded so `$flywheel:work` may
+- `parallel-ready` — the unit is intentionally bounded so `$fw:work` may
   consider it for concurrent execution after dependencies are satisfied and a
   fresh shared-write safety check passes
 
@@ -802,7 +851,7 @@ deepened: YYYY-MM-DD  # optional, set when the confidence check substantively st
   existing or new failing test to start from and the passing condition that
   proves the hypothesis]
 - **Tooling assumption:** [Assume repo test and coverage tooling exists. Use
-  documented project instructions when present; otherwise let `$flywheel:work`
+  documented project instructions when present; otherwise let `$fw:work`
   discover the concrete commands]
 - **Public contracts to protect:** [User-facing flows, APIs, CLI flags, event
   payloads, schema-visible behavior, integrations]
@@ -916,7 +965,7 @@ check passes when this unit is implemented correctly. Otherwise `n/a -- [reason]
 - prefer path plus class, component, or pattern references over brittle line
   numbers
 - keep units checkable with `- [ ]`
-- shape units so `$flywheel:work` can map them directly onto host task items
+- shape units so `$fw:work` can map them directly onto host task items
   instead of inventing a second execution breakdown
 - do not include implementation code
 - pseudo-code sketches and Mermaid diagrams are allowed when they communicate
@@ -943,7 +992,7 @@ read `references/visual-communication.md`.
 Before finalizing, check:
 
 - the plan does not invent product behavior that should have been defined in
-  `$flywheel:brainstorm`
+  `$fw:brainstorm`
 - if there was no origin document, the planning bootstrap established enough
   product clarity to plan responsibly
 - every major decision is grounded in the origin document or research
@@ -954,8 +1003,8 @@ Before finalizing, check:
   and any durable testing references when present
 - the testing strategy defines per-unit posture choices using exactly
   `tdd`, `characterization`, or `no-new-tests`
-- the testing strategy uses TDD where it is proportionate and testable, and
-  records explicit exceptions where it is not
+- the testing strategy defaults behavior-bearing units to TDD, and records
+  explicit exceptions where that is not the right posture
 - `tdd` units define 1-3 material hypotheses rather than a vague or bloated
   proof-point list
 - TDD-appropriate units provide clear red and green proof points so the worker
@@ -975,7 +1024,7 @@ Before finalizing, check:
 - the plan contains enough detail for the next implementer to start without
   re-deriving the project's testing approach
 - the plan does not hardcode exact test or coverage command recipes that belong
-  in repo instructions or `$flywheel:work`
+  in repo instructions or `$fw:work`
 - deferred items are explicit and not hidden as fake certainty
 - any high-level technical design is directional rather than copy-paste-ready
 - if the plan originated from a requirements document, every meaningful section
@@ -1039,7 +1088,13 @@ that flow.
 
 #### 5.4 Document Review, Final Checks, and Post-Generation Options
 
-After the confidence check, read `references/plan-handoff.md`. Document review
-is mandatory — do not skip it even if the confidence check already ran.
+After the confidence check, read `references/plan-handoff.md` and
+`../references/workflow-gates.md`. Document review is mandatory — do not skip
+it even if the confidence check already ran.
+
+Apply the `Plan-Ready` gate before offering work. Close with the canonical
+handoff card: Stage, Artifact, Ready, Open decisions, Evidence, and Next. The
+`Ready` field is `conditional` until the user chooses whether to address review
+findings, deepen the plan, or start `$fw:work`.
 
 NEVER CODE. Research, decide, and write the plan.

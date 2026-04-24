@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:commit"
+  display_name: "$fw:commit"
   short_description: "Finish the branch cleanly"
-  default_prompt: "Use $flywheel:commit to finish this branch safely: verify readiness, plan logical commit boundaries, create commit(s), push, create or refresh the PR, and preserve only the material architecture, code-quality, testing, and post-deploy validation story."
+  default_prompt: "Use $fw:commit to finish this branch safely: verify readiness, plan logical commit boundaries, create commit(s), push, create or refresh the PR, and preserve only the material architecture, code-quality, testing, and post-deploy validation story."

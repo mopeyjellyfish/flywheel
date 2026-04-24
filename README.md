@@ -28,14 +28,25 @@ one faster.
 
 ## Install
 
-### Global install for Codex, Claude Code, and OpenCode
+### Codex
 
 ```bash
-npx skills add mopeyjellyfish/flywheel --global --skill '*' --agent codex --agent claude-code --agent opencode --yes
+make install/codex
 ```
 
-This installs Flywheel outside the current project by default and limits the
-install to those three agent targets.
+Codex should use the Flywheel plugin install. The standalone `skills` CLI
+install exposes each skill without the plugin namespace, which makes Codex show
+commands such as `$start` instead of `$fw:start`.
+
+From this checkout, `make install/codex` refreshes the local plugin cache and
+removes standalone global Flywheel skills from `~/.agents/skills` so the
+namespaced `$fw:*` command surface is the only Flywheel surface Codex sees.
+
+### Skills CLI for Claude Code and OpenCode
+
+```bash
+npx skills add mopeyjellyfish/flywheel --global --skill '*' --agent claude-code --agent opencode --yes
+```
 
 From a Flywheel checkout, the matching Make target is:
 
@@ -43,10 +54,10 @@ From a Flywheel checkout, the matching Make target is:
 make install/skills/global
 ```
 
-That target uses `npx skills add` too, but it is local-checkout only. It
-expects this repo to expose an installable `skills/` package and fails fast if
-the local `skills/` tree is missing or empty. It does not silently fall back to
-the published GitHub package.
+That target uses `npx skills add` too, but it is local-checkout only and avoids
+the Codex agent target. It expects this repo to expose an installable `skills/`
+package and fails fast if the local `skills/` tree is missing or empty. It does
+not silently fall back to the published GitHub package.
 
 Then in your tool of choice:
 
@@ -59,10 +70,18 @@ Use the host's native syntax:
 - Codex: `$fw:<stage>`
 - Claude Code: `/fw:<stage>`
 
+In Codex, bare `$fw` is the root router alias for `$fw:start`: it chooses the
+earliest useful stage across `shape -> work -> review -> optional spin -> commit`.
+If a user writes bare `$flywheel`, treat it as the same root request but keep
+follow-up commands on the canonical `$fw:<stage>` surface.
+
 Flywheel's interaction contract is shared across hosts: use the host's
 structured choice UI instead of asking for raw `1/2/3` replies. Claude Code
 uses `AskUserQuestion`, Codex uses `request_user_input` when the active runtime
-exposes it, and OpenCode uses `question`. Risky-edge hook guardrails are
+exposes it, and portable menus default to 2-3 choices so they fit both surfaces.
+That choice surface is a tool call, not a markdown menu; chat options are only
+the fallback when the host tool is unavailable or errors. OpenCode uses
+`question`. Risky-edge hook guardrails are
 bundled with the Claude plugin install. Codex uses an optional global
 `~/.codex/hooks.json` guardrail because current Codex hooks are repo-local or
 user-global rather than plugin-bundled.
@@ -84,28 +103,30 @@ workflow gates, copy:
 ## Workflow
 
 ```text
-shape -> work -> review -> commit -> spin -> repeat
-  ^
-  ideate / brainstorm / plan / deepen
+shape -> work -> review -> optional spin -> commit -> repeat
 ```
+
+That is the critical path. `shape` owns ideation, brainstorming, planning, and
+plan deepening before implementation starts. `$fw` / `$fw:start` is the root
+router for choosing the earliest useful stage; it is not a workflow stage.
+`$fw:run` is an optional wrapper for one bounded coordinated pass through the
+remaining stages.
 
 | Command | Purpose |
 | --- | --- |
-| `$fw:start` | Route a repo task into the right stage when you do not want to pick one yourself. |
-| `$fw:ideate` | Surface and rank the strongest next bets when the work is not chosen yet. |
-| `$fw:brainstorm` | Clarify one direction through user questions, tradeoffs, and requirement shaping. |
-| `$fw:plan` | Turn a chosen direction into an implementation plan. |
-| `$fw:deepen` | Strengthen a reviewed plan before execution starts. |
+| `$fw` or `$fw:start` | Route a repo task into the right stage, then stop at that handoff. |
+| `$fw:shape` | Shape the work through ideation, brainstorming, planning, or plan-deepening before execution. |
 | `$fw:work` | Execute the plan against repo truth and pull in helper stages when the task needs them. |
 | `$fw:review` | Review the finished diff with reviewer personas selected from the change. |
-| `$fw:commit` | Commit, push, and create or refresh the PR with the right context. |
-| `$fw:spin` | Capture durable lessons in `docs/solutions/` so later work starts faster. |
+| `$fw:spin` | Capture durable lessons in `docs/solutions/` before commit when reuse is warranted. |
+| `$fw:commit` | Run the pre-commit spin checkpoint, then commit, push, and create or refresh the PR with the right context. |
 
-`shape` is the interactive front half of the loop. `ideate` helps choose among
-multiple bets. `brainstorm` sharpens one direction with the user. `plan`
-writes the implementation path. Before `work` starts, Flywheel runs
-`document-review` on the plan and lets the user choose whether to `deepen` the
-plan or start execution.
+`shape` is the first main workflow stage. Inside it, `ideate` helps choose
+among multiple bets, `brainstorm` sharpens one direction with the user, `plan`
+writes the implementation path, and `deepen` strengthens a reviewed plan when
+needed. Requirements and spec artifacts can be reviewed for simplification,
+feasibility, and scope before planning; plans are reviewed before `work`, and
+the user chooses whether to address findings, deepen, or start execution.
 
 When topic investigation or current best practices are the real question,
 Flywheel can pull in `research` inside shaping or review to sharpen the next
@@ -116,23 +137,30 @@ Flywheel can pull in focused helper surfaces such as `architecture-strategy`,
 of them into new mandatory visible stages.
 
 `work` is the execution stage. It can pull in `docs`, `debug`, `browser-test`,
-`verify`, `rollout`, `observability`, `logging`, `architecture-strategy`,
-`pattern-recognition`, `maintainability`, `simplify`, `optimize`, or
-`worktree` when the task actually needs them.
+`verify`, `test-driven-development`, `rollout`, `observability`, `logging`,
+`architecture-strategy`, `pattern-recognition`, `maintainability`, `simplify`,
+`optimize`, or `worktree` when the task actually needs them.
 
-`review` is the default gate after work. `commit` finishes the branch cleanly.
-`spin` is how Flywheel stores the lesson so the next task starts with more repo
-knowledge than the last one.
+`review` is the default gate after work. `spin` runs only when there is a durable
+lesson worth preserving, and it runs before `commit` so the solution note can be
+included with the same branch changes. `commit` finishes the branch by default:
+create or confirm the commit, push the branch, and open or refresh the PR. Pass
+`local-only` only when publishing should be skipped.
+
+Main stages use a compact handoff card when a boundary matters: `Stage`,
+`Artifact`, `Ready`, `Open decisions`, `Evidence`, and `Next`. The card keeps
+plans, proof, review verdicts, and commit readiness portable across Codex,
+Claude Code, and later hosts without adding visible stages.
 
 Common starts:
 
-- new feature or vague idea: `$fw:start`, `$fw:ideate`, or `$fw:brainstorm`
-- research a topic or current best practices: `$fw:start`, or
+- new feature or vague idea: `$fw` or `$fw:shape`
+- research a topic or current best practices: `$fw`, or
   `$fw:research` when the research brief itself is the main artifact
-- known scoped change: `$fw:plan`
+- known scoped change: `$fw:shape`
 - architecture or pattern decision: `$fw:architecture-strategy` or `$fw:pattern-recognition`
 - bug with an unclear cause: `$fw:debug`
-- one bounded pass through the remaining stages: `$fw:run`
+- one bounded coordinated pass through the remaining stages: `$fw:run`
 
 ---
 
@@ -158,12 +186,16 @@ make install/codex
 
 Restart the host session after either command finishes.
 
-To install the Flywheel skills through `npx skills` instead of the host-specific
-plugin helpers:
+To install the Flywheel skills through `npx skills` for non-Codex skills-CLI
+hosts:
 
 ```bash
 make install/skills/global
 ```
+
+Do not use this as the Codex install path. Codex reads standalone global skills
+as unnamespaced commands such as `$start`; `make install/codex` removes those
+standalone Flywheel skills and installs the namespaced plugin surface instead.
 
 To install them at project scope in another repo:
 

@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:document-review"
+  display_name: "$fw:document-review"
   short_description: "Review docs with ranked, confidence-scored findings"
-  default_prompt: "Use $flywheel:document-review to review this requirements or plan document and return a ranked fix queue."
+  default_prompt: "Use $fw:document-review to review this requirements or plan document and return a ranked fix queue."

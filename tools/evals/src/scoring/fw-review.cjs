@@ -57,7 +57,7 @@ function deterministicReview(caseItem, output) {
       /keep review (as )?(the )?(main|primary) artifact/i,
       /without turning (it|review) into (a )?standalone research/i
     ]);
-    const routeAway = mentionsAny(output, [/belongs in .*flywheel:research/i, /route to .*flywheel:research/i]);
+    const routeAway = mentionsAny(output, [/belongs in .*fw:research/i, /route to .*fw:research/i, /belongs in .*flywheel:research/i, /route to .*flywheel:research/i]);
     scores["Research Support"] = researchSignal && helperSignal && !routeAway ? 2 : researchSignal ? 1 : 0;
     notes["Research Support"] = researchSignal && helperSignal && !routeAway
       ? "Uses research as targeted support for review rather than replacing review."

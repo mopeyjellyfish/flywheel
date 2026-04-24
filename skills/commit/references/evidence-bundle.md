@@ -30,7 +30,7 @@ of forking a second one.
 Keep raw artifacts in their native stage directories:
 
 - browser proof -> `.context/flywheel/browser/<run-id>/`
-- review artifacts -> `.context/flywheel$flywheel:review/<run-id>/`
+- review artifacts -> `.context/flywheel/review/<run-id>/`
 - optimize outputs -> the tool or repo's local measurement location
 - verification outputs -> inline command output, repo-native files, or another
   local path already used by the verification step
@@ -51,7 +51,7 @@ Keep it short and human-readable. Use these sections in order:
 | ID | Claim | Kind | Source | Sensitivity | PR Use |
 | --- | --- | --- | --- | --- | --- |
 | browser-1 | checkout happy path passed | browser | .context/flywheel/browser/20260419-abc123/final.png | redacted | yes |
-| review-1 | review reached Ready to merge | review | .context/flywheel$flywheel:review/20260419-def456/ | clean | summary-only |
+| review-1 | review reached Ready to merge | review | .context/flywheel/review/20260419-def456/ | clean | summary-only |
 
 ## Ship Notes
 - short bullets a PR can reuse safely
@@ -66,7 +66,7 @@ Allowed values:
 ## Promotion Rules
 
 Only promote evidence into the shared bundle when it materially helps a later
-stage such as `$flywheel:review` or `$flywheel:commit`.
+stage such as `$fw:review` or `$fw:commit`.
 
 Promote:
 
@@ -94,14 +94,14 @@ or dummy-substituted example when the structure matters.
 
 ## Consumer Rules
 
-`$flywheel:commit` is the primary consumer:
+`$fw:commit` is the primary consumer:
 
 - read the shared bundle first when it exists
 - include only items marked `clean` or `redacted` with `PR Use: yes`
 - turn `summary-only` items into prose rather than pasting raw artifacts
 - ignore `local-only` or `PR Use: no` items except for local decision-making
 
-`$flywheel:review`, `$flywheel:optimize`, and `$flywheel:verify` may also
+`$fw:review`, `$fw:optimize`, and `$fw:verify` may also
 append to an existing bundle so later stages do not depend on chat memory.
 
 If no bundle exists, downstream stages should fall back to repo truth and

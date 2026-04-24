@@ -1,13 +1,13 @@
 ---
 name: review
-description: "Structured code review using diff-selected reviewer personas, confidence-gated findings, and a merge/dedup pipeline. Use when reviewing code changes before creating a PR, checking whether a branch is ready to merge, or running a review pass inside a larger Flywheel workflow."
+description: "Run structured code review. Use before PRs or merges to find bugs, regressions, missing tests, and readiness gaps."
 metadata:
   argument-hint: "[blank to review current branch, or provide PR link]"
 ---
 
 # Code Review
 
-`$flywheel:review` reviews code changes with a risk-first, structured workflow.
+`$fw:review` reviews code changes with a risk-first, structured workflow.
 It selects reviewers from diff evidence, dispatches them in parallel when the
 host supports it, keeps synthesis centralized, and keeps mutation bounded.
 
@@ -22,7 +22,7 @@ it and continue the review workflow.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -98,9 +98,11 @@ Do not preload every reference. Load only what the current phase needs:
   behavior, standards, security guidance, or other facts not settled by repo
   truth alone.
 - Read `../commit/references/evidence-bundle.md` only when an existing shared
-  evidence bundle is present or the review artifact should feed `$flywheel:commit`.
+  evidence bundle is present or the review artifact should feed `$fw:commit`.
 - Read `references/review-output-template.md` during synthesis and
   presentation.
+- Read `../references/workflow-gates.md` during synthesis when turning review
+  verdict, blocking status, and evidence into the next handoff.
 
 ## Host Compatibility
 
@@ -129,7 +131,7 @@ This skill is optimized for Codex and Claude Code style hosts:
 
 - Skip all user questions after scope is established.
 - Apply only `safe_auto -> review-fixer` findings.
-- Write a run artifact under `.context/flywheel$flywheel:review/<run-id>/`.
+- Write a run artifact under `.context/flywheel/review/<run-id>/`.
 - Create durable todo files only for unresolved actionable findings whose final
   owner is `downstream-resolver`.
 - Never commit, push, or create a PR from autofix mode.
@@ -138,7 +140,7 @@ This skill is optimized for Codex and Claude Code style hosts:
 
 - Skip all user questions.
 - Never edit files or externalize work.
-- Do not write `.context/flywheel$flywheel:review/<run-id>/`.
+- Do not write `.context/flywheel/review/<run-id>/`.
 - Safe for parallel read-only verification on the same checkout.
 - Do not switch the shared checkout. If a caller wants another branch or PR in
   report-only mode, it must run from an isolated checkout or worktree.
@@ -155,7 +157,7 @@ This skill is optimized for Codex and Claude Code style hosts:
 
 - Apply only `safe_auto -> review-fixer` findings in a single pass.
 - Return all non-auto findings as structured text output.
-- Write a run artifact under `.context/flywheel$flywheel:review/<run-id>/`.
+- Write a run artifact under `.context/flywheel/review/<run-id>/`.
 - Do not create todo files.
 - Do not switch the shared checkout. If a caller passes an explicit PR or
   branch target in headless mode on a shared checkout, emit:
@@ -371,6 +373,12 @@ Confidence tagging:
 If a plan is found, read its `Requirements Trace` and `Implementation Units`.
 Do not block the review if no plan is found.
 
+When implementation units include `Test posture: tdd`, extract the unit labels,
+changed files, `Red signal`, and `Green signal`. Use that expectation later to
+check whether the diff or evidence bundle shows a red-green-refactor path. A
+missing TDD proof is review evidence, not just a process nit, unless the plan
+or diff clearly records a valid exception.
+
 ### Stage 2c: Build A Service-Readiness Frame When Needed
 
 If the diff is runtime-risky, read
@@ -382,7 +390,7 @@ Use that frame to sharpen:
 - reviewer selection, especially observability, reliability, performance,
   data-access, api-contract, data-migrations, and deployment verification
 - verdict reasoning
-- any final handoff into `$flywheel:rollout` or `$flywheel:commit`
+- any final handoff into `$fw:rollout` or `$fw:commit`
 
 ### Stage 2d: Discover Local Prior Learnings
 
@@ -416,7 +424,7 @@ Use these local policy gates to sharpen:
 
 - verdict reasoning
 - residual-work vs commit-readiness language
-- final handoff into `$flywheel:commit`
+- final handoff into `$fw:commit`
 
 Absent config is not a policy violation. Treat local policy as an explicit
 overlay, not a universal Flywheel default.
@@ -431,7 +439,7 @@ Use that bundle to:
 - avoid re-describing browser or verification proof that already exists
 - sharpen commit-readiness reasoning
 - decide whether this review should append its own verdict and artifact path for
-  `$flywheel:commit`
+  `$fw:commit`
 
 ### Stage 2g: Gather Targeted External Context When Needed
 
@@ -532,20 +540,24 @@ itself.
 
 This workflow uses model-tiered review orchestration when the host supports it:
 
-- keep the orchestrator on the strongest available model
-- keep reviewer or fixer subagents on a faster capable model when the platform
-  supports model overrides
+- keep the orchestrator on the strongest available frontier model
+- keep reviewer or fixer subagents on the fastest available frontier-capable
+  model when the platform supports model overrides
+- do not downgrade review quality to a cheap or small model unless the user
+  explicitly asks for a cost- or latency-optimized pass
 - keep reviewer prompts narrow and schema-bound
 - keep returns compact to protect synthesis quality and context window health
 
 If the platform has no model override mechanism, let reviewers inherit the
 default model rather than breaking dispatch.
 
-When overrides are available, use a strong orchestrator tier and a cheaper but
-capable reviewer tier. Prefer capability labels over provider branding:
+When overrides are available, use frontier capability tiers. Prefer capability
+labels over provider branding, then bind them to the latest available GPT or
+Opus model family at dispatch time:
 
-- `strong_orchestrator` for synthesis, policy decisions, and complex merge work
-- `fast_review_worker` for narrow reviewer passes
+- `frontier_orchestrator` for synthesis, policy decisions, and complex merge
+  work
+- `frontier_review_worker` for narrow reviewer passes
 
 Map those tiers to host-native model names only at dispatch time.
 
@@ -556,7 +568,7 @@ dispatching reviewers:
 
 ```bash
 RUN_ID=$(date +%Y%m%d-%H%M%S)-$(head -c4 /dev/urandom | od -An -tx1 | tr -d ' ')
-mkdir -p ".context/flywheel$flywheel:review/$RUN_ID"
+mkdir -p ".context/flywheel/review/$RUN_ID"
 ```
 
 Report-only mode skips run-id generation and file writes.
@@ -600,12 +612,13 @@ Each structured reviewer receives:
 9. stack-pack reference files only for stack- or platform-specific reviewers
    selected by a
    matching pack
+10. TDD expectations from plan units when Stage 2b found any
 
 Reviewer passes are read-only with respect to project code. The one permitted
 write is the reviewer artifact file under:
 
 ```text
-.context/flywheel$flywheel:review/{run_id}/{reviewer_name}.json
+.context/flywheel/review/{run_id}/{reviewer_name}.json
 ```
 
 Each reviewer writes full JSON to disk when a run ID exists and returns compact
@@ -660,6 +673,8 @@ parallel stack-pack reviewers.
 ### Stage 6: Synthesize And Present
 
 Read `references/review-output-template.md`.
+Read `../references/workflow-gates.md` and apply the `Review-Ready` gate before
+declaring the next stage.
 
 Use pipe-delimited markdown tables for interactive findings output. Do not
 present findings as prose blocks.
@@ -682,6 +697,8 @@ Interactive output should contain:
 11. Deployment notes, when that agent ran
 12. Coverage
 13. Verdict
+14. Flywheel handoff using Stage, Artifact, Ready, Open decisions, Evidence,
+    and Next
 
 **Requirements completeness**
 
@@ -691,6 +708,9 @@ When a plan was found:
   downstream-resolver` findings
 - `inferred` plan source: unaddressed requirements become P3 `advisory ->
   human` findings
+- missing red/green/refactor evidence for a plan unit marked `tdd` becomes a
+  testing or requirements-completeness finding unless an explicit exception was
+  recorded
 
 Omit the section entirely when no plan was found.
 
@@ -711,7 +731,7 @@ Scope: <scope-line>
 Intent: <intent-summary>
 Reviewers: <reviewer-list with conditional justifications>
 Verdict: <Ready to merge | Ready with fixes | Not ready>
-Artifact: .context/flywheel$flywheel:review/<run-id>/
+Artifact: .context/flywheel/review/<run-id>/
 
 Applied N safe_auto fixes.
 
@@ -803,7 +823,7 @@ Before delivering the review, verify:
 **Interactive**
 
 - Apply `safe_auto -> review-fixer` findings automatically.
-- Ask a policy question using the exact host question tool named in the host
+- Ask a policy question by calling the exact host question tool named in the host
   interaction contract only when that tool is available and `gated_auto` or
   `manual` findings remain.
 - If only `manual` findings remain, offer residual-work vs report-only choices.
@@ -843,7 +863,7 @@ Before delivering the review, verify:
 In interactive, autofix, and headless modes, write a per-run artifact under:
 
 ```text
-.context/flywheel$flywheel:review/<run-id>/
+.context/flywheel/review/<run-id>/
 ```
 
 Include:
@@ -869,7 +889,7 @@ In autofix mode, create durable todo files only for unresolved actionable
 findings whose final owner is `downstream-resolver`.
 
 If a shared evidence bundle already exists, or if this review is clearly
-feeding `$flywheel:commit`, read `../commit/references/evidence-bundle.md` and append
+feeding `$fw:commit`, read `../commit/references/evidence-bundle.md` and append
 one short review entry to:
 
 ```text
@@ -882,22 +902,22 @@ Record only what later stages need:
 - review artifact path
 - any PR-safe summary of blocking or residual findings
 
-Keep full reviewer detail in `.context/flywheel$flywheel:review/<run-id>/` and link
+Keep full reviewer detail in `.context/flywheel/review/<run-id>/` and link
 to it from the shared bundle instead of duplicating large findings payloads.
 
 ### Step 5: Final Next Steps
 
 Interactive mode only:
 
-- PR mode: offer `$flywheel:commit` to push and refresh the PR, or `Exit`
-- Feature-branch mode: offer `$flywheel:commit`, `Continue without finishing the branch`, or `Exit`
+- PR mode: offer `$fw:commit` to push and refresh the PR, or `Exit`
+- Feature-branch mode: offer `$fw:commit`, `Continue without finishing the branch`, or `Exit`
 - Base/default-branch mode: offer `Continue` or `Exit`
 - If the diff changes browser-visible behavior and no fresh acceptance proof was
-  captured yet, offer `$flywheel:browser-test` before `$flywheel:commit`.
+  captured yet, offer `$fw:browser-test` before `$fw:commit`.
 - If the diff is runtime-risky and rollout posture is still unresolved, offer
-  `$flywheel:rollout` before `$flywheel:commit`.
+  `$fw:rollout` before `$fw:commit`.
 - If the dominant residual work is performance, throughput, build-time, or
-  cost tuning rather than correctness, offer `$flywheel:optimize` as the next handoff.
+  cost tuning rather than correctness, offer `$fw:optimize` as the next handoff.
 
 Autofix, report-only, and headless modes stop after report, artifact emission,
 and residual-work handoff.

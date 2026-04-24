@@ -27,5 +27,5 @@ Use this template for the local incident handoff artifact.
 - what that stage must preserve or prove:
 ```
 
-Keep it short enough that `$flywheel:debug`, `$flywheel:rollout`, or `$flywheel:commit` can reuse
+Keep it short enough that `$fw:debug`, `$fw:rollout`, or `$fw:commit` can reuse
 it directly.

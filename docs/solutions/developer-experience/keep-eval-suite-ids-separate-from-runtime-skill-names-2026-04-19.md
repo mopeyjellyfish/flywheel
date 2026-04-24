@@ -36,7 +36,7 @@ related_docs:
 
 ## Context
 
-The Flywheel router now runs as `$flywheel:start`, but the umbrella eval suite
+The Flywheel router now runs as `$fw:start`, but the umbrella eval suite
 still uses the stable suite id `flywheel`. That distinction is useful, but only
 if the repo states clearly that harness labels are not runtime commands.
 
@@ -48,7 +48,7 @@ Keep runtime skill names accurate to the current command surface.
 For the router:
 
 ```text
-runtime command: $flywheel:start
+runtime command: $fw:start
 eval suite id: flywheel
 ```
 
@@ -79,18 +79,18 @@ node scripts/flywheel-eval.js prepare flywheel
 Runtime use:
 
 ```text
-Use $flywheel:start ...
+Use $fw:start ...
 ```
 
 Manifest wiring:
 
 ```text
 id: flywheel
-skill: flywheel:start
+skill: fw:start
 ```
 
 ## Related
 
 - [Journey evals without a harness redesign](docs/solutions/developer-experience/journey-evals-without-a-harness-redesign-2026-04-19.md)
-- [Use $flywheel:start as the Flywheel router entrypoint](docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md)
+- [Use $fw and $fw:start as Flywheel router entrypoints](docs/solutions/developer-experience/use-flywheel-start-as-the-router-entrypoint-2026-04-19.md)
 - [Treat user-facing skill renames as contract sweeps](docs/solutions/workflow-issues/treat-user-facing-skill-renames-as-contract-sweeps-2026-04-19.md)

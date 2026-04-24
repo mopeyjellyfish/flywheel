@@ -1,6 +1,6 @@
 ---
 name: document-review
-description: "Review requirements or plan documents using multi-persona analysis that surfaces severity, confidence, and a stack-ranked fix queue. Use when a requirements document or plan document exists and the user wants to improve it before planning or execution."
+description: "Review requirements or plan docs. Use to surface severity, confidence, and a ranked fix queue before planning or work."
 metadata:
   argument-hint: "[mode:headless] [path/to/document.md]"
 ---
@@ -13,11 +13,16 @@ stack-ranked queue for the remaining work.
 
 This skill is for document quality, not code implementation.
 
+Use it before planning from requirements or spec documents and before execution
+from plan documents. Findings that change product behavior, scope, success
+criteria, or the definition of done should route back to questions or
+brainstorming before planning or work continues.
+
 ## Interaction Method
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -77,7 +82,7 @@ review, or find the most recent document in `docs/brainstorms/` or
 
 ```text
 Review failed: headless mode requires a document path.
-Re-invoke with: $flywheel:document-review mode:headless <path>
+Re-invoke with: $fw:document-review mode:headless <path>
 ```
 
 Do not dispatch reviewers.

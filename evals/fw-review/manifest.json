@@ -28,6 +28,7 @@
   "strongPassAverage": 1.75,
   "suggestedFirstPass": [
     "current_branch_review",
+    "missing_tdd_evidence",
     "headless_base_review",
     "browser_visible_diff"
   ]

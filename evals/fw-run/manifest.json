@@ -23,7 +23,7 @@
   "passAverage": 1.5,
   "strongPassAverage": 1.75,
   "suggestedFirstPass": [
-    "fuzzy_to_brainstorm",
+    "fuzzy_to_shape",
     "plan_to_work",
     "ready_branch_to_ship"
   ]

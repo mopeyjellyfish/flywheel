@@ -6,12 +6,13 @@ Score each dimension `0`, `1`, or `2`.
 
 ### Earliest Stage
 
-Does the journey start at the correct shaping or planning point?
+Does the journey start at `shape` when architecture-bearing work still needs
+requirements, planning, or plan-deepening before implementation?
 
 ### Journey Coherence
 
 Does it preserve the expected multi-stage Flywheel path instead of collapsing
-architecture-bearing work into one stage?
+architecture-bearing work into one shapeless implementation step?
 
 ### Architecture Carry
 

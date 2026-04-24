@@ -15,6 +15,9 @@ Does it rely on repo truth, commands, or patterns?
 ### Continuous Validation
 
 Does it make checks, tests, or verification part of the work loop?
+Strong passes load or follow `test-driven-development` for `tdd` units, verify
+the red signal before implementation, keep the green change minimal, and report
+red/green/refactor evidence.
 
 For architecture-bearing work, strong passes preserve planned boundary or
 pattern constraints and use simplification or maintainability pressure when the
@@ -32,7 +35,8 @@ When browser-visible, does it call for browser proof before completion?
 
 Does it preserve the default path into review and commit while keeping helper-stage handoffs honest?
 Strong passes also keep task state and any plan-unit checkboxes synchronized by
-the time execution closes.
+the time execution closes, then close with a handoff card that names readiness,
+evidence, open decisions, and the next stage.
 
 ### Delegation Discipline
 

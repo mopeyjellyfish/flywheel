@@ -26,6 +26,9 @@ plan decisions rather than drifting into a research report.
 ### Test Strategy
 
 Does it include testing posture, verification, or red/green expectations?
+Strong passes default behavior-changing units to `tdd`, provide concrete red
+and green proof points, and use non-TDD postures only with explicit exception
+reasoning.
 
 For architecture-bearing work, strong passes also make the relevant boundary or
 pattern decisions explicit enough that work does not have to rediscover them.
@@ -40,10 +43,12 @@ radius?
 
 ### Workflow Handoff
 
-Does it preserve planning -> document-review -> user choice between deepen and
-work as the next stage, rather than sliding into execution automatically?
-Strong handoff should also make it clear what changed during planning, what the
-plan review found, and what execution would start with.
+Does it preserve source review when useful, then planning -> document-review ->
+user choice between addressing findings, deepening, and work as the next stage,
+rather than sliding into execution automatically? Strong handoff should also
+make it clear what changed during planning, what the plan review found, whether
+anything should be pushed back to questions or planning, and what execution
+would start with.
 When mixed execution modes matter, strong handoff also makes the first serial
 unit or first eligible parallel-ready batch obvious.
 
@@ -54,4 +59,6 @@ Is it right-sized instead of bloated?
 ### Interaction Quality
 
 Does it use structured, bounded choice surfaces and avoid raw-number reply UX
-or over-questioning?
+or over-questioning? Strong passes explicitly call the host question tool when
+available, keep the explicit options portable across Claude Code and Codex, and
+use chat menus only as the fallback path.

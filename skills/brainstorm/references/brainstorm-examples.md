@@ -74,7 +74,7 @@ New users hit optional profile setup before their account is created, which adds
 - Post-signup profile setup will remain in the web flow rather than moving to a later lifecycle stage.
 
 ## Next Steps
--> $flywheel:plan for structured implementation planning
+-> $fw:plan for structured implementation planning
 ```
 
 ## Example: Standard Requirements Doc
@@ -126,7 +126,7 @@ Users receive digest emails on a fixed cadence today and cannot choose frequency
 - [Affects R3][Technical] How should scheduled-but-not-yet-sent digests behave when a user changes frequency close to send time?
 
 ## Next Steps
--> Resume $flywheel:brainstorm to resolve blocking questions before planning
+-> Resume $fw:brainstorm to resolve blocking questions before planning
 ```
 
 ## Example: Architecture-Bearing Requirements Doc
@@ -173,5 +173,5 @@ will increase coordination cost unless the boundary is clarified first.
   deployable, with external payment-webhook behavior isolated at the boundary.
 
 ## Next Steps
--> $flywheel:plan for structured implementation planning
+-> $fw:plan for structured implementation planning
 ```

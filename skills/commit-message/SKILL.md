@@ -1,6 +1,6 @@
 ---
 name: commit-message
-description: "Draft Conventional Commit messages for workflow-driven and direct commit requests. Use when choosing a commit header, body, or footer, especially inside `$flywheel:commit` or before a raw `git commit`."
+description: "Draft Conventional Commit messages. Use when choosing a commit header, body, footer, or breaking-change marker."
 metadata:
   argument-hint: "[Summary of the change or blank to infer from current work context]"
 ---
@@ -25,7 +25,7 @@ branch or PR.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

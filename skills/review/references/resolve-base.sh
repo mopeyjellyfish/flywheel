@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Resolve the review base branch and compute the merge-base for $flywheel:review.
+# Resolve the review base branch and compute the merge-base for $fw:review.
 # Handles fork-safe remote resolution, PR metadata, and multi-fallback
 # detection.
 #

@@ -1,6 +1,6 @@
 ---
 name: ideate
-description: "Generate and critically filter grounded ideas for a repo, subsystem, product area, or software topic before choosing one to brainstorm. Pressure-test the starting frame before committing to one direction. Use when the user asks what to improve, wants proactive backlog shaping, requests idea generation, or wants the AI to surface the strongest next bets instead of refining a single chosen idea."
+description: "Generate and filter grounded next bets. Use when the work is not chosen and the user wants ranked ideas before brainstorming."
 metadata:
   argument-hint: "[feature, focus area, path, or constraint]"
 ---
@@ -10,11 +10,11 @@ metadata:
 Use the actual current date from runtime context when dating ideation
 documents.
 
-`$flywheel:ideate` precedes `$flywheel:brainstorm`.
+`$fw:ideate` precedes `$fw:brainstorm`.
 
-- `$flywheel:ideate` answers: "What are the strongest ideas worth exploring?"
-- `$flywheel:brainstorm` answers: "What should one chosen idea mean?"
-- `$flywheel:plan` answers: "How should it be built?"
+- `$fw:ideate` answers: "What are the strongest ideas worth exploring?"
+- `$fw:brainstorm` answers: "What should one chosen idea mean?"
+- `$fw:plan` answers: "How should it be built?"
 
 This workflow produces a ranked ideation artifact in `docs/ideation/` when
 persistence is requested. It does **not** write requirements, plans, or code.
@@ -30,7 +30,7 @@ they only want brainstorming or planning.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -45,7 +45,7 @@ When interactive, prefer at least one targeted framing question when the answer
 would materially change which ideas survive. Treat the user's answers,
 preferences, and corrections as durable inputs to later brainstorming, planning,
 and spin.
-When the likely answer space is predictable, present 2-4 explicit labels with
+When the likely answer space is predictable, present 2-3 portable labels with
 the recommended option first and rely on the host's native freeform final path
 when it exists.
 
@@ -105,7 +105,7 @@ Core tags:
 3. **Prefer leverage over novelty** - Strong ideas make future work easier,
    safer, or faster.
 4. **Route action into brainstorming** - Ideation finds promising directions;
-   `$flywheel:brainstorm` defines one chosen direction precisely enough for planning.
+   `$fw:brainstorm` defines one chosen direction precisely enough for planning.
 5. **Persistence is opt-in** - The conversation loop is already useful. Save
    only when the user wants a durable artifact or a handoff.
 6. **Use the user's context, not just repo evidence** - interactive answers can
@@ -351,12 +351,12 @@ Before finishing, check:
 - survivors materially beat a naive "give me ideas" list
 - if the user started from a proposed solution, the shortlist still tested
   whether a better framing exists
-- chosen follow-up routes to `$flywheel:brainstorm`, not directly to implementation
+- chosen follow-up routes to `$fw:brainstorm`, not directly to implementation
 - any saved artifact uses repo-relative paths and remains portable
 
 ## Example Prompts
 
-- "Use $flywheel:ideate to find the highest-leverage improvements in this repo."
-- "Use $flywheel:ideate on `skills/review/` and give me the top 3 next bets."
-- "Use $flywheel:ideate to propose quick wins for our onboarding flow."
-- "Use $flywheel:ideate to surface what would make the next month of work easier."
+- "Use $fw:ideate to find the highest-leverage improvements in this repo."
+- "Use $fw:ideate on `skills/review/` and give me the top 3 next bets."
+- "Use $fw:ideate to propose quick wins for our onboarding flow."
+- "Use $fw:ideate to surface what would make the next month of work easier."

@@ -13,7 +13,8 @@ evidence-backed choices grounded in:
 
 ## When To Surface Choices
 
-Present a choice surface when the change touches one or more of:
+Call the host question tool with a choice surface when the change touches one or
+more of:
 
 - retries, deadlines, backoff, or idempotency
 - fallback or degraded-mode behavior
@@ -55,7 +56,7 @@ Keep it concise and structured:
      - data correctness, duplication, or loss
 
 5. **Options**
-   - present 2-4 choices at most
+   - present 2-3 portable choices by default
    - for each option, include:
      - what it does
      - why it fits or conflicts with repo truth

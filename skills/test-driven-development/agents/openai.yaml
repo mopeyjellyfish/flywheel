@@ -1,0 +1,4 @@
+interface:
+  display_name: "$fw:test-driven-development"
+  short_description: "Enforce red-green-refactor"
+  default_prompt: "Use $fw:test-driven-development before behavior-bearing implementation: write the red test, prove it fails, make the smallest green change, refactor under the test, and protect user-authored dirty changes."

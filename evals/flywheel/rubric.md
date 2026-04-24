@@ -18,21 +18,31 @@ Did the router choose the correct immediate Flywheel stage?
 
 Automatic fail if it routes to the wrong stage.
 
+For root-invocation cases, `$fw` and bare `$flywheel` must behave as aliases
+for the start router rather than as separate stages or legacy stage namespaces.
+
 ### 2. Workflow Coherence
 
 Does the answer preserve the Flywheel sequence instead of skipping necessary
 steps?
 
-- ideate before brainstorm when the problem is idea selection
-- brainstorm before plan when behavior and scope are unclear
-- plan before work when execution details still need structure, and planning
-  runs document review before the user chooses deepen or work
-- shape -> work -> review -> commit as the compact backbone for software-project work
+- shape before work when the request still needs idea selection, requirements
+  shaping, planning, or plan deepening
+- inside shape, ideate before brainstorm when the problem is idea selection
+- inside shape, brainstorm before plan when behavior and scope are unclear
+- inside shape, requirements/spec review can happen before planning when the
+  source artifact may need simplification or feasibility checks; planning runs
+  document review before the user chooses whether to address findings, deepen,
+  or work
+- shape -> work -> review -> optional spin -> commit as the compact backbone for software-project work
+- `$fw:start` is the router, not a backbone stage; `$fw:run` is an explicit
+  optional orchestration wrapper, not a default critical-path stage
 - helper surfaces such as research, architecture strategy, pattern
   recognition, maintainability, or simplify can be selected when they are the
   most direct fit, without turning them into mandatory visible stages
 - review before merge when code changed or when work completes on the current branch
-- spin after work or commit when lessons should be preserved
+- spin after review and before commit when lessons should be preserved in the
+  same branch changes
 
 ### 3. Shortcut Discipline
 
@@ -49,11 +59,14 @@ For fuzzy or workflow-shaping requests, strong handoff quality also makes the
 next user input explicit instead of acting as if routing alone resolved the
 ambiguity.
 
+Strong handoffs use the canonical Flywheel handoff shape when closing a stage:
+Stage, Artifact, Ready, Open decisions, Evidence, and Next.
+
 Expected examples:
 
-- brainstorming -> requirements doc -> planning
-- planning -> reviewed technical plan -> deepen or work
-- work -> implementation, helper checks as needed, review, commit, optional spin
+- shape -> ranked shortlist, requirements doc, reviewed technical plan, or
+  strengthened plan -> work
+- work -> implementation, helper checks as needed, review, optional spin, commit
 
 ### 5. Repo Grounding
 
@@ -70,6 +83,9 @@ learnings, not just the next single stage?
 For fuzzy or early-stage requests, does it ask one material question or state
 the next needed user input instead of silently assuming the framing is already
 correct?
+
+When asking, strong passes call the host's structured question tool if it is
+available and reserve markdown or numbered chat menus for fallback only.
 
 ## Pass Threshold
 

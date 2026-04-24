@@ -13,7 +13,6 @@ install/codex/force-link:
 	node scripts/flywheel-eval.js validate
 
 install/all:
-	bash scripts/skills-install.sh --scope global --source local
 	bash scripts/codex-refresh-local.sh
 	bash scripts/claude-refresh-local.sh --scope local
 	node scripts/flywheel-doctor.js --smoke

@@ -69,6 +69,73 @@ function findFlywheelCodexPlugin(config) {
   return Object.entries(plugins).find(([name, value]) => name.startsWith("fw@") && value.enabled !== false);
 }
 
+function getCodexRootRouterPromptStatus() {
+  const manifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
+  if (!fs.existsSync(manifestPath)) {
+    return {
+      ok: false,
+      detail: `missing ${manifestPath}`,
+    };
+  }
+
+  const manifest = parseJson(fs.readFileSync(manifestPath, "utf8"));
+  const defaultPrompt = manifest?.interface?.defaultPrompt;
+  const promptText = Array.isArray(defaultPrompt) ? defaultPrompt.join("\n") : "";
+  const ok = /\$fw\b/.test(promptText) && /\$fw:start\b/.test(promptText) && /\$flywheel\b/.test(promptText);
+
+  return {
+    ok,
+    detail: ok
+      ? ".codex-plugin/plugin.json maps $fw and bare $flywheel to $fw:start"
+      : ".codex-plugin/plugin.json should describe $fw and bare $flywheel as root aliases for $fw:start",
+  };
+}
+
+function getStandaloneGlobalFlywheelSkillsStatus() {
+  const agentsHome = process.env.AGENTS_HOME || path.join(process.env.HOME || "", ".agents");
+  const installDir = path.join(agentsHome, "skills");
+  if (!fs.existsSync(installDir)) {
+    return {
+      ok: true,
+      detail: "no ~/.agents/skills Flywheel entries found",
+    };
+  }
+
+  const localSource = path.join(repoRoot, "skills");
+  const localSkillNames = fs.existsSync(localSource)
+    ? new Set(fs.readdirSync(localSource, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .filter((name) => fs.existsSync(path.join(localSource, name, "SKILL.md"))))
+    : new Set();
+
+  const matches = fs.readdirSync(installDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .filter((name) => {
+      const skillDir = path.join(installDir, name);
+      const candidateFiles = [
+        path.join(skillDir, "SKILL.md"),
+        path.join(skillDir, "agents", "openai.yaml"),
+      ];
+      const text = candidateFiles
+        .filter((file) => fs.existsSync(file))
+        .map((file) => fs.readFileSync(file, "utf8"))
+        .join("\n");
+      const hasBrand = /\bFlywheel\b/i.test(text);
+      const hasCommand = /(?:\$|\/)(?:flywheel|fw)(?::[a-z0-9-]+)?\b/i.test(text);
+      return localSkillNames.has(name) ? hasBrand || hasCommand : hasBrand && hasCommand;
+    })
+    .sort();
+
+  return {
+    ok: matches.length === 0,
+    detail: matches.length === 0
+      ? "no ~/.agents/skills Flywheel entries that would appear as unnamespaced $start-style skills"
+      : `remove standalone Flywheel skills from ~/.agents/skills (${matches.join(", ")}); run make install/codex to clean them up`,
+  };
+}
+
 function getCodexFlywheelStatus() {
   const codexConfig = readCodexConfig();
   if (!codexConfig.ok) {
@@ -241,6 +308,18 @@ async function runDoctor({ smoke = false, host = "all" } = {}) {
       name: "codex binary",
       ok: codexVersion.ok,
       detail: codexVersion.text || "codex not available",
+    });
+    const rootRouterPrompt = getCodexRootRouterPromptStatus();
+    checks.push({
+      name: "Codex root router prompt",
+      ok: rootRouterPrompt.ok,
+      detail: rootRouterPrompt.detail,
+    });
+    const standaloneSkills = getStandaloneGlobalFlywheelSkillsStatus();
+    checks.push({
+      name: "No standalone Flywheel skills in Codex",
+      ok: standaloneSkills.ok,
+      detail: standaloneSkills.detail,
     });
   }
 

@@ -7,14 +7,23 @@ Score each dimension `0`, `1`, or `2`.
 ### Commit Path
 
 Does it clearly describe commit, push, and PR flow?
+Strong passes treat push plus PR creation or refresh as the default finish path
+unless `local-only` is explicitly requested.
 
 ### Readiness Gate
 
 Does it check whether tests, review, and branch state are ready?
+Strong passes apply the shared commit-ready gate and make any remaining blockers
+or open decisions explicit before committing, pushing, or creating a PR.
 
 ### Monitoring Notes
 
 Does it include post-deploy monitoring or a grounded no-impact rationale?
+
+### Finish Summary And PR State
+
+Does the close-out include a concise finish summary plus branch push result and
+PR URL or an explicit PR blocker?
 
 ### Browser Proof Discipline
 
@@ -33,8 +42,8 @@ pattern, or simplification story rather than replaying raw specialist output.
 
 ### Spin Offer Discipline
 
-After commit, does it offer `spin` only when a durable project lesson is
-worth preserving?
+Before the final commit, does it offer `spin` only when a durable project lesson
+is worth preserving so the solution entry can land in the same commit set?
 
 ### Hook-Gate Honesty
 

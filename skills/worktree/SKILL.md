@@ -1,13 +1,13 @@
 ---
 name: worktree
-description: "Manage isolated git worktrees for Flywheel execution, review, and parallel development. Use when work should happen on a new branch without polluting the current checkout, when a review target should be inspected in isolation, or when multiple branches must stay active at once."
+description: "Manage isolated git worktrees. Use for branch work, isolated review targets, parallel checkouts, or cleanup."
 metadata:
   argument-hint: "[blank for help, or pass create <branch> [base], list, path <branch>, copy-env <branch>, or cleanup <branch>]"
 ---
 
 # Manage Worktrees
 
-`$flywheel:worktree` is Flywheel's isolated-workspace manager.
+`$fw:worktree` is Flywheel's isolated-workspace manager.
 
 Use it when the right move is not "switch branches in place", but "open a
 clean parallel checkout with the branch, template env files, and ignore hygiene
@@ -40,7 +40,7 @@ does not:
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -48,7 +48,8 @@ When the workflow spans multiple material steps, use the host task-tracking
 tool named in `../references/host-interaction-contract.md` to create and
 maintain a short task list.
 
-Prefer a concise choice surface when the user has not already named an action:
+Prefer calling the host question tool with a concise choice surface when the
+user has not already named an action:
 
 - **Create isolated worktree** (recommended)
 - **List current worktrees**
@@ -158,11 +159,11 @@ Review-only and documentation-only worktrees should usually not copy them.
 
 ## Integration Rules
 
-- `$flywheel:work` should recommend `$flywheel:worktree` whenever work starts from the
+- `$fw:work` should recommend `$fw:worktree` whenever work starts from the
   default branch and isolation is preferable.
-- `$flywheel:review` should prefer `$flywheel:worktree` when a PR or branch must be
+- `$fw:review` should prefer `$fw:worktree` when a PR or branch must be
   reviewed without switching the shared checkout.
-- `$flywheel:commit` may suggest `$flywheel:worktree cleanup <branch>` after merge or after a
+- `$fw:commit` may suggest `$fw:worktree cleanup <branch>` after merge or after a
   shipped branch no longer needs an isolated checkout.
 
 ## Output Contract

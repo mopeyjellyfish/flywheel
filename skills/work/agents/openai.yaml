@@ -1,4 +1,4 @@
 interface:
-  display_name: "$flywheel:work"
+  display_name: "$fw:work"
   short_description: "Execute work with grounded validation"
-  default_prompt: "Use $flywheel:work to execute this plan or work request with task tracking, plan-aligned unit execution, safe parallelism only for explicitly parallel-ready independent work, repo-grounded checks, and architecture-aware follow-through into review and commit."
+  default_prompt: "Use $fw:work to execute this plan or work request with task tracking, plan-aligned unit execution, safe parallelism only for explicitly parallel-ready independent work, repo-grounded checks, and architecture-aware follow-through into review and commit."

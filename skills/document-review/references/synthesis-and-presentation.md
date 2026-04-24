@@ -216,15 +216,24 @@ skill.
 **Headless mode:** Return `Review complete` immediately. The caller owns the next
 step.
 
-**Interactive mode:** Ask using the exact host question tool named in the host
-interaction contract when that tool is available.
+**Interactive mode:** Ask by calling the exact host question tool named in the
+host interaction contract when that tool is available. A markdown menu is only
+the fallback after the tool is unavailable or errors.
 Offer these options:
 
 - **Fix top-ranked item and re-review (Recommended)** — address the current
   rank 1 finding, then rerun document-review
 - **Address several findings, then re-review** — batch a few changes, then rerun
-- **Review complete** — for requirements docs, continue with `$flywheel:plan`; for
-  plan docs, continue with `$flywheel:work`
+- **Review complete** — return to the caller's handoff. For requirements docs,
+  continue with `$fw:plan` only when product behavior, scope, success criteria,
+  and definition-of-done findings are resolved or explicitly accepted as
+  assumptions. For plan docs, return to the choice to address findings, deepen,
+  or start `$fw:work`.
+
+When the top-ranked remaining finding would change product behavior, scope,
+success criteria, or the definition of done, recommend fixing it before
+downstream planning or work. When findings are technical execution concerns,
+route them to plan revision or `$fw:deepen` before `$fw:work`.
 
 ## Iteration Guidance
 

@@ -28,6 +28,7 @@
   "suggestedFirstPass": [
     "requirements_doc_to_plan",
     "bug_fix_plan",
+    "behavior_change_tdd_default",
     "runtime_risky_change"
   ]
 }

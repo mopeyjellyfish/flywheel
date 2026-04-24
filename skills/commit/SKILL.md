@@ -1,27 +1,29 @@
 ---
 name: commit
-description: "Finish the current branch cleanly: validate readiness, plan logical commit boundaries, create commit(s), push safely, and create or refresh a PR with testing and operational validation notes. Use when the work is done and the next job is to finish the branch without dropping evidence, monitoring, or branch-safety discipline."
+description: "Finish a branch cleanly. Use to verify readiness, make logical commits, push, and create or refresh a PR with evidence."
 metadata:
   argument-hint: "[blank to finish current branch, or pass local-only, plan:<path>, pr:<url>, or refresh-description]"
 ---
 
 # Commit The Work
 
-`$flywheel:commit` closes Flywheel's compact project loop between "the repo
-change is ready enough to finish" and "a clean local branch or PR exists."
+`$fw:commit` closes Flywheel's compact project loop between "the repo
+change is ready enough to finish" and "the branch is pushed with an open or
+refreshed PR."
 
 It is the finishing workflow for:
 
-- staged or unstaged work that needs commit planning and commit creation
-- committed work that needs pushing
+- staged or unstaged work that needs commit planning, commit creation, push,
+  and PR creation or refresh
+- committed work that needs pushing and PR creation or refresh
 - a feature branch that needs a PR
 - an existing PR whose description should be refreshed
-- a branch that surfaced durable lessons worth offering to `spin`
+- a branch that surfaced durable lessons worth capturing before commit
 
-Use it after `$flywheel:work` or after `$flywheel:review` reaches a clean
-enough verdict. For runtime-risky changes, use it after `$flywheel:rollout`
+Use it after `$fw:work` or after `$fw:review` reaches a clean
+enough verdict. For runtime-risky changes, use it after `$fw:rollout`
 sets the activation, validation, and rollback posture. If the user invokes
-`$flywheel:commit` directly, treat that as permission to run the finish-stage
+`$fw:commit` directly, treat that as permission to run the finish-stage
 workflow rather than as a reason to reject the request because earlier stages
 were skipped.
 
@@ -29,7 +31,7 @@ were skipped.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -47,8 +49,8 @@ host's native freeform final path when it exists.
 
 Parse optional tokens before interpreting any remainder:
 
-- `local-only` - create local commit(s) but do not push or create or refresh a
-  PR
+- `local-only` - explicitly opt out of the default publish path; create local
+  commit(s) but do not push or create or refresh a PR
 - `plan:<path>` - use this plan as finish-stage context and update it to
   `status: completed` when appropriate
 - `pr:<url>` - target this existing PR explicitly
@@ -70,6 +72,8 @@ Do not preload every support file. Load only what the current phase needs:
 - read `../observability/references/service-readiness-matrix.md` only when the
   change is runtime-risky and the monitoring or validation section needs a
   grounded readiness frame
+- read `../references/workflow-gates.md` before final readiness checks and when
+  closing the finish stage
 - read `.flywheel/config.local.yaml` when present for repo-local commit gates
   such as browser proof, review-before-commit, and runtime validation
 
@@ -77,23 +81,27 @@ Do not preload every support file. Load only what the current phase needs:
 
 1. **Finish from repo truth** - branch status, open PR state, test evidence,
    and review outcomes outrank memory or optimism.
-2. **Commit honestly** - use `$flywheel:commit-message` for each logical unit
+2. **Commit honestly** - use `$fw:commit-message` for each logical unit
    being committed. If the helper is unavailable, draft the conventional header
    directly and ask before marking breaking changes.
 3. **Prefer one coherent finish flow** - local commits, push, PR state, and
    operational validation belong to one remembered command.
-4. **Preview multiple commits before execution** - when the diff should split,
+4. **Publish by default** - unless the user passes `local-only`, continue from
+   commit through push and PR creation or refresh instead of stopping at a
+   clean local branch.
+5. **Preview multiple commits before execution** - when the diff should split,
    show a short commit plan first so the grouping is reviewable.
-5. **Operational validation is mandatory** - every PR gets a
+6. **Operational validation is mandatory** - every PR gets a
    `Post-Deploy Monitoring & Validation` section, even if the answer is a
    no-impact rationale.
-6. **Preserve branch safety** - do not commit directly to the default branch
+7. **Preserve branch safety** - do not commit directly to the default branch
    without explicit user approval.
-7. **Carry only the material architecture and code-quality story** - PR text
+8. **Carry only the material architecture and code-quality story** - PR text
    should explain the relevant boundary, pattern, simplification, or
    maintainability decisions without replaying raw specialist analysis.
-8. **Offer spin only when it earns its keep** - after the branch is finished,
-   suggest knowledge capture only when the work surfaced durable project value.
+9. **Capture durable lessons before commit** - when the branch surfaced durable
+   project value, offer `spin` before staging and committing so the solution doc
+   can land in the same logical change.
 
 ## Workflow
 
@@ -131,36 +139,42 @@ of truth for activation sequence, validation window, and rollback trigger.
 
 ### Phase 2: Classify The Finish Path
 
-Choose the path from branch truth:
+Choose the path from branch truth. The default non-local path is publish
+complete: commit what is needed, push the branch, then create or refresh the PR.
 
 - **Description refresh** - user asked for `refresh-description` or only wants
   to update the existing PR text
-- **Full finish** - branch has uncommitted work, unpushed commits, or no open PR
+- **Full finish** - branch has uncommitted work, unpushed commits, no open PR,
+  or an existing PR whose body should reflect new commits, evidence, or summary
 - **Local-only finish** - user explicitly asked for `local-only`
-- **Push only** - branch is committed but not published
-- **PR creation** - branch is published and no open PR exists
-- **PR refresh** - branch already has an open PR and the user wants the
-  description updated after new work landed
+- **Publish finish** - branch is committed but still needs push plus PR
+  creation or refresh
+- **PR refresh** - branch is already pushed and an open PR exists; refresh it by
+  default when the current finish payload differs from the PR body
 
 If the current branch is the default branch and finishing would create commits,
 create a feature branch first unless the user explicitly approves committing on
 the default branch.
 
 If a clean isolated checkout is preferable before finishing, use
-`$flywheel:worktree` instead of switching the shared checkout ad hoc.
+`$fw:worktree` instead of switching the shared checkout ad hoc.
 
 ### Phase 3: Run Missing Readiness Checks
+
+Read `../references/workflow-gates.md` and apply the `Commit-Ready` gate while
+running the checks below. If the gate is not satisfied, stop with the missing
+items instead of committing, pushing, or creating a PR.
 
 Before creating commits or a PR, confirm:
 
 - tests and linting were addressed, using the repo-grounded commands already
-  discovered during `$flywheel:work` or local setup
+  discovered during `$fw:work` or local setup
 - browser-visible changes have fresh acceptance proof from
-  `$flywheel:browser-test`, repo-native browser tests, or an explicit user
+  `$fw:browser-test`, repo-native browser tests, or an explicit user
   decision to continue without that proof
 - if the change is runtime-risky and activation sequence, validation window, or
   rollback trigger are still unresolved, stop and route through
-  `$flywheel:rollout` before continuing
+  `$fw:rollout` before continuing
 - the change's runtime impact has either:
   - concrete monitoring and validation notes, or
   - a clear no-impact rationale
@@ -169,10 +183,10 @@ Before creating commits or a PR, confirm:
 
 Review handling:
 
-- if `$flywheel:review` already ran and the latest verdict is clean enough,
+- if `$fw:review` already ran and the latest verdict is clean enough,
   reuse it
 - if review has not run and finish-stage confidence depends on it, run
-  `$flywheel:review` now instead of blocking only because the user skipped it
+  `$fw:review` now instead of blocking only because the user skipped it
 - if unresolved `P0` or `P1` gated or manual findings remain after review, stop
   instead of continuing into commit or PR creation
 - if local policy requires review before commit, stop only when the review pass
@@ -180,11 +194,49 @@ Review handling:
 
 If the branch is not actually ready, stop and say what remains.
 
-### Phase 4: Build The Finish Payload
+### Phase 4: Run The Pre-Commit Spin Checkpoint
+
+Before building the final commit payload or staging files, infer at most **3**
+candidate spin lessons from:
+
+- execution evidence such as review findings, validation work, or non-obvious
+  fixes
+- repo changes that altered setup, CLI, API, config, docs, or workflow
+  contracts
+- answers and clarified preferences surfaced during `ideate`, `brainstorm`, or
+  `plan` when they materially changed the repo workflow or project direction
+- user corrections from this session that materially changed how Flywheel
+  should behave for project work
+
+Only keep candidates that look durable and project-specific. If nothing
+non-trivial surfaced, continue without forcing a spin offer.
+
+If one or more candidates are worth preserving, call the host question tool with
+a small choice surface. Put the recommended option first:
+
+1. **Quick spin** - capture the strongest lesson in a compact solution note
+2. **Full spin** - run `$fw:spin` with the selected candidate summary
+3. **Skip** - finish without capturing a solution entry
+
+Recommend the strongest candidate explicitly when capture is warranted. Recommend
+`Skip` only when the value is marginal.
+
+If the user wants to continue, launch `$fw:spin` with the selected candidate
+summary and the selected capture depth instead of calling it blank. For quick
+capture, pass a lightweight-mode hint with the summary. When `$fw:spin` creates
+or updates `docs/solutions/`, treat those files as part of the same finish
+payload and include them in the commit plan.
+
+### Phase 5: Build The Finish Payload
+
+Assemble one finish summary that will be reused in the PR `Summary` section and
+in the final user report. Keep it concise: what changed, why it matters, and
+any material architecture, code-quality, testing, or operational caveat.
 
 Assemble the payload for commit, push, and PR steps from:
 
 - current diff and recent commits
+- any `docs/solutions/` changes created by the pre-commit spin checkpoint
 - plan summary and key decisions when `plan:<path>` is available
 - the material architecture, pattern, simplification, or maintainability story
   when those decisions materially affect the branch summary
@@ -230,12 +282,12 @@ window, owner, and rollback trigger instead of rebuilding those decisions from
 memory during PR preparation.
 
 If the change is browser-visible and fresh proof is still missing, route
-through `$flywheel:browser-test` before final PR preparation unless the user
+through `$fw:browser-test` before final PR preparation unless the user
 explicitly wants to continue without it.
 
 Read `references/pr-body-template.md` and fill it with concrete repo facts.
 
-### Phase 5: Plan And Create Commit(s)
+### Phase 6: Plan And Create Commit(s)
 
 If the worktree is dirty:
 
@@ -250,7 +302,7 @@ If the worktree is dirty:
 4. if the diff is too entangled for a clean split, say so and prefer one
    honest commit
 5. stage only the files for each chosen unit
-6. use `$flywheel:commit-message` for each conventional header, plus body or
+6. use `$fw:commit-message` for each conventional header, plus body or
    footers when useful
 7. commit the unit before moving to the next one
 
@@ -260,7 +312,7 @@ If the most honest message would be breaking, ask before using `!` or
 Default to one commit unless there are clearly separate concerns worth
 splitting.
 
-### Phase 6: Push
+### Phase 7: Push
 
 If the path is `local-only`, skip this phase and say so explicitly.
 
@@ -272,16 +324,23 @@ git push --set-upstream origin HEAD
 
 If the branch already has an upstream, use `git push`.
 
-### Phase 7: Create Or Refresh The PR
+If push fails, stop before PR creation or refresh and report the exact blocked
+state. Do not claim the branch is published unless the push succeeded.
+
+### Phase 8: Create Or Refresh The PR
 
 If the path is `local-only`, skip this phase and report that no PR work was
 requested.
 
 If GitHub CLI is available:
 
-- **No open PR** -> create one with the assembled title and body
-- **Existing open PR + refresh requested** -> update the title and body
-- **Existing open PR + no refresh requested** -> report the PR URL and stop
+- **No open PR** -> create one with the assembled title and body after the
+  branch has been pushed
+- **Existing open PR** -> refresh the title and body with the assembled finish
+  summary, testing, monitoring, and evidence unless the user explicitly asked
+  for local-only behavior
+- **Description refresh** -> update the existing PR title and body without
+  changing branch or commit state
 
 Required PR body sections:
 
@@ -297,44 +356,28 @@ No additional operational monitoring required.
 Reason: <one line grounded in the actual change>
 ```
 
-### Phase 8: Close The Loop
+### Phase 9: Close The Loop
 
 When `plan:<path>` is available and the plan frontmatter contains
 `status: active`, update it to `status: completed`.
 
-Before the final report, infer at most **3** candidate spin lessons from:
-
-- execution evidence such as review findings, validation work, or non-obvious
-  fixes
-- repo changes that altered setup, CLI, API, config, docs, or workflow
-  contracts
-- answers and clarified preferences surfaced during `ideate`, `brainstorm`, or
-  `plan` when they materially changed the repo workflow or project direction
-- user corrections from this session that materially changed how Flywheel
-  should behave for project work
-
-Only keep candidates that look durable and project-specific. If nothing
-non-trivial surfaced, end cleanly without forcing a spin offer.
-
 Then report:
 
-1. what finished
-2. the branch and PR URL when available
-3. any residual follow-up
-4. whether a bounded `$flywheel:spin` offer is warranted
+1. finish summary
+2. branch name, push result, and PR URL or explicit PR blocker
+3. commits created or confirmed
+4. any residual follow-up
+5. whether the pre-commit spin checkpoint captured, skipped, or found no durable
+   lesson
+6. a final handoff card from `../references/workflow-gates.md` with readiness,
+   evidence, and any open follow-up
 
-If one or more candidates are worth preserving, present a small choice surface:
-
-1. **Skip**
-2. **Quick spin**
-3. **Full spin**
-
-Recommend the strongest candidate explicitly. If the user wants to continue,
-launch `$flywheel:spin` with the selected candidate summary instead of calling
-it blank.
+Do not make a normal post-commit spin offer. If push, PR creation, CI, or
+reviewer feedback after commit reveals a new durable lesson, treat that as a new
+follow-up change and capture it in a later commit.
 
 If the branch finished from a `.worktrees/` checkout and no longer needs that
-checkout, suggest `$flywheel:worktree cleanup <branch>` as the cleanup path.
+checkout, suggest `$fw:worktree cleanup <branch>` as the cleanup path.
 
 ---
 

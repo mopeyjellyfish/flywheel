@@ -7,7 +7,7 @@ when all Phase 2 tasks are complete and execution transitions to quality check.
 
 ### 0. Offer A Docs Pass When Needed
 
-Before review, ask whether `$flywheel:docs` should run when the completed work
+Before review, ask whether `$fw:docs` should run when the completed work
 changed:
 
 - setup or onboarding steps
@@ -16,7 +16,7 @@ changed:
 - configuration keys, environment variables, or defaults
 - operator or end-user workflows
 
-If the user agrees, run `$flywheel:docs` with a change-scoped argument before
+If the user agrees, run `$fw:docs` with a change-scoped argument before
 continuing. Keep the docs changes in the same branch so review and commit see the
 full user-facing update together.
 
@@ -46,9 +46,9 @@ Every change gets reviewed before commit. The depth scales with the change's
 risk profile, but review itself is never skipped.
 
 **Tier 2: Full review** — default and required unless Tier 1 is explicitly
-justified. Invoke `$flywheel:review` with `mode:autofix`. When the plan file
+justified. Invoke `$fw:review` with `mode:autofix`. When the plan file
 path is known, pass it as `plan:<path>`. This is the mandatory default.
-`$flywheel:review` should select reviewer personas from the diff and dispatch
+`$fw:review` should select reviewer personas from the diff and dispatch
 them in parallel when the host supports it.
 
 Proceed to Tier 1 only after confirming every criterion below.
@@ -81,6 +81,8 @@ Before commit, confirm:
 - any `Deferred to Implementation` questions were resolved during execution
 - documentation impact was addressed or consciously deferred when the change
   altered setup, public interfaces, CLI behavior, config, or user workflows
+- the `Work-Ready` gate in `../../references/workflow-gates.md` is satisfied or
+  the missing items are listed as blockers before review
 
 ### 4. Prepare Operational Validation Plan (Required)
 
@@ -102,7 +104,7 @@ Touch Grass instead of generic placeholders.
 If there is truly no production or runtime impact, still include the section
 with `No additional operational monitoring required` and a one-line reason.
 
-## Phase 4: Commit It
+## Phase 4: Spin And Commit It
 
 ### 1. Prepare Evidence Context
 
@@ -130,13 +132,45 @@ If the input document has YAML frontmatter with a `status` field, update it to
 status: active  ->  status: completed
 ```
 
+### 3. Prepare The Pre-Commit Spin Checkpoint
+
+Before any final git commit is created, identify up to **3** non-trivial solved
+problems or durable lessons that `$fw:commit` should consider capturing in the
+active repo's `docs/solutions/`.
+
+Good candidates include:
+
+- a bug with a non-obvious root cause
+- a workflow or tooling improvement that removed friction
+- a reusable testing or validation pattern
+- a clarified project rule or integration gotcha
+- a repeated dead end that future work should avoid
+
+When handing off to `$fw:commit`, pass these candidates as finish-stage context
+instead of asking a duplicate question. `$fw:commit` owns the actual spin choice
+surface and should run `$fw:spin` before staging and committing when the user
+approves capture.
+
+If no host helper exists and this workflow is performing the direct git fallback
+itself, present each candidate in one line with why it is worth preserving, then
+ask whether to run `$fw:spin` before committing. Unless the user explicitly asked
+for `$fw:spin`, do not silently write new active-repo `docs/solutions/` entries.
+If spin writes or refreshes solution docs, include those files in the same branch
+and commit plan as the work that produced the lesson.
+
+If the user wants to spin multiple candidates, handle them one at a time in
+priority order rather than passing a blank prompt that forces candidate
+rediscovery.
+
+### 4. Choose Commit Messages And Finish
+
 Choose conventional commit messages for the final commit step. Prefer
-`$flywheel:commit-message` when available. If the helper is unavailable, draft the
+`$fw:commit-message` when available. If the helper is unavailable, draft the
 header directly as `<type>(scope): summary`. If the best message would use `!`
 or `BREAKING CHANGE:`, ask the user before marking the commit as breaking.
 
-Then hand off to `$flywheel:commit` for commit, push, PR creation, or PR refresh. If no
-host helper exists, `$flywheel:commit` should complete the same steps directly with git
+Then hand off to `$fw:commit` for commit, push, PR creation, or PR refresh. If no
+host helper exists, `$fw:commit` should complete the same steps directly with git
 and GitHub CLI or the repo's standard tooling:
 
 ```bash
@@ -167,43 +201,18 @@ When providing PR-description context, include:
 - the Figma design link when applicable
 - the `Post-Deploy Monitoring & Validation` section
 
-If the user prefers to commit without creating a PR, `$flywheel:commit` should still
-choose a conventional message first, prefer `$flywheel:commit-message` when
+If the user prefers to commit without creating a PR, `$fw:commit` should still
+choose a conventional message first, prefer `$fw:commit-message` when
 available, and then either use the host helper or a direct `git commit`.
 
-### 3. Notify User
+### 5. Notify User
 
 - Summarize what was completed.
 - Link to the PR when one was created.
 - Note any follow-up work.
+- State whether the pre-commit spin checkpoint captured, skipped, or found no
+  durable lesson.
 - Suggest next steps when useful.
-
-### 4. Offer Spin
-
-Before ending the session, identify up to **3** non-trivial solved problems or
-durable lessons worth capturing in the active repo's `docs/solutions/`.
-
-Good candidates include:
-
-- a bug with a non-obvious root cause
-- a workflow or tooling improvement that removed friction
-- a reusable testing or validation pattern
-- a clarified project rule or integration gotcha
-- a repeated dead end that future work should avoid
-
-Present each candidate in one line with why it is worth preserving, then ask
-whether to run `$flywheel:spin` now.
-
-Unless the user explicitly asked for `$flywheel:spin`, do not silently write
-new active-repo `docs/solutions/` entries as part of commit.
-
-If the user agrees to spin a specific candidate, invoke `$flywheel:spin` with that
-selected candidate summary as the argument. Do not call `$flywheel:spin` blank after
-the user already chose a candidate in this commit step.
-
-If the user wants to spin multiple candidates, handle them one at a time in
-priority order rather than passing a blank prompt that forces candidate
-rediscovery.
 
 ## Quality Checklist
 
@@ -219,19 +228,19 @@ Before creating a PR, verify:
 - [ ] Evidence handling is addressed by the host PR workflow or the manual PR creation step when the change has observable behavior
 - [ ] Commit messages follow conventional format
 - [ ] The PR description includes `Post-Deploy Monitoring & Validation` or an explicit no-impact rationale
-- [ ] Code review completed, inline or via `$flywheel:review`
+- [ ] Code review completed, inline or via `$fw:review`
 - [ ] The PR description includes summary, testing notes, and evidence when captured
 - [ ] Documentation impact was addressed or consciously deferred when the
       change touched setup, public interfaces, config, CLI behavior, or user
       workflows
-- [ ] Any durable session learnings were either captured with `$flywheel:spin` or consciously deferred
+- [ ] Any durable session learnings were either captured with `$fw:spin` or consciously deferred
 
 ## Code Review Tiers
 
 Every change gets reviewed. The tier determines depth, not whether review
 happens.
 
-**Tier 2: Full review** — required default. Invoke `$flywheel:review mode:autofix`
+**Tier 2: Full review** — required default. Invoke `$fw:review mode:autofix`
 with `plan:<path>` when available. Safe fixes are applied automatically;
 residual work surfaces as todos. Always use this tier unless all four Tier 1
 criteria are explicitly confirmed.
@@ -241,7 +250,7 @@ findings remain, stop the commit path until those findings are resolved or
 explicitly accepted by the user.
 
 If the completed change is runtime-risky and the release posture is still
-unclear, route through `$flywheel:rollout` before `$flywheel:commit` so activation sequence,
+unclear, route through `$fw:rollout` before `$fw:commit` so activation sequence,
 validation window, and rollback triggers are explicit.
 
 **Tier 1: Inline self-review** — permitted only when all four are true and each

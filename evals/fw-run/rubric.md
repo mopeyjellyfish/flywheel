@@ -12,8 +12,15 @@ Does the response identify the correct earliest missing stage?
 
 Does it show a coherent path through the remaining workflow stages?
 
+`fw:run` is an optional wrapper, not part of the critical path itself. Strong
+answers preserve the underlying path: shape -> work -> review -> optional spin
+-> commit.
+
 For software-project work, the remaining path should normally include review
 before commit unless the case starts after review is already complete.
+When discovery, requirements, or planning is still missing, the path should
+start at `shape` and name the relevant internal mode rather than exposing that
+mode as the main stage.
 
 ### Stop-Point Discipline
 
@@ -22,4 +29,4 @@ especially at the plan -> work boundary?
 
 ### Spin Awareness
 
-Does it preserve `fw-spin` as the final capture step?
+Does it preserve `fw-spin` as the optional pre-commit capture step?

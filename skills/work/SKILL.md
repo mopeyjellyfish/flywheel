@@ -1,6 +1,6 @@
 ---
 name: work
-description: "Execute work efficiently while maintaining quality and finishing features. Use when a plan doc, specification, todo file, or clear implementation request is ready for execution, and the goal is to finish complete work with visible task tracking, plan-aligned unit execution, safe parallelism when supported and requested, repo-grounded validation, and disciplined follow-through into review and commit."
+description: "Execute ready implementation work. Use for plans, specs, todos, or clear requests that need tracked changes and validation."
 metadata:
   argument-hint: "[Plan doc path or description of work. Blank to auto use latest plan doc]"
 ---
@@ -10,29 +10,29 @@ metadata:
 Use the actual current date from runtime context when identifying the latest
 plan document or updating dated execution artifacts.
 
-`$flywheel:work` is the smart middle stage of Flywheel's compact project loop.
+`$fw:work` is the smart middle stage of Flywheel's compact project loop.
 It takes a plan, spec, todo file, or clear work request and turns it into
 implemented, validated repo changes. The goal is not to stay busy. The goal is
 to finish the feature, validate it against repo truth, pull in helper
 workflows only when the task actually needs them, and leave the tree ready for
 review and commit.
 
-`$flywheel:brainstorm` defines **WHAT** to build. `$flywheel:plan` defines **HOW** to build
-it. `$flywheel:work` executes the plan, stays grounded in the repo, and absorbs
+`$fw:brainstorm` defines **WHAT** to build. `$fw:plan` defines **HOW** to build
+it. `$fw:work` executes the plan, stays grounded in the repo, and absorbs
 helper-stage selection for things like docs, browser proof, rollout, verify,
 observability, logging, architecture strategy, maintainability, or
 simplification when the work needs those surfaces before review.
 
 **When directly invoked, always execute.** Do not treat a direct invocation as
 "not an execution task" and exit. If the work is large or underdefined enough
-that execution would be irresponsible, recommend `$flywheel:brainstorm` or
-`$flywheel:plan`, explain why, and honor the user's choice if they want to continue.
+that execution would be irresponsible, recommend `$fw:brainstorm` or
+`$fw:plan`, explain why, and honor the user's choice if they want to continue.
 
 ## Interaction Method
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -57,6 +57,8 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `references/commit-workflow.md` only when all implementation tasks are
   complete and execution transitions from Phase 2 into quality check and
   commit.
+- Read `../references/workflow-gates.md` when execution is ready to hand off to
+  review, rollout, spin, or commit.
 - Read `../observability/references/service-readiness-matrix.md` only when the
   work changes runtime behavior, contracts, state, rollout posture, retries,
   queues, migrations, or other blast-radius-sensitive boundaries.
@@ -77,7 +79,8 @@ Do not preload every reference. Load only what the current phase needs:
 6. **Keep progress visible** — maintain task state, note blockers, and finish
    with a clean quality gate.
 7. **Prefer fewer extra visible handoffs** — use helper workflows when they add
-   real value beyond the default shape -> work -> review -> commit loop.
+   real value beyond the default shape -> work -> review -> optional spin ->
+   commit loop.
 
 ## Input Document
 
@@ -118,7 +121,7 @@ specification, or todo file. Skip to Phase 1.
    | --- | --- | --- |
    | **Trivial** | 1-2 files, no behavioral change, typo, rename, narrow config edit | Proceed to Phase 1 step 2, then implement directly. Skip task-list construction and the execution strategy phase. Apply Test Discovery if the change touches behavior-bearing code. |
    | **Small / Medium** | Clear scope, bounded change, usually under 10 files | Build a host-tracked task list from discovery and proceed to Phase 1 step 2. |
-   | **Large** | Cross-cutting, architectural, high-risk, or likely 10+ files, including auth, payments, migrations, or shared infra | Explain that the work would benefit from `$flywheel:brainstorm` or `$flywheel:plan` to surface edge cases and scope boundaries. Honor the user's choice. If proceeding, build a host-tracked task list and continue to Phase 1 step 2. |
+   | **Large** | Cross-cutting, architectural, high-risk, or likely 10+ files, including auth, payments, migrations, or shared infra | Explain that the work would benefit from `$fw:brainstorm` or `$fw:plan` to surface edge cases and scope boundaries. Honor the user's choice. If proceeding, build a host-tracked task list and continue to Phase 1 step 2. |
 
 ### Phase 1: Quick Start
 
@@ -135,9 +138,13 @@ Skip this step when arriving from Phase 0 with a bare prompt.
   `Execution mode`, use them as the default execution shape. Treat
   `parallel-ready` as eligible rather than mandatory, and keep `serial` units
   ordered.
-- Check for `Execution note` on each implementation unit. Carry that posture
-  into the task, especially when it specifies `tdd`, `test-first`, or
-  `characterization`.
+- Check for `Test posture` on each implementation unit. If it is `tdd`, load
+  the `test-driven-development` skill before writing implementation code for
+  that unit. If it is `characterization`, capture current behavior before
+  changing it. Treat `no-new-tests` as valid only when the plan gives a clear
+  exception reason.
+- Check for `Execution note` on each implementation unit and carry any
+  sequencing, rollout, or other non-test posture into the task.
 - If the plan includes `Architecture and Pattern Decisions` or an equivalent
   section, carry those boundary, pattern, and clean-code constraints into the
   task instead of rediscovering them ad hoc.
@@ -149,8 +156,11 @@ Skip this step when arriving from Phase 0 with a bare prompt.
 - Review any references or links provided in the plan.
 - If the plan already has checked implementation-unit checkboxes, treat those
   units as already completed unless repo truth clearly contradicts them.
-- If the user explicitly asks for TDD, test-first, or characterization-first
-  execution in this session, honor that request even if the plan is silent.
+- If the user explicitly asks for TDD, test-first, or red-green-refactor
+  execution in this session, load the `test-driven-development` skill and honor
+  that request even if the plan is silent.
+- If the user explicitly asks for characterization-first execution in this
+  session, honor that request even if the plan is silent.
 - If anything important is unclear or ambiguous, ask clarifying questions now.
 - In interactive mode, get user approval to proceed after clarifications.
 - Do not skip clarification when the plan leaves room for materially different
@@ -206,7 +216,7 @@ Build a short **ground-truth ledger** from the repo:
   now or explicitly mark the gap before proceeding.
 
 When runtime-facing work depends on telemetry design or log quality, load
-`$flywheel:observability` and `$flywheel:logging` instead of improvising a new instrumentation
+`$fw:observability` and `$fw:logging` instead of improvising a new instrumentation
 shape from memory.
 
 When runtime-risky work changes contracts, state, retries, queueing, or
@@ -227,8 +237,8 @@ If a local workflow policy file exists, the ledger should also answer: "Which
 completion gates in this repo are required here versus merely recommended?"
 
 If the repo truth reveals multiple viable reliability postures, such as retry
-vs fail-fast or fail-open vs fail-closed, present the user with a concise
-choice surface before editing:
+vs fail-fast or fail-open vs fail-closed, call the host question tool with a
+concise choice surface before editing:
 
 - current repo truth
 - top failure modes
@@ -256,7 +266,7 @@ if [ -z "$default_branch" ] && command -v gh >/dev/null 2>&1; then
 fi
 
 if [ -z "$default_branch" ]; then
-  echo "Unable to determine the default branch safely. Ask the user or run $flywheel:setup worktrees before creating a branch or worktree."
+  echo "Unable to determine the default branch safely. Ask the user or run $fw:setup worktrees before creating a branch or worktree."
   exit 1
 fi
 ```
@@ -293,7 +303,7 @@ Use a meaningful branch name based on the work, for example
 
 **Option B: Use a worktree** (recommended for parallel development)
 
-- Prefer `$flywheel:worktree` when it is available. Use the bundled manager script
+- Prefer `$fw:worktree` when it is available. Use the bundled manager script
   instead of raw `git worktree add` so ignore hygiene and env-file copying stay
   consistent.
 - If no manager is available, create an isolated worktree directly with git,
@@ -336,15 +346,19 @@ the work as Trivial.
 - Use each unit's `Execution mode` plus `Dependencies` to determine whether it
   is blocked, serial, or eligible for a later parallel-ready batch. If the plan
   lacks `Execution mode`, default units to `serial`.
-- Carry each unit's `Execution note` into the task when present.
+- Carry each unit's `Test posture` and `Execution note` into the task when
+  present.
 - Read every unit's `Patterns to follow` field before implementing. Those
   references exist to keep execution aligned with the codebase.
-- Use each unit's `Verification` field as the primary "done" signal.
+- Use each unit's `Red signal`, `Green signal`, and `Verification` fields as
+  the primary proof path when the unit is `tdd`; otherwise use `Verification`
+  as the primary "done" signal.
 - Keep the host task list and the plan document synchronized: the task tool
   carries `in_progress` and `blocked`, while the plan checkbox flips to `[x]`
   only after the unit's verification passes.
 - Do not expect the plan to contain implementation code, shell choreography, or
-  micro-step TDD instructions.
+  micro-step TDD instructions. Do expect a `tdd` unit to provide enough red and
+  green signal to start test-first execution.
 - Include testing and quality-check tasks, not just code-edit tasks.
 - Keep tasks specific, dependency-aware, and completable.
 
@@ -358,7 +372,7 @@ subagents, or parallel agent work.
 
 | Strategy | When to use |
 | --- | --- |
-| **Inline** | 1-2 small tasks, tasks needing user interaction mid-flight, or any normal direct `$flywheel:work` request. This is the default for bare-prompt work. |
+| **Inline** | 1-2 small tasks, tasks needing user interaction mid-flight, or any normal direct `$fw:work` request. This is the default for bare-prompt work. |
 | **Serial delegated units** | 3+ tasks with clear dependencies and plan-unit metadata strong enough to isolate execution cleanly. |
 | **Parallel delegated units** | 3+ independent `parallel-ready` tasks that pass the Parallel Safety Check and the user explicitly wants parallel agent work. |
 
@@ -383,8 +397,8 @@ parallel, instruct each delegated worker:
 Give each delegated unit:
 
 - the full plan file path for context
-- the specific unit's Goal, Files, Approach, Execution note, Patterns,
-  Test Scenarios, and Verification
+- the specific unit's Goal, Files, Test posture, Red signal, Green signal,
+  Approach, Execution note, Patterns, Test Scenarios, and Verification
 - any resolved deferred questions relevant to that unit
 - instruction to check whether the unit's test scenarios cover happy path, edge
   cases, failure paths, and integration where applicable
@@ -407,7 +421,7 @@ Give each delegated unit:
 4. For each completed unit in dependency order, review the diff, run the
    relevant tests, stage only that unit's files, choose a conventional commit
    message, and commit with a message derived from the unit's Goal. Prefer
-   `$flywheel:commit` when available; otherwise draft the header directly as
+   `$fw:commit` when available; otherwise draft the header directly as
    `<type>(scope): summary`.
 5. If tests fail after a unit commit, diagnose and fix before committing the
    next unit.
@@ -429,18 +443,20 @@ while (tasks remain):
   - Read any referenced files from the plan or discovered during Phase 0
   - Look for similar patterns in the codebase
   - Find existing test files for implementation files being changed
-  - Implement following existing conventions
-  - Add, update, or remove tests to match implementation changes
+  - If the unit or prompt requires TDD, load `test-driven-development`, write
+    and verify the red signal first, then implement the minimal green change
+  - Otherwise, implement following existing conventions and add, update, or
+    remove tests to match implementation changes
   - When runtime behavior changes, assess whether logs, traces, metrics, or
     operational validation need to be added or updated
-  - Use `$flywheel:observability` or `$flywheel:logging` when the repo's runtime support story
+  - Use `$fw:observability` or `$fw:logging` when the repo's runtime support story
     needs deliberate design, not just a quick local guess
-  - When the change is browser-visible, run `$flywheel:browser-test` before claiming
+  - When the change is browser-visible, run `$fw:browser-test` before claiming
     completion unless the repo has a stronger existing browser-proof surface
     and you can name it explicitly
   - When the change alters setup, public APIs, CLI flows, config, or
     user/operator workflows, note the likely docs impact so you can surface
-    `$flywheel:docs` before final review when a separate docs pass is worth it
+    `$fw:docs` before final review when a separate docs pass is worth it
   - When runtime behavior changes meaningfully, confirm the chosen reliability
     posture still matches the current code, failure modes, and blast radius
   - When local policy requires explicit operational validation for runtime
@@ -460,12 +476,18 @@ while (tasks remain):
   - Evaluate for an incremental commit
 ```
 
-When a unit carries an `Execution note`, honor it:
+When a unit carries a `Test posture`, honor it:
 
-- **test-first / tdd** — write the failing test before implementation
+- **tdd** — load `test-driven-development`, write the failing test before
+  implementation, verify the red failure, implement the smallest green change,
+  refactor if useful, and report red/green/refactor evidence
 - **characterization-first** — capture current behavior before changing it
 - **no-new-tests** — only when the unit is truly mechanical, config-only, or
   otherwise justified
+
+When a unit carries an `Execution note`, honor it as sequencing, rollout, or
+other execution guidance. Do not use `Execution note` as a substitute for
+`Test posture`.
 
 Guardrails for test posture:
 
@@ -475,6 +497,9 @@ Guardrails for test posture:
   feature.
 - Do not over-implement beyond the current behavior slice when working
   test-first.
+- If agent-authored implementation for the current TDD unit was written before
+  a red signal, discard only those agent-authored hunks and restart from RED.
+  Never revert user-authored or pre-existing dirty changes.
 - Skip test-first discipline for trivial renames, pure configuration, and pure
   styling work.
 
@@ -533,7 +558,7 @@ related units may land together.
 git add <files related to this logical unit>
 
 # 3. Choose a conventional commit header/body/footer
-#    Prefer $flywheel:commit-message when available
+#    Prefer $fw:commit-message when available
 #    If the helper is unavailable, draft the message directly
 #    If the best message would use `!` or `BREAKING CHANGE:`, ask the user first
 
@@ -604,17 +629,21 @@ If the work is UI-heavy and the task includes Figma designs:
 ### Phase 3-4: Quality Check and Commit It
 
 If the completed change likely changed setup steps, public interfaces, config
-contracts, CLI behavior, or user workflows, offer `$flywheel:docs` before final
+contracts, CLI behavior, or user workflows, offer `$fw:docs` before final
 review. If the user agrees, complete that docs pass first and then resume the
 path into review and commit.
 
 When all Phase 2 tasks are complete and execution transitions to quality check,
-read `references/commit-workflow.md` and follow that workflow for final
-validation, required `$flywheel:review`, and notification.
+read `../references/workflow-gates.md` and `references/commit-workflow.md`.
+Apply the `Work-Ready` gate before handing off to `$fw:review`: implementation,
+posture-specific evidence, relevant checks, task state, plan checkbox state,
+and worktree status must be complete or listed as blockers. Close the execution
+portion with the canonical handoff card: Stage, Artifact, Ready, Open
+decisions, Evidence, and Next.
 
 If the completed change is runtime-risky and the release posture is still
-unclear, route through `$flywheel:rollout` after `$flywheel:review` and before
-`$flywheel:commit` so activation sequence, validation window, and rollback
+unclear, route through `$fw:rollout` after `$fw:review` and before
+`$fw:commit` so activation sequence, validation window, and rollback
 triggers are explicit instead of being squeezed into the final commit step.
 
 ## Common Failure Modes

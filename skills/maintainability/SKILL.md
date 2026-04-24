@@ -1,6 +1,6 @@
 ---
 name: maintainability
-description: "Assess or shape code so future edits stay clear, local, and cheap. Use when wrappers, helpers, naming, cohesion, or ownership choices may raise long-term edit cost."
+description: "Assess future edit cost. Use when wrappers, helpers, naming, cohesion, or ownership may make changes harder."
 metadata:
   argument-hint: "[feature, path, diff, or maintainability concern]"
 ---
@@ -9,7 +9,7 @@ metadata:
 
 Use this helper when the main question is future edit cost.
 
-`$flywheel:maintainability` is for structure, locality, naming, and coupling.
+`$fw:maintainability` is for structure, locality, naming, and coupling.
 It is not a generic style checker.
 
 **When directly invoked, always do maintainability work.** Ground the current
@@ -20,7 +20,7 @@ that keeps later changes understandable.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

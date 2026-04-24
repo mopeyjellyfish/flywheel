@@ -66,8 +66,8 @@ explicit when it is time to narrow.
 
 **Offer options to react to when the user is stuck.** People who cannot generate
 from scratch can often evaluate presented options. Use multi-select questions
-only when they genuinely help. Keep presented options to 2-4 at any decision
-point.
+only when they genuinely help. Keep presented options to 2-3 by default at any
+decision point.
 
 ## How to Converge
 
@@ -84,14 +84,14 @@ reflect back what emerged: key decisions, the direction chosen, open threads,
 and any assumptions made. This is the primary output of the brainstorm — the
 user should be able to read the summary and know what they landed on.
 
-**Then offer next steps** using the exact host question tool named in the host
-interaction contract when that tool is available. If no such tool is
-available, present a short label-based choice surface in chat instead of
-asking for raw numeric replies.
+**Then offer next steps** by calling the exact host question tool named in the
+host interaction contract when that tool is available. If no such tool is
+available or the call errors, present a short label-based choice surface in
+chat instead of asking for raw numeric replies, then wait for the user's answer.
 
 **Question:** "Brainstorm wrapped. What would you like to do next?"
 
-- **Create a plan** → hand off to `$flywheel:plan` with the decided goal and
+- **Create a plan** → hand off to `$fw:plan` with the decided goal and
   constraints.
 - **Save summary to disk** → write the summary as a markdown file in the
   current working directory.
