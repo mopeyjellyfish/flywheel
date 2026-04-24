@@ -81,6 +81,8 @@ Before commit, confirm:
 - any `Deferred to Implementation` questions were resolved during execution
 - documentation impact was addressed or consciously deferred when the change
   altered setup, public interfaces, CLI behavior, config, or user workflows
+- the `Work-Ready` gate in `../../references/workflow-gates.md` is satisfied or
+  the missing items are listed as blockers before review
 
 ### 4. Prepare Operational Validation Plan (Required)
 

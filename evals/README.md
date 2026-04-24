@@ -30,6 +30,7 @@ Current suites:
 - `document-review`
 - `flywheel`
 - `flywheel-architecture-change`
+- `flywheel-handoff-gates`
 - `flywheel-runtime-change`
 - `flywheel-incident-response`
 - `fw-brainstorm`

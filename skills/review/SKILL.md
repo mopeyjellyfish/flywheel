@@ -101,6 +101,8 @@ Do not preload every reference. Load only what the current phase needs:
   evidence bundle is present or the review artifact should feed `$fw:commit`.
 - Read `references/review-output-template.md` during synthesis and
   presentation.
+- Read `../references/workflow-gates.md` during synthesis when turning review
+  verdict, blocking status, and evidence into the next handoff.
 
 ## Host Compatibility
 
@@ -671,6 +673,8 @@ parallel stack-pack reviewers.
 ### Stage 6: Synthesize And Present
 
 Read `references/review-output-template.md`.
+Read `../references/workflow-gates.md` and apply the `Review-Ready` gate before
+declaring the next stage.
 
 Use pipe-delimited markdown tables for interactive findings output. Do not
 present findings as prose blocks.
@@ -693,6 +697,8 @@ Interactive output should contain:
 11. Deployment notes, when that agent ran
 12. Coverage
 13. Verdict
+14. Flywheel handoff using Stage, Artifact, Ready, Open decisions, Evidence,
+    and Next
 
 **Requirements completeness**
 

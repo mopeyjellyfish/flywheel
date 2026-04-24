@@ -59,6 +59,9 @@ For fuzzy or workflow-shaping requests, strong handoff quality also makes the
 next user input explicit instead of acting as if routing alone resolved the
 ambiguity.
 
+Strong handoffs use the canonical Flywheel handoff shape when closing a stage:
+Stage, Artifact, Ready, Open decisions, Evidence, and Next.
+
 Expected examples:
 
 - shape -> ranked shortlist, requirements doc, reviewed technical plan, or

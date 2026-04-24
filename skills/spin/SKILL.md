@@ -55,6 +55,8 @@ Do not preload every support file. Load only what the current phase needs:
   fields.
 - Read `assets/resolution-template.md` only when assembling or refreshing the
   final solution document.
+- Read `../references/workflow-gates.md` when handing a captured solution back
+  to `$fw:commit`.
 
 ## Core Principles
 
@@ -376,6 +378,8 @@ Summarize:
 - any additional candidate learnings still worth spinning
 
 When `spin` was launched from the finish path, hand back to `$fw:commit` so the
-solution document can be included in the same commit set.
+solution document can be included in the same commit set. Use the canonical
+handoff card from `../references/workflow-gates.md` with `Stage: fw:spin`,
+the solution document as `Artifact`, and `Next: fw:commit`.
 
 If multiple good candidates remain, offer to spin the next one.

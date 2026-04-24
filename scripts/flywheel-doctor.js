@@ -239,6 +239,37 @@ function checkSpinBeforeCommitContract() {
   };
 }
 
+function checkWorkflowGatesContract() {
+  const files = [
+    ["shared reference", "skills/references/workflow-gates.md", /Flywheel handoff[\s\S]*Stage:[\s\S]*Artifact:[\s\S]*Ready:[\s\S]*Open decisions:[\s\S]*Evidence:[\s\S]*Next:/i],
+    ["plan-ready gate", "skills/references/workflow-gates.md", /Plan-Ready/i],
+    ["work-ready gate", "skills/references/workflow-gates.md", /Work-Ready/i],
+    ["review-ready gate", "skills/references/workflow-gates.md", /Review-Ready/i],
+    ["commit-ready gate", "skills/references/workflow-gates.md", /Commit-Ready/i],
+    ["start handoff", "skills/start/SKILL.md", /workflow-gates\.md[\s\S]*Stage, Artifact, Ready, Open decisions,\s*Evidence, and Next/i],
+    ["shape handoff", "skills/shape/SKILL.md", /Shape-Ready[\s\S]*canonical handoff/i],
+    ["plan handoff", "skills/plan/SKILL.md", /Plan-Ready[\s\S]*handoff card/i],
+    ["work handoff", "skills/work/SKILL.md", /Work-Ready[\s\S]*handoff card/i],
+    ["review handoff", "skills/review/SKILL.md", /Review-Ready[\s\S]*Flywheel handoff/i],
+    ["commit gate", "skills/commit/SKILL.md", /Commit-Ready[\s\S]*committing, pushing, or creating a PR/i],
+    ["journey eval", "evals/flywheel-handoff-gates/manifest.json", /flywheel-handoff-gates/i],
+  ];
+  const missing = files
+    .filter(([, relativePath, pattern]) => {
+      const fullPath = path.join(repoRoot, relativePath);
+      return !fs.existsSync(fullPath) || !pattern.test(fs.readFileSync(fullPath, "utf8"));
+    })
+    .map(([label]) => label);
+
+  return {
+    name: "Workflow handoff and gates contract",
+    ok: missing.length === 0,
+    detail: missing.length === 0
+      ? "main workflow surfaces use the shared handoff card and readiness gates"
+      : `handoff/gates contract missing from: ${missing.join(", ")}`,
+  };
+}
+
 function checkCodexRootRouterPrompt() {
   const manifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
   const manifest = fs.existsSync(manifestPath)
@@ -544,6 +575,7 @@ function main() {
     checkSkillDescriptionDiscriminators(),
     checkHostInteractionQuestionToolContract(),
     checkSpinBeforeCommitContract(),
+    checkWorkflowGatesContract(),
   ];
 
   if (includeCodex) {

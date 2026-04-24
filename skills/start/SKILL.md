@@ -285,6 +285,10 @@ For fuzzy, product-shaping, or workflow-shaping requests:
 
 When this skill routes a task, the response should make the immediate stage and
 handoff explicit. Keep it short, but do not omit the artifact or next step.
+For material stage boundaries, use the canonical handoff fields from
+`../references/workflow-gates.md`: Stage, Artifact, Ready, Open decisions,
+Evidence, and Next. Compress `Artifact` or `Evidence` to `none` or `n/a` when
+the router has not produced a durable artifact yet.
 
 This skill is a router. It should select the next Flywheel stage, explain the
 handoff, and then stop. Do not silently perform the downstream stage inside the
@@ -503,6 +507,8 @@ Use these patterns to keep routing answers stable across frontier models:
   grounded in the codebase and actual checks.
 - End each stage with a clear handoff to the next one, and treat `fw:spin`
   as a conditional pre-commit capture step rather than default extra ceremony.
+- Use the shared readiness gates in `../references/workflow-gates.md` when
+  deciding whether a stage may advance or must pause for approval.
 
 ## Expected Outputs
 

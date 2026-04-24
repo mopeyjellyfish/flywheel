@@ -57,6 +57,8 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `references/commit-workflow.md` only when all implementation tasks are
   complete and execution transitions from Phase 2 into quality check and
   commit.
+- Read `../references/workflow-gates.md` when execution is ready to hand off to
+  review, rollout, spin, or commit.
 - Read `../observability/references/service-readiness-matrix.md` only when the
   work changes runtime behavior, contracts, state, rollout posture, retries,
   queues, migrations, or other blast-radius-sensitive boundaries.
@@ -632,8 +634,12 @@ review. If the user agrees, complete that docs pass first and then resume the
 path into review and commit.
 
 When all Phase 2 tasks are complete and execution transitions to quality check,
-read `references/commit-workflow.md` and follow that workflow for final
-validation, required `$fw:review`, and notification.
+read `../references/workflow-gates.md` and `references/commit-workflow.md`.
+Apply the `Work-Ready` gate before handing off to `$fw:review`: implementation,
+posture-specific evidence, relevant checks, task state, plan checkbox state,
+and worktree status must be complete or listed as blockers. Close the execution
+portion with the canonical handoff card: Stage, Artifact, Ready, Open
+decisions, Evidence, and Next.
 
 If the completed change is runtime-risky and the release posture is still
 unclear, route through `$fw:rollout` after `$fw:review` and before

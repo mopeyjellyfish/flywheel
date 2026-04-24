@@ -37,3 +37,7 @@ verification path?
 
 Does it end with compact red, green, refactor, and broader-check evidence, or a
 clear TDD exception record?
+
+Strong passes include a short sanitized output summary when command output,
+coverage, or report deltas materially help later review or commit, while
+suppressing full logs and sensitive output.

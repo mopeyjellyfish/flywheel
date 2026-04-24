@@ -145,6 +145,11 @@ of them into new mandatory visible stages.
 lesson worth preserving, and it runs before `commit` so the solution note can be
 included with the same branch changes. `commit` finishes the branch cleanly.
 
+Main stages use a compact handoff card when a boundary matters: `Stage`,
+`Artifact`, `Ready`, `Open decisions`, `Evidence`, and `Next`. The card keeps
+plans, proof, review verdicts, and commit readiness portable across Codex,
+Claude Code, and later hosts without adding visible stages.
+
 Common starts:
 
 - new feature or vague idea: `$fw` or `$fw:shape`

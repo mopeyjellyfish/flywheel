@@ -105,7 +105,14 @@ TDD evidence
 - Green: <command> -> pass
 - Refactor: <command> -> pass, or no refactor
 - Broader checks: <commands/results or n/a>
+- Output summary: <optional 1-6 lines of sanitized failure/pass/coverage output>
 ```
+
+Use `Output summary` when the raw command output helps later review or commit
+understand the proof. Keep it condensed: include the failing assertion or error
+shape for RED, the pass count for GREEN, and coverage or report deltas only
+when they are material. Do not paste full logs, stack traces, secrets, tokens,
+cookies, PII, or unrelated warnings.
 
 If an exception was used, report:
 

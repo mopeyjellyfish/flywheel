@@ -35,6 +35,9 @@ useful artifact before implementation.
 Do not implement code inside `fw:shape`. The stage ends when it has produced or
 selected the artifact that `fw:work` can execute from.
 
+When closing a material shaping pass, read `../references/workflow-gates.md`
+and use its `Shape-Ready` gate plus canonical handoff card.
+
 ## Routing Rules
 
 - If the user asks what to improve, asks for next bets, or presents an open area
@@ -70,6 +73,9 @@ End with one of these outcomes:
   another deepen pass and `fw:work`
 
 Always name the next main stage as `fw:work` once the shaping artifact is ready.
+When a shaping mode produced or selected a durable artifact, close with the
+canonical handoff fields from `../references/workflow-gates.md`: Stage,
+Artifact, Ready, Open decisions, Evidence, and Next.
 
 ## Example Prompts
 

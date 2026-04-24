@@ -70,6 +70,8 @@ Do not preload every support file. Load only what the current phase needs:
 - read `../observability/references/service-readiness-matrix.md` only when the
   change is runtime-risky and the monitoring or validation section needs a
   grounded readiness frame
+- read `../references/workflow-gates.md` before final readiness checks and when
+  closing the finish stage
 - read `.flywheel/config.local.yaml` when present for repo-local commit gates
   such as browser proof, review-before-commit, and runtime validation
 
@@ -151,6 +153,10 @@ If a clean isolated checkout is preferable before finishing, use
 `$fw:worktree` instead of switching the shared checkout ad hoc.
 
 ### Phase 3: Run Missing Readiness Checks
+
+Read `../references/workflow-gates.md` and apply the `Commit-Ready` gate while
+running the checks below. If the gate is not satisfied, stop with the missing
+items instead of committing, pushing, or creating a PR.
 
 Before creating commits or a PR, confirm:
 
@@ -344,6 +350,8 @@ Then report:
 3. any residual follow-up
 4. whether the pre-commit spin checkpoint captured, skipped, or found no durable
    lesson
+5. a final handoff card from `../references/workflow-gates.md` with readiness,
+   evidence, and any open follow-up
 
 Do not make a normal post-commit spin offer. If push, PR creation, CI, or
 reviewer feedback after commit reveals a new durable lesson, treat that as a new

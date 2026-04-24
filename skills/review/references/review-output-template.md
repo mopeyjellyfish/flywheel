@@ -88,6 +88,15 @@ Use pipe-delimited markdown tables. Do not use ASCII box-drawing characters.
 - Residual risks: No rate limiting on the export path
 - Testing gaps: No test for concurrent export requests
 
+### Flywheel Handoff
+
+- Stage: `fw:review`
+- Artifact: `.context/flywheel/review/<run-id>/`
+- Ready: `conditional` -- safe_auto fixes landed, but gated auth and pagination work remain
+- Open decisions: ownership-check fix approval; pagination contract decision
+- Evidence: review verdict plus reviewer artifacts
+- Next: `fw:work` -- fix blocking findings before commit
+
 ---
 
 > **Verdict:** Ready with fixes
@@ -139,6 +148,8 @@ blockquote verdict.
   default; findings remain primary
 - Coverage includes suppressed count, residual risks, testing gaps, and failed
   reviewers
+- Flywheel Handoff includes Stage, Artifact, Ready, Open decisions, Evidence,
+  and Next
 - use a horizontal rule before the verdict
 - verdict, reasoning, and fix order use blockquotes
 

@@ -37,6 +37,13 @@ Because this workflow coordinates multiple stages, use the host task-tracking
 tool named in `../references/host-interaction-contract.md` to create and
 maintain a task list for the remaining stages and major handoffs.
 
+## Reference Loading Map
+
+Do not preload every reference. Load only what the current phase needs:
+
+- Read `../references/workflow-gates.md` when coordinating a stage boundary,
+  deciding whether to continue, or summarizing a pause/finish point.
+
 ## Core Principles
 
 1. **Start at the earliest missing stage** - do not rerun already-complete work
@@ -115,3 +122,7 @@ When the branch is finished or paused at a deliberate handoff, summarize:
 4. what still needs user approval or follow-up
 5. whether the pre-commit `$fw:spin` checkpoint captured, skipped, or found no
    durable lesson
+
+Then include the canonical handoff card from
+`../references/workflow-gates.md`: Stage, Artifact, Ready, Open decisions,
+Evidence, and Next.

@@ -82,6 +82,8 @@ Before presenting options, summarize:
 - what still needs user confirmation or is intentionally deferred
 - what execution would work on first, including the first serial unit or first
   eligible parallel-ready batch when the plan defines both
+- the Flywheel handoff card from `../../references/workflow-gates.md`, with
+  `Ready` set to `conditional` until the user chooses the next action
 
 **Question:** "Plan ready at `docs/plans/YYYY-MM-DD-NNN-<type>-<name>-plan.md`.
 What would you like to do next?"

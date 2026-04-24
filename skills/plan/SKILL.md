@@ -91,6 +91,8 @@ needs:
   plan should be strengthened after the first draft is written.
 - Read `references/plan-handoff.md` only after the plan file exists on disk and
   the confidence check is complete.
+- Read `../references/workflow-gates.md` after the plan file exists and before
+  presenting the final user choice.
 - Read `../observability/references/service-readiness-matrix.md` only when the
   work changes runtime behavior, contracts, retries, queues, migrations, or
   other blast-radius-sensitive service boundaries.
@@ -1086,7 +1088,13 @@ that flow.
 
 #### 5.4 Document Review, Final Checks, and Post-Generation Options
 
-After the confidence check, read `references/plan-handoff.md`. Document review
-is mandatory — do not skip it even if the confidence check already ran.
+After the confidence check, read `references/plan-handoff.md` and
+`../references/workflow-gates.md`. Document review is mandatory — do not skip
+it even if the confidence check already ran.
+
+Apply the `Plan-Ready` gate before offering work. Close with the canonical
+handoff card: Stage, Artifact, Ready, Open decisions, Evidence, and Next. The
+`Ready` field is `conditional` until the user chooses whether to address review
+findings, deepen the plan, or start `$fw:work`.
 
 NEVER CODE. Research, decide, and write the plan.

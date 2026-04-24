@@ -11,6 +11,8 @@ Does it clearly describe commit, push, and PR flow?
 ### Readiness Gate
 
 Does it check whether tests, review, and branch state are ready?
+Strong passes apply the shared commit-ready gate and make any remaining blockers
+or open decisions explicit before committing, pushing, or creating a PR.
 
 ### Monitoring Notes
 

@@ -1,0 +1,39 @@
+{
+  "id": "flywheel-handoff-gates",
+  "skill": "fw:run",
+  "suiteType": "journey",
+  "journeyStages": [
+    "shape",
+    "work",
+    "review",
+    "commit"
+  ],
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "expected_start",
+    "expected_path",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Handoff Card",
+    "Readiness Gate",
+    "Artifact Carry",
+    "Boundary Discipline",
+    "Closure"
+  ],
+  "criticalDimensions": [
+    "Handoff Card",
+    "Readiness Gate",
+    "Boundary Discipline"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "shape_to_work_handoff",
+    "work_to_review_handoff",
+    "review_to_commit_handoff"
+  ]
+}

@@ -24,6 +24,8 @@ the next main stage only after the shaping artifact is ready?
 Does it make the next handoff clear, including requirements/spec review before
 planning when useful, plan review before work, and the choice to address
 findings, deepen, or start work when planning is involved?
+Strong passes close with the canonical Flywheel handoff fields: Stage,
+Artifact, Ready, Open decisions, Evidence, and Next.
 
 ### Interaction Fit
 

@@ -46,6 +46,8 @@ leaving it as detached background.
 ### Commit Handoff
 
 Does it preserve commit as the downstream step?
+Strong passes carry review verdict, blocking status, evidence, and any residual
+work into the canonical handoff card before commit.
 
 ### Review Budget Discipline
 
