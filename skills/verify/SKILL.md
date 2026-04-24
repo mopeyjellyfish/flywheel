@@ -1,6 +1,6 @@
 ---
 name: verify
-description: "Require fresh evidence before claiming work is complete, fixed, or ready. Use before task completion, commits, PR creation, or any success claim about tests, lint, builds, bug fixes, or requirements coverage."
+description: "Verify completion claims with fresh evidence. Use before claiming tests, lint, builds, fixes, or requirements are done."
 metadata:
   argument-hint: "[claim, command, or blank to apply the gate to current work]"
 ---
@@ -25,7 +25,7 @@ Use this skill when work is about to be described as:
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -35,7 +35,7 @@ maintain a short task list.
 
 When more than one proof path is plausible:
 
-- present 2-4 predicted proof options at most
+- present 2-3 portable predicted proof options by default
 - put the recommended proof first
 - keep options concrete, such as exact commands, tests, or artifacts
 - rely on the host's native freeform final path when it exists

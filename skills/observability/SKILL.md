@@ -1,6 +1,6 @@
 ---
 name: observability
-description: "Discover, design, or review logs, metrics, traces, dashboards, and operational validation for runtime-facing changes. Use when a change affects production behavior, jobs, queues, integrations, APIs, migrations, or when telemetry quality determines whether the work is supportable."
+description: "Design or review runtime observability. Use for logs, metrics, traces, dashboards, validation, and supportability."
 metadata:
   argument-hint: "[feature, path, runtime surface, or blank to inspect repo truth]"
 ---
@@ -27,7 +27,7 @@ usable signal plan or gap report.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -38,7 +38,7 @@ maintain a short task list.
 When the user needs to choose between viable reliability or supportability
 postures:
 
-- present 2-4 predicted options at most
+- present 2-3 portable predicted options by default
 - put the recommended option first
 - keep the tradeoffs concrete
 - rely on the host's native freeform final path when it exists

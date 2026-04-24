@@ -81,6 +81,10 @@ When in doubt:
 - Every skill must include YAML frontmatter with `name` and `description`.
 - Keep `name` aligned with the directory name.
 - Write `description` as “what it does” plus “when to use it.” Quote the value if it contains a colon.
+- Keep `description` concise because hosts load the skill catalog before loading
+  any individual skill. Target less than 150 characters on average and less than
+  180 characters for any single skill; `make doctor` enforces this context
+  budget.
 - Prefer backtick path references such as `` `references/file.md` `` or `` `../references/file.md` `` inside `SKILL.md` files. Avoid markdown links for local reference files; they are harder for agents to resolve correctly.
 - Keep large or conditional reference material in `references/` instead of inlining it into the main skill body.
 - When one skill refers to another, prefer semantic wording such as “load the `document-review` skill” unless the text is intentionally teaching the published command syntax.
@@ -116,7 +120,8 @@ When a skill needs user input, default to the host’s blocking question tool an
 - Known equivalents are `AskUserQuestion` in Claude Code, `request_user_input` in Codex, and `ask_user` in Gemini.
 - In Claude Code, `AskUserQuestion` is a deferred tool. If its schema is not already loaded, load it through `ToolSearch` with `select:AskUserQuestion` before falling back. A pending schema load is not a valid reason to ask in plain text.
 - In Codex, use `request_user_input` when the active runtime exposes it. Some edit-mode sessions do not expose that tool.
-- Ask one question at a time. Default to 2-4 options, recommended option first, and rely on the host’s native free-form path when it exists.
+- A structured choice means a blocking tool call, not a markdown menu in chat. Ask one question at a time. Default to 2-3 portable options, recommended option first, and rely on the host’s native free-form path when it exists. Use a fourth explicit option only when the active host schema supports it; Codex `request_user_input` currently expects 2-3 explicit choices and provides its own free-form path.
+- Claude Code supports multi-select with `AskUserQuestion.multiSelect`; Codex `request_user_input` is currently mutually exclusive, so use sequential single-select questions or the fallback chat protocol for genuine multi-select choices.
 - If no blocking question tool exists in the active harness, or the tool call errors, present numbered options in chat and wait for the user’s reply before continuing. Never silently skip the question.
 - Narrow exception: if there are 5 or more genuinely relevant options and trimming them would hide real user choice, use a numbered chat list instead of forcing the menu into the 4-option cap. Apply that only after verifying that no option can be removed, merged, or moved into nearby prose. Include a free-form hint such as “Pick a number or describe what you want.”
 - Platform note: this guidance reflects current behavior as of April 2026. `AskUserQuestion` is currently deferred in Claude Code, and `request_user_input` in Codex is currently limited to plan-capable modes. Re-verify these constraints before carrying the workaround forward.

@@ -1,6 +1,6 @@
 ---
 name: browser-test
-description: "Run browser acceptance checks for local or remote web surfaces using playwright-cli. Use when a change affects observable browser behavior and the goal is to prove the flow with fresh evidence before review or commit."
+description: "Run browser acceptance checks with playwright-cli. Use when browser-visible behavior needs fresh proof before review or commit."
 metadata:
   argument-hint: "[url, local route, changed flow, or blank to inspect current web surface]"
 ---
@@ -20,7 +20,7 @@ works cleanly with frontier coding agents.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

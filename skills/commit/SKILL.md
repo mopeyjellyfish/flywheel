@@ -1,6 +1,6 @@
 ---
 name: commit
-description: "Finish the current branch cleanly: validate readiness, plan logical commit boundaries, create commit(s), push safely, and create or refresh a PR with testing and operational validation notes. Use when the work is done and the next job is to finish the branch without dropping evidence, monitoring, or branch-safety discipline."
+description: "Finish a branch cleanly. Use to verify readiness, make logical commits, push, and create or refresh a PR with evidence."
 metadata:
   argument-hint: "[blank to finish current branch, or pass local-only, plan:<path>, pr:<url>, or refresh-description]"
 ---
@@ -29,7 +29,7 @@ were skipped.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -323,11 +323,12 @@ Then report:
 3. any residual follow-up
 4. whether a bounded `$fw:spin` offer is warranted
 
-If one or more candidates are worth preserving, present a small choice surface:
+If one or more candidates are worth preserving, call the host question tool with
+a small choice surface:
 
-1. **Skip**
-2. **Quick spin**
-3. **Full spin**
+1. **Skip** - finish without capturing a solution entry
+2. **Quick spin** - capture the strongest lesson in a compact solution note
+3. **Full spin** - run `$fw:spin` with the selected candidate summary
 
 Recommend the strongest candidate explicitly. If the user wants to continue,
 launch `$fw:spin` with the selected candidate summary instead of calling

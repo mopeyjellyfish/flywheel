@@ -12,6 +12,10 @@ Does the response identify the correct earliest missing stage?
 
 Does it show a coherent path through the remaining workflow stages?
 
+`fw:run` is an optional wrapper, not part of the critical path itself. Strong
+answers preserve the underlying path: shape -> work -> review -> commit ->
+optional spin.
+
 For software-project work, the remaining path should normally include review
 before commit unless the case starts after review is already complete.
 When discovery, requirements, or planning is still missing, the path should

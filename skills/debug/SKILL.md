@@ -1,6 +1,6 @@
 ---
 name: debug
-description: "Investigate bugs systematically, prove the causal hypothesis, and either fix them with a red failing test or route the design problem back into brainstorming or planning. Use for test failures, regressions, production bugs, stack traces, and 'why is this broken?' work."
+description: "Investigate and fix bugs from evidence. Use for failures, regressions, stack traces, or unclear broken behavior."
 metadata:
   argument-hint: "[issue, stack trace, failing test, reproduction steps, or broken behavior]"
 ---
@@ -40,7 +40,7 @@ Interpret the input as:
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

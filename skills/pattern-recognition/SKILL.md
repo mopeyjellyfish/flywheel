@@ -1,6 +1,6 @@
 ---
 name: pattern-recognition
-description: "Map problem symptoms to existing repo patterns or justified named patterns such as DTO, repository, ports/adapters, builder, DDD, or distributed reliability patterns. Use when the work needs a grounded answer to 'should we use this pattern here?'"
+description: "Assess pattern fit from repo truth. Use when deciding whether DTOs, repositories, ports, builders, DDD, or similar patterns fit."
 metadata:
   argument-hint: "[feature, path, diff, or pattern question]"
 ---
@@ -20,13 +20,13 @@ with a generic pattern encyclopedia. Ground the repo and the current change.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 When more than one viable pattern posture exists:
 
-- present 2-4 predicted options at most
+- present 2-3 portable predicted options by default
 - put the recommended option first
 - keep differences concrete
 - rely on the host's native freeform final path when it exists

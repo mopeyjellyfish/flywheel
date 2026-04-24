@@ -1,6 +1,6 @@
 ---
 name: polish
-description: "Run an interactive browser polish loop on a browser-visible feature using playwright-cli, live app reloads, and quick fix iterations. Use when the user wants to try the feature, call out rough edges, and tighten it before review or commit."
+description: "Run an interactive browser polish loop. Use to tighten browser-visible work with live feedback before review or commit."
 metadata:
   argument-hint: "[url, route, branch, or blank to use the current browser-visible surface]"
 ---
@@ -18,7 +18,7 @@ This skill uses `playwright-cli` as the browser-control surface.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

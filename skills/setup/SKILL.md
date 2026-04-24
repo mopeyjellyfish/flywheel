@@ -1,6 +1,6 @@
 ---
 name: setup
-description: "Diagnose and bootstrap the repo-local development environment for Flywheel work. Use when onboarding a repo, checking whether the machine can execute the project workflow, reconciling setup after a Flywheel update, validating host security posture, or proving which tools and commands are actually available before planning, work, review, or commit."
+description: "Diagnose and bootstrap repo-local setup. Use for onboarding, workflow readiness, host posture, or missing tool checks."
 metadata:
   argument-hint: "[blank to inspect current repo, or pass a focus such as project, security, worktrees, review, commit, doctor, or evals]"
 ---
@@ -44,7 +44,7 @@ Setup should also clarify the host security posture Flywheel should assume:
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -240,7 +240,7 @@ Treat that as a concrete setup gap, not a vague recommendation.
 
 ### Phase 4: Choose A Bootstrap Posture
 
-When fixes are needed, present a short choice surface:
+When fixes are needed, call the host question tool with a short choice surface:
 
 - **Minimum viable bootstrap** (recommended) - only unblock the immediate
   workflow
@@ -306,8 +306,9 @@ npm install -g @playwright/cli@<pinned-version>
 playwright-cli install --skills
 ```
 
-If no pinned version is available and the repo has no local path, present a
-short choice surface instead of silently defaulting to `@latest`.
+If no pinned version is available and the repo has no local path, call the host
+question tool with a short choice surface instead of silently defaulting to
+`@latest`.
 
 When the user wants you to fix the browser gap now, `$fw:setup browser` should
 offer to run the chosen install path directly instead of merely documenting it.

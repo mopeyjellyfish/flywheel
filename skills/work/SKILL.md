@@ -1,6 +1,6 @@
 ---
 name: work
-description: "Execute work efficiently while maintaining quality and finishing features. Use when a plan doc, specification, todo file, or clear implementation request is ready for execution, and the goal is to finish complete work with visible task tracking, plan-aligned unit execution, safe parallelism when supported and requested, repo-grounded validation, and disciplined follow-through into review and commit."
+description: "Execute ready implementation work. Use for plans, specs, todos, or clear requests that need tracked changes and validation."
 metadata:
   argument-hint: "[Plan doc path or description of work. Blank to auto use latest plan doc]"
 ---
@@ -32,7 +32,7 @@ that execution would be irresponsible, recommend `$fw:brainstorm` or
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -227,8 +227,8 @@ If a local workflow policy file exists, the ledger should also answer: "Which
 completion gates in this repo are required here versus merely recommended?"
 
 If the repo truth reveals multiple viable reliability postures, such as retry
-vs fail-fast or fail-open vs fail-closed, present the user with a concise
-choice surface before editing:
+vs fail-fast or fail-open vs fail-closed, call the host question tool with a
+concise choice surface before editing:
 
 - current repo truth
 - top failure modes

@@ -1,6 +1,6 @@
 ---
 name: logging
-description: "Design or review structured application logging with wide-event patterns, stable field names, correlation IDs, and useful context. Use when a change affects runtime behavior and the logs need to help humans and agents understand what actually happened."
+description: "Design or review structured logging. Use when runtime behavior needs useful events, stable fields, or correlation IDs."
 metadata:
   argument-hint: "[feature, path, request flow, or blank to inspect existing logging]"
 ---
@@ -23,7 +23,7 @@ gap report grounded in the repo's existing logging truth.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -33,7 +33,7 @@ maintain a short task list.
 
 When more than one logging posture is viable:
 
-- present 2-4 predicted options at most
+- present 2-3 portable predicted options by default
 - put the recommended option first
 - keep the differences operational, not stylistic
 - rely on the host's native freeform final path when it exists

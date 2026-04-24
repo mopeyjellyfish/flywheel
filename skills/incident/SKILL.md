@@ -1,6 +1,6 @@
 ---
 name: incident
-description: "Handle production or runtime incidents from live evidence. Use when the work starts from alerts, logs, traces, metrics, or visible degradation and the immediate job is to bound blast radius, choose mitigation vs rollback vs patch, and hand off cleanly into debug, planning, rollout, or commit."
+description: "Handle runtime incidents from live evidence. Use to bound blast radius and choose mitigation, rollback, or patch."
 metadata:
   argument-hint: "[incident report, alert, log/trace summary, issue, or blank to inspect current runtime evidence]"
 ---
@@ -23,7 +23,7 @@ runtime evidence to the right next Flywheel stage.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

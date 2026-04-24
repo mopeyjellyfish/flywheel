@@ -1,6 +1,6 @@
 ---
 name: ideate
-description: "Generate and critically filter grounded ideas for a repo, subsystem, product area, or software topic before choosing one to brainstorm. Pressure-test the starting frame before committing to one direction. Use when the user asks what to improve, wants proactive backlog shaping, requests idea generation, or wants the AI to surface the strongest next bets instead of refining a single chosen idea."
+description: "Generate and filter grounded next bets. Use when the work is not chosen and the user wants ranked ideas before brainstorming."
 metadata:
   argument-hint: "[feature, focus area, path, or constraint]"
 ---
@@ -30,7 +30,7 @@ they only want brainstorming or planning.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -45,7 +45,7 @@ When interactive, prefer at least one targeted framing question when the answer
 would materially change which ideas survive. Treat the user's answers,
 preferences, and corrections as durable inputs to later brainstorming, planning,
 and spin.
-When the likely answer space is predictable, present 2-4 explicit labels with
+When the likely answer space is predictable, present 2-3 portable labels with
 the recommended option first and rely on the host's native freeform final path
 when it exists.
 

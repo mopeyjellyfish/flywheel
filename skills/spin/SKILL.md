@@ -1,6 +1,6 @@
 ---
 name: spin
-description: "Capture solved problems and durable lessons into the active repo's docs/solutions/ so future ideate, brainstorm, plan, and work runs in that repo can reuse them. Use at the end of completed work, after a verified fix, or when a repeated pattern should become searchable repo knowledge."
+description: "Capture durable lessons in docs/solutions. Use after completed work, verified fixes, or repeated repo-specific patterns."
 metadata:
   argument-hint: "[lesson, problem, file path, or blank to infer from the recent session]"
 ---
@@ -31,7 +31,7 @@ workflow.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

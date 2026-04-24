@@ -1,6 +1,6 @@
 ---
 name: start
-description: "Route project-development work through Flywheel's compact loop: shape, work, review, commit, and post-commit spin when it is worth keeping. Pressure-test fuzzy requests before handoff, and use helper stages only when the task clearly starts there or the main loop needs them."
+description: "Route project work through Flywheel. Use to pick the earliest useful stage across shape, work, review, commit, and spin, then stop."
 ---
 
 # Flywheel
@@ -31,13 +31,17 @@ appeared. Prefer docs with `doc_status: active`, and if a strong hit has
 
 ## Flow Map
 
-For software-project work, Flywheel's visible backbone is:
+For software-project work, Flywheel's critical path is:
 
 1. `fw:shape`
 2. `fw:work`
 3. `fw:review`
 4. `fw:commit`
 5. conditional `fw:spin`
+
+`fw:start` is not itself a backbone stage. It is the root router for choosing
+the earliest useful stage on that path or a focused helper when the task clearly
+starts outside the path.
 
 `fw:shape` is the first main workflow stage. It chooses the smallest shaping
 mode that can produce the next useful artifact:
@@ -48,8 +52,8 @@ mode that can produce the next useful artifact:
 - `fw:deepen` for strengthening an existing reviewed plan before execution
 
 `fw:plan` is read-only. It should produce a plan, run `document-review` on
-that plan, and then pause for the user to choose whether to deepen the plan or
-begin `fw:work`.
+that plan, and then pause for the user to choose whether to address review
+findings, deepen the plan, or begin `fw:work`.
 
 For known-scoped repo changes, `fw:shape` usually collapses to plan mode plus
 that reviewed-plan handoff.
@@ -75,7 +79,9 @@ mandatory visible stages:
 - `fw:setup` for repo and machine readiness, first-run bootstrap, and
   update-time recovery when a later stage discovers a missing requirement,
   including trusted MCP posture and sandbox or devcontainer readiness
-- `fw:run` for optional end-to-end orchestration across the remaining stages
+- `fw:run` for explicit, optional end-to-end orchestration across the remaining
+  stages when the user wants one coordinated pass instead of manual stage
+  handoffs
 - `fw:research` for topic investigation, current best-practice
   discovery, and reusable evidence gathering that should sharpen ideation,
   brainstorming, review, or planning
@@ -258,11 +264,11 @@ search the repo only when:
 
 For fuzzy, product-shaping, or workflow-shaping requests:
 
-- use the exact host question tool named in
+- call the exact host question tool named in
   `../references/host-interaction-contract.md` when that tool is available
 - ask one material challenge question when the answer could change the chosen
   stage or artifact
-- prefer 2-4 explicit answer options, with the recommended option first and a
+- prefer 2-3 portable answer options, with the recommended option first and a
   host-native freeform final path when it exists, when the likely answer space
   is predictable
 - when routing expands into a multi-step pass because repo checks materially
@@ -318,7 +324,7 @@ Always include, in plain language:
 
 When the route depends on unresolved product, scope, or workflow-framing
 questions, ask one focused challenge question after stating the stage and
-handoff. Prefer 2-4 explicit options with the recommended option first and a
+handoff. Prefer 2-3 portable options with the recommended option first and a
 host-native freeform final path when the likely answer space is predictable.
 
 Preferred stage-to-handoff wording:
@@ -330,13 +336,14 @@ Preferred stage-to-handoff wording:
   `fw:brainstorm`
 - `fw:brainstorm` -> produce a requirements doc or requirements plan -> then
   move into `fw:plan`
-- `fw:run` -> produce the remaining stage artifacts through a bounded end-to-end
-  pass -> then stop at commit, a post-commit spin offer, or an approval gate
+- `fw:run` -> optional wrapper, not a backbone stage -> produce the remaining
+  stage artifacts through a bounded coordinated pass -> then stop at commit, a
+  post-commit spin offer, or an approval gate
 - `fw:deepen` -> produce a stronger reviewed technical plan -> then let
   the user choose between another deepen pass and `fw:work`
 - `fw:plan` -> produce a technical implementation plan, run
   `document-review`, pause for user review, and then let the user choose
-  between `fw:deepen` and `fw:work`
+  whether to address review findings, run `fw:deepen`, or enter `fw:work`
 - `fw:docs` -> produce updated project docs mapped to the right Diataxis
   quadrants -> then continue into `fw:review` and `fw:commit`
 - `document-review` -> produce prioritized document findings and fix direction
@@ -405,8 +412,8 @@ Use these patterns to keep routing answers stable across frontier models:
 - **Plan route:** "This is ready for `fw:plan` because the intended behavior is
   already clear enough to design execution. The output should be a technical
   plan the user can review before any implementation starts. After
-  `document-review` runs on that plan, let the user choose whether to
-  `fw:deepen` it or move into `fw:work`."
+  `document-review` runs on that plan, let the user choose whether to address
+  findings, `fw:deepen` it, or move into `fw:work`."
 - **Run route:** "This belongs in `fw:run` because the task is bounded enough
   for one coordinated pass through the remaining Flywheel stages. The output
   should be the current artifact set plus a clear stop point."

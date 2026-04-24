@@ -65,6 +65,154 @@ function checkFile(name, relativePath) {
   };
 }
 
+function skillDescriptions() {
+  const skillsDir = path.join(repoRoot, "skills");
+  if (!fs.existsSync(skillsDir)) {
+    return [];
+  }
+
+  return fs.readdirSync(skillsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort()
+    .map((skillName) => {
+      const skillPath = path.join(skillsDir, skillName, "SKILL.md");
+      if (!fs.existsSync(skillPath)) {
+        return null;
+      }
+
+      const text = fs.readFileSync(skillPath, "utf8");
+      const match = text.match(/^description:\s*(.*)$/m);
+      if (!match) {
+        return { skillName, description: "", length: 0 };
+      }
+
+      const description = match[1].trim().replace(/^["']|["']$/g, "");
+      return { skillName, description, length: description.length };
+    })
+    .filter(Boolean);
+}
+
+function checkSkillDescriptionBudget() {
+  const descriptions = skillDescriptions();
+  const count = descriptions.length;
+  const total = descriptions.reduce((sum, item) => sum + item.length, 0);
+  const average = count === 0 ? 0 : Math.round(total / count);
+  const longest = descriptions.reduce(
+    (current, item) => item.length > current.length ? item : current,
+    { skillName: "none", length: 0 },
+  );
+  const maxSingle = 180;
+  const maxAverage = 150;
+  const maxTotal = 4800;
+  const missing = descriptions.filter((item) => item.length === 0).map((item) => item.skillName);
+  const ok = count > 0 &&
+    missing.length === 0 &&
+    longest.length <= maxSingle &&
+    average <= maxAverage &&
+    total <= maxTotal;
+
+  return {
+    name: "Skill description context budget",
+    ok,
+    detail: ok
+      ? `${count} descriptions, ${total} chars total, avg ${average}, max ${longest.length} (${longest.skillName})`
+      : `keep SKILL.md descriptions concise: total ${total}/${maxTotal}, avg ${average}/${maxAverage}, max ${longest.length}/${maxSingle} (${longest.skillName})${missing.length ? `, missing: ${missing.join(", ")}` : ""}`,
+  };
+}
+
+function checkSkillDescriptionDiscriminators() {
+  const descriptions = new Map(skillDescriptions().map((item) => [item.skillName, item.description]));
+  const requirements = {
+    "architecture-strategy": [/architecture/i, /boundar|service|distributed|dependency/i],
+    brainstorm: [/requirements|scope|fuzzy|idea/i, /planning|before planning/i],
+    "browser-test": [/browser/i, /proof|acceptance|playwright/i],
+    commit: [/branch|commit/i, /push|PR|pull request/i],
+    "commit-message": [/Conventional Commit/i, /header|footer|breaking/i],
+    debug: [/bugs?|regression|stack trace|broken/i, /evidence|fix/i],
+    deepen: [/plan/i, /before implementation|before work|strengthen/i],
+    docs: [/docs?|documentation|Diataxis/i, /setup|API|CLI|config|workflow|behavior/i],
+    "document-review": [/requirements|plan/i, /review|fix queue|ranked/i],
+    ideate: [/ideas?|next bets?/i, /ranked|chosen|before brainstorming/i],
+    incident: [/incident|live evidence/i, /mitigation|rollback|blast radius|patch/i],
+    logging: [/logging/i, /events?|fields?|correlation/i],
+    maintainability: [/edit cost|future edit|maintain/i, /wrappers?|helpers?|naming|cohesion|ownership/i],
+    observability: [/observability|logs?|metrics?|traces?|dashboards?/i, /validation|supportability|runtime/i],
+    optimize: [/optimization|latency|throughput|cost|query|build/i, /measured|proof|improvements/i],
+    "pattern-recognition": [/pattern/i, /DTO|repositories|ports|builders|DDD/i],
+    plan: [/implementation plans?/i, /read-only|before execution/i],
+    polish: [/browser/i, /polish|tighten|live feedback/i],
+    research: [/research|topic/i, /current-source|evidence|current/i],
+    review: [/code review|review/i, /bugs?|regressions?|missing tests?|readiness/i],
+    rollout: [/rollout|release/i, /rollback|validation|runtime-risky|blast radius/i],
+    run: [/remaining Flywheel stages|remaining stages/i, /coordinated|shape-to-commit|manual stages/i],
+    setup: [/setup|bootstrap|onboarding/i, /tool|readiness|host posture|workflow/i],
+    shape: [/shape|before implementation/i, /ideation|brainstorming|planning|plan-deepening/i],
+    simplify: [/accidental complexity|simpl/i, /wrappers?|abstractions?|orchestration/i],
+    spin: [/docs\/solutions|durable lessons/i, /completed work|verified fixes|patterns/i],
+    start: [/route|earliest useful stage/i, /shape|work|review|commit|spin/i],
+    verify: [/fresh evidence|verify/i, /claiming|claims?|tests|lint|builds|fixes/i],
+    work: [/implementation work|execute/i, /plans?|specs?|todos?|validation|tracked changes/i],
+    worktree: [/worktrees?|isolated/i, /branch|parallel checkouts?|cleanup|review targets/i],
+  };
+  const failures = [];
+
+  for (const [skillName, patterns] of Object.entries(requirements)) {
+    const description = descriptions.get(skillName);
+    if (!description) {
+      failures.push(`${skillName}: missing description`);
+      continue;
+    }
+
+    const missing = patterns.filter((pattern) => !pattern.test(description));
+    if (missing.length > 0) {
+      failures.push(`${skillName}: ${description}`);
+    }
+  }
+
+  return {
+    name: "Skill description discriminators",
+    ok: failures.length === 0,
+    detail: failures.length === 0
+      ? `${Object.keys(requirements).length} skill descriptions keep their routing triggers`
+      : `descriptions lost key routing triggers: ${failures.join("; ")}`,
+  };
+}
+
+function checkHostInteractionQuestionToolContract() {
+  const contractPath = path.join(repoRoot, "skills", "references", "host-interaction-contract.md");
+  if (!fs.existsSync(contractPath)) {
+    return {
+      name: "Host question tool contract",
+      ok: false,
+      detail: "missing skills/references/host-interaction-contract.md",
+    };
+  }
+
+  const text = fs.readFileSync(contractPath, "utf8");
+  const requirements = [
+    ["blocking tool call", /blocking tool call/i],
+    ["Claude AskUserQuestion", /AskUserQuestion/i],
+    ["Codex request_user_input", /request_user_input/i],
+    ["Codex 2-3 options", /2-3[\s\S]{0,120}Codex|Codex[\s\S]{0,160}2-3/i],
+    ["Claude multiSelect guidance", /multiSelect/i],
+    ["fallback waits for reply", /fallback[\s\S]{0,200}wait/i],
+    ["allowed-tools caveat", /allowed-tools[\s\S]{0,220}does not/i],
+  ];
+  const missing = requirements
+    .filter(([, pattern]) => !pattern.test(text))
+    .map(([label]) => label);
+  const ok = missing.length === 0;
+
+  return {
+    name: "Host question tool contract",
+    ok,
+    detail: ok
+      ? "contract requires real question tool calls for Claude Code and Codex"
+      : `host interaction contract is missing: ${missing.join(", ")}`,
+  };
+}
+
 function checkCodexRootRouterPrompt() {
   const manifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
   const manifest = fs.existsSync(manifestPath)
@@ -366,6 +514,9 @@ function main() {
     checkFile("Local config example", ".flywheel/config.local.example.yaml"),
     checkFile("Setup compatibility doc", "docs/setup/compatibility.md"),
     checkFile("Setup troubleshooting doc", "docs/setup/troubleshooting.md"),
+    checkSkillDescriptionBudget(),
+    checkSkillDescriptionDiscriminators(),
+    checkHostInteractionQuestionToolContract(),
   ];
 
   if (includeCodex) {

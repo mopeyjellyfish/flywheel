@@ -17,17 +17,28 @@ the host provide the UI surface.
 
 ## Structured Choice Rules
 
-- Use the exact host question tool named above when that tool is available.
+- A Flywheel choice surface means a blocking tool call, not a markdown menu in
+  chat. Call the exact host question tool named above when that tool is
+  available.
+- Do not merely say "I would ask" or render options in prose before attempting
+  the tool call.
 - Ask one question at a time.
 - Default to single-select.
 - Use multi-select only for compatible sets such as goals, constraints,
   non-goals, or success criteria that can coexist.
 - Do not use multi-select for mutually exclusive decision forks.
+- Claude Code supports multi-select through `AskUserQuestion`'s `multiSelect`
+  field. Codex `request_user_input` is currently a mutually-exclusive choice
+  surface; when true multi-select is needed in Codex, ask a short sequence of
+  single-select questions or use the fallback chat protocol and wait.
 - OpenCode can submit multiple questions together, but Flywheel should still
   ask one question at a time unless the workflow explicitly benefits from a
   bundled answer set.
-- When the likely answer space is predictable, present `2-4` recommended-first
-  labels.
+- Default to `2-3` portable, recommended-first labels. This fits Codex's
+  explicit choice surface and stays compact in Claude Code.
+- Use a fourth explicit option only when the active host question schema
+  supports it. On Codex, compress the least important action into nearby prose
+  or the native freeform path instead of overfilling the tool call.
 - Rely on the host's native freeform final path when it exists instead of
   adding a redundant manual `Custom` branch.
 - Do not ask the user to reply with raw `1`, `2`, or `3` when the host already
@@ -42,6 +53,84 @@ the host provide the UI surface.
   or describe what you want."
 - If a host surface truly lacks a freeform path and one is still needed, keep
   exactly one freeform-compatible choice last.
+
+## Host Choice Shape
+
+- Claude Code: call `AskUserQuestion` with one question and a small
+  single-select option set. If the schema is absent, load it through
+  `ToolSearch` with `select:AskUserQuestion` before falling back.
+- Codex: call `request_user_input` with one question item, a stable
+  `snake_case` id, a short header, and `2-3` mutually exclusive options. Put the
+  recommended option first and do not add a manual `Other` option; Codex
+  provides its own freeform path when the tool is available.
+- Fallback chat: use the same labels and descriptions, number the options only
+  because the structured tool is unavailable, and wait for the reply before
+  continuing.
+
+### Claude Code `AskUserQuestion` Shape
+
+When Claude Code needs a choice, trigger the tool with this shape:
+
+```json
+{
+  "questions": [
+    {
+      "question": "Review the source document before planning?",
+      "header": "Review",
+      "options": [
+        {
+          "label": "Review first",
+          "description": "Check simplification, feasibility, scope, and supportability before planning."
+        },
+        {
+          "label": "Continue planning",
+          "description": "Draft the plan now and capture uncertainty as assumptions."
+        }
+      ],
+      "multiSelect": false
+    }
+  ]
+}
+```
+
+Use `multiSelect: true` only for compatible sets. For normal Flywheel route
+choices, keep it `false`.
+
+### Codex `request_user_input` Shape
+
+When Codex exposes `request_user_input`, trigger the tool with this shape:
+
+```json
+{
+  "questions": [
+    {
+      "id": "review_before_plan",
+      "header": "Review",
+      "question": "Review the source document before planning?",
+      "options": [
+        {
+          "label": "Review first (Recommended)",
+          "description": "Check simplification, feasibility, scope, and supportability before planning."
+        },
+        {
+          "label": "Continue planning",
+          "description": "Draft the plan now and capture uncertainty as assumptions."
+        }
+      ]
+    }
+  ]
+}
+```
+
+Do not add an explicit `Other` option for Codex; the host supplies the freeform
+path when available. If the tool is not exposed in the current Codex mode, use
+the fallback chat protocol and wait.
+
+### Skill Frontmatter
+
+Do not rely on Claude Code `allowed-tools` frontmatter to make questions work.
+It pre-approves listed tools when the skill is active; it does not replace the
+model's need to call `AskUserQuestion`, and it is not portable to Codex.
 
 ## Task Tracking Rules
 

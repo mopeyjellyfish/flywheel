@@ -50,8 +50,13 @@ prompts full of doctrine.
 
 - Use the strongest orchestrator tier for cross-stage synthesis, complex
   architecture tradeoffs, or review merge work.
-- Use a faster capable worker tier for narrow specialist passes such as
+- Use a faster frontier-capable worker tier for narrow specialist passes such as
   simplification, maintainability, or one bounded reviewer persona.
+- Do not default to cheap or small models for Flywheel judgment work unless the
+  user explicitly requests a cost- or latency-optimized pass.
+- As of 2026-04-24, optimize for current frontier GPT and Opus families such as
+  GPT-5.4/GPT-5.5 and Claude Opus 4.6/4.7. Treat these as dispatch examples,
+  not hardcoded skill contracts.
 - Keep the tier names capability-based in repo docs; bind them to concrete
   provider models only in host-specific agent configs.
 

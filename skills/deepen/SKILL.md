@@ -1,6 +1,6 @@
 ---
 name: deepen
-description: "Strengthen an existing Flywheel plan with targeted repo research, document-review findings, sharper test posture, and better rollout or observability shape. Use when a plan exists and the goal is to make it more execution-ready without starting implementation."
+description: "Strengthen an existing plan. Use to add repo research, test posture, rollout shape, or detail before implementation."
 metadata:
   argument-hint: "[plan path, or blank to use the latest plan]"
 ---
@@ -20,7 +20,7 @@ to deepen again or start implementation.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

@@ -1,6 +1,6 @@
 ---
 name: optimize
-description: "Run metric-driven optimization loops for latency, throughput, resource use, cost, build time, query performance, or other measurable outcomes. Use when the goal is not just 'make it better' but prove improvement with Datadog, OTel-native backends such as Grafana/Prometheus/Loki/Tempo/Mimir/Pyroscope, or local measurement before commit."
+description: "Run measured optimization loops. Use for latency, throughput, resource, cost, build, or query improvements that need proof."
 metadata:
   argument-hint: "[optimization goal, hotspot, path, service, or existing optimization note]"
 ---
@@ -22,7 +22,7 @@ This is not a "spray tweaks and hope" skill. It is a measurement-first loop.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

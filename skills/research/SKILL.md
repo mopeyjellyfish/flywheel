@@ -1,6 +1,6 @@
 ---
 name: research
-description: "Investigate a topic with repo grounding plus current published sources, rank the evidence, and condense it into guidance that sharpens ideation, brainstorming, review, or planning. Use when the immediate job is topic research, current-practice discovery, or targeted evidence gathering."
+description: "Research a topic with repo and current-source evidence. Use when findings should sharpen shaping, review, or planning."
 metadata:
   argument-hint: "[topic, question, feature, or problem to research]"
 ---
@@ -32,7 +32,7 @@ paths** such as `skills/plan/SKILL.md`, never absolute paths.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

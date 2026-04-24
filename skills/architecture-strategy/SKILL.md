@@ -1,6 +1,6 @@
 ---
 name: architecture-strategy
-description: "Assess architecture-bearing changes such as bounded contexts, service splits, dependency direction, hexagonal boundaries, and distributed-system posture. Use when the work needs a repo-grounded system-shape recommendation rather than generic clean-architecture advice."
+description: "Assess repo-grounded architecture choices. Use for boundaries, service splits, dependency direction, or distributed-system posture."
 metadata:
   argument-hint: "[feature, boundary question, path, or architecture decision]"
 ---
@@ -21,13 +21,13 @@ the minimum durable shape that fits the actual problem.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
 When multiple viable architecture postures exist:
 
-- present 2-4 predicted options at most
+- present 2-3 portable predicted options by default
 - put the recommended option first
 - keep the tradeoffs concrete
 - rely on the host's native freeform final path when it exists

@@ -1,24 +1,35 @@
 ---
 name: run
-description: "Run a bounded task through the remaining Flywheel stages with explicit approval at major boundaries. Use when the user wants one coordinated pass from the earliest missing stage through work, review, commit, and spin rather than invoking each stage manually."
+description: "Optionally orchestrate remaining Flywheel stages. Use only when one coordinated pass is better than manual stage handoffs."
 metadata:
   argument-hint: "[task description, requirements doc path, plan path, or existing branch goal]"
 ---
 
 # Run The Flow
 
-`$fw:run` is Flywheel's optional orchestration wrapper.
+`$fw:run` is Flywheel's optional orchestration wrapper. It is not part of the
+critical path.
 
 Use it when the task is bounded enough that one coordinated pass is more useful
 than manually invoking every stage.
 
 This skill does not replace the stage skills. It coordinates them.
 
+The critical path remains:
+
+```text
+shape -> work -> review -> commit -> optional spin
+```
+
+`run` uses the same routing logic as `start`, then continues across the
+remaining stage boundaries until it reaches a required approval gate, clean
+handoff, or finish point.
+
 ## Interaction Method
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -69,14 +80,14 @@ If the run reaches `fw:shape` and its selected mode is `fw:plan`, do not cross
 into `fw:work` unless the user explicitly asked for implementation in the same
 request or explicitly approves the reviewed plan when presented. Let the plan
 stage complete its mandatory `document-review` pass and preserve the user's
-`deepen` vs `work` choice instead of flattening that boundary.
+choice to address findings, deepen, or work instead of flattening that boundary.
 
 When relevant:
 
 - use `document-review` before work when the plan or requirements doc needs
   hardening
 - when the run goes through `$fw:shape` and plan mode, let the user choose
-  between `$fw:deepen` and `$fw:work`
+  whether to address review findings, run `$fw:deepen`, or enter `$fw:work`
 - move from `$fw:work` into `$fw:review` by default before commit;
   use inline self-review only when the narrower work contract explicitly allows it
 - use `$fw:docs` after `$fw:work` when the change altered setup, public

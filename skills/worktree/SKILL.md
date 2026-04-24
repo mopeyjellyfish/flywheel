@@ -1,6 +1,6 @@
 ---
 name: worktree
-description: "Manage isolated git worktrees for Flywheel execution, review, and parallel development. Use when work should happen on a new branch without polluting the current checkout, when a review target should be inspected in isolation, or when multiple branches must stay active at once."
+description: "Manage isolated git worktrees. Use for branch work, isolated review targets, parallel checkouts, or cleanup."
 metadata:
   argument-hint: "[blank for help, or pass create <branch> [base], list, path <branch>, copy-env <branch>, or cleanup <branch>]"
 ---
@@ -40,7 +40,7 @@ does not:
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -48,7 +48,8 @@ When the workflow spans multiple material steps, use the host task-tracking
 tool named in `../references/host-interaction-contract.md` to create and
 maintain a short task list.
 
-Prefer a concise choice surface when the user has not already named an action:
+Prefer calling the host question tool with a concise choice surface when the
+user has not already named an action:
 
 - **Create isolated worktree** (recommended)
 - **List current worktrees**

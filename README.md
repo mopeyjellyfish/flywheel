@@ -78,7 +78,10 @@ follow-up commands on the canonical `$fw:<stage>` surface.
 Flywheel's interaction contract is shared across hosts: use the host's
 structured choice UI instead of asking for raw `1/2/3` replies. Claude Code
 uses `AskUserQuestion`, Codex uses `request_user_input` when the active runtime
-exposes it, and OpenCode uses `question`. Risky-edge hook guardrails are
+exposes it, and portable menus default to 2-3 choices so they fit both surfaces.
+That choice surface is a tool call, not a markdown menu; chat options are only
+the fallback when the host tool is unavailable or errors. OpenCode uses
+`question`. Risky-edge hook guardrails are
 bundled with the Claude plugin install. Codex uses an optional global
 `~/.codex/hooks.json` guardrail because current Codex hooks are repo-local or
 user-global rather than plugin-bundled.
@@ -100,12 +103,18 @@ workflow gates, copy:
 ## Workflow
 
 ```text
-shape -> work -> review -> commit -> spin -> repeat
+shape -> work -> review -> commit -> optional spin -> repeat
 ```
+
+That is the critical path. `shape` owns ideation, brainstorming, planning, and
+plan deepening before implementation starts. `$fw` / `$fw:start` is the root
+router for choosing the earliest useful stage; it is not a workflow stage.
+`$fw:run` is an optional wrapper for one bounded coordinated pass through the
+remaining stages.
 
 | Command | Purpose |
 | --- | --- |
-| `$fw` or `$fw:start` | Route a repo task into the right stage when you do not want to pick one yourself. |
+| `$fw` or `$fw:start` | Route a repo task into the right stage, then stop at that handoff. |
 | `$fw:shape` | Shape the work through ideation, brainstorming, planning, or plan-deepening before execution. |
 | `$fw:work` | Execute the plan against repo truth and pull in helper stages when the task needs them. |
 | `$fw:review` | Review the finished diff with reviewer personas selected from the change. |
@@ -115,8 +124,9 @@ shape -> work -> review -> commit -> spin -> repeat
 `shape` is the first main workflow stage. Inside it, `ideate` helps choose
 among multiple bets, `brainstorm` sharpens one direction with the user, `plan`
 writes the implementation path, and `deepen` strengthens a reviewed plan when
-needed. Before `work` starts, Flywheel runs `document-review` on the plan and
-lets the user choose whether to deepen the plan or start execution.
+needed. Requirements and spec artifacts can be reviewed for simplification,
+feasibility, and scope before planning; plans are reviewed before `work`, and
+the user chooses whether to address findings, deepen, or start execution.
 
 When topic investigation or current best practices are the real question,
 Flywheel can pull in `research` inside shaping or review to sharpen the next
@@ -143,7 +153,7 @@ Common starts:
 - known scoped change: `$fw:shape`
 - architecture or pattern decision: `$fw:architecture-strategy` or `$fw:pattern-recognition`
 - bug with an unclear cause: `$fw:debug`
-- one bounded pass through the remaining stages: `$fw:run`
+- one bounded coordinated pass through the remaining stages: `$fw:run`
 
 ---
 

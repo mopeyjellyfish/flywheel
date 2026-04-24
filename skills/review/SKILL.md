@@ -1,6 +1,6 @@
 ---
 name: review
-description: "Structured code review using diff-selected reviewer personas, confidence-gated findings, and a merge/dedup pipeline. Use when reviewing code changes before creating a PR, checking whether a branch is ready to merge, or running a review pass inside a larger Flywheel workflow."
+description: "Run structured code review. Use before PRs or merges to find bugs, regressions, missing tests, and readiness gaps."
 metadata:
   argument-hint: "[blank to review current branch, or provide PR link]"
 ---
@@ -22,7 +22,7 @@ it and continue the review workflow.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -532,20 +532,24 @@ itself.
 
 This workflow uses model-tiered review orchestration when the host supports it:
 
-- keep the orchestrator on the strongest available model
-- keep reviewer or fixer subagents on a faster capable model when the platform
-  supports model overrides
+- keep the orchestrator on the strongest available frontier model
+- keep reviewer or fixer subagents on the fastest available frontier-capable
+  model when the platform supports model overrides
+- do not downgrade review quality to a cheap or small model unless the user
+  explicitly asks for a cost- or latency-optimized pass
 - keep reviewer prompts narrow and schema-bound
 - keep returns compact to protect synthesis quality and context window health
 
 If the platform has no model override mechanism, let reviewers inherit the
 default model rather than breaking dispatch.
 
-When overrides are available, use a strong orchestrator tier and a cheaper but
-capable reviewer tier. Prefer capability labels over provider branding:
+When overrides are available, use frontier capability tiers. Prefer capability
+labels over provider branding, then bind them to the latest available GPT or
+Opus model family at dispatch time:
 
-- `strong_orchestrator` for synthesis, policy decisions, and complex merge work
-- `fast_review_worker` for narrow reviewer passes
+- `frontier_orchestrator` for synthesis, policy decisions, and complex merge
+  work
+- `frontier_review_worker` for narrow reviewer passes
 
 Map those tiers to host-native model names only at dispatch time.
 
@@ -803,7 +807,7 @@ Before delivering the review, verify:
 **Interactive**
 
 - Apply `safe_auto -> review-fixer` findings automatically.
-- Ask a policy question using the exact host question tool named in the host
+- Ask a policy question by calling the exact host question tool named in the host
   interaction contract only when that tool is available and `gated_auto` or
   `manual` findings remain.
 - If only `manual` findings remain, offer residual-work vs report-only choices.

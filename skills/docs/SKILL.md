@@ -1,6 +1,6 @@
 ---
 name: docs
-description: "Write or refresh project documentation using the Diataxis framework. Use when work changed setup, public APIs, CLI flows, configuration, operator workflows, user-visible behavior, or other repo contracts that should be documented, or when a repo needs a targeted or broader Diataxis docs pass."
+description: "Write or refresh Diataxis project docs. Use when setup, APIs, CLI flows, config, workflows, or behavior changed."
 ---
 
 # Write Diataxis Docs
@@ -24,7 +24,7 @@ inventing filler docs.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

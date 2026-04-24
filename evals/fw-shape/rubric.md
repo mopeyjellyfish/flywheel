@@ -21,10 +21,13 @@ the next main stage only after the shaping artifact is ready?
 
 ### Handoff Quality
 
-Does it make the next handoff clear, including plan review and the deepen vs
-work choice when planning is involved?
+Does it make the next handoff clear, including requirements/spec review before
+planning when useful, plan review before work, and the choice to address
+findings, deepen, or start work when planning is involved?
 
 ### Interaction Fit
 
 When the shaping mode depends on a real ambiguity, does it ask one material
 question or state the needed correction instead of silently guessing?
+Strong passes call the host question tool for bounded choices when available
+instead of rendering markdown menus first.

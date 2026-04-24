@@ -67,10 +67,11 @@ If artifact-backed mode was used for deepening:
 interactive menu and return control immediately. The plan file already exists,
 the confidence check already ran, and document-review already ran.
 
-After document-review completes, present the options using the exact host
+After document-review completes, present the options by calling the exact host
 question tool named in the host interaction contract when that tool is
-available. Otherwise present a short label-based choice surface in chat instead
-of asking for raw numeric replies.
+available. A markdown menu is only the fallback after the tool is unavailable
+or errors. Otherwise present a short label-based choice surface in chat instead
+of asking for raw numeric replies, then wait for the user's answer.
 
 Before presenting options, summarize:
 
@@ -85,42 +86,45 @@ Before presenting options, summarize:
 **Question:** "Plan ready at `docs/plans/YYYY-MM-DD-NNN-<type>-<name>-plan.md`.
 What would you like to do next?"
 
-Present 2-4 explicit options with the recommended choice first.
+Present a portable `2-3` option menu with the recommended choice first. Use a
+fourth explicit option only when the active host question schema supports it.
 
 If the review pass surfaced material findings, unresolved tradeoffs, or the
 user asked for more rigor, use:
 
-1. **Deepen the plan** (recommended) — run `$fw:deepen` on this reviewed
-   plan before execution
-2. **Start `$fw:work` now** — begin implementing this plan in the current
-   session
-3. **Create Issue** — create a tracked issue from this plan in the configured
-   issue tracker
-4. **Done for now** — pause; the plan file is saved and can be resumed later
+1. **Address review findings first (Recommended)** — revise, deepen, or route
+   back to questions before execution, then rerun `document-review`
+2. **Start `$fw:work` with assumptions** — begin implementation only after
+   accepted residual findings are captured as explicit risks or assumptions
+3. **Done for now** — pause; the plan file is saved and can be resumed later
 
 If the reviewed plan is clean and the remaining uncertainty is low, use:
 
 1. **Start `$fw:work` now** (recommended) — begin implementing this plan
    in the current session
-2. **Deepen the plan** — run `$fw:deepen` on this reviewed plan before
-   execution
-3. **Create Issue** — create a tracked issue from this plan in the configured
-   issue tracker
-4. **Done for now** — pause; the plan file is saved and can be resumed later
+2. **Deepen first** — run `$fw:deepen` before execution
+3. **Done for now** — pause; the plan file is saved and can be resumed later
 
 If the `proof` skill or an equivalent HITL review tool exists, mention that
 option in prose alongside the menu instead of replacing the explicit review
-and deepen/work choice above.
+and downstream-stage choice above.
 
-**Surface additional document-review context contextually, not as a menu
-fixture:** when the prior review pass surfaced residual `P0` or `P1` findings
-or a clearly worthwhile top-ranked item, mention that adjacent to the menu and
-offer another review pass in prose. Do not add it to the option list.
+If issue creation is useful, mention that **Create Issue** is available through
+the host's freeform path. On hosts that support a fourth explicit choice, it may
+be shown as **Create Issue**.
 
 Based on selection:
 
-- **Deepen the plan** → call `$fw:deepen` with the plan path
+- **Address review findings first** → choose the upstream action from the
+  findings: route product or scope blockers to `$fw:brainstorm`; call
+  `$fw:deepen` for plan-strengthening findings; revise the plan in place for
+  direct corrections; then rerun `document-review`
+- **Deepen first** → call `$fw:deepen` when the plan needs more repo research,
+  test posture, rollout posture, or architecture detail
 - **Start `$fw:work` now** → call `$fw:work` with the plan path
+- **Start `$fw:work` with assumptions** → capture accepted residual findings as
+  explicit risks or assumptions in the plan handoff, then call `$fw:work` with
+  the plan path
 - **Create Issue** → follow the issue creation section below
 - **Done for now** → confirm the plan file is saved and end the turn
 - **If the user asks for another document review** → rerun `document-review`

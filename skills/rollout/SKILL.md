@@ -1,6 +1,6 @@
 ---
 name: rollout
-description: "Plan the release posture for runtime-risky changes before final commit. Use when a change affects live behavior, contracts, state, retries, queues, migrations, or blast radius and the immediate job is deciding how to validate, sequence, and roll it out safely."
+description: "Plan release posture for runtime-risky changes. Use for validation, sequencing, rollout, rollback, and blast radius."
 metadata:
   argument-hint: "[change description, plan path, PR context, or blank to inspect current runtime-risky work]"
 ---
@@ -22,7 +22,7 @@ posture, validation playbook, and commit handoff.
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 

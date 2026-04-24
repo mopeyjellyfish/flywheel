@@ -1,6 +1,6 @@
 ---
 name: plan
-description: "Create structured implementation plans from a requirements document, bug report, feature idea, or rough description. Planning is read-only: it should produce a plan the user can review before any execution starts. Also deepen existing plans when the user explicitly asks."
+description: "Create read-only implementation plans. Use for requirements, bug reports, feature ideas, or rough tasks before execution."
 metadata:
   argument-hint: "[optional: feature description, requirements doc path, plan path to deepen, or task to plan]"
 ---
@@ -25,13 +25,19 @@ This workflow produces a durable implementation plan. It is a read-only,
 collaborative stage. It does **not** implement code, run tests, or silently
 transition into execution-time work. After the plan file exists and the
 confidence check completes, it must run `document-review` on that plan and end
-with a user choice between `$fw:deepen` and `$fw:work`.
+with a user choice to address review findings, deepen the plan, or start
+`$fw:work`.
+
+When planning starts from a requirements, spec, or design document whose review
+state is unknown, offer source document review before drafting the plan. Use that
+review to catch simplification, feasibility, scope, and supportability issues
+that should be resolved by questions or brainstorming before planning continues.
 
 ## Interaction Method
 
 Follow `../references/host-interaction-contract.md`.
 
-Use the exact host question tool named in
+Call the exact host question tool named in
 `../references/host-interaction-contract.md` when that tool is available. Do
 not ask for raw `1/2/3` replies when the host already offers a choice surface.
 
@@ -46,7 +52,7 @@ When multiple implementation or reliability postures are viable, present a
 short predicted choice list with the recommended label first and rely on the
 host's native freeform final path when it exists.
 When a planning question has a predictable answer space, prefer the same
-recommended-first 2-4 option shape instead of a broad open-ended prompt.
+recommended-first portable option shape instead of a broad open-ended prompt.
 
 Prefer to ask at least one targeted planning question when the answer would
 materially improve scope, sequencing, tradeoffs, or execution safety. Treat the
@@ -315,13 +321,48 @@ If the origin document contains `Resolve Before Planning` or similar blockers:
 If true product blockers remain:
 
 - surface them clearly
-- ask whether to:
-  1. resume `$fw:brainstorm` to resolve them
-  2. convert them into explicit assumptions or decisions and continue
+- call the host question tool:
+  1. **Resume `$fw:brainstorm` (Recommended)** - resolve behavior, scope, or
+     success criteria before planning
+  2. **Continue with assumptions** - convert each blocker into an explicit
+     assumption or decision, then continue planning
 
 Do not continue planning while true blockers remain unresolved.
 
-#### 0.6 Assess Plan Depth
+#### 0.6 Offer Source Document Review Before Planning
+
+If the primary input is a requirements, spec, or design document and it was not
+just reviewed in the current session, ask:
+
+```text
+Review the source document before planning?
+```
+
+Call the host question tool with a portable `2-3` option menu:
+
+1. **Review first (Recommended)** - run `document-review` on the source document
+   to find simplification, feasibility, scope, and supportability issues before
+   drafting the implementation plan
+2. **Continue planning** - draft the plan from the current document and capture
+   any uncertainty as explicit assumptions or deferred planning questions
+3. **Return to brainstorm** - resolve product or scope questions before planning;
+   include this option only when the source document has material ambiguity
+
+Skip the prompt only when the document was already reviewed in this session, the
+document contains clear recent review evidence, or the user explicitly asks to
+plan without another review.
+
+If the user chooses review first, run `document-review` on the source document.
+Use `mode:headless` in automated or pipeline contexts. After review:
+
+- route product behavior, scope, success criteria, or definition-of-done findings
+  back to `$fw:brainstorm` or explicit user questions before planning
+- carry technical feasibility, sequencing, validation, rollout, and supportability
+  findings into the plan as constraints or implementation units
+- if residual `P0` or `P1` findings remain, ask whether to resolve them first or
+  continue with explicit assumptions before drafting the plan
+
+#### 0.7 Assess Plan Depth
 
 Classify the work into one of these depths:
 

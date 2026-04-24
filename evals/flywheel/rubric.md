@@ -30,9 +30,13 @@ steps?
   shaping, planning, or plan deepening
 - inside shape, ideate before brainstorm when the problem is idea selection
 - inside shape, brainstorm before plan when behavior and scope are unclear
-- inside shape, plan before work when execution details still need structure,
-  and planning runs document review before the user chooses deepen or work
+- inside shape, requirements/spec review can happen before planning when the
+  source artifact may need simplification or feasibility checks; planning runs
+  document review before the user chooses whether to address findings, deepen,
+  or work
 - shape -> work -> review -> commit -> spin as the compact backbone for software-project work
+- `$fw:start` is the router, not a backbone stage; `$fw:run` is an explicit
+  optional orchestration wrapper, not a default critical-path stage
 - helper surfaces such as research, architecture strategy, pattern
   recognition, maintainability, or simplify can be selected when they are the
   most direct fit, without turning them into mandatory visible stages
@@ -75,6 +79,9 @@ learnings, not just the next single stage?
 For fuzzy or early-stage requests, does it ask one material question or state
 the next needed user input instead of silently assuming the framing is already
 correct?
+
+When asking, strong passes call the host's structured question tool if it is
+available and reserve markdown or numbered chat menus for fallback only.
 
 ## Pass Threshold
 

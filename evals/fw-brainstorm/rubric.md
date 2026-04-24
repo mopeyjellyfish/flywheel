@@ -27,6 +27,10 @@ recommendation into the brainstorm, and still preserve the brainstorm artifact.
 ### Plan Handoff
 
 Does it carry the outcome into `fw-plan` rather than stopping at ideas?
+Strong passes also make document review a visible pre-planning option for the
+requirements/spec artifact, and route simplification, feasibility, scope, or
+supportability findings back to questions or brainstorming before planning when
+they change the product shape.
 
 ### Simplicity Pressure
 
@@ -39,4 +43,6 @@ implementation mechanics.
 ### Interaction Quality
 
 Does it use structured, bounded choice surfaces without drifting into raw-number
-reply UX or unnecessary questioning?
+reply UX or unnecessary questioning? Strong passes explicitly call the host
+question tool when available, keep the explicit options portable across Claude
+Code and Codex, and use chat menus only as the fallback path.

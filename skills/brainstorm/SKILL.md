@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: "Explore requirements and approaches through collaborative dialogue before writing a right-sized requirements document and planning implementation. Use for feature ideas, problem framing, when the user says 'let's brainstorm', or when they want to think through options before deciding what to build. Also use when a user describes a vague or ambitious feature request, asks 'what should we build', 'help me think through X', presents a problem with multiple valid solutions, or seems unsure about scope or direction."
+description: "Explore requirements and approaches. Use for a fuzzy idea, open scope, or one direction that needs sharper behavior before planning."
 metadata:
   argument-hint: "[feature idea or problem to explore]"
 ---
@@ -99,15 +99,16 @@ Follow `../references/host-interaction-contract.md`.
    sets such as goals, constraints, non-goals, or success criteria that can
    all coexist. If prioritization matters, follow up by asking which selected
    item is primary.
-4. **Use the exact host question tool when available** - When asking the user
-   a question, prefer the host question tool named in the host interaction
-   contract. Do not ask for raw numeric replies when the host already offers
-   that surface.
+4. **Call the exact host question tool when available** - When asking the user
+   a question, call the host question tool named in the host interaction
+   contract. Do not ask for raw numeric replies or render a markdown menu first
+   when the host already offers that surface.
 5. **Use host task tracking for multi-step passes** - When the brainstorm spans
    multiple material steps, create and maintain a short task list with the host
    task-tracking tool named in the host interaction contract.
 6. **Keep explicit options narrow** - When presenting answer choices, keep them
-   to 2-4 options. Default to 3 unless the task clearly needs fewer or more.
+   to 2-3 portable options by default. Use a fourth only when the active host
+   question surface supports it.
 7. **Lead with the recommendation, keep a freeform path available** - when
    presenting options, put the recommended choice first and rely on the host's
    native freeform final path when it exists.
@@ -326,7 +327,7 @@ depth to scope:
 
 #### 1.3 Collaborative Dialogue
 
-Follow the Interaction Rules above. Use the exact host question tool named in
+Follow the Interaction Rules above. Call the exact host question tool named in
 the host interaction contract when that tool is available.
 
 **Guidelines:**
@@ -337,7 +338,7 @@ the host interaction contract when that tool is available.
   edge cases).
 - Clarify the problem frame, validate assumptions, and ask about success
   criteria.
-- When the likely answer space is predictable, ask with 2-4 explicit options
+- When the likely answer space is predictable, ask with 2-3 portable options
   instead of a fully open prompt.
 - Reflect back what changed after each answer so the user can see what is now
   understood and what is still open.
@@ -404,8 +405,8 @@ For each approach, provide:
 - **Best when:** [situation where this is the right fit]
 
 Keep the format and order consistent across all approaches. Do not exceed 3
-approaches. If the user needs to choose between them, keep the choice set to 2-4
-options total.
+approaches. If the user needs to choose between them, keep the choice set to 2-3
+portable options by default.
 
 After presenting all approaches, state your recommendation and explain why.
 Prefer simpler solutions when added complexity creates real carrying cost, but
@@ -449,6 +450,11 @@ If document-review auto-applied fixes, note them briefly when presenting handoff
 options. If it surfaces residual P0 or P1 findings, or a clearly blocking
 top-ranked item, mention that so the user can decide whether to address it
 before proceeding.
+
+The handoff must offer a document-review option before planning. If the review
+surfaces issues that could change product behavior, scope, success criteria, or
+the definition of done, route back into questions or brainstorming before
+planning unless the user explicitly accepts the risk as an assumption.
 
 When document-review surfaces architectural or scope-shaping complexity that
 looks heavier than the stated goal requires, call that out explicitly before

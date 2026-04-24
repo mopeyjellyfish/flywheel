@@ -1,6 +1,6 @@
 ---
 name: shape
-description: "Shape project work before implementation by choosing the right ideation, brainstorming, planning, or plan-deepening path. Use when work needs to move through Flywheel's first main workflow stage before `work`."
+description: "Shape work before implementation. Use to choose ideation, brainstorming, planning, or plan-deepening before work."
 metadata:
   argument-hint: "[idea, problem, requirements doc, plan path, or shaping focus]"
 ---
@@ -43,7 +43,9 @@ selected the artifact that `fw:work` can execute from.
   needs clarification, load `../brainstorm/SKILL.md`.
 - If the user points at a requirements doc, clear feature description, bug
   report, or concrete rough task and wants execution design, load
-  `../plan/SKILL.md`.
+  `../plan/SKILL.md`. When the input is an existing spec or requirements doc
+  whose review state is unclear, the plan stage should offer source document
+  review before drafting the implementation plan.
 - If the user points at an existing plan and asks to harden, deepen, strengthen,
   or make it more execution-ready, load `../deepen/SKILL.md`.
 - If the user explicitly invokes one shaping mode, honor that mode directly
@@ -60,10 +62,10 @@ End with one of these outcomes:
 
 - ranked shortlist from `fw:ideate`, with the selected idea moving to
   `fw:brainstorm`
-- requirements doc or requirements plan from `fw:brainstorm`, moving to
-  `fw:plan`
-- reviewed technical implementation plan from `fw:plan`, with a user choice
-  between `fw:deepen` and `fw:work`
+- reviewed requirements doc or requirements plan from `fw:brainstorm`, with a
+  user choice to proceed to `fw:plan` or run document review first
+- reviewed technical implementation plan from `fw:plan`, with a user choice to
+  address review findings, deepen the plan, or move to `fw:work`
 - strengthened reviewed plan from `fw:deepen`, with a user choice between
   another deepen pass and `fw:work`
 
