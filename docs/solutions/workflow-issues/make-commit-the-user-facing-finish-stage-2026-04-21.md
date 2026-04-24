@@ -65,6 +65,8 @@ Use these rules:
 - make the user-facing finish-stage command own the whole branch-finishing job:
   pre-commit spin checkpoint, logical commit planning, local commits, push, and
   PR create or refresh
+- publish by default after local commits are ready: push the branch and create
+  or refresh the PR unless the user explicitly requested `local-only`
 - run conditional `spin` before staging and committing when the completed work
   surfaced a durable project lesson, so the `docs/solutions/` update is reviewed
   and committed with the work that produced it
@@ -123,6 +125,7 @@ shape -> work -> review -> optional spin -> commit
 With that contract:
 
 - `commit` is the single remembered finish-stage command
+- `commit` defaults to commit, push, and PR creation or refresh
 - `commit-message` is an internal helper used by `commit`
 - `spin` stays conditional and captures durable lessons worth keeping before the
   final commit is made

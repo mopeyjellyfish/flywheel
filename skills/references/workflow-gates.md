@@ -102,7 +102,8 @@ three lessons and capture the strongest useful one before commit.
   gates are complete or intentionally deferred with user approval
 - no unresolved P0/P1 review findings block the branch
 - spin was captured, skipped, or found unwarranted
-- PR-safe evidence and monitoring/no-impact notes are ready
+- PR-safe finish summary, evidence, monitoring/no-impact notes, and PR target
+  are ready
 
 ## Boundary Rules
 

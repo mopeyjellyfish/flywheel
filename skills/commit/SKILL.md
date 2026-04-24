@@ -8,12 +8,14 @@ metadata:
 # Commit The Work
 
 `$fw:commit` closes Flywheel's compact project loop between "the repo
-change is ready enough to finish" and "a clean local branch or PR exists."
+change is ready enough to finish" and "the branch is pushed with an open or
+refreshed PR."
 
 It is the finishing workflow for:
 
-- staged or unstaged work that needs commit planning and commit creation
-- committed work that needs pushing
+- staged or unstaged work that needs commit planning, commit creation, push,
+  and PR creation or refresh
+- committed work that needs pushing and PR creation or refresh
 - a feature branch that needs a PR
 - an existing PR whose description should be refreshed
 - a branch that surfaced durable lessons worth capturing before commit
@@ -47,8 +49,8 @@ host's native freeform final path when it exists.
 
 Parse optional tokens before interpreting any remainder:
 
-- `local-only` - create local commit(s) but do not push or create or refresh a
-  PR
+- `local-only` - explicitly opt out of the default publish path; create local
+  commit(s) but do not push or create or refresh a PR
 - `plan:<path>` - use this plan as finish-stage context and update it to
   `status: completed` when appropriate
 - `pr:<url>` - target this existing PR explicitly
@@ -84,17 +86,20 @@ Do not preload every support file. Load only what the current phase needs:
    directly and ask before marking breaking changes.
 3. **Prefer one coherent finish flow** - local commits, push, PR state, and
    operational validation belong to one remembered command.
-4. **Preview multiple commits before execution** - when the diff should split,
+4. **Publish by default** - unless the user passes `local-only`, continue from
+   commit through push and PR creation or refresh instead of stopping at a
+   clean local branch.
+5. **Preview multiple commits before execution** - when the diff should split,
    show a short commit plan first so the grouping is reviewable.
-5. **Operational validation is mandatory** - every PR gets a
+6. **Operational validation is mandatory** - every PR gets a
    `Post-Deploy Monitoring & Validation` section, even if the answer is a
    no-impact rationale.
-6. **Preserve branch safety** - do not commit directly to the default branch
+7. **Preserve branch safety** - do not commit directly to the default branch
    without explicit user approval.
-7. **Carry only the material architecture and code-quality story** - PR text
+8. **Carry only the material architecture and code-quality story** - PR text
    should explain the relevant boundary, pattern, simplification, or
    maintainability decisions without replaying raw specialist analysis.
-8. **Capture durable lessons before commit** - when the branch surfaced durable
+9. **Capture durable lessons before commit** - when the branch surfaced durable
    project value, offer `spin` before staging and committing so the solution doc
    can land in the same logical change.
 
@@ -134,16 +139,18 @@ of truth for activation sequence, validation window, and rollback trigger.
 
 ### Phase 2: Classify The Finish Path
 
-Choose the path from branch truth:
+Choose the path from branch truth. The default non-local path is publish
+complete: commit what is needed, push the branch, then create or refresh the PR.
 
 - **Description refresh** - user asked for `refresh-description` or only wants
   to update the existing PR text
-- **Full finish** - branch has uncommitted work, unpushed commits, or no open PR
+- **Full finish** - branch has uncommitted work, unpushed commits, no open PR,
+  or an existing PR whose body should reflect new commits, evidence, or summary
 - **Local-only finish** - user explicitly asked for `local-only`
-- **Push only** - branch is committed but not published
-- **PR creation** - branch is published and no open PR exists
-- **PR refresh** - branch already has an open PR and the user wants the
-  description updated after new work landed
+- **Publish finish** - branch is committed but still needs push plus PR
+  creation or refresh
+- **PR refresh** - branch is already pushed and an open PR exists; refresh it by
+  default when the current finish payload differs from the PR body
 
 If the current branch is the default branch and finishing would create commits,
 create a feature branch first unless the user explicitly approves committing on
@@ -221,6 +228,10 @@ or updates `docs/solutions/`, treat those files as part of the same finish
 payload and include them in the commit plan.
 
 ### Phase 5: Build The Finish Payload
+
+Assemble one finish summary that will be reused in the PR `Summary` section and
+in the final user report. Keep it concise: what changed, why it matters, and
+any material architecture, code-quality, testing, or operational caveat.
 
 Assemble the payload for commit, push, and PR steps from:
 
@@ -313,6 +324,9 @@ git push --set-upstream origin HEAD
 
 If the branch already has an upstream, use `git push`.
 
+If push fails, stop before PR creation or refresh and report the exact blocked
+state. Do not claim the branch is published unless the push succeeded.
+
 ### Phase 8: Create Or Refresh The PR
 
 If the path is `local-only`, skip this phase and report that no PR work was
@@ -320,9 +334,13 @@ requested.
 
 If GitHub CLI is available:
 
-- **No open PR** -> create one with the assembled title and body
-- **Existing open PR + refresh requested** -> update the title and body
-- **Existing open PR + no refresh requested** -> report the PR URL and stop
+- **No open PR** -> create one with the assembled title and body after the
+  branch has been pushed
+- **Existing open PR** -> refresh the title and body with the assembled finish
+  summary, testing, monitoring, and evidence unless the user explicitly asked
+  for local-only behavior
+- **Description refresh** -> update the existing PR title and body without
+  changing branch or commit state
 
 Required PR body sections:
 
@@ -345,12 +363,13 @@ When `plan:<path>` is available and the plan frontmatter contains
 
 Then report:
 
-1. what finished
-2. the branch and PR URL when available
-3. any residual follow-up
-4. whether the pre-commit spin checkpoint captured, skipped, or found no durable
+1. finish summary
+2. branch name, push result, and PR URL or explicit PR blocker
+3. commits created or confirmed
+4. any residual follow-up
+5. whether the pre-commit spin checkpoint captured, skipped, or found no durable
    lesson
-5. a final handoff card from `../references/workflow-gates.md` with readiness,
+6. a final handoff card from `../references/workflow-gates.md` with readiness,
    evidence, and any open follow-up
 
 Do not make a normal post-commit spin offer. If push, PR creation, CI, or

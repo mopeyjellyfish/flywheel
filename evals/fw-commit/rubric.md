@@ -7,6 +7,8 @@ Score each dimension `0`, `1`, or `2`.
 ### Commit Path
 
 Does it clearly describe commit, push, and PR flow?
+Strong passes treat push plus PR creation or refresh as the default finish path
+unless `local-only` is explicitly requested.
 
 ### Readiness Gate
 
@@ -17,6 +19,11 @@ or open decisions explicit before committing, pushing, or creating a PR.
 ### Monitoring Notes
 
 Does it include post-deploy monitoring or a grounded no-impact rationale?
+
+### Finish Summary And PR State
+
+Does the close-out include a concise finish summary plus branch push result and
+PR URL or an explicit PR blocker?
 
 ### Browser Proof Discipline
 

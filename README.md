@@ -143,7 +143,9 @@ of them into new mandatory visible stages.
 
 `review` is the default gate after work. `spin` runs only when there is a durable
 lesson worth preserving, and it runs before `commit` so the solution note can be
-included with the same branch changes. `commit` finishes the branch cleanly.
+included with the same branch changes. `commit` finishes the branch by default:
+create or confirm the commit, push the branch, and open or refresh the PR. Pass
+`local-only` only when publishing should be skipped.
 
 Main stages use a compact handoff card when a boundary matters: `Stage`,
 `Artifact`, `Ready`, `Open decisions`, `Evidence`, and `Next`. The card keeps

@@ -270,6 +270,31 @@ function checkWorkflowGatesContract() {
   };
 }
 
+function checkCommitDefaultPublishContract() {
+  const files = [
+    ["publish-by-default principle", "skills/commit/SKILL.md", /Publish by default[\s\S]*commit through push and PR creation or refresh/i],
+    ["full finish path", "skills/commit/SKILL.md", /default non-local path is publish[\s\S]*commit[\s\S]*push[\s\S]*create or refresh the PR/i],
+    ["push command", "skills/commit/SKILL.md", /git push --set-upstream origin HEAD/i],
+    ["existing PR refresh", "skills/commit/SKILL.md", /Existing open PR[\s\S]*refresh the title and body/i],
+    ["finish closeout", "skills/commit/SKILL.md", /finish summary[\s\S]*branch name, push result, and PR URL/i],
+    ["commit rubric", "evals/fw-commit/rubric.md", /push plus PR creation or refresh as the default finish path/i],
+  ];
+  const missing = files
+    .filter(([, relativePath, pattern]) => {
+      const fullPath = path.join(repoRoot, relativePath);
+      return !fs.existsSync(fullPath) || !pattern.test(fs.readFileSync(fullPath, "utf8"));
+    })
+    .map(([label]) => label);
+
+  return {
+    name: "Commit default publish contract",
+    ok: missing.length === 0,
+    detail: missing.length === 0
+      ? "commit defaults to push plus PR creation or refresh with a clear close-out summary"
+      : `commit publish contract missing from: ${missing.join(", ")}`,
+  };
+}
+
 function checkCodexRootRouterPrompt() {
   const manifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
   const manifest = fs.existsSync(manifestPath)
@@ -576,6 +601,7 @@ function main() {
     checkHostInteractionQuestionToolContract(),
     checkSpinBeforeCommitContract(),
     checkWorkflowGatesContract(),
+    checkCommitDefaultPublishContract(),
   ];
 
   if (includeCodex) {
