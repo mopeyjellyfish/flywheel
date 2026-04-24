@@ -114,12 +114,13 @@ needs:
    instructions.
 7. **Keep planning approval-gated** — a plan should be understandable enough
    for the user to review what will be worked on before `work` begins.
-8. **Use TDD where it materially fits** — plans should prefer a test-first
-   posture for meaningful feature work and for code paths that are already
-   reasonably testable. Do not force TDD onto configuration-only changes,
-   purely mechanical edits, or areas where the repo shape makes upfront tests
-   disproportionate. When a different posture is better, state it briefly and
-   explain why.
+8. **Default behavior changes to TDD** — feature work, bug fixes, public
+   contract changes, regression-prone paths, and behavior-preserving refactors
+   should plan a `tdd` posture unless an explicit exception applies. Use
+   `characterization` for fragile existing behavior that must be pinned first,
+   and `no-new-tests` only for generated, configuration-only, documentation-
+   only, trivial mechanical, or otherwise disproportionate units. State the
+   exception and verification path whenever the unit is not `tdd`.
 9. **Plan the testing strategy, not just the code changes** — every software
    plan should state how new or changed behavior will be tested, which existing
    test idioms to follow, whether to extend current tests or add new ones, and
@@ -157,9 +158,10 @@ Every plan should contain:
   `characterization`, or `no-new-tests`, with a brief reason
 - per implementation unit, an explicit execution mode chosen from `serial` or
   `parallel-ready`, with a brief reason
-- an explicit testing strategy that uses TDD where appropriate, aligns with
-  `AGENTS.md`, `CLAUDE.md`, and local testing references when present, and
-  assumes repo tooling exists even when command discovery is deferred
+- an explicit testing strategy that defaults behavior-bearing work to TDD,
+  aligns with `AGENTS.md`, `CLAUDE.md`, and local testing references when
+  present, and assumes repo tooling exists even when command discovery is
+  deferred
 - for `tdd` units, 1-3 material hypotheses with explicit red and green proof
   points grounded in existing or new tests
 - clear public-contract coverage for any changed user-facing, API, CLI, schema,
@@ -425,15 +427,18 @@ when the change is local and low-blast-radius.
 #### 1.1b Detect Execution Posture Signals
 
 Decide whether the plan should carry a lightweight execution posture signal.
-Prefer TDD for substantial feature work and for code that is already easy to
-exercise. Use another posture when the change is config-only, mechanical, or
+Default to TDD for behavior-bearing units. Use another posture only when the
+change is generated, configuration-only, documentation-only, mechanical,
+styling/text-only with no unit-testable behavior, characterization-first, or
 not reasonably testable at planning time.
 
 For each implementation unit, choose exactly one test posture:
 
 - `tdd` — use when the unit changes externally observable behavior, a public
-  contract, or a regression-prone code path that is reasonably testable now.
-  This posture requires explicit red and green proof points.
+  contract, a bug fix, a regression-prone code path, or a behavior-preserving
+  refactor that is reasonably testable now. This posture requires explicit red
+  and green proof points and tells `$fw:work` to load the
+  `test-driven-development` skill before implementation.
 - `characterization` — use when the first planning need is to lock current
   behavior in a fragile, legacy, or poorly understood area before changing it.
   State what behavior must be pinned and why a test-first failing proof point is
@@ -446,7 +451,8 @@ Look for:
 
 - repo instructions already prescribing TDD or another testing flow
 - explicit TDD or test-first requests
-- feature work large enough that a red-green-refactor loop will improve quality
+- feature work, bug fixes, public contract changes, or refactors where a
+  red-green-refactor loop will improve quality
 - characterization-first needs in fragile or legacy areas
 - configuration-only or infrastructure-only edits with little direct behavioral
   surface
@@ -995,8 +1001,8 @@ Before finalizing, check:
   and any durable testing references when present
 - the testing strategy defines per-unit posture choices using exactly
   `tdd`, `characterization`, or `no-new-tests`
-- the testing strategy uses TDD where it is proportionate and testable, and
-  records explicit exceptions where it is not
+- the testing strategy defaults behavior-bearing units to TDD, and records
+  explicit exceptions where that is not the right posture
 - `tdd` units define 1-3 material hypotheses rather than a vague or bloated
   proof-point list
 - TDD-appropriate units provide clear red and green proof points so the worker

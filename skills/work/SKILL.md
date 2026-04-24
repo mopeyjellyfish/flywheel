@@ -136,9 +136,13 @@ Skip this step when arriving from Phase 0 with a bare prompt.
   `Execution mode`, use them as the default execution shape. Treat
   `parallel-ready` as eligible rather than mandatory, and keep `serial` units
   ordered.
-- Check for `Execution note` on each implementation unit. Carry that posture
-  into the task, especially when it specifies `tdd`, `test-first`, or
-  `characterization`.
+- Check for `Test posture` on each implementation unit. If it is `tdd`, load
+  the `test-driven-development` skill before writing implementation code for
+  that unit. If it is `characterization`, capture current behavior before
+  changing it. Treat `no-new-tests` as valid only when the plan gives a clear
+  exception reason.
+- Check for `Execution note` on each implementation unit and carry any
+  sequencing, rollout, or other non-test posture into the task.
 - If the plan includes `Architecture and Pattern Decisions` or an equivalent
   section, carry those boundary, pattern, and clean-code constraints into the
   task instead of rediscovering them ad hoc.
@@ -150,8 +154,11 @@ Skip this step when arriving from Phase 0 with a bare prompt.
 - Review any references or links provided in the plan.
 - If the plan already has checked implementation-unit checkboxes, treat those
   units as already completed unless repo truth clearly contradicts them.
-- If the user explicitly asks for TDD, test-first, or characterization-first
-  execution in this session, honor that request even if the plan is silent.
+- If the user explicitly asks for TDD, test-first, or red-green-refactor
+  execution in this session, load the `test-driven-development` skill and honor
+  that request even if the plan is silent.
+- If the user explicitly asks for characterization-first execution in this
+  session, honor that request even if the plan is silent.
 - If anything important is unclear or ambiguous, ask clarifying questions now.
 - In interactive mode, get user approval to proceed after clarifications.
 - Do not skip clarification when the plan leaves room for materially different
@@ -337,15 +344,19 @@ the work as Trivial.
 - Use each unit's `Execution mode` plus `Dependencies` to determine whether it
   is blocked, serial, or eligible for a later parallel-ready batch. If the plan
   lacks `Execution mode`, default units to `serial`.
-- Carry each unit's `Execution note` into the task when present.
+- Carry each unit's `Test posture` and `Execution note` into the task when
+  present.
 - Read every unit's `Patterns to follow` field before implementing. Those
   references exist to keep execution aligned with the codebase.
-- Use each unit's `Verification` field as the primary "done" signal.
+- Use each unit's `Red signal`, `Green signal`, and `Verification` fields as
+  the primary proof path when the unit is `tdd`; otherwise use `Verification`
+  as the primary "done" signal.
 - Keep the host task list and the plan document synchronized: the task tool
   carries `in_progress` and `blocked`, while the plan checkbox flips to `[x]`
   only after the unit's verification passes.
 - Do not expect the plan to contain implementation code, shell choreography, or
-  micro-step TDD instructions.
+  micro-step TDD instructions. Do expect a `tdd` unit to provide enough red and
+  green signal to start test-first execution.
 - Include testing and quality-check tasks, not just code-edit tasks.
 - Keep tasks specific, dependency-aware, and completable.
 
@@ -384,8 +395,8 @@ parallel, instruct each delegated worker:
 Give each delegated unit:
 
 - the full plan file path for context
-- the specific unit's Goal, Files, Approach, Execution note, Patterns,
-  Test Scenarios, and Verification
+- the specific unit's Goal, Files, Test posture, Red signal, Green signal,
+  Approach, Execution note, Patterns, Test Scenarios, and Verification
 - any resolved deferred questions relevant to that unit
 - instruction to check whether the unit's test scenarios cover happy path, edge
   cases, failure paths, and integration where applicable
@@ -430,8 +441,10 @@ while (tasks remain):
   - Read any referenced files from the plan or discovered during Phase 0
   - Look for similar patterns in the codebase
   - Find existing test files for implementation files being changed
-  - Implement following existing conventions
-  - Add, update, or remove tests to match implementation changes
+  - If the unit or prompt requires TDD, load `test-driven-development`, write
+    and verify the red signal first, then implement the minimal green change
+  - Otherwise, implement following existing conventions and add, update, or
+    remove tests to match implementation changes
   - When runtime behavior changes, assess whether logs, traces, metrics, or
     operational validation need to be added or updated
   - Use `$fw:observability` or `$fw:logging` when the repo's runtime support story
@@ -461,12 +474,18 @@ while (tasks remain):
   - Evaluate for an incremental commit
 ```
 
-When a unit carries an `Execution note`, honor it:
+When a unit carries a `Test posture`, honor it:
 
-- **test-first / tdd** — write the failing test before implementation
+- **tdd** — load `test-driven-development`, write the failing test before
+  implementation, verify the red failure, implement the smallest green change,
+  refactor if useful, and report red/green/refactor evidence
 - **characterization-first** — capture current behavior before changing it
 - **no-new-tests** — only when the unit is truly mechanical, config-only, or
   otherwise justified
+
+When a unit carries an `Execution note`, honor it as sequencing, rollout, or
+other execution guidance. Do not use `Execution note` as a substitute for
+`Test posture`.
 
 Guardrails for test posture:
 
@@ -476,6 +495,9 @@ Guardrails for test posture:
   feature.
 - Do not over-implement beyond the current behavior slice when working
   test-first.
+- If agent-authored implementation for the current TDD unit was written before
+  a red signal, discard only those agent-authored hunks and restart from RED.
+  Never revert user-authored or pre-existing dirty changes.
 - Skip test-first discipline for trivial renames, pure configuration, and pure
   styling work.
 

@@ -371,6 +371,12 @@ Confidence tagging:
 If a plan is found, read its `Requirements Trace` and `Implementation Units`.
 Do not block the review if no plan is found.
 
+When implementation units include `Test posture: tdd`, extract the unit labels,
+changed files, `Red signal`, and `Green signal`. Use that expectation later to
+check whether the diff or evidence bundle shows a red-green-refactor path. A
+missing TDD proof is review evidence, not just a process nit, unless the plan
+or diff clearly records a valid exception.
+
 ### Stage 2c: Build A Service-Readiness Frame When Needed
 
 If the diff is runtime-risky, read
@@ -604,6 +610,7 @@ Each structured reviewer receives:
 9. stack-pack reference files only for stack- or platform-specific reviewers
    selected by a
    matching pack
+10. TDD expectations from plan units when Stage 2b found any
 
 Reviewer passes are read-only with respect to project code. The one permitted
 write is the reviewer artifact file under:
@@ -695,6 +702,9 @@ When a plan was found:
   downstream-resolver` findings
 - `inferred` plan source: unaddressed requirements become P3 `advisory ->
   human` findings
+- missing red/green/refactor evidence for a plan unit marked `tdd` becomes a
+  testing or requirements-completeness finding unless an explicit exception was
+  recorded
 
 Omit the section entirely when no plan was found.
 

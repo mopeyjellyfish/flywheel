@@ -28,6 +28,7 @@
   "strongPassAverage": 1.75,
   "suggestedFirstPass": [
     "plan_doc_execute",
+    "tdd_plan_unit_execution",
     "browser_visible_change",
     "runtime_risky_change"
   ]

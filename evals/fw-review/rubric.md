@@ -17,6 +17,9 @@ when the diff evidence justifies it.
 ### Risk Focus
 
 Does it prioritize bugs, regressions, missing tests, and merge risk?
+Strong passes also treat missing red/green/refactor evidence for plan units
+marked `tdd` as a concrete testing or requirements-completeness risk unless a
+valid exception was recorded.
 
 ### Requirements Completeness
 

@@ -1,0 +1,33 @@
+{
+  "id": "fw-test-driven-development",
+  "skill": "fw:test-driven-development",
+  "caseFile": "cases.jsonl",
+  "rubricFile": "rubric.md",
+  "requiredItemFields": [
+    "id",
+    "arguments",
+    "special_constraints",
+    "success_definition"
+  ],
+  "dimensions": [
+    "Trigger Discipline",
+    "Red Proof",
+    "Green Minimality",
+    "Refactor Safety",
+    "Dirty Tree Safety",
+    "Exception Handling",
+    "Evidence Handoff"
+  ],
+  "criticalDimensions": [
+    "Trigger Discipline",
+    "Red Proof",
+    "Dirty Tree Safety"
+  ],
+  "passAverage": 1.5,
+  "strongPassAverage": 1.75,
+  "suggestedFirstPass": [
+    "feature_behavior_tdd",
+    "prewritten_code_restart",
+    "valid_exception_config"
+  ]
+}

@@ -48,6 +48,7 @@ Current suites:
 - `fw-docs`
 - `fw-commit`
 - `fw-spin`
+- `fw-test-driven-development`
 - `fw-optimize`
 - `maintainability`
 - `logging`

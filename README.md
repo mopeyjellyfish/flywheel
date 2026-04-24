@@ -137,9 +137,9 @@ Flywheel can pull in focused helper surfaces such as `architecture-strategy`,
 of them into new mandatory visible stages.
 
 `work` is the execution stage. It can pull in `docs`, `debug`, `browser-test`,
-`verify`, `rollout`, `observability`, `logging`, `architecture-strategy`,
-`pattern-recognition`, `maintainability`, `simplify`, `optimize`, or
-`worktree` when the task actually needs them.
+`verify`, `test-driven-development`, `rollout`, `observability`, `logging`,
+`architecture-strategy`, `pattern-recognition`, `maintainability`, `simplify`,
+`optimize`, or `worktree` when the task actually needs them.
 
 `review` is the default gate after work. `spin` runs only when there is a durable
 lesson worth preserving, and it runs before `commit` so the solution note can be

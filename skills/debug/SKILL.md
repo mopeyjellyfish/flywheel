@@ -162,11 +162,15 @@ the red signal exists or route the work upstream.
 
 Required sequence:
 
-1. create or isolate the red failing test or reproducer
-2. confirm it fails for the reason your hypothesis predicts
-3. implement the minimal fix
-4. rerun the red test until it turns green
-5. run the broader relevant checks
+1. load `test-driven-development` unless the reproducer is a non-test
+   executable proof such as a CLI command or manual fixture
+2. create or isolate the red failing test or reproducer
+3. confirm it fails for the reason your hypothesis predicts
+4. implement the minimal fix
+5. rerun the red test until it turns green
+6. refactor only after green when cleanup is useful, then rerun the target
+   proof
+7. run the broader relevant checks
 
 #### Route B: Design or Requirements Problem
 

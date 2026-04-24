@@ -26,6 +26,9 @@ plan decisions rather than drifting into a research report.
 ### Test Strategy
 
 Does it include testing posture, verification, or red/green expectations?
+Strong passes default behavior-changing units to `tdd`, provide concrete red
+and green proof points, and use non-TDD postures only with explicit exception
+reasoning.
 
 For architecture-bearing work, strong passes also make the relevant boundary or
 pattern decisions explicit enough that work does not have to rediscover them.

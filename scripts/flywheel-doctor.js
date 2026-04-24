@@ -151,6 +151,7 @@ function checkSkillDescriptionDiscriminators() {
     simplify: [/accidental complexity|simpl/i, /wrappers?|abstractions?|orchestration/i],
     spin: [/docs\/solutions|durable lessons/i, /completed work|verified fixes|patterns/i],
     start: [/route|earliest useful stage/i, /shape|work|review|commit|spin/i],
+    "test-driven-development": [/red-green-refactor|test-driven|TDD/i, /feature|bugfix|refactor|behavior/i],
     verify: [/fresh evidence|verify/i, /claiming|claims?|tests|lint|builds|fixes/i],
     work: [/implementation work|execute/i, /plans?|specs?|todos?|validation|tracked changes/i],
     worktree: [/worktrees?|isolated/i, /branch|parallel checkouts?|cleanup|review targets/i],
