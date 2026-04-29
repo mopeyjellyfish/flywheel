@@ -22,7 +22,10 @@ forward without depending on chat memory?
 ### Boundary Discipline
 
 Does it preserve approval boundaries, especially plan approval before work,
-review before commit, and conditional spin before final commit?
+review before commit, and conditional spin before final commit? Strong passes
+use the host question tool when available for the plan-to-work approval gate
+and do not treat a markdown menu as equivalent unless the tool is unavailable
+or errors.
 
 ### Closure
 

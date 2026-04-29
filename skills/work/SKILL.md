@@ -103,8 +103,11 @@ If the input is not a file path, treat it as a bare prompt describing the work.
 
 Determine how to proceed based on what was provided in `<input_document>`.
 
-**Plan document** — the input is a file path to an existing plan,
-specification, or todo file. Skip to Phase 1.
+**Plan or specification document** — the input is a file path to an existing
+plan, specification, or todo file. Skip to Phase 1. In interactive contexts,
+execution from a plan or specification still requires the plan-to-work approval
+gate in Phase 1 unless the user explicitly asked to implement that artifact in
+the same turn.
 
 **Bare prompt** — the input describes work rather than pointing at a file:
 
@@ -163,6 +166,18 @@ Skip this step when arriving from Phase 0 with a bare prompt.
   session, honor that request even if the plan is silent.
 - If anything important is unclear or ambiguous, ask clarifying questions now.
 - In interactive mode, get user approval to proceed after clarifications.
+  When the work document is a plan or specification, call the exact host
+  question tool named in the host interaction contract when it is available and
+  ask whether the user is happy to start implementation from this artifact.
+  Use a portable choice surface such as:
+  1. **Start work now (Recommended)** - confirms the artifact is accepted as
+     the implementation basis
+  2. **Review or deepen first** - pause execution and route back to the
+     appropriate shaping or document-review path
+  3. **Done for now** - leave the artifact saved without starting work
+  A direct same-turn instruction such as "implement this plan now" or a
+  selection from the `fw:plan` post-generation question counts as approval.
+  A generic mention of a plan path does not.
 - Do not skip clarification when the plan leaves room for materially different
   outcomes.
 
