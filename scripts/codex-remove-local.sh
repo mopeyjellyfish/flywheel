@@ -11,7 +11,7 @@ Remove Flywheel from the local Codex development install by:
   2. removing ~/.codex/plugins/fw and any legacy ~/.codex/plugins/flywheel link
   3. removing ~/.codex/plugins/cache/fw-local and any legacy ~/.codex/plugins/cache/flywheel-local cache
   4. removing Flywheel plugin entries from ~/.codex/config.toml
-  5. removing the Flywheel hook guardrail from ~/.codex/hooks.json
+  5. removing the Flywheel hook guardrails from ~/.codex/hooks.json
 
 Options:
   --dry-run     Print the actions without changing anything
@@ -176,8 +176,12 @@ if (!payload.hooks || typeof payload.hooks !== "object" || Array.isArray(payload
 }
 
 let removedHooks = 0;
-if (Array.isArray(payload.hooks.PreToolUse)) {
-  payload.hooks.PreToolUse = payload.hooks.PreToolUse.flatMap((group) => {
+for (const eventName of Object.keys(payload.hooks)) {
+  if (!Array.isArray(payload.hooks[eventName])) {
+    continue;
+  }
+
+  payload.hooks[eventName] = payload.hooks[eventName].flatMap((group) => {
     if (!group || !Array.isArray(group.hooks)) {
       return [group];
     }
@@ -193,8 +197,8 @@ if (Array.isArray(payload.hooks.PreToolUse)) {
     return hooks.length > 0 ? [{ ...group, hooks }] : [];
   });
 
-  if (payload.hooks.PreToolUse.length === 0) {
-    delete payload.hooks.PreToolUse;
+  if (payload.hooks[eventName].length === 0) {
+    delete payload.hooks[eventName];
   }
 }
 
@@ -217,10 +221,10 @@ NODE
       echo "OK  no Codex hooks file found at $HOOKS_FILE"
       ;;
     none)
-      echo "OK  no Flywheel Codex hook guardrail found in $HOOKS_FILE"
+      echo "OK  no Flywheel Codex hook guardrails found in $HOOKS_FILE"
       ;;
     removed:*)
-      echo "OK  removed Flywheel Codex hook guardrail from $HOOKS_FILE"
+      echo "OK  removed Flywheel Codex hook guardrails from $HOOKS_FILE"
       ;;
     parse-error)
       echo "WARN  could not parse $HOOKS_FILE; remove Flywheel hook entries manually"

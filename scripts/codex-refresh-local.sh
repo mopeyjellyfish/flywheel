@@ -11,7 +11,7 @@ Refresh the local Flywheel plugin install for Codex development by:
   2. ensuring ~/.codex/plugins/fw points at this repo
   3. refreshing the local Flywheel plugin cache
   4. ensuring ~/.codex/config.toml enables fw@fw-local and codex hooks
-  5. merging the Flywheel Codex hook guardrail into ~/.codex/hooks.json
+  5. merging the Flywheel Codex lifecycle hook guardrails into ~/.codex/hooks.json
 
 This is a development helper for working on Flywheel itself. It does not hot
 reload an already-running Codex session.
@@ -428,22 +428,59 @@ EOF
 }
 
 merge_hooks_config() {
-  local hook_command
-  hook_command="node \"$PLUGIN_LINK/hooks/flywheel-hook-policy.js\" pre-tool codex"
+  local hook_command_prefix
+  hook_command_prefix="node \"$PLUGIN_LINK/hooks/flywheel-hook-policy.js\""
 
   if [ "$DRY_RUN" -eq 1 ]; then
-    echo "DRY_RUN: merge Flywheel hook into $HOOKS_FILE"
+    echo "DRY_RUN: merge Flywheel hooks into $HOOKS_FILE"
     return 0
   fi
 
   run mkdir -p "$(dirname "$HOOKS_FILE")"
 
-  HOOKS_FILE="$HOOKS_FILE" HOOK_COMMAND="$hook_command" node <<'NODE'
+  HOOKS_FILE="$HOOKS_FILE" HOOK_COMMAND_PREFIX="$hook_command_prefix" node <<'NODE'
 const fs = require("fs");
 
 const hooksFile = process.env.HOOKS_FILE;
-const hookCommand = process.env.HOOK_COMMAND;
+const hookCommandPrefix = process.env.HOOK_COMMAND_PREFIX;
 const hookNeedle = "flywheel-hook-policy.js";
+const hookDefinitions = [
+  {
+    event: "SessionStart",
+    matcher: "startup|resume|clear",
+    command: `${hookCommandPrefix} session-start codex`,
+    statusMessage: "Loading Flywheel context",
+  },
+  {
+    event: "UserPromptSubmit",
+    command: `${hookCommandPrefix} user-prompt codex`,
+    statusMessage: "Checking Flywheel prompt routing",
+  },
+  {
+    event: "PreToolUse",
+    matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
+    command: `${hookCommandPrefix} pre-tool codex`,
+    statusMessage: "Checking Flywheel policy",
+  },
+  {
+    event: "PermissionRequest",
+    matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
+    command: `${hookCommandPrefix} permission-request codex`,
+    statusMessage: "Checking Flywheel approval request",
+  },
+  {
+    event: "PostToolUse",
+    matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
+    command: `${hookCommandPrefix} post-tool codex`,
+    statusMessage: "Checking Flywheel follow-up",
+  },
+  {
+    event: "Stop",
+    command: `${hookCommandPrefix} stop codex`,
+    statusMessage: "Checking Flywheel handoff",
+    timeout: 30,
+  },
+];
 
 let payload = { hooks: {} };
 if (fs.existsSync(hooksFile)) {
@@ -460,39 +497,55 @@ if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
 if (!payload.hooks || typeof payload.hooks !== "object" || Array.isArray(payload.hooks)) {
   payload.hooks = {};
 }
-if (!Array.isArray(payload.hooks.PreToolUse)) {
-  payload.hooks.PreToolUse = [];
-}
-
-for (const matcherGroup of payload.hooks.PreToolUse) {
-  if (!matcherGroup || !Array.isArray(matcherGroup.hooks)) {
+for (const eventName of Object.keys(payload.hooks)) {
+  if (!Array.isArray(payload.hooks[eventName])) {
     continue;
   }
-  matcherGroup.hooks = matcherGroup.hooks.filter((hook) => {
-    return !(hook && typeof hook.command === "string" && hook.command.includes(hookNeedle));
+  payload.hooks[eventName] = payload.hooks[eventName].flatMap((matcherGroup) => {
+    if (!matcherGroup || !Array.isArray(matcherGroup.hooks)) {
+      return [matcherGroup];
+    }
+    const hooks = matcherGroup.hooks.filter((hook) => {
+      return !(hook && typeof hook.command === "string" && hook.command.includes(hookNeedle));
+    });
+    return hooks.length > 0 ? [{ ...matcherGroup, hooks }] : [];
   });
+  if (payload.hooks[eventName].length === 0) {
+    delete payload.hooks[eventName];
+  }
 }
 
-payload.hooks.PreToolUse = payload.hooks.PreToolUse.filter((matcherGroup) => {
-  return matcherGroup && Array.isArray(matcherGroup.hooks) && matcherGroup.hooks.length > 0;
-});
-
-let bashGroup = payload.hooks.PreToolUse.find((matcherGroup) => matcherGroup.matcher === "Bash");
-if (!bashGroup) {
-  bashGroup = { matcher: "Bash", hooks: [] };
-  payload.hooks.PreToolUse.push(bashGroup);
+function installHook(definition) {
+  if (!Array.isArray(payload.hooks[definition.event])) {
+    payload.hooks[definition.event] = [];
+  }
+  const matcher = definition.matcher;
+  let group = payload.hooks[definition.event].find((candidate) => {
+    return (candidate?.matcher || "") === (matcher || "");
+  });
+  if (!group) {
+    group = matcher ? { matcher, hooks: [] } : { hooks: [] };
+    payload.hooks[definition.event].push(group);
+  }
+  const hook = {
+    type: "command",
+    command: definition.command,
+    statusMessage: definition.statusMessage,
+  };
+  if (definition.timeout) {
+    hook.timeout = definition.timeout;
+  }
+  group.hooks.push(hook);
 }
 
-bashGroup.hooks.push({
-  type: "command",
-  command: hookCommand,
-  statusMessage: "Checking Flywheel policy",
-});
+for (const definition of hookDefinitions) {
+  installHook(definition);
+}
 
 fs.writeFileSync(hooksFile, `${JSON.stringify(payload, null, 2)}\n`);
 NODE
 
-  echo "OK  merged Flywheel hook guardrail into $HOOKS_FILE"
+  echo "OK  merged Flywheel hook guardrails into $HOOKS_FILE"
 }
 
 while [ "$#" -gt 0 ]; do

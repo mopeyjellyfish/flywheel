@@ -73,11 +73,14 @@ node scripts/flywheel-doctor.js --host codex --codex-session-smoke
 
 Symptom:
 - dangerous Bash commands are not blocked
-- Codex does not show Flywheel policy reminders before commit or push
+- Codex does not show Flywheel policy reminders before commit, push, prompt
+  routing, post-edit validation, or final handoff checkpoints
 
 Check:
 - `~/.codex/config.toml` contains `[features]` with `codex_hooks = true`
-- `~/.codex/hooks.json` contains the Flywheel `flywheel-hook-policy.js` entry
+- `~/.codex/hooks.json` contains Flywheel `flywheel-hook-policy.js` entries for
+  `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PermissionRequest`,
+  `PostToolUse`, and `Stop`
 - `node scripts/flywheel-doctor.js --host codex`
 
 Fix:
@@ -89,8 +92,10 @@ make install/codex/refresh
 Then start a fresh Codex session.
 
 Note:
-- current Codex hooks are experimental and Bash-focused
-- Codex can hard-block destructive Bash commands, but commit and push policy
+- Codex hooks are guardrails, not a complete enforcement boundary; current
+  `PreToolUse` and `PostToolUse` support still has incomplete interception for
+  some shell and non-shell tool paths
+- Codex can hard-block destructive supported tool calls, but ask-style policy
   checkpoints may degrade to warnings when the host cannot honestly enforce an
   ask gate
 
@@ -258,8 +263,8 @@ Fix:
 
 Note:
 - Claude plugin hooks are bundled from the plugin root `hooks/hooks.json`
-- Flywheel keeps those hooks thin: destructive-deny plus confirm gates at
-  commit or push checkpoints when repo-local policy requires them
+- Flywheel keeps those hooks thin: session context, prompt routing, supported
+  tool guardrails, post-tool validation hints, and stop-time handoff checks
 
 ### Claude direct `--plugin-dir` runs are not available
 

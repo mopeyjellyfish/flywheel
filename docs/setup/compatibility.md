@@ -16,7 +16,7 @@ product choice while the workflow and operational surfaces are still evolving.
 | Repeatable installed usage from this checkout | Supported | Supported | Codex installs from `.codex-plugin/plugin.json`; Claude installs from this repo through `.claude-plugin/marketplace.json` |
 | `npx skills` package install | Not the Codex path | Supported | Codex should use the plugin install because standalone global skills appear as unnamespaced commands such as `$start`. `make install/skills/global` wraps the local `skills add` flow for non-Codex skills-CLI hosts. Repo-root project scope is a safe no-op because project scope writes to `./skills` |
 | Dev-only direct loading from this checkout | Supported | Supported | Codex uses the local plugin config + cache refresh loop; Claude also supports `--plugin-dir` for direct local runs |
-| Risky-edge hook guardrails | Supported with global `~/.codex/hooks.json` | Supported with bundled `hooks/hooks.json` | Codex hooks are experimental and currently Bash-focused; Claude supports bundled plugin hooks directly |
+| Risky-edge hook guardrails | Supported with global `~/.codex/hooks.json` | Supported with bundled `hooks/hooks.json` | Flywheel installs SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, and Stop hooks. Codex also installs PermissionRequest. Codex support is still a guardrail surface with incomplete tool interception; Claude supports bundled plugin hooks directly |
 | Eval harness validation | Supported | Supported | Requires local CLI install and auth for the relevant runner |
 | Side-by-side live comparison | Supported | Supported | Run from `tools/evals/` after installing workspace deps |
 
@@ -64,7 +64,7 @@ make install/codex
 `make install/codex` refreshes the local Flywheel plugin install shape for this
 checkout, clears the local cache, ensures the local `fw@fw-local`
 Codex plugin entry is enabled, turns on the experimental Codex hooks feature,
-merges the Flywheel PreToolUse guardrail into `~/.codex/hooks.json`, removes
+merges the Flywheel lifecycle guardrails into `~/.codex/hooks.json`, removes
 standalone global Flywheel skills from `~/.agents/skills`, runs the repo doctor,
 and validates all eval suites. Start a fresh Codex session afterward so the
 refreshed plugin and hook state is loaded.
@@ -147,7 +147,7 @@ node scripts/flywheel-doctor.js --host claude --smoke
 - always-loaded host-wide instruction files
 - host-specific workflow forks when a shared skill surface is sufficient
 - pretending Codex hook enforcement is as complete as Claude's richer hook
-  surface when current Codex support is still Bash-only guardrails
+  surface when current Codex support still has incomplete tool interception
 
 ## Related Docs
 

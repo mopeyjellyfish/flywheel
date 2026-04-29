@@ -388,25 +388,58 @@ function checkCodexHooksInstalled() {
   const hooksPath = path.join(codexHome, "hooks.json");
   if (!fs.existsSync(hooksPath)) {
     return {
-      name: "Flywheel Codex hook guardrail",
+      name: "Flywheel Codex hook guardrails",
       ok: false,
       detail: `missing ${hooksPath}`,
     };
   }
 
   const payload = parseJson(fs.readFileSync(hooksPath, "utf8"));
-  const groups = Array.isArray(payload?.hooks?.PreToolUse) ? payload.hooks.PreToolUse : [];
-  const present = groups.some((group) =>
-    Array.isArray(group?.hooks) &&
-    group.hooks.some((hook) => typeof hook?.command === "string" && hook.command.includes("flywheel-hook-policy.js")),
-  );
+  const expectedEvents = ["SessionStart", "UserPromptSubmit", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"];
+  const missing = expectedEvents.filter((eventName) => {
+    const groups = Array.isArray(payload?.hooks?.[eventName]) ? payload.hooks[eventName] : [];
+    return !groups.some((group) =>
+      Array.isArray(group?.hooks) &&
+      group.hooks.some((hook) => typeof hook?.command === "string" && hook.command.includes("flywheel-hook-policy.js")),
+    );
+  });
+  const present = missing.length === 0;
 
   return {
-    name: "Flywheel Codex hook guardrail",
+    name: "Flywheel Codex hook guardrails",
     ok: present,
     detail: present
-      ? "hooks.json contains the Flywheel PreToolUse guardrail"
-      : "hooks.json is missing the Flywheel PreToolUse guardrail",
+      ? `hooks.json contains Flywheel hooks for ${expectedEvents.join(", ")}`
+      : `hooks.json is missing Flywheel hook(s): ${missing.join(", ")}`,
+  };
+}
+
+function checkClaudeHookPackShape() {
+  const hooksPath = path.join(repoRoot, "hooks", "hooks.json");
+  if (!fs.existsSync(hooksPath)) {
+    return {
+      name: "Claude hook pack shape",
+      ok: false,
+      detail: "missing hooks/hooks.json",
+    };
+  }
+
+  const payload = parseJson(fs.readFileSync(hooksPath, "utf8"));
+  const expectedEvents = ["SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop"];
+  const missing = expectedEvents.filter((eventName) => {
+    const groups = Array.isArray(payload?.hooks?.[eventName]) ? payload.hooks[eventName] : [];
+    return !groups.some((group) =>
+      Array.isArray(group?.hooks) &&
+      group.hooks.some((hook) => typeof hook?.command === "string" && hook.command.includes("flywheel-hook-policy.js")),
+    );
+  });
+
+  return {
+    name: "Claude hook pack shape",
+    ok: missing.length === 0,
+    detail: missing.length === 0
+      ? `hooks/hooks.json contains Flywheel hooks for ${expectedEvents.join(", ")}`
+      : `hooks/hooks.json is missing Flywheel hook(s): ${missing.join(", ")}`,
   };
 }
 
@@ -614,6 +647,7 @@ function main() {
     checks.unshift(checkFile("Claude hook pack", "hooks/hooks.json"));
     checks.unshift(checkFile("Claude marketplace manifest", ".claude-plugin/marketplace.json"));
     checks.unshift(checkFile("Claude plugin manifest", ".claude-plugin/plugin.json"));
+    checks.push(checkClaudeHookPackShape());
   }
 
   const validate = run(process.execPath, ["scripts/flywheel-eval.js", "validate"]);
@@ -624,6 +658,16 @@ function main() {
       validate.status === 0
         ? "all eval suites validated"
         : (validate.stdout || validate.stderr).trim() || "validation failed",
+  });
+
+  const hookPolicyTest = run(process.execPath, ["scripts/flywheel-hook-policy.test.js"]);
+  checks.push({
+    name: "Flywheel hook policy tests",
+    ok: hookPolicyTest.status === 0,
+    detail:
+      hookPolicyTest.status === 0
+        ? (hookPolicyTest.stdout || hookPolicyTest.stderr).trim() || "hook policy tests passed"
+        : (hookPolicyTest.stdout || hookPolicyTest.stderr).trim() || "hook policy tests failed",
   });
 
   const evalWorkspaceReady = fs.existsSync(path.join(repoRoot, "tools/evals/node_modules"));
