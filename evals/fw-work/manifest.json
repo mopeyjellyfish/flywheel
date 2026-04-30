@@ -16,13 +16,15 @@
     "Runtime Support Awareness",
     "Browser Proof Awareness",
     "Workflow Closure",
+    "Plan Approval Gate",
     "Delegation Discipline",
     "Restraint"
   ],
   "criticalDimensions": [
     "Execution Discipline",
     "Continuous Validation",
-    "Workflow Closure"
+    "Workflow Closure",
+    "Plan Approval Gate"
   ],
   "passAverage": 1.5,
   "strongPassAverage": 1.75,

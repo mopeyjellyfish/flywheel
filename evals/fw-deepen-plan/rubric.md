@@ -20,7 +20,9 @@ Does it ground plan edits in repo truth, tests, patterns, or prior solutions?
 ### Work Handoff
 
 Does it keep the plan moving toward `fw-work`, while still allowing another
-deepen pass when the reviewed plan is not ready?
+deepen pass when the reviewed plan is not ready? Strong passes call the host
+question tool when available and treat `fw-work` as gated on the user's
+confirmation that the strengthened plan is accepted for implementation.
 
 ### Runtime Awareness
 

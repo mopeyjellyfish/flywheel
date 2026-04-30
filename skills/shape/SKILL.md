@@ -67,12 +67,16 @@ End with one of these outcomes:
   `fw:brainstorm`
 - reviewed requirements doc or requirements plan from `fw:brainstorm`, with a
   user choice to proceed to `fw:plan` or run document review first
-- reviewed technical implementation plan from `fw:plan`, with a user choice to
-  address review findings, deepen the plan, or move to `fw:work`
-- strengthened reviewed plan from `fw:deepen`, with a user choice between
-  another deepen pass and `fw:work`
+- reviewed technical implementation plan from `fw:plan`, with a host-question
+  user choice to address review findings, deepen the plan, or confirm moving
+  to `fw:work`
+- strengthened reviewed plan from `fw:deepen`, with a host-question user
+  choice between another deepen pass, pausing, and confirming `fw:work`
 
 Always name the next main stage as `fw:work` once the shaping artifact is ready.
+Do not cross from shaping into `fw:work` until the user confirms through the
+host question tool when that tool is available, or gives an explicit same-turn
+implementation instruction.
 When a shaping mode produced or selected a durable artifact, close with the
 canonical handoff fields from `../references/workflow-gates.md`: Stage,
 Artifact, Ready, Open decisions, Evidence, and Next.

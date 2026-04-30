@@ -38,6 +38,14 @@ Strong passes also keep task state and any plan-unit checkboxes synchronized by
 the time execution closes, then close with a handoff card that names readiness,
 evidence, open decisions, and the next stage.
 
+### Plan Approval Gate
+
+When execution starts from a plan or specification without an explicit same-turn
+implementation request or prior plan-handoff selection, does it stop and confirm
+that the user is happy with the artifact as the implementation basis before
+editing? Strong passes call the host question tool when available and offer
+portable choices to start work, review/deepen first, or pause.
+
 ### Delegation Discipline
 
 When delegation or parallel work is mentioned, is it bounded, host-aware, and

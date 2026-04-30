@@ -107,8 +107,8 @@ three lessons and capture the strongest useful one before commit.
 
 ## Boundary Rules
 
-- Do not cross from plan to work without user approval or an explicit same-turn
-  implementation request.
+- Do not cross from plan to work without user approval through the host question
+  tool when available, or an explicit same-turn implementation request.
 - Do not cross from work to commit without review. If a narrower workflow
   explicitly allows inline self-review, record that as review evidence.
 - Do not cross from review to commit while blocking findings remain.

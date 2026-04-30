@@ -95,5 +95,14 @@ Return:
 1. **Plan deepened**
 2. **Main gaps fixed**
 3. **Residual review findings or open questions**
-4. **Recommended next move** — either another `$fw:deepen` pass or
-   `$fw:work`
+4. **Next move choice** — call the exact host question tool named in the host
+   interaction contract when it is available and ask whether the user is happy
+   with the strengthened plan as the basis for implementation. Use a compact
+   choice surface such as:
+   - **Start `$fw:work` now** — confirms the strengthened plan is accepted for
+     implementation
+   - **Deepen again** — run another strengthening pass before execution
+   - **Done for now** — pause with the plan saved
+
+Do not begin `$fw:work` from a deepened plan until the user selects the
+work-start option or gives an explicit same-turn implementation instruction.

@@ -69,9 +69,13 @@ the confidence check already ran, and document-review already ran.
 
 After document-review completes, present the options by calling the exact host
 question tool named in the host interaction contract when that tool is
-available. A markdown menu is only the fallback after the tool is unavailable
-or errors. Otherwise present a short label-based choice surface in chat instead
-of asking for raw numeric replies, then wait for the user's answer.
+available. This is the plan-to-work approval gate. Do not call `fw:work`, edit
+implementation files, or otherwise begin execution until the user selects a
+work-start option or gives an explicit same-turn implementation instruction.
+
+A markdown menu is only the fallback after the tool is unavailable or errors.
+Otherwise present a short label-based choice surface in chat instead of asking
+for raw numeric replies, then wait for the user's answer.
 
 Before presenting options, summarize:
 
@@ -86,7 +90,7 @@ Before presenting options, summarize:
   `Ready` set to `conditional` until the user chooses the next action
 
 **Question:** "Plan ready at `docs/plans/YYYY-MM-DD-NNN-<type>-<name>-plan.md`.
-What would you like to do next?"
+Are you happy with this plan as the basis for implementation?"
 
 Present a portable `2-3` option menu with the recommended choice first. Use a
 fourth explicit option only when the active host question schema supports it.
@@ -102,8 +106,8 @@ user asked for more rigor, use:
 
 If the reviewed plan is clean and the remaining uncertainty is low, use:
 
-1. **Start `$fw:work` now** (recommended) — begin implementing this plan
-   in the current session
+1. **Start `$fw:work` now** (recommended) — confirms the plan is accepted as
+   the basis for implementation in the current session
 2. **Deepen first** — run `$fw:deepen` before execution
 3. **Done for now** — pause; the plan file is saved and can be resumed later
 
