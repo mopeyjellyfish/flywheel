@@ -145,8 +145,8 @@ falling back to the published package when this checkout does not expose
 `skills/*/SKILL.md`.
 
 `make install/codex` now refreshes the local Flywheel plugin install shape,
-turns on the experimental Codex hooks feature, and merges the Flywheel Bash
-guardrail into `~/.codex/hooks.json`.
+turns on the experimental Codex hooks feature, and merges Flywheel lifecycle
+guardrails into `~/.codex/hooks.json`.
 
 From another checkout or worktree:
 
