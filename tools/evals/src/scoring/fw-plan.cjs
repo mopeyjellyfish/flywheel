@@ -40,6 +40,27 @@ function deterministicPlan(caseItem, output) {
     ? "Mentions testing or verification strategy."
     : "Does not clearly mention testing or verification.";
 
+  const verticalCase = (caseItem.special_constraints || []).some((item) => /vertical behavior slices|vertical slice|horizontal artifact batches/i.test(item));
+  if (verticalCase) {
+    const verticalSignal = mentionsAtLeast(output, [/vertical slice/i, /behavior slice/i, /shipped behavior/i, /workflow-contract slice/i, /end to end/i], 2);
+    const antiHorizontalSignal = mentionsAtLeast(output, [/horizontal/i, /artifact batch/i, /file batch/i, /layer/i, /exception/i, /reconciliation/i], 2);
+    const proofSignal = mentionsAtLeast(output, [/eval/i, /\btest/i, /red/i, /green/i, /proof/i, /verification/i], 2);
+    const score = verticalSignal && antiHorizontalSignal && proofSignal ? 2 : verticalSignal || antiHorizontalSignal ? 1 : 0;
+    scores["Vertical Slice Planning"] = score;
+    notes["Vertical Slice Planning"] =
+      score === 2
+        ? "Plans around vertical behavior slices and justifies horizontal exceptions with proof inside each slice."
+        : score === 1
+          ? "Mentions vertical or horizontal slicing but does not fully anchor units to end-to-end behavior and proof."
+          : "Does not clearly organize implementation units as vertical behavior slices.";
+  } else {
+    const verticalSignal = mentionsAny(output, [/vertical slice/i, /behavior slice/i]);
+    scores["Vertical Slice Planning"] = verticalSignal ? 2 : 1;
+    notes["Vertical Slice Planning"] = verticalSignal
+      ? "Mentions vertical slice planning."
+      : "Vertical slice planning was not central to this case.";
+  }
+
   const researchExpected = (caseItem.special_constraints || []).some((item) => /published guidance matters|research brief|targeted follow-up research|research report/i.test(item));
   if (researchExpected) {
     const researchSignal = mentionsAny(output, [/docs\/research/i, /saved research/i, /research brief/i, /fresh brief/i, /reuse/i, /targeted follow-?up research/i, /current published guidance/i]);

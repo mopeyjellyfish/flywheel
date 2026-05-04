@@ -36,6 +36,14 @@ For execution-shape-sensitive work, strong passes also make dependencies and
 serial vs `parallel-ready` posture explicit enough that `work` can track units
 one-for-one.
 
+### Vertical Slice Planning
+
+Does it organize implementation units around complete behavior slices rather
+than horizontal file, layer, or artifact batches? Strong passes name the shipped
+behavior or contract for each slice, include the source, tests, docs, config,
+generated artifacts, and proof needed to prove that slice end to end, and
+justify any horizontal prerequisite or reconciliation unit as an exception.
+
 ### Runtime Awareness
 
 For runtime-risky work, does it account for observability, rollout, or blast

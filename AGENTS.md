@@ -88,6 +88,12 @@ When in doubt:
 - Prefer backtick path references such as `` `references/file.md` `` or `` `../references/file.md` `` inside `SKILL.md` files. Avoid markdown links for local reference files; they are harder for agents to resolve correctly.
 - Keep large or conditional reference material in `references/` instead of inlining it into the main skill body.
 - When one skill refers to another, prefer semantic wording such as “load the `document-review` skill” unless the text is intentionally teaching the published command syntax.
+- Author Flywheel skills for downstream software projects, not only for this
+  repo's skill-development workflow. Product guidance should describe generic
+  project artifacts such as source, tests, docs, configs, migrations, APIs,
+  and verification. Use Flywheel-specific examples such as `skills/`, evals, or
+  plugin manifests only when the instruction is explicitly about maintaining
+  Flywheel itself.
 
 ## Platform-Specific Variables in Skills
 This plugin is authored once and packaged for multiple agent platforms. Do not rely on platform-only environment variables or string substitutions in `SKILL.md` content unless the skill also explains what to do when the value is missing, unresolved, or copied literally into another host.

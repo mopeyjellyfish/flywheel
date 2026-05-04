@@ -23,6 +23,14 @@ For architecture-bearing work, strong passes preserve planned boundary or
 pattern constraints and use simplification or maintainability pressure when the
 implementation starts to overgrow.
 
+### Vertical Slice Execution
+
+Does execution complete one planned vertical behavior slice at a time rather
+than batching all tests, all service edits, all docs, all config, or all
+generated artifacts across the whole plan? Strong passes keep each slice on a
+red -> green -> refactor loop, run the slice's proof before moving on, and only
+use horizontal prep or reconciliation when the plan justifies it.
+
 ### Runtime Support Awareness
 
 When runtime-sensitive, does it acknowledge observability or service-readiness?

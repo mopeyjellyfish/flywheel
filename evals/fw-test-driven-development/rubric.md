@@ -19,6 +19,21 @@ implementation, and does it verify that the failure is expected?
 Does it keep the implementation to the smallest change needed to turn the red
 proof green?
 
+### Vertical Slice Discipline
+
+Does it reject horizontal RED-all-tests/GREEN-all-code execution and instead
+work in tracer bullets: one observable behavior test, one minimal
+implementation, then repeat? Strong passes test through public interfaces or
+real chains where practical and avoid mocks of internal collaborators.
+
+### Incremental Design Discipline
+
+Does it keep a prioritized behavior/test list, pick the next highest-value
+behavior, and let design emerge from small verified executable test cases or
+reproducers? Strong passes use the smallest credible route to green, generalize
+only when additional executable cases justify it, and treat refactoring as
+removing duplication and improving interfaces after the bar is green.
+
 ### Refactor Safety
 
 Does it refactor only after green and rerun the target proof afterward?

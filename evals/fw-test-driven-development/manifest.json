@@ -13,6 +13,8 @@
     "Trigger Discipline",
     "Red Proof",
     "Green Minimality",
+    "Vertical Slice Discipline",
+    "Incremental Design Discipline",
     "Refactor Safety",
     "Dirty Tree Safety",
     "Exception Handling",
@@ -21,12 +23,16 @@
   "criticalDimensions": [
     "Trigger Discipline",
     "Red Proof",
+    "Vertical Slice Discipline",
+    "Incremental Design Discipline",
     "Dirty Tree Safety"
   ],
   "passAverage": 1.5,
   "strongPassAverage": 1.75,
   "suggestedFirstPass": [
     "feature_behavior_tdd",
+    "vertical_tracer_bullets",
+    "incremental_design_test_list",
     "prewritten_code_restart",
     "valid_exception_config"
   ]

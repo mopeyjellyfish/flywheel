@@ -15,6 +15,17 @@ The goal is to prove one behavior at a time: write a failing test, watch it fail
 for the expected reason, write the smallest implementation that makes it pass,
 then refactor while the test stays green.
 
+Use vertical tracer bullets. One cycle should cover one observable behavior
+through the public interface or real chain where practical, then stop and prove
+that slice before starting the next behavior. Do not treat RED as "write every
+test" and GREEN as "write all implementation."
+
+Keep a short behavior/test list, but execute only one item at a time. Let design
+pressure come from passing executable test cases or reproducers: get one
+meaningful test case green, add the next test case only when it teaches
+something new, generalize only when those executable cases force it, and
+refactor after green to remove duplication or improve the public interface.
+
 ## When To Use
 
 Use this skill before implementation when any of these are true:
@@ -43,6 +54,17 @@ TDD for behavior-bearing work.
 - Verify the red test fails for the expected reason before writing code.
 - Implement only enough code for the current red test to pass.
 - Refactor only after the target test is green, then rerun the target test.
+- Test behavior through public interfaces, command surfaces, API contracts, or
+  real integration chains where practical. Avoid mocks of internal
+  collaborators unless the mock is at a true system boundary.
+- Do not batch tests horizontally across future behaviors. Finish the current
+  red -> green -> refactor tracer bullet before choosing the next test.
+- Keep tests coupled to observable behavior, not private methods, call order,
+  internal data shapes, or implementation names.
+- Prefer testable public interfaces: small surface area, explicit dependencies
+  for external systems, returned results over hidden side effects where the repo
+  design allows it, and no new generic abstraction until executable test cases
+  justify it.
 - Protect user work. Never delete or revert pre-existing or user-authored dirty
   changes to enforce this skill.
 
@@ -62,6 +84,19 @@ checkout/revert commands for TDD cleanup.
 
 Name the behavior, public contract, bug, or preservation claim under test.
 Find the nearest existing test idiom before creating a new pattern.
+
+When the repo has a domain glossary, context file, ADR, or decision record for
+the area, use its language in the test name and respect its interface or
+boundary decisions. If the plan lists several behaviors, choose the first
+observable behavior as the tracer bullet and leave the rest for later cycles.
+
+Before RED, make or update a compact behavior/test list:
+
+- prioritize critical paths, risky logic, regressions, and public contracts
+- skip exhaustive edge-case collection until the main behavior works
+- choose the next test because it should change the implementation or protect a
+  real contract
+- note any interface question that needs user input before writing the test
 
 If the plan already provides `Red signal` and `Green signal`, use them unless
 repo truth proves a better target. If the plan is silent, choose the narrowest
@@ -88,12 +123,38 @@ Write the smallest implementation that makes the red signal pass.
 Run the same target command until it passes. Do not add adjacent features,
 cleanup, or abstractions while the target is still red.
 
+Do not anticipate future tests. Future behavior gets its own red signal after
+the current tracer bullet is green.
+
+Use the simplest credible route to green:
+
+- use the obvious implementation when the design is already clear
+- use a deliberately narrow implementation when the current test case is still
+  teaching the shape
+- add another test case before generalizing when the abstraction is not yet
+  earned
+
 ### 4. REFACTOR
 
 Only after GREEN, clean the implementation if cleanup is useful.
 
-Rerun the target command after refactoring. Run broader relevant checks when
-the unit is complete or the changed surface warrants it.
+Prefer refactors that remove duplication, improve names, simplify the public
+interface, deepen a module behind a small interface, or move external-system
+complexity behind an explicit boundary. Do not refactor while red.
+
+Rerun the target command after each meaningful refactor step. Run broader
+relevant checks when the unit is complete or the changed surface warrants it.
+
+### 4.5 Next Cycle Decision
+
+After the current tracer bullet is green and refactored:
+
+1. mark the behavior/test list item done
+2. choose the next highest-value behavior
+3. decide whether the next behavior needs another executable test case, a
+   characterization test, or an explicit TDD exception
+4. stop when the planned slice is proven instead of expanding the slice
+   opportunistically
 
 ### 5. Report Evidence
 

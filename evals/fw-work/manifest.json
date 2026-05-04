@@ -13,6 +13,7 @@
     "Execution Discipline",
     "Repo Grounding",
     "Continuous Validation",
+    "Vertical Slice Execution",
     "Runtime Support Awareness",
     "Browser Proof Awareness",
     "Workflow Closure",
@@ -23,6 +24,7 @@
   "criticalDimensions": [
     "Execution Discipline",
     "Continuous Validation",
+    "Vertical Slice Execution",
     "Workflow Closure",
     "Plan Approval Gate"
   ],
