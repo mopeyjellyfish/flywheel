@@ -7,6 +7,9 @@ Score each dimension `0`, `1`, or `2`.
 ### Execution Discipline
 
 Does the response act like execution rather than analysis-only planning?
+Strong passes treat `fw:work` as an execution router plus completion gate:
+specialist skills are loaded at activation points instead of duplicating their
+full doctrine in the main work response.
 
 ### Repo Grounding
 

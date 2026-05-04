@@ -76,6 +76,13 @@ needs:
   research.
 - Read `../references/research/source-ranking-and-synthesis.md` when current
   external guidance, standards, or best practices materially affect the plan.
+- Read `../decision/SKILL.md` when planning reveals an unresolved durable
+  decision, existing decision-record conflict, or terminology conflict that
+  would change the plan.
+- Read `../decision/references/decision-record-format.md` only when the plan
+  must review or cite a durable decision-record shape.
+- Read `../decision/references/context-format.md` only when planning must read
+  or update project context, glossary, or bounded-context terminology.
 - Read `../references/architecture-code-quality/activation-heuristics.md` when
   deciding whether the work is architecture-bearing enough to need explicit
   boundary or pattern decisions.
@@ -87,6 +94,8 @@ needs:
 - Read `references/unit-examples.md` only when drafting implementation units,
   choosing test posture, or repairing output that is drifting from the required
   unit schema.
+- Read `references/issue-slice-export.md` only when the user asks to create,
+  export, or prepare issue-ready vertical slices from the plan.
 - Read `references/deepening-workflow.md` only when Phase 5.3 determines the
   plan should be strengthened after the first draft is written.
 - Read `references/plan-handoff.md` only after the plan file exists on disk and
@@ -150,6 +159,11 @@ needs:
     needed to close planning gaps. Fold the decision-changing findings and
     recommendation into plan decisions instead of creating a side report by
     default.
+14. **Honor durable context and decisions** — when the work is domain,
+    boundary, architecture, workflow-contract, or terminology bearing, search
+    existing context and decision records before finalizing the plan. Surface
+    contradictions as open decisions or route to `decision`; do not silently
+    overwrite settled project language or choices.
 
 ## Plan Quality Bar
 
@@ -160,6 +174,8 @@ Every plan should contain:
 - repo-relative file paths for the proposed work
 - explicit test file paths for feature-bearing implementation units
 - decisions with rationale, not just tasks
+- relevant context and decision records, or an explicit note that none were
+  found or needed
 - existing patterns or code references to follow
 - implementation units that are atomic enough to map cleanly to execution tasks
   and likely commit boundaries

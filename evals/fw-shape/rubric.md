@@ -18,6 +18,13 @@ drifting into implementation?
 
 Does it keep `shape` as the first main workflow stage and preserve `work` as
 the next main stage only after the shaping artifact is ready?
+Strong passes run a lightweight decision checkpoint before Shape-Ready and load
+`fw:decision` only when a material decision, existing-record conflict, or
+terminology conflict warrants it.
+When shape routes into brainstorm, strong passes require the brainstorm's
+automatic spec-grill checkpoint before Shape-Ready: project terminology,
+scenario boundaries, repo-truth contradictions, and context/ADR needs are
+checked without the user having to ask.
 
 ### Handoff Quality
 

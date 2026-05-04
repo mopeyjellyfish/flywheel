@@ -102,6 +102,11 @@ Do not preload every support file. Load only what the current phase needs:
 9. **Capture durable lessons before commit** - when the branch surfaced durable
    project value, offer `spin` before staging and committing so the solution doc
    can land in the same logical change.
+10. **Stop only for real blockers** - do not prompt or pause for preferences
+    that can be inferred from repo truth. Stop for unsafe default-branch state,
+    failed required checks, missing required policy gates, unavailable publish
+    tooling, unresolved blocking review findings, missing required proof, or an
+    explicit `local-only` request.
 
 ## Workflow
 
@@ -118,8 +123,10 @@ printf '\n=== DEFAULT_BRANCH ===\n'; git symbolic-ref refs/remotes/origin/HEAD 2
 printf '\n=== PR_CHECK ===\n'; gh pr view --json url,title,state,baseRefName,headRefName 2>/dev/null || echo 'NO_OPEN_PR'
 ```
 
-If GitHub CLI is unavailable or unauthenticated, continue with local git-only
-finish behavior and report that PR creation or refresh is blocked.
+If GitHub CLI is unavailable or unauthenticated, continue only as far as local
+git truth allows and report PR creation or refresh as a publish blocker. Do not
+silently downgrade the default finish path to local-only unless the user passed
+`local-only`.
 
 If `.flywheel/config.local.yaml` exists, read only the finish-stage-relevant
 keys before classifying the path:
@@ -229,15 +236,17 @@ payload and include them in the commit plan.
 
 ### Phase 5: Build The Finish Payload
 
-Assemble one finish summary that will be reused in the PR `Summary` section and
-in the final user report. Keep it concise: what changed, why it matters, and
-any material architecture, code-quality, testing, or operational caveat.
+Assemble one finish summary from repo truth that will be reused in the PR
+`Summary` section and in the final user report. Keep it concise: what changed,
+why it matters, and any material architecture, code-quality, testing, decision,
+or operational caveat.
 
 Assemble the payload for commit, push, and PR steps from:
 
 - current diff and recent commits
 - any `docs/solutions/` changes created by the pre-commit spin checkpoint
 - plan summary and key decisions when `plan:<path>` is available
+- context or decision-record artifacts when they materially explain the branch
 - the material architecture, pattern, simplification, or maintainability story
   when those decisions materially affect the branch summary
 - testing notes

@@ -46,6 +46,7 @@ Current suites:
 - `fw-worktree`
 - `fw-review`
 - `fw-debug`
+- `fw-decision`
 - `fw-docs`
 - `fw-commit`
 - `fw-spin`

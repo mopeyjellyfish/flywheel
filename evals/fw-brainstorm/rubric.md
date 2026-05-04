@@ -18,6 +18,11 @@ Does it right-size the brainstorming depth?
 
 Does it preserve a durable brainstorm artifact under `docs/brainstorms/` and
 leave a checkpoint summary the user can correct before planning?
+When a spec packet is requested, strong passes use `spec` as Flywheel's
+canonical artifact term, treat PRD as a product-facing synonym, and include
+problem, outcome, workflows or behavior, decisions, acceptance criteria,
+out-of-scope, and open questions without drifting into implementation
+mechanics.
 
 When current published guidance materially changes the requirements, strong
 passes either reuse a matching `docs/research/` brief or explicitly say they
@@ -31,6 +36,15 @@ Strong passes also make document review a visible pre-planning option for the
 requirements/spec artifact, and route simplification, feasibility, scope, or
 supportability findings back to questions or brainstorming before planning when
 they change the product shape.
+
+### Spec Grilling
+
+Does it automatically challenge a material requirements doc or spec packet
+before planning? Strong passes inspect repo/context/decision truth before
+asking, challenge conflicting or fuzzy terminology, stress-test concrete
+scenarios, surface code/docs contradictions, ask one recommended material
+question at a time, and route context or ADR-worthy decisions to `fw:decision`
+only when warranted.
 
 ### Simplicity Pressure
 

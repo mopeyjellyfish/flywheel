@@ -1,0 +1,4 @@
+interface:
+  display_name: "$fw:decision"
+  short_description: "Grill and capture durable decisions"
+  default_prompt: "Use $fw:decision to inspect repo context, challenge ambiguous terminology, ask one material recommended question at a time, and write a small decision record or context/glossary update only when the choice is durable enough to preserve."

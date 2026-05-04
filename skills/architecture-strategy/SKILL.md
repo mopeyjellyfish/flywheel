@@ -79,6 +79,8 @@ Inspect the relevant repo surfaces:
 - external integrations and transport seams
 - service or deployable shape
 - existing docs or solution entries for the same area
+- existing context/glossary docs and decision records for the same language,
+  boundary, workflow contract, or system area
 
 ### Phase 2: Define The Decision Surface
 
@@ -92,6 +94,10 @@ Clarify what is actually changing:
 
 If the decision is really local code cleanup, say so and route toward
 `$fw:maintainability` or `$fw:simplify` instead.
+
+If existing context or decision records already settle the boundary, treat them
+as durable input. Recommend reopening through `$fw:decision` only when repo
+truth or the new requirement materially contradicts them.
 
 ### Phase 3: Compare Viable Shapes
 

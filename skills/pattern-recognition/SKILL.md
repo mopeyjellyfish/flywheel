@@ -72,6 +72,8 @@ Inspect nearby code, tests, docs, and solution entries for:
 - persistence conventions
 - variation patterns such as strategy or factory
 - prior simplification or anti-pattern guidance
+- existing context/glossary docs and decision records that name accepted or
+  rejected patterns for this area
 
 ### Phase 2: Map The Problem To Pattern Families
 
@@ -94,6 +96,8 @@ Answer:
 - whether to extend an existing pattern
 - whether a net-new named pattern is justified
 - why a simpler local design may be better
+- whether an existing decision record should stand or be reopened through
+  `$fw:decision`
 
 ## Output Contract
 

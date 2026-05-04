@@ -18,6 +18,11 @@ from plan documents. Findings that change product behavior, scope, success
 criteria, or the definition of done should route back to questions or
 brainstorming before planning or work continues.
 
+Also use it for ADRs, decision records, context docs, and specs when the
+question is document quality rather than making the decision itself. If the
+review finds a contradiction with repo truth or an existing decision, route to
+`decision` instead of silently rewriting the choice.
+
 ## Interaction Method
 
 Follow `../references/host-interaction-contract.md`.
@@ -95,6 +100,9 @@ After reading, classify the document:
   build and why
 - **plan** — typically from `docs/plans/`, focused on how to build it with
   implementation detail
+- **decision/context** — ADRs, decision records, context docs, glossaries, or
+  specs where terminology, tradeoffs, evidence, or consequences are the main
+  quality surface
 
 ### Select Conditional Personas
 
@@ -128,6 +136,11 @@ Activate conditional personas when relevant:
 - `adversarial-document` when the document is large, strategic,
   technically consequential, or high-risk enough to justify an intentionally
   skeptical pass
+
+When reviewing a decision/context document, treat missing evidence,
+terminology conflicts, stale alternatives, or unclear consequences as
+candidate findings. Do not invent the decision; recommend `fw:decision` when a
+material choice must be made or reopened.
 
 This loading order is mandatory. Do not bulk-load every file under
 `references/personas/`.

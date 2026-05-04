@@ -5,7 +5,9 @@ This content is loaded when Phase 3 begins — after the collaborative dialogue
 
 ---
 
-This document should behave like a lightweight PRD without PRD ceremony.
+This document should behave like a lightweight spec without heavyweight product
+ceremony. Treat PRD as a user synonym for product-facing work, not Flywheel's
+canonical artifact term.
 Include what planning needs to execute well, and skip sections that add no
 value for the scope.
 
@@ -115,6 +117,8 @@ requirements document is better than a bloated one.
 
 Before finalizing, check:
 
+- Has the spec-grill checkpoint challenged project terminology, fuzzy language,
+  concrete scenarios, repo-truth contradictions, and context or ADR needs?
 - What would `$fw:plan` still have to invent if this brainstorm ended now?
 - Do any requirements depend on something claimed to be out of scope?
 - Are any unresolved items actually product decisions rather than planning

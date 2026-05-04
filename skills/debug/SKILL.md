@@ -137,6 +137,11 @@ If the issue is still live, the blast radius is not yet bounded, or rollback
 vs patch is still an open decision, route to `$fw:incident` before continuing
 with local bug-fix work.
 
+When a bug report or proposed fix contradicts existing context, glossary, or
+decision records, surface that conflict before changing behavior. Load
+`$fw:decision` when the fix requires reopening a durable product, workflow,
+architecture, or terminology decision.
+
 ### Phase 2: State the Causal Hypothesis
 
 Before editing:

@@ -89,6 +89,9 @@ When the repo has a domain glossary, context file, ADR, or decision record for
 the area, use its language in the test name and respect its interface or
 boundary decisions. If the plan lists several behaviors, choose the first
 observable behavior as the tracer bullet and leave the rest for later cycles.
+If repo truth contradicts the plan's terminology or decision assumptions,
+pause the slice and route that conflict back to `fw:decision` instead of
+encoding the contradiction in tests.
 
 Before RED, make or update a compact behavior/test list:
 

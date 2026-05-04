@@ -89,6 +89,7 @@ Common starts:
 - Vague idea or new feature: `fw`
 - Known scoped change: `fw:shape`
 - Bug with an unclear cause: `fw:debug`
+- Durable decision, ADR, or terminology conflict: `fw:decision`
 - Architecture or pattern decision: `fw:architecture-strategy` or `fw:pattern-recognition`
 - One bounded pass through the remaining stages: `fw:run`
 
@@ -145,7 +146,7 @@ falling back to the published package when this checkout does not expose
 `skills/*/SKILL.md`.
 
 `make install/codex` now refreshes the local Flywheel plugin install shape,
-turns on the experimental Codex hooks feature, and merges Flywheel lifecycle
+turns on the experimental Codex hooks feature, and merges Flywheel risky-edge
 guardrails into `~/.codex/hooks.json`.
 
 From another checkout or worktree:

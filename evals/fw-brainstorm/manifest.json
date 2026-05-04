@@ -14,11 +14,13 @@
     "Scope Assessment",
     "Artifact Discipline",
     "Plan Handoff",
+    "Spec Grilling",
     "Simplicity Pressure",
     "Interaction Quality"
   ],
   "criticalDimensions": [
     "Requirements Focus",
+    "Spec Grilling",
     "Plan Handoff"
   ],
   "passAverage": 1.5,
