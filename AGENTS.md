@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`skills/` is the product. Each Flywheel stage or helper lives in `skills/<name>/SKILL.md` with optional `agents/`, `references/`, `scripts/`, or `assets/`. Shared host guidance lives in `skills/references/host-interaction-contract.md`. `scripts/` contains repo-local maintenance and validation helpers such as `flywheel-doctor.js` and `flywheel-eval.js`. `evals/` stores suite definitions as `manifest.json`, `cases.jsonl`, and `rubric.md`. `docs/` holds durable repo knowledge under `brainstorms/`, `plans/`, `setup/`, and `solutions/`. Host packaging lives in `.codex-plugin/`, `.claude-plugin/`, and `.agents/plugins/`.
+`skills/` is the product. Each Flywheel stage or helper lives in `skills/<name>/SKILL.md` with optional `agents/`, `references/`, `scripts/`, or `assets/`. Shared host guidance lives in `skills/references/host-interaction-contract.md`. `scripts/` contains repo-local maintenance and validation helpers such as `flywheel-doctor.js` and `flywheel-eval.js`. `evals/` stores suite definitions as `manifest.json`, `cases.jsonl`, and `rubric.md`. `docs/` holds durable repo knowledge under `brainstorms/`, `context/`, `decisions/`, `plans/`, `setup/`, and `solutions/`. Host packaging lives in `.codex-plugin/`, `.claude-plugin/`, and `.agents/plugins/`.
 
 ## Directory Layout
 ```text
@@ -9,7 +9,7 @@ skills/           Shared Flywheel stage and helper skills
 evals/            Eval suites for workflow, stage, and regression validation
 scripts/          Local install refresh, doctor, and eval helpers
 hooks/            Shared hook policy script and Claude hook pack
-docs/             Brainstorms, ideation captures, plans, setup docs, solutions
+docs/             Brainstorms, context, decisions, plans, setup docs, solutions
 tools/evals/      Isolated eval harness workspace and CLI
 .claude-plugin/   Claude plugin manifest and marketplace metadata
 .codex-plugin/    Codex plugin manifest reused by the repo marketplace
@@ -61,10 +61,16 @@ Bug reports often come from an installed plugin rather than the current checkout
 - Requirements exploration lives in `docs/brainstorms/`.
 - Saved ideation artifacts from `ideate` live in `docs/ideation/` when they are worth keeping.
 - Saved research briefs from `research` live in `docs/research/` when they are worth keeping.
+- Project context, glossary, and bounded-context language live in `docs/context/` when terminology would otherwise be rediscovered or misunderstood.
+- Durable ADR-style decisions live in `docs/decisions/` unless the active repo already has a stronger ADR convention such as `docs/adr/`.
 - Implementation plans and execution-ready follow-ups live in `docs/plans/`.
 - Setup, compatibility, and troubleshooting guidance for working on Flywheel itself live in `docs/setup/`.
 - Durable lessons captured by `spin` live in `docs/solutions/`.
-- This repo does not currently use `docs/specs/` as a standard surface. Add it only when Flywheel needs a stable host-contract, manifest-format, or compatibility specification that should outlive a single plan or solution doc.
+- This repo does not currently use `docs/specs/` as a standard surface. Use
+  `spec` as the canonical artifact term in skill guidance, but keep spec
+  packets in `docs/brainstorms/` unless Flywheel needs a stable host-contract,
+  manifest-format, or compatibility specification that should outlive a single
+  plan or solution doc.
 
 ### Solution Categories
 Categorize `docs/solutions/` from the perspective of a developer using Flywheel, not only from the perspective of a contributor editing this repo.
@@ -88,6 +94,10 @@ When in doubt:
 - Prefer backtick path references such as `` `references/file.md` `` or `` `../references/file.md` `` inside `SKILL.md` files. Avoid markdown links for local reference files; they are harder for agents to resolve correctly.
 - Keep large or conditional reference material in `references/` instead of inlining it into the main skill body.
 - When one skill refers to another, prefer semantic wording such as “load the `document-review` skill” unless the text is intentionally teaching the published command syntax.
+- Use `spec` as the canonical artifact term in Flywheel-authored skills. Treat
+  `PRD` as an accepted user synonym for product-facing work, not the default
+  label for bugs, refactors, infrastructure, workflow, CLI, API, or
+  architecture changes.
 - Author Flywheel skills for downstream software projects, not only for this
   repo's skill-development workflow. Product guidance should describe generic
   project artifacts such as source, tests, docs, configs, migrations, APIs,

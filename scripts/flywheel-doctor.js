@@ -129,6 +129,7 @@ function checkSkillDescriptionDiscriminators() {
     "browser-test": [/browser/i, /proof|acceptance|playwright/i],
     commit: [/branch|commit/i, /push|PR|pull request/i],
     "commit-message": [/Conventional Commit/i, /header|footer|breaking/i],
+    decision: [/ADRs?|decision|tradeoffs?|terminology/i, /spec|review|conflicts?|durable/i],
     debug: [/bugs?|regression|stack trace|broken/i, /evidence|fix/i],
     deepen: [/plan/i, /before implementation|before work|strengthen/i],
     docs: [/docs?|documentation|Diataxis/i, /setup|API|CLI|config|workflow|behavior/i],
@@ -395,7 +396,7 @@ function checkCodexHooksInstalled() {
   }
 
   const payload = parseJson(fs.readFileSync(hooksPath, "utf8"));
-  const expectedEvents = ["SessionStart", "UserPromptSubmit", "PreToolUse", "PermissionRequest", "PostToolUse", "Stop"];
+  const expectedEvents = ["PreToolUse", "PermissionRequest", "Stop"];
   const missing = expectedEvents.filter((eventName) => {
     const groups = Array.isArray(payload?.hooks?.[eventName]) ? payload.hooks[eventName] : [];
     return !groups.some((group) =>
@@ -425,7 +426,7 @@ function checkClaudeHookPackShape() {
   }
 
   const payload = parseJson(fs.readFileSync(hooksPath, "utf8"));
-  const expectedEvents = ["SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop"];
+  const expectedEvents = ["PreToolUse", "Stop"];
   const missing = expectedEvents.filter((eventName) => {
     const groups = Array.isArray(payload?.hooks?.[eventName]) ? payload.hooks[eventName] : [];
     return !groups.some((group) =>

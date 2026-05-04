@@ -169,9 +169,10 @@ Choose conventional commit messages for the final commit step. Prefer
 header directly as `<type>(scope): summary`. If the best message would use `!`
 or `BREAKING CHANGE:`, ask the user before marking the commit as breaking.
 
-Then hand off to `$fw:commit` for commit, push, PR creation, or PR refresh. If no
-host helper exists, `$fw:commit` should complete the same steps directly with git
-and GitHub CLI or the repo's standard tooling:
+Then hand off to `$fw:commit` for commit, push, PR creation, or PR refresh. The
+default is publish complete unless `local-only` is explicit. If no host helper
+exists, `$fw:commit` should complete the same steps directly with git and
+GitHub CLI or the repo's standard tooling:
 
 ```bash
 # 1. Stage only the intended files
@@ -189,7 +190,7 @@ gh pr create --title "<title>" --body-file <prepared-pr-body-file>
 
 Whether using a helper or direct commands, preserve the same Flywheel inputs:
 branch safety, conventional commit discipline, testing notes, evidence context,
-and a complete PR description.
+decision/context artifacts when material, and a complete PR description.
 
 When providing PR-description context, include:
 

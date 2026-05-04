@@ -86,6 +86,8 @@ mandatory visible stages:
 - `fw:research` for topic investigation, current best-practice
   discovery, and reusable evidence gathering that should sharpen ideation,
   brainstorming, review, or planning
+- `fw:decision` for ADR-quality decision grilling, terminology conflicts,
+  spec or plan decision review, and durable decision/context capture
 - `fw:incident` for production or runtime incidents that begin with live
   evidence and need mitigation vs rollback vs patch framing
 - `fw:docs` for post-work or direct documentation passes that should write
@@ -134,6 +136,9 @@ inside that blocked stage.
 - If the immediate job is researching a topic, gathering current published
   guidance, or collecting evidence that should sharpen ideation, requirements,
   review judgment, or a plan, use `../research/SKILL.md`.
+- If the immediate job is an ADR, durable decision record, spec grilling,
+  terminology conflict, or review of whether a plan contradicts an existing
+  decision, use `../decision/SKILL.md`.
 - If the user is shaping the current repo's development workflow, stage
   boundaries, or operating contract and the solution direction is not yet
   fixed, use
@@ -239,6 +244,9 @@ Apply these routing heuristics before doing repo exploration:
 - if the input explicitly asks to research a topic, gather current best
   practices, or compare published approaches that should feed shaping or
   review, route to `../research/SKILL.md`
+- if the input explicitly asks for an ADR, decision record, spec grilling,
+  domain terminology clarification, or review of an existing decision artifact,
+  route to `../decision/SKILL.md`
 - if the input is environment bootstrap, onboarding, or repo readiness, route
   to `../setup/SKILL.md`
 - if the input asks for isolated branch work, parallel checkouts, or worktree

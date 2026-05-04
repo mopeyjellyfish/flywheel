@@ -207,6 +207,12 @@ function testStopAllowsReadyForConfirmationStatus() {
   assert.strictEqual(output, null);
 }
 
+function testClaudeDefaultHookPackOnlyInstallsRequiredGuardrails() {
+  const hooksPath = path.join(repoRoot, "hooks", "hooks.json");
+  const payload = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+  assert.deepStrictEqual(Object.keys(payload.hooks).sort(), ["PreToolUse", "Stop"]);
+}
+
 testPreToolBlocksDestructiveBash();
 testPreToolBlocksSensitiveWrite();
 testPreToolIgnoresMissingWritePath();
@@ -217,5 +223,6 @@ testPostToolIgnoresUnrelatedDirtySource();
 testPostToolAddsPlanReviewContext();
 testSessionStartAddsRepoContext();
 testStopAllowsReadyForConfirmationStatus();
+testClaudeDefaultHookPackOnlyInstallsRequiredGuardrails();
 
 console.log("OK   flywheel-hook-policy");

@@ -10,12 +10,12 @@ metadata:
 Use the actual current date from runtime context when identifying the latest
 plan document or updating dated execution artifacts.
 
-`$fw:work` is the smart middle stage of Flywheel's compact project loop.
-It takes a plan, spec, todo file, or clear work request and turns it into
-implemented, validated repo changes. The goal is not to stay busy. The goal is
-to finish the feature, validate it against repo truth, pull in helper
-workflows only when the task actually needs them, and leave the tree ready for
-review and commit.
+`$fw:work` is the execution router and completion gate in Flywheel's compact
+project loop. It takes a plan, spec, todo file, or clear work request and turns
+it into implemented, validated repo changes. The goal is not to stay busy. The
+goal is to finish complete vertical slices, validate them against repo truth,
+pull in helper workflows only when the task actually needs them, and leave the
+tree ready for review and commit.
 
 `$fw:brainstorm` defines **WHAT** to build. `$fw:plan` defines **HOW** to build
 it. `$fw:work` executes the plan, stays grounded in the repo, and absorbs
@@ -57,6 +57,9 @@ Do not preload every reference. Load only what the current phase needs:
 - Read `references/commit-workflow.md` only when all implementation tasks are
   complete and execution transitions from Phase 2 into quality check and
   commit.
+- Read `references/execution-router.md` when execution needs detailed
+  delegation rules, parallel safety checks, test-completeness reminders, or
+  incremental commit heuristics.
 - Read `../references/workflow-gates.md` when execution is ready to hand off to
   review, rollout, spin, or commit.
 - Read `../observability/references/service-readiness-matrix.md` only when the
@@ -75,10 +78,17 @@ Do not preload every reference. Load only what the current phase needs:
    better path.
 4. **Follow what exists** — mirror current naming, architecture, and test
    idioms before inventing anything new.
-5. **Test continuously** — run the right checks while the work is still fresh.
-6. **Keep progress visible** — maintain task state, note blockers, and finish
+5. **Use specialist skills at activation points** — load TDD, browser proof,
+   docs, rollout, observability, logging, simplify, or commit guidance only
+   when the current slice needs that surface.
+6. **Respect context and decisions** — when the plan or code touches domain
+   language, boundaries, workflow contracts, or durable product choices, carry
+   existing context and decision records into execution and route conflicts to
+   `decision`.
+7. **Test continuously** — run the right checks while the work is still fresh.
+8. **Keep progress visible** — maintain task state, note blockers, and finish
    with a clean quality gate.
-7. **Prefer fewer extra visible handoffs** — use helper workflows when they add
+9. **Prefer fewer extra visible handoffs** — use helper workflows when they add
    real value beyond the default shape -> work -> review -> optional spin ->
    commit loop.
 
@@ -388,69 +398,13 @@ the work as Trivial.
 
 #### 4. Choose Execution Strategy
 
-After creating the task list, choose how to execute.
+Default to inline execution. Load `references/execution-router.md` only when
+delegation, parallel-ready units, test-completeness checks, or incremental
+commit heuristics need more detail.
 
-**Default to inline execution.** Use delegated or parallel execution only when
-the platform supports it **and** the user explicitly asked for delegation,
-subagents, or parallel agent work.
-
-| Strategy | When to use |
-| --- | --- |
-| **Inline** | 1-2 small tasks, tasks needing user interaction mid-flight, or any normal direct `$fw:work` request. This is the default for bare-prompt work. |
-| **Serial delegated units** | 3+ tasks with clear dependencies and plan-unit metadata strong enough to isolate execution cleanly. |
-| **Parallel delegated units** | 3+ independent `parallel-ready` tasks that pass the Parallel Safety Check and the user explicitly wants parallel agent work. |
-
-**Parallel Safety Check** — required before any parallel dispatch:
-
-1. Start only from units whose `Execution mode` is `parallel-ready` and whose
-   dependencies are already complete. `serial` units are never batched.
-2. Build a file-to-unit mapping from every candidate unit's `Files:` section,
-   including create, modify, and test paths.
-3. Check for intersection. Any file appearing in 2+ units is overlap.
-4. If any overlap exists, downgrade to serial delegated units and log the
-   reason.
-
-Even without planned overlap, parallel units sharing a working directory can
-contend on the git index and on test execution. When dispatching work in
-parallel, instruct each delegated worker:
-
-- do not stage files
-- do not create commits
-- do not run the full project test suite
-
-Give each delegated unit:
-
-- the full plan file path for context
-- the specific unit's Vertical slice, Goal, Files, Test posture, Red signal,
-  Green signal, Approach, Execution note, Patterns, Test Scenarios, and
-  Verification
-- any resolved deferred questions relevant to that unit
-- instruction to check whether the unit's test scenarios cover happy path, edge
-  cases, failure paths, and integration where applicable
-
-**After each serial delegated unit completes:**
-
-1. Review its diff against the unit's scope and `Files:` list.
-2. Run the relevant tests before proceeding.
-3. If tests fail, diagnose and fix before dispatching dependent work.
-4. Update the task list and plan checkboxes.
-5. Dispatch the next unit.
-
-**After each parallel batch completes:**
-
-1. Wait for the whole batch to finish before acting on results.
-2. Compare the actual modified files across the batch, not just the planned
-   `Files:` lists.
-3. If two units touched the same file, commit all non-colliding work first,
-   then re-run the colliding units serially for the shared file.
-4. For each completed unit in dependency order, review the diff, run the
-   relevant tests, stage only that unit's files, choose a conventional commit
-   message, and commit with a message derived from the unit's Goal. Prefer
-   `$fw:commit` when available; otherwise draft the header directly as
-   `<type>(scope): summary`.
-5. If tests fail after a unit commit, diagnose and fix before committing the
-   next unit.
-6. Update task state, then dispatch the next eligible batch.
+Parallel work is allowed only when the user explicitly asked for delegated or
+parallel agent work, dependencies are clear, and the file-overlap check passes.
+Serial units stay serial.
 
 ### Phase 2: Execute
 
@@ -462,47 +416,10 @@ dependency-cleared `parallel-ready` batch identified by the plan. Horizontal
 exception units are serial unless the plan gives a concrete independence reason
 and the shared-write safety check still passes.
 
-For each task in priority order:
-
-```text
-while (tasks remain):
-  - Mark task as in-progress
-  - Read any referenced files from the plan or discovered during Phase 0
-  - Look for similar patterns in the codebase
-  - Find existing test files for implementation files being changed
-  - If the unit or prompt requires TDD, load `test-driven-development`, write
-    and verify the slice's red signal first, then implement the minimal green
-    change for that slice
-  - Otherwise, implement following existing conventions and add, update, or
-    remove tests to match implementation changes
-  - When runtime behavior changes, assess whether logs, traces, metrics, or
-    operational validation need to be added or updated
-  - Use `$fw:observability` or `$fw:logging` when the repo's runtime support story
-    needs deliberate design, not just a quick local guess
-  - When the change is browser-visible, run `$fw:browser-test` before claiming
-    completion unless the repo has a stronger existing browser-proof surface
-    and you can name it explicitly
-  - When the change alters setup, public APIs, CLI flows, config, or
-    user/operator workflows, note the likely docs impact so you can surface
-    `$fw:docs` before final review when a separate docs pass is worth it
-  - When runtime behavior changes meaningfully, confirm the chosen reliability
-    posture still matches the current code, failure modes, and blast radius
-  - When local policy requires explicit operational validation for runtime
-    changes, treat that as a completion gate rather than a nice-to-have note
-  - For runtime-risky work, run a short service-readiness sweep across the
-    applicable dimensions from
-    `../observability/references/service-readiness-matrix.md`
-  - Run the relevant ground-truth checks from the Touch Grass ledger
-  - Run tests after changes
-  - Assess testing coverage: if behavior changed, were tests added or updated?
-  - Apply verify discipline before claiming the task is done
-  - Keep repo-local commit gates visible when present, especially review-before-
-    commit and browser-proof requirements
-  - Mark task as completed
-  - If the task maps to a plan unit, flip that checkbox only after the unit's
-    verification and relevant tests pass
-  - Evaluate for an incremental commit
-```
+For each task, read the relevant repo files, execute only the current slice,
+run its proof, and update task state only after verification passes. Keep plan
+checkboxes synchronized with completed slices; use host task state for
+`in_progress` or `blocked`.
 
 When a unit carries a `Test posture`, honor it:
 
@@ -518,85 +435,15 @@ When a unit carries an `Execution note`, honor it as sequencing, rollout, or
 other execution guidance. Do not use `Execution note` as a substitute for
 `Test posture`.
 
-Guardrails for test posture:
-
-- Do not write the test and the implementation in the same step when working
-  test-first.
-- Do not skip verifying that a new test fails before implementing the fix or
-  feature.
-- Do not over-implement beyond the current behavior slice when working
-  test-first.
-- If agent-authored implementation for the current TDD unit was written before
-  a red signal, discard only those agent-authored hunks and restart from RED.
-  Never revert user-authored or pre-existing dirty changes.
-- Skip test-first discipline for trivial renames, pure configuration, and pure
-  styling work.
-
-**Test Discovery** — before implementing changes to a file, find its existing
-test files by searching for test or spec files that import, reference, or share
-its naming pattern. When the plan specifies test scenarios or test files, start
-there, then look for additional local coverage the plan may not have listed.
-
-**Test Scenario Completeness** — before writing tests for feature-bearing work,
-check whether the unit's scenarios cover all applicable categories:
-
-| Category | When it applies | How to derive if missing |
-| --- | --- | --- |
-| **Happy path** | Always for feature-bearing work | Use the unit's Goal and Approach to identify the core input and output pairs. |
-| **Edge cases** | Inputs, state, boundaries, concurrency | Identify boundary values, empty inputs, and unusual state combinations. |
-| **Error or failure paths** | Validation, permissions, downstream failures | Enumerate invalid inputs, denials, and dependency failures the code must handle. |
-| **Integration** | The unit crosses layers or triggers a real chain | Identify the real callback, middleware, event, or service chain and cover it without mocks where possible. |
-
-**System-Wide Test Check** — before marking a task done, pause and ask:
-
-| Question | What to do |
-| --- | --- |
-| **What fires when this runs?** Callbacks, middleware, observers, event handlers. | Read the actual code for models, hooks, middleware, or handlers touched by the change. |
-| **Do my tests exercise the real chain?** | Add at least one integration test that uses real objects through the relevant chain. |
-| **Can failure leave orphaned state?** | Trace the failure path with real objects. If state is created before a risky call, test cleanup or idempotent retry behavior. |
-| **What other interfaces expose this?** | Search for sibling entry points, mixins, DSLs, alternative APIs, or mirrored surfaces and keep parity when needed. |
-| **Do error strategies align across layers?** | Verify the rescue or retry list matches what lower layers actually raise. |
-
-Skip the System-Wide Test Check only for true leaf-node changes with no
-callbacks, no persistence, and no parallel interfaces.
+Before editing behavior, find the nearest existing tests. If test coverage or
+parallel execution detail is not obvious, load `references/execution-router.md`
+for the fuller checklist.
 
 #### 2. Incremental Commits
 
-After each task, evaluate whether to create an incremental commit.
-
-| Commit when... | Do not commit when... |
-| --- | --- |
-| A logical unit is complete | The work is only a small fragment of a larger unit |
-| Tests pass and the progress is meaningful | Tests are failing |
-| You are about to switch contexts | The state only represents scaffolding with no value on its own |
-| You are about to attempt risky changes | The only honest message would be `WIP` |
-
-**Heuristic:** "Can I write a commit message that describes a complete,
-valuable change?" If yes, commit. If the only honest message is `WIP`, wait.
-
-Use implementation units as a starting guide for commit boundaries, but adapt
-to what the repo proves. A large unit may need multiple commits, and two tiny
-related units may land together.
-
-**Commit workflow:**
-
-```bash
-# 1. Verify relevant tests pass using commands from the Touch Grass ledger
-
-# 2. Stage only files related to this logical unit
-git add <files related to this logical unit>
-
-# 3. Choose a conventional commit header/body/footer
-#    Prefer $fw:commit-message when available
-#    If the helper is unavailable, draft the message directly
-#    If the best message would use `!` or `BREAKING CHANGE:`, ask the user first
-
-# 4. Commit with the selected conventional message
-git commit -m "feat(scope): description of this unit"
-```
-
-When parallel delegated work is used, delegated workers do not commit. The
-orchestrator stages and commits after the batch is reconciled.
+After each verified logical unit, decide whether an incremental commit is useful
+or whether the unit should remain part of a larger coherent commit. Load
+`references/execution-router.md` if the commit boundary is non-obvious.
 
 #### 3. Follow Existing Patterns
 
@@ -614,8 +461,8 @@ orchestrator stages and commits after the batch is reconciled.
 - Fix failures immediately.
 - Add tests for new behavior, update tests for changed behavior, and remove or
   update tests for deleted behavior.
-- Unit tests with mocks prove isolated logic. Integration tests with real
-  objects prove the system still hangs together.
+- Prefer public interfaces and real chains where practical. Use mocks for true
+  system boundaries, not internal convenience.
 
 #### 5. Simplify as You Go
 

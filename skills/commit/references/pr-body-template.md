@@ -2,6 +2,7 @@
 
 - [value-focused summary bullet]
 - [second bullet when useful]
+- [material decision/context note when it helps reviewers understand the diff]
 
 ## Testing
 

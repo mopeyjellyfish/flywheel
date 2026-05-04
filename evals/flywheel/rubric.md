@@ -21,6 +21,10 @@ Automatic fail if it routes to the wrong stage.
 For root-invocation cases, `$fw` and bare `$flywheel` must behave as aliases
 for the start router rather than as separate stages or legacy stage namespaces.
 
+Direct ADR, durable decision-record, terminology conflict, and spec-grilling
+requests should route to `fw:decision` as a helper surface instead of being
+flattened into ordinary planning.
+
 ### 2. Workflow Coherence
 
 Does the answer preserve the Flywheel sequence instead of skipping necessary
@@ -37,7 +41,7 @@ steps?
 - shape -> work -> review -> optional spin -> commit as the compact backbone for software-project work
 - `$fw:start` is the router, not a backbone stage; `$fw:run` is an explicit
   optional orchestration wrapper, not a default critical-path stage
-- helper surfaces such as research, architecture strategy, pattern
+- helper surfaces such as research, decision, architecture strategy, pattern
   recognition, maintainability, or simplify can be selected when they are the
   most direct fit, without turning them into mandatory visible stages
 - review before merge when code changed or when work completes on the current branch

@@ -40,6 +40,8 @@ maintain a short task list.
 
 - read the full plan
 - read any linked requirements or brainstorm document
+- search existing context and decision records when the plan is domain,
+  terminology, architecture, workflow-contract, or product-scope bearing
 - preserve completed checkboxes and existing decisions unless repo truth proves
   they should change
 
@@ -64,6 +66,8 @@ Before rewriting the plan:
 - inspect the relevant repo areas
 - inspect `AGENTS.md`, `CLAUDE.md`, and nearby manifests
 - inspect the active repo's `docs/solutions/` for prior learnings
+- inspect matching context/glossary docs and decision records before changing
+  terminology, boundaries, workflow contracts, or product-scope decisions
 - confirm likely file paths, tests, patterns, and validation surfaces
 
 When the plan changes runtime behavior or blast radius, load `$fw:observability`
@@ -79,6 +83,9 @@ Update the plan so it is materially easier to execute:
 - add or clarify verification signals
 - simplify over-engineered plan structure where the work does not need it
 - make deferred questions explicit instead of leaving them implicit
+- surface contradictions with existing context or decision records as open
+  decisions, or load `../decision/SKILL.md` when the conflict must be resolved
+  before work
 
 ### Phase 5: Re-Review The Updated Plan
 
@@ -95,7 +102,9 @@ Return:
 1. **Plan deepened**
 2. **Main gaps fixed**
 3. **Residual review findings or open questions**
-4. **Next move choice** — call the exact host question tool named in the host
+4. **Decision checkpoint** — no durable record needed, context/decision
+   artifact updated, or `fw:decision` still required
+5. **Next move choice** — call the exact host question tool named in the host
    interaction contract when it is available and ask whether the user is happy
    with the strengthened plan as the basis for implementation. Use a compact
    choice surface such as:

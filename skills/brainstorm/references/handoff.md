@@ -19,6 +19,8 @@ Before presenting the menu, summarize:
 - what changed from the user's starting frame
 - what remains open, if anything
 - what `$fw:plan` would work on first
+- the decision checkpoint result: no durable decision record needed, decision
+  review required, or context/decision artifact updated
 
 If no requirements document exists, present that summary as a compact synthesis
 block in chat that also includes:

@@ -7,6 +7,8 @@ Score each dimension `0`, `1`, or `2`.
 ### Document Targeting
 
 Does the response clearly review a document path or document type?
+Strong passes can review requirements, plans, specs, ADRs, decision records,
+and context/glossary docs without making or reopening the decision themselves.
 
 ### Reviewer Selection
 

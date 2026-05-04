@@ -5,7 +5,9 @@ This content is loaded when Phase 3 begins — after the collaborative dialogue
 
 ---
 
-This document should behave like a lightweight PRD without PRD ceremony.
+This document should behave like a lightweight spec without heavyweight product
+ceremony. Treat PRD as a user synonym for product-facing work, not Flywheel's
+canonical artifact term.
 Include what planning needs to execute well, and skip sections that add no
 value for the scope.
 

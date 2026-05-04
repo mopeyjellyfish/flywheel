@@ -18,6 +18,11 @@ Does it right-size the brainstorming depth?
 
 Does it preserve a durable brainstorm artifact under `docs/brainstorms/` and
 leave a checkpoint summary the user can correct before planning?
+When a spec packet is requested, strong passes use `spec` as Flywheel's
+canonical artifact term, treat PRD as a product-facing synonym, and include
+problem, outcome, workflows or behavior, decisions, acceptance criteria,
+out-of-scope, and open questions without drifting into implementation
+mechanics.
 
 When current published guidance materially changes the requirements, strong
 passes either reuse a matching `docs/research/` brief or explicitly say they

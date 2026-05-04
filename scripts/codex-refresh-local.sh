@@ -446,17 +446,6 @@ const hookCommandPrefix = process.env.HOOK_COMMAND_PREFIX;
 const hookNeedle = "flywheel-hook-policy.js";
 const hookDefinitions = [
   {
-    event: "SessionStart",
-    matcher: "startup|resume|clear",
-    command: `${hookCommandPrefix} session-start codex`,
-    statusMessage: "Loading Flywheel context",
-  },
-  {
-    event: "UserPromptSubmit",
-    command: `${hookCommandPrefix} user-prompt codex`,
-    statusMessage: "Checking Flywheel prompt routing",
-  },
-  {
     event: "PreToolUse",
     matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
     command: `${hookCommandPrefix} pre-tool codex`,
@@ -467,12 +456,6 @@ const hookDefinitions = [
     matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
     command: `${hookCommandPrefix} permission-request codex`,
     statusMessage: "Checking Flywheel approval request",
-  },
-  {
-    event: "PostToolUse",
-    matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
-    command: `${hookCommandPrefix} post-tool codex`,
-    statusMessage: "Checking Flywheel follow-up",
   },
   {
     event: "Stop",

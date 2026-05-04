@@ -13,9 +13,10 @@ documents.
 Brainstorming helps answer **WHAT** to build through collaborative dialogue. It
 precedes `$fw:plan`, which answers **HOW** to build it.
 
-The durable output of this workflow is a **requirements document**. In other
-workflows this might be called a lightweight PRD or feature brief. In Flywheel,
-keep the workflow name `brainstorm`, but make the written artifact strong
+The durable output of this workflow is a **requirements document** or, when the
+user asks for one, a lightweight **spec packet**. Treat PRD as a user synonym
+for a product-flavored spec, but use `spec` as Flywheel's canonical artifact
+term. Keep the workflow name `brainstorm`, and make the written artifact strong
 enough that planning does not need to invent product behavior, scope
 boundaries, or success criteria.
 
@@ -35,6 +36,9 @@ phase so the working context stays tight.
   task into non-software brainstorming.
 - Read `references/requirements-capture.md` when Phase 3 begins and a durable
   requirements document should be created or updated.
+- Read `references/spec-packet.md` when the user asks for a spec, PRD, product
+  requirements, issue-ready requirements, or a synthesis of the current
+  conversation into a planning-ready artifact.
 - Read `references/brainstorm-examples.md` when taking the clear-requirements
   fast path, preparing the synthesis checkpoint, structuring approach
   comparisons, drafting the requirements document, or repairing output that is
@@ -66,21 +70,24 @@ phase so the working context stays tight.
 3. **Resolve product decisions here** - User-facing behavior, scope
    boundaries, and success criteria belong in this workflow. Detailed
    implementation belongs in planning.
-4. **Keep implementation out of the requirements doc by default** - Do not
+4. **Use spec as the canonical term** - When the user says PRD, treat it as a
+   product-flavored spec request unless their organization has a stricter
+   convention.
+5. **Keep implementation out of the requirements doc by default** - Do not
    include libraries, schemas, endpoints, file layouts, or code-level design
    unless the brainstorm itself is inherently about a technical,
    architectural, or pattern-selection change.
-5. **Right-size the artifact** - Simple work gets a compact requirements
+6. **Right-size the artifact** - Simple work gets a compact requirements
    document or brief alignment. Larger work gets a fuller document. Do not add
    ceremony that does not help planning.
-6. **Apply YAGNI to carrying cost, not coding effort** - Prefer the simplest
+7. **Apply YAGNI to carrying cost, not coding effort** - Prefer the simplest
    approach that delivers meaningful value. Avoid speculative complexity and
    hypothetical future-proofing, but low-cost polish or delight is worth
    including when its ongoing cost is small and easy to maintain.
-7. **Treat user answers as durable inputs** - preferences, constraints,
+8. **Treat user answers as durable inputs** - preferences, constraints,
    corrections, and examples surfaced in the dialogue should shape the
    requirements doc and may later become spin-worthy project guidance.
-8. **Use research to sharpen the brainstorm, not replace it** - when current
+9. **Use research to sharpen the brainstorm, not replace it** - when current
    published guidance materially changes the requirements, reuse a fresh
    matching brief first and otherwise run only the smallest focused research
    pass needed before returning to requirements shaping. Fold the findings and

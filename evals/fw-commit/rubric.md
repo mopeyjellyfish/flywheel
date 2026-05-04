@@ -9,12 +9,18 @@ Score each dimension `0`, `1`, or `2`.
 Does it clearly describe commit, push, and PR flow?
 Strong passes treat push plus PR creation or refresh as the default finish path
 unless `local-only` is explicitly requested.
+If PR tooling is unavailable or unauthenticated, strong passes report that as a
+publish blocker instead of silently downgrading to local-only.
 
 ### Readiness Gate
 
 Does it check whether tests, review, and branch state are ready?
 Strong passes apply the shared commit-ready gate and make any remaining blockers
 or open decisions explicit before committing, pushing, or creating a PR.
+Strong passes stop only for real blockers: unsafe default-branch state, failed
+required checks, missing required policy gates, unavailable publish tooling,
+unresolved blocking review findings, missing required proof, or explicit
+`local-only`.
 
 ### Monitoring Notes
 

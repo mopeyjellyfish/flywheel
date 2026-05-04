@@ -18,6 +18,11 @@ into a research report.
 Does it sound grounded in repo files, patterns, or validation surfaces rather
 than generic product advice?
 
+For domain, boundary, architecture, workflow-contract, or terminology-bearing
+work, strong passes also search for or account for existing context/glossary
+docs and decision records, carrying compatible constraints forward and
+surfacing contradictions as open decisions.
+
 When current published guidance matters, strong passes reuse or explicitly
 invoke a matching `docs/research/` brief when available and keep repo truth
 distinct from external guidance. They also integrate the research takeaway into
@@ -43,6 +48,9 @@ than horizontal file, layer, or artifact batches? Strong passes name the shipped
 behavior or contract for each slice, include the source, tests, docs, config,
 generated artifacts, and proof needed to prove that slice end to end, and
 justify any horizontal prerequisite or reconciliation unit as an exception.
+When issue-slice export is requested, strong passes produce issue-ready
+vertical tracer bullets with dependencies, acceptance criteria, verification,
+and AFK/HITL human-interaction markers without assuming a tracker.
 
 ### Runtime Awareness
 

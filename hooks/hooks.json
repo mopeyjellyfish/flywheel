@@ -1,28 +1,5 @@
 {
   "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup|resume|clear",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/flywheel-hook-policy.js\" session-start claude",
-            "statusMessage": "Loading Flywheel context"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/flywheel-hook-policy.js\" user-prompt claude",
-            "statusMessage": "Checking Flywheel prompt routing"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Bash|Edit|Write|MultiEdit|mcp__.*",
@@ -31,18 +8,6 @@
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/flywheel-hook-policy.js\" pre-tool claude",
             "statusMessage": "Checking Flywheel policy"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Bash|Edit|Write|MultiEdit|mcp__.*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/flywheel-hook-policy.js\" post-tool claude",
-            "statusMessage": "Checking Flywheel follow-up"
           }
         ]
       }
