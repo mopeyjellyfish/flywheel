@@ -146,6 +146,11 @@ Skip this step when arriving from Phase 0 with a bare prompt.
   that unit. If it is `characterization`, capture current behavior before
   changing it. Treat `no-new-tests` as valid only when the plan gives a clear
   exception reason.
+- Check each unit's `Vertical slice` field when present. Execute vertical
+  behavior slices one at a time. If the plan is organized as horizontal artifact
+  batches such as all tests, all service edits, all docs, all migrations, or all
+  generated artifacts, pause and route back to `fw:deepen` unless the plan marks
+  those units as justified horizontal exceptions.
 - Check for `Execution note` on each implementation unit and carry any
   sequencing, rollout, or other non-test posture into the task.
 - If the plan includes `Architecture and Pattern Decisions` or an equivalent
@@ -351,9 +356,9 @@ the work as Trivial.
   `../references/host-interaction-contract.md` to break the work into
   actionable tasks. If the host does not expose one, keep a concise visible
   checklist in chat.
-- For plan-driven work, default to one host task per remaining implementation
-  unit. Reuse the unit label in the task name so the task tool and plan stay
-  aligned.
+- For plan-driven work, default to one host task per remaining vertical
+  implementation slice. Reuse the unit label in the task name so the task tool
+  and plan stay aligned.
 - Add separate tasks only for cross-cutting work not already represented by a
   unit, such as initial bare-prompt discovery or the final quality gate.
 - Derive tasks from the plan's implementation units, dependencies, files, test
@@ -368,6 +373,10 @@ the work as Trivial.
 - Use each unit's `Red signal`, `Green signal`, and `Verification` fields as
   the primary proof path when the unit is `tdd`; otherwise use `Verification`
   as the primary "done" signal.
+- Keep proof slice-local. Do not write all tests for every unit first, then all
+  implementation, then all docs, config, migrations, or generated artifacts.
+  Finish the current slice's red, green, refactor, and relevant proof before
+  starting the next behavior slice.
 - Keep the host task list and the plan document synchronized: the task tool
   carries `in_progress` and `blocked`, while the plan checkbox flips to `[x]`
   only after the unit's verification passes.
@@ -412,8 +421,9 @@ parallel, instruct each delegated worker:
 Give each delegated unit:
 
 - the full plan file path for context
-- the specific unit's Goal, Files, Test posture, Red signal, Green signal,
-  Approach, Execution note, Patterns, Test Scenarios, and Verification
+- the specific unit's Vertical slice, Goal, Files, Test posture, Red signal,
+  Green signal, Approach, Execution note, Patterns, Test Scenarios, and
+  Verification
 - any resolved deferred questions relevant to that unit
 - instruction to check whether the unit's test scenarios cover happy path, edge
   cases, failure paths, and integration where applicable
@@ -446,9 +456,11 @@ Give each delegated unit:
 
 #### 1. Task Execution Loop
 
-For plan-driven work, treat each unchecked implementation unit as the default
-task. Start with the first `serial` unit or the first dependency-cleared
-`parallel-ready` batch identified by the plan.
+For plan-driven work, treat each unchecked vertical implementation slice as the
+default task. Start with the first `serial` slice or the first
+dependency-cleared `parallel-ready` batch identified by the plan. Horizontal
+exception units are serial unless the plan gives a concrete independence reason
+and the shared-write safety check still passes.
 
 For each task in priority order:
 
@@ -459,7 +471,8 @@ while (tasks remain):
   - Look for similar patterns in the codebase
   - Find existing test files for implementation files being changed
   - If the unit or prompt requires TDD, load `test-driven-development`, write
-    and verify the red signal first, then implement the minimal green change
+    and verify the slice's red signal first, then implement the minimal green
+    change for that slice
   - Otherwise, implement following existing conventions and add, update, or
     remove tests to match implementation changes
   - When runtime behavior changes, assess whether logs, traces, metrics, or
@@ -494,8 +507,9 @@ while (tasks remain):
 When a unit carries a `Test posture`, honor it:
 
 - **tdd** — load `test-driven-development`, write the failing test before
-  implementation, verify the red failure, implement the smallest green change,
-  refactor if useful, and report red/green/refactor evidence
+  implementation, verify the red failure, implement the smallest green change
+  for the current vertical slice, refactor if useful, and report
+  red/green/refactor evidence before moving to the next slice
 - **characterization-first** — capture current behavior before changing it
 - **no-new-tests** — only when the unit is truly mechanical, config-only, or
   otherwise justified

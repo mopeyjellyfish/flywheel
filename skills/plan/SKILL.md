@@ -116,29 +116,36 @@ needs:
    instructions.
 7. **Keep planning approval-gated** — a plan should be understandable enough
    for the user to review what will be worked on before `work` begins.
-8. **Default behavior changes to TDD** — feature work, bug fixes, public
+8. **Plan vertical behavior slices by default** — implementation units should
+   each deliver one coherent user-facing, workflow-facing, API-facing, or
+   contract-facing outcome through the necessary code, tests, docs, evals, and
+   supporting artifacts. Horizontal units such as "write all tests," "edit all
+   service files," "update all docs," or "refresh all generated artifacts" are
+   allowed only for true prerequisites, mechanical sweeps, or final
+   reconciliation, and must be marked as exceptions with a reason.
+9. **Default behavior changes to TDD** — feature work, bug fixes, public
    contract changes, regression-prone paths, and behavior-preserving refactors
    should plan a `tdd` posture unless an explicit exception applies. Use
    `characterization` for fragile existing behavior that must be pinned first,
    and `no-new-tests` only for generated, configuration-only, documentation-
    only, trivial mechanical, or otherwise disproportionate units. State the
    exception and verification path whenever the unit is not `tdd`.
-9. **Plan the testing strategy, not just the code changes** — every software
+10. **Plan the testing strategy, not just the code changes** — every software
    plan should state how new or changed behavior will be tested, which existing
    test idioms to follow, whether to extend current tests or add new ones, and
    which public contracts must stay protected. Exact test or coverage commands
    belong to the host project's instructions or `$fw:work`, not the plan. When
    TDD fits, each material hypothesis should map to a concrete red signal and a
    green completion signal.
-10. **Make runtime tradeoffs explicit** — when a plan changes retries,
+11. **Make runtime tradeoffs explicit** — when a plan changes retries,
    fallbacks, queue behavior, health checks, or other operationally meaningful
    boundaries, present the current repo truth, likely failure modes, blast
    radius, viable options, and the recommended posture.
-11. **Make architecture and pattern choices explicit when warranted** — when
+12. **Make architecture and pattern choices explicit when warranted** — when
     the work changes boundaries, ownership, named patterns, or distributed
     posture, record the chosen option, rejected alternatives, and the clean-code
     constraints `work` must preserve.
-12. **Prefer reusable research to redundant reruns** — match fresh
+13. **Prefer reusable research to redundant reruns** — match fresh
     `docs/research/` briefs first, then run only the narrow follow-up research
     needed to close planning gaps. Fold the decision-changing findings and
     recommendation into plan decisions instead of creating a side report by
@@ -156,6 +163,9 @@ Every plan should contain:
 - existing patterns or code references to follow
 - implementation units that are atomic enough to map cleanly to execution tasks
   and likely commit boundaries
+- implementation units organized as vertical behavior slices by default, with
+  any horizontal prerequisite, mechanical sweep, or reconciliation unit
+  explicitly justified
 - per implementation unit, an explicit test posture chosen from `tdd`,
   `characterization`, or `no-new-tests`, with a brief reason
 - per implementation unit, an explicit execution mode chosen from `serial` or
@@ -664,6 +674,9 @@ Skip it when:
 
 For each unit, include:
 
+- **Vertical slice** — the behavior, workflow contract, API contract, or user
+  outcome delivered end to end by this unit; for a horizontal exception, name
+  it as `horizontal exception` and explain why it cannot be a vertical slice
 - **Goal**
 - **Requirements**
 - **Dependencies**
@@ -716,6 +729,23 @@ Use the testing fields distinctly:
   `none` when the green signal is sufficient
 
 Do not copy the same sentence into all four fields.
+
+Use vertical slices as the default unit boundary:
+
+- a slice should include the production changes, tests, docs, config,
+  migrations, generated artifacts, and proof needed for that one behavior when
+  those artifacts are in scope
+- do not create one unit for all tests, another for all implementation, and a
+  final unit for all docs, configs, migrations, or generated artifacts
+- do not split by layer, file type, package, or artifact type unless the work is
+  genuinely mechanical or preparatory
+- when a prerequisite or reconciliation unit is unavoidable, mark it clearly as
+  a horizontal exception and keep it serial unless repo truth proves it can run
+  independently
+
+For TDD units, the vertical slice should map to the first observable behavior
+or tracer bullet that `$fw:work` can take red, green, and then refactor before
+moving to the next slice.
 
 If the output starts drifting from this schema, stop and read
 `references/unit-examples.md` before continuing.
@@ -891,6 +921,9 @@ deepened: YYYY-MM-DD  # optional, set when the confidence check substantively st
 ## Implementation Units
 
 - [ ] **Unit 1: [Name]**
+
+**Vertical slice:** [Behavior, workflow contract, API contract, or user outcome
+delivered end to end; or `horizontal exception` with reason]
 
 **Goal:** [What this unit accomplishes]
 

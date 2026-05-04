@@ -13,6 +13,7 @@
     "Planning Discipline",
     "Repo Grounding",
     "Test Strategy",
+    "Vertical Slice Planning",
     "Runtime Awareness",
     "Workflow Handoff",
     "Restraint",
@@ -21,6 +22,7 @@
   "criticalDimensions": [
     "Planning Discipline",
     "Test Strategy",
+    "Vertical Slice Planning",
     "Workflow Handoff"
   ],
   "passAverage": 1.5,
@@ -29,6 +31,7 @@
     "requirements_doc_to_plan",
     "bug_fix_plan",
     "behavior_change_tdd_default",
+    "vertical_slice_plan_units",
     "runtime_risky_change"
   ]
 }
