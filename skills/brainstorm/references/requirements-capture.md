@@ -117,6 +117,8 @@ requirements document is better than a bloated one.
 
 Before finalizing, check:
 
+- Has the spec-grill checkpoint challenged project terminology, fuzzy language,
+  concrete scenarios, repo-truth contradictions, and context or ADR needs?
 - What would `$fw:plan` still have to invent if this brainstorm ended now?
 - Do any requirements depend on something claimed to be out of scope?
 - Are any unresolved items actually product decisions rather than planning

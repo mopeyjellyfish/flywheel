@@ -14,8 +14,10 @@ workflow docs.
 ### Decision Qualification
 
 Does it distinguish durable decisions from reversible local choices? Strong
-passes write or recommend records only for hard-to-reverse, surprising,
-tradeoff-heavy, architecture, workflow-contract, or product-scope decisions.
+passes write or recommend records only when all three are true: hard to
+reverse, surprising without context, and the result of a real tradeoff.
+Architecture, workflow-contract, and product-scope decisions often qualify, but
+do not bypass the three-part test.
 
 ### Question Discipline
 
@@ -27,7 +29,9 @@ space is predictable.
 
 Does it challenge ambiguous or conflicting project language? Strong passes
 distinguish context/glossary updates from decision records and keep glossary
-content domain-facing rather than implementation-heavy.
+content domain-facing rather than implementation-heavy. They also use concrete
+scenarios to test actors, states, boundaries, ownership, and failure behavior
+when terminology or scope remains fuzzy.
 
 ### Artifact Discipline
 

@@ -37,6 +37,15 @@ requirements/spec artifact, and route simplification, feasibility, scope, or
 supportability findings back to questions or brainstorming before planning when
 they change the product shape.
 
+### Spec Grilling
+
+Does it automatically challenge a material requirements doc or spec packet
+before planning? Strong passes inspect repo/context/decision truth before
+asking, challenge conflicting or fuzzy terminology, stress-test concrete
+scenarios, surface code/docs contradictions, ask one recommended material
+question at a time, and route context or ADR-worthy decisions to `fw:decision`
+only when warranted.
+
 ### Simplicity Pressure
 
 When the prompt invites over-design, does it apply YAGNI or simplicity pressure?

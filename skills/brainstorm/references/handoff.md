@@ -19,6 +19,8 @@ Before presenting the menu, summarize:
 - what changed from the user's starting frame
 - what remains open, if anything
 - what `$fw:plan` would work on first
+- the spec-grill result: terminology/scenario/code-doc contradiction check
+  passed, produced follow-up questions, or routed to `decision`
 - the decision checkpoint result: no durable decision record needed, decision
   review required, or context/decision artifact updated
 
@@ -159,6 +161,9 @@ Requirements doc: docs/brainstorms/YYYY-MM-DD-<topic>-requirements.md  # if one 
 Key decisions:
 - [Decision 1]
 - [Decision 2]
+
+Spec-grill result:
+- [Terminology/scenario/repo-truth check outcome]
 
 What changed:
 - [Clarification or correction 1]

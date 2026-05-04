@@ -53,10 +53,10 @@ Do not load every reference by default:
 1. **Repo truth before user questions** - inspect existing code, tests, docs,
    configs, specs, plans, context docs, and prior decisions before asking for
    information that can be discovered.
-2. **Decision records are conditional** - write a durable record only for
-   choices that are hard to reverse, surprising without context, tradeoff-
-   heavy, architecture-bearing, workflow-contract-bearing, or product-scope-
-   bearing.
+2. **Decision records are conditional** - write a durable record only when the
+   choice is hard to reverse, surprising without context, and the result of a
+   real tradeoff. Architecture, workflow-contract, and product-scope choices
+   often qualify, but still test all three conditions.
 3. **Context is separate from decisions** - context/glossary artifacts define
    project language and relationships. Decision records explain why a choice
    was made and what alternatives were rejected.
@@ -65,9 +65,12 @@ Do not load every reference by default:
    plan, or decision.
 5. **Walk dependencies in order** - resolve upstream framing and language
    choices before asking downstream implementation or rollout questions.
-6. **Prefer recommended questions** - ask one material question at a time with
+6. **Stress-test concrete scenarios** - when relationships, scope boundaries,
+   or workflow states are unclear, use a specific scenario or edge case to
+   force precise language before recording the choice.
+7. **Prefer recommended questions** - ask one material question at a time with
    a recommended answer when possible.
-7. **Keep records small** - capture enough context for future work without
+8. **Keep records small** - capture enough context for future work without
    turning an ADR or glossary into a long design essay.
 
 ## Workflow
@@ -115,6 +118,10 @@ Compare:
 - relevant docs and prior decisions
 - the proposed spec or plan
 
+Call out conflicts immediately. If the code, tests, context docs, or prior
+decisions contradict the proposed wording, resolve that contradiction before
+writing or accepting the decision.
+
 Ask one material question only when repo truth cannot answer it. Put upstream
 questions first:
 
@@ -123,6 +130,9 @@ questions first:
 3. boundary or ownership choice
 4. rejected alternative and consequence
 5. validation or review question
+
+Use a concrete scenario when the ambiguity is about actors, states, boundaries,
+cardinality, ownership, or failure behavior.
 
 ### Phase 4: Capture Or Decline
 

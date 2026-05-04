@@ -81,6 +81,8 @@ type: spec
 
 ## Quality Bar
 
+- Apply `spec-grilling.md` before handoff: challenge terminology, fuzzy
+  language, scenarios, repo/code contradictions, and ADR/context needs.
 - Keep implementation mechanics out unless the spec is explicitly technical.
 - Use domain terms consistently; route terminology conflicts to `decision`.
 - Mark decision-record needs explicitly instead of hiding tradeoffs in prose.
