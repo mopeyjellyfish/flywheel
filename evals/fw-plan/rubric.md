@@ -60,14 +60,17 @@ radius?
 ### Workflow Handoff
 
 Does it preserve source review when useful, then planning -> document-review ->
-user choice between addressing findings, deepening, and work as the next stage,
-rather than sliding into execution automatically? Strong handoff should also
-make it clear what changed during planning, what the plan review found, whether
-anything should be pushed back to questions or planning, and what execution
-would start with.
+user choice between explicitly running `fw:deepen`, addressing findings,
+pausing, and work as the next stage, rather than sliding into execution
+automatically? Strong handoff should also make it clear what changed during
+planning, what the plan review found, whether anything should be pushed back to
+questions or planning, and what execution would start with.
 Strong passes treat the plan-to-work choice as an explicit user confirmation
 that they are happy with the reviewed plan as the implementation basis, using
 the host question tool when available instead of a markdown menu.
+Strong passes always include an explicit deepen option after creating or
+updating a plan, even when review findings make "address findings first" the
+recommended path.
 When mixed execution modes matter, strong handoff also makes the first serial
 unit or first eligible parallel-ready batch obvious.
 

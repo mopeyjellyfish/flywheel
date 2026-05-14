@@ -12,12 +12,16 @@
   "dimensions": [
     "Plan Targeting",
     "Document Review Integration",
+    "Plan Grilling",
+    "Source And Slice Alignment",
     "Repo Grounding",
+    "Context And Decision Capture",
     "Work Handoff",
     "Runtime Awareness"
   ],
   "criticalDimensions": [
     "Plan Targeting",
+    "Plan Grilling",
     "Work Handoff"
   ],
   "passAverage": 1.5,

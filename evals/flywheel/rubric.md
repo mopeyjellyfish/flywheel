@@ -36,8 +36,8 @@ steps?
 - inside shape, brainstorm before plan when behavior and scope are unclear
 - inside shape, requirements/spec review can happen before planning when the
   source artifact may need simplification or feasibility checks; planning runs
-  document review before the user chooses whether to address findings, deepen,
-  or work
+  document review before the user chooses whether to explicitly run
+  `fw:deepen`, address findings, pause, or work
 - shape -> work -> review -> optional spin -> commit as the compact backbone for software-project work
 - `$fw:start` is the router, not a backbone stage; `$fw:run` is an explicit
   optional orchestration wrapper, not a default critical-path stage

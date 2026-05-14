@@ -114,8 +114,8 @@ End with one of these outcomes:
 - reviewed requirements doc or requirements plan from `fw:brainstorm`, with a
   user choice to proceed to `fw:plan` or run document review first
 - reviewed technical implementation plan from `fw:plan`, with a host-question
-  user choice to address review findings, deepen the plan, or confirm moving
-  to `fw:work`
+  user choice that explicitly offers `fw:deepen`, review-finding follow-up, a
+  pause, or confirmation to move to `fw:work`
 - strengthened reviewed plan from `fw:deepen`, with a host-question user
   choice between another deepen pass, pausing, and confirming `fw:work`
 

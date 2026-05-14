@@ -88,14 +88,16 @@ If the run reaches `fw:shape` and its selected mode is `fw:plan`, do not cross
 into `fw:work` unless the user explicitly asked for implementation in the same
 request or explicitly approves the reviewed plan when presented. Let the plan
 stage complete its mandatory `document-review` pass and preserve the user's
-choice to address findings, deepen, or work instead of flattening that boundary.
+explicit choice to run `$fw:deepen`, address findings, pause, or work instead
+of flattening that boundary.
 
 When relevant:
 
 - use `document-review` before work when the plan or requirements doc needs
   hardening
 - when the run goes through `$fw:shape` and plan mode, let the user choose
-  whether to address review findings, run `$fw:deepen`, or enter `$fw:work`
+  whether to run `$fw:deepen`, address review findings, pause, or enter
+  `$fw:work`
 - move from `$fw:work` into `$fw:review` by default before commit;
   use inline self-review only when the narrower work contract explicitly allows it
 - preserve `$fw:work`'s TDD default for behavior-bearing feature work, bug
