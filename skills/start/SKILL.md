@@ -105,8 +105,9 @@ mandatory visible stages:
   including the default plan-review pass at the end of shaping
 - `fw:observability` for runtime signal, blast radius, and rollout validation design
 - `fw:logging` for structured event and log-shape design
-- `fw:architecture-strategy` for boundary, service-shape, hexagonal, or
-  distributed-system decisions that need a focused architecture brief
+- `fw:architecture-strategy` for architecture improvement, boundary,
+  service-shape, hexagonal, or distributed-system decisions that need a focused
+  architecture brief
 - `fw:pattern-recognition` for repo-grounded pattern fit decisions such
   as DTO, repository, ports/adapters, builder, DDD, or distributed reliability
   posture
@@ -259,8 +260,10 @@ Apply these routing heuristics before doing repo exploration:
   to `../setup/SKILL.md`
 - if the input asks for isolated branch work, parallel checkouts, or worktree
   cleanup, route to `../worktree/SKILL.md`
-- if the input explicitly asks for boundary sizing, service shape, hexagonal
-  architecture, bounded contexts, or distributed-system posture, route to
+- if the input explicitly asks to improve architecture, find architecture
+  refactoring opportunities, improve module depth or testability, size
+  boundaries, choose service shape, apply hexagonal architecture, define bounded
+  contexts, or set distributed-system posture, route to
   `../architecture-strategy/SKILL.md`
 - if the input explicitly asks whether DTOs, repositories, ports/adapters,
   builders, DDD, or other named patterns are justified, route to

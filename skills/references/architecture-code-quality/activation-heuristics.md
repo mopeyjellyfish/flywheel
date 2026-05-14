@@ -18,6 +18,8 @@ Ask:
 
 Use when the work changes or questions:
 
+- architecture improvement opportunities across existing code
+- module depth, interface shape, seams, or testability-driven architecture
 - bounded contexts, ownership, or service boundaries
 - modular-monolith vs service split decisions
 - dependency direction, layering, or hexagonal boundaries
@@ -27,6 +29,9 @@ Use when the work changes or questions:
 
 Strong signals:
 
+- "How do we improve this architecture?"
+- "Where is this codebase shallow or hard to test?"
+- "What would make this codebase easier for agents to navigate?"
 - "Should this be its own service?"
 - "Where should this boundary live?"
 - "Do we need ports/adapters here?"
@@ -35,7 +40,8 @@ Strong signals:
 Suppress when:
 
 - the change is local to one module with no boundary or ownership shift
-- the user is really asking about code cleanup rather than system shape
+- the user is really asking about code cleanup rather than system shape or
+  module/interface depth
 
 ## `pattern-recognition`
 

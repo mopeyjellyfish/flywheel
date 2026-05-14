@@ -92,7 +92,7 @@ Common starts:
 - Known scoped change: `fw:shape`
 - Hard bug, stack trace, or performance regression with unclear cause: `fw:debug`
 - Durable decision, ADR, or terminology conflict: `fw:decision`
-- Architecture or pattern decision: `fw:architecture-strategy` or `fw:pattern-recognition`
+- Architecture improvement, boundary, or pattern decision: `fw:architecture-strategy` or `fw:pattern-recognition`
 - One bounded pass through the remaining stages: `fw:run`
 
 Use the host prefix when required: `/fw:work` in Claude Code and `fw:work` in

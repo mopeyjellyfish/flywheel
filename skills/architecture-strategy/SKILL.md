@@ -1,17 +1,19 @@
 ---
 name: architecture-strategy
-description: "Assess repo-grounded architecture choices. Use for boundaries, service splits, dependency direction, or distributed-system posture."
+description: "Assess repo-grounded architecture choices and improvements. Use for boundaries, service splits, dependency direction, or distributed posture."
 metadata:
-  argument-hint: "[feature, boundary question, path, or architecture decision]"
+  argument-hint: "[feature, path, boundary question, architecture decision, or improve architecture]"
 ---
 
 # Architecture Strategy
 
-Use this helper when the main question is system shape.
+Use this helper when the main question is system shape or architecture
+improvement.
 
 `$fw:architecture-strategy` is a support skill. It can be invoked
-directly, or pulled into `brainstorm`, `plan`, `work`, or `review` when the
-task introduces real boundary or ownership decisions.
+directly, or pulled into `ideate`, `brainstorm`, `plan`, `work`, or `review`
+when the task introduces real boundary, ownership, or architecture-improvement
+decisions.
 
 **When directly invoked, always do architecture work.** Do not stop at naming
 patterns. Ground the repo, compare lighter and heavier options, and recommend
@@ -36,7 +38,8 @@ When multiple viable architecture postures exist:
 
 <architecture_input> #$ARGUMENTS </architecture_input>
 
-If blank, inspect the repo for the strongest current architecture seams first.
+If blank, inspect the repo for the strongest current architecture seams and
+improvement opportunities first.
 
 ## Reference Loading Map
 
@@ -47,6 +50,10 @@ needs:
   deciding whether the task truly warrants this helper.
 - Read `../references/architecture-code-quality/pattern-families.md` when
   comparing boundary, style, or distributed-system choices.
+- Read `../references/architecture-code-quality/deepening-opportunities.md`
+  when the input asks to improve architecture, find refactoring opportunities,
+  consolidate tightly coupled modules, make the codebase more testable, or
+  feed architecture opportunities into `ideate`.
 - Read `../references/architecture-code-quality/output-contract.md` when
   preparing the final brief.
 - Read `../references/architecture-code-quality/frontier-model-prompting.md`
@@ -67,6 +74,9 @@ needs:
    concrete cross-process risk.
 6. **Carry the simpler and heavier options forward explicitly** - architecture
    guidance is incomplete if it only justifies the chosen option.
+7. **Deepen shallow modules when improving architecture** - look for places
+   where a small, stable interface can hide real behavior and concentrate
+   change, tests, and knowledge.
 
 ## Workflow
 
@@ -81,6 +91,8 @@ Inspect the relevant repo surfaces:
 - existing docs or solution entries for the same area
 - existing context/glossary docs and decision records for the same language,
   boundary, workflow contract, or system area
+- current test surfaces and whether they exercise behavior through useful
+  interfaces or through fragile implementation details
 
 ### Phase 2: Define The Decision Surface
 
@@ -91,6 +103,7 @@ Clarify what is actually changing:
 - external integration seam
 - distributed workflow or failure boundary
 - dependency direction or layering
+- improve architecture / deepening opportunity for shallow modules
 
 If the decision is really local code cleanup, say so and route toward
 `$fw:maintainability` or `$fw:simplify` instead.
@@ -98,6 +111,24 @@ If the decision is really local code cleanup, say so and route toward
 If existing context or decision records already settle the boundary, treat them
 as durable input. Recommend reopening through `$fw:decision` only when repo
 truth or the new requirement materially contradicts them.
+
+When the user asks to **improve architecture** or when `ideate` activates this
+helper as an architecture lens, also identify deepening opportunities:
+
+- modules whose interface is nearly as complex as their implementation
+- concepts that require bouncing across many small files to understand
+- pure helpers extracted for testability while the real bugs hide in
+  orchestration callers
+- tightly coupled modules whose seams leak ordering, invariants, error modes,
+  config, or provider details
+- behavior that is hard to test through the current interface
+
+For suspected shallow modules, apply the deletion test: if deleting the module
+would remove complexity, it was a pass-through; if the complexity would
+reappear across callers, the module is earning its keep or should become deeper.
+Use `module`, `interface`, `implementation`, `seam`, `adapter`, `depth`,
+`leverage`, and `locality` for code-level deepening analysis. Keep `boundary`
+and `bounded context` for system-level architecture decisions.
 
 ### Phase 3: Compare Viable Shapes
 
@@ -112,6 +143,19 @@ Compare the smallest useful options first, for example:
 When distributed behavior matters, call out the concrete posture for retries,
 idempotency, timeouts, outbox, or saga behavior.
 
+When deepening a shallow module is a viable architecture improvement, classify
+its dependency shape before recommending it:
+
+- in-process computation or state
+- local-substitutable dependency with a real test stand-in
+- remote but owned dependency that may justify a port plus production and test
+  adapters
+- true external dependency that should remain behind an injected port or mock
+  adapter
+
+Do not introduce an external seam only because one adapter exists. One adapter
+is hypothetical; two justified adapters make the seam real.
+
 ### Phase 4: Recommend The Shape
 
 Choose one recommendation and state:
@@ -120,6 +164,21 @@ Choose one recommendation and state:
 - why the simpler option is insufficient
 - why the heavier option is not justified
 - which clean-code constraints later stages must preserve
+
+For improve-architecture mode, present a numbered list of candidate
+opportunities before choosing one path. For each candidate include:
+
+- **Files** - repo-relative files or modules involved
+- **Problem** - the architecture friction being felt
+- **Solution** - the plain-English deepening or boundary change
+- **Benefits** - locality, leverage, and how tests improve
+- **Dependency shape** - one of the dependency categories above
+- **Decision conflicts** - any context or decision record that should stand or
+  be reopened
+
+Do not design new interfaces until the user chooses a candidate. If interface
+exploration is selected, compare multiple interface shapes by depth, locality,
+seam placement, dependency strategy, and tradeoffs before recommending one.
 
 ## Output Contract
 
