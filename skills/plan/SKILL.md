@@ -25,8 +25,8 @@ This workflow produces a durable implementation plan. It is a read-only,
 collaborative stage. It does **not** implement code, run tests, or silently
 transition into execution-time work. After the plan file exists and the
 confidence check completes, it must run `document-review` on that plan and end
-with a user choice to address review findings, deepen the plan, or start
-`$fw:work`.
+with a user choice that explicitly offers `$fw:deepen`, review-finding
+follow-up, a pause, or starting `$fw:work`.
 
 When planning starts from a requirements, spec, or design document whose review
 state is unknown, offer source document review before drafting the plan. Use that

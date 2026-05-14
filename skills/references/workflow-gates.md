@@ -59,7 +59,9 @@ stage boundary, artifact, approval gate, or proof handoff matters.
 - `Red signal` and `Green signal` for `tdd` units
 - architecture, runtime, rollout, or supportability decisions when relevant
 - document-review result or explicit unresolved findings
-- a user decision to address findings, deepen the plan, or start work
+- a user decision to address findings, explicitly run `fw:deepen`, pause, or
+  start work; the post-plan choice surface must not hide deepening inside a
+  generic review-fix option
 
 ### Work-Ready
 

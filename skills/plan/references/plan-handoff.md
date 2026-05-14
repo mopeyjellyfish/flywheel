@@ -73,6 +73,12 @@ available. This is the plan-to-work approval gate. Do not call `fw:work`, edit
 implementation files, or otherwise begin execution until the user selects a
 work-start option or gives an explicit same-turn implementation instruction.
 
+Every post-plan option surface must explicitly offer `$fw:deepen` after a plan
+is created or updated. Do not hide deepening inside a generic "address findings"
+choice. If the host supports only three explicit choices, combine direct review
+fixing and upstream routing into a `$fw:deepen`-named option instead of dropping
+deepening from the menu.
+
 A markdown menu is only the fallback after the tool is unavailable or errors.
 Otherwise present a short label-based choice surface in chat instead of asking
 for raw numeric replies, then wait for the user's answer.
@@ -100,8 +106,9 @@ fourth explicit option only when the active host question schema supports it.
 If the review pass surfaced material findings, unresolved tradeoffs, or the
 user asked for more rigor, use:
 
-1. **Address review findings first (Recommended)** — revise, deepen, or route
-   back to questions before execution, then rerun `document-review`
+1. **Run `$fw:deepen` / address findings first (Recommended)** — deepen the
+   plan or route blocking product, scope, or direct-revision findings before
+   execution, then rerun `document-review`
 2. **Start `$fw:work` with assumptions** — begin implementation only after
    accepted residual findings are captured as explicit risks or assumptions
 3. **Done for now** — pause; the plan file is saved and can be resumed later
@@ -123,7 +130,8 @@ be shown as **Create Issue**.
 
 Based on selection:
 
-- **Address review findings first** → choose the upstream action from the
+- **Run `$fw:deepen` / address findings first** or
+  **Address review findings first** → choose the upstream action from the
   findings: route product or scope blockers to `$fw:brainstorm`; call
   `$fw:deepen` for plan-strengthening findings; revise the plan in place for
   direct corrections; then rerun `document-review`

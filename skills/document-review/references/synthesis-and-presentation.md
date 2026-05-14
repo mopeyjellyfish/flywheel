@@ -227,8 +227,9 @@ Offer these options:
 - **Review complete** — return to the caller's handoff. For requirements docs,
   continue with `$fw:plan` only when product behavior, scope, success criteria,
   and definition-of-done findings are resolved or explicitly accepted as
-  assumptions. For plan docs, return to the choice to address findings, deepen,
-  or start `$fw:work`.
+  assumptions. For plan docs, return to the post-plan choice that explicitly
+  offers `$fw:deepen`, review-finding follow-up, a pause, or starting
+  `$fw:work`.
 
 When the top-ranked remaining finding would change product behavior, scope,
 success criteria, or the definition of done, recommend fixing it before

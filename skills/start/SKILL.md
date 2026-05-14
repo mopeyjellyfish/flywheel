@@ -52,8 +52,8 @@ mode that can produce the next useful artifact:
 - `fw:deepen` for strengthening an existing reviewed plan before execution
 
 `fw:plan` is read-only. It should produce a plan, run `document-review` on
-that plan, and then pause for the user to choose whether to address review
-findings, deepen the plan, or begin `fw:work`.
+that plan, and then pause for the user to choose whether to run `fw:deepen`,
+address review findings, pause, or begin `fw:work`.
 
 For known-scoped repo changes, `fw:shape` usually collapses to plan mode plus
 that reviewed-plan handoff.
@@ -364,8 +364,9 @@ Preferred stage-to-handoff wording:
 - `fw:deepen` -> produce a stronger reviewed technical plan -> then let
   the user choose between another deepen pass and `fw:work`
 - `fw:plan` -> produce a technical implementation plan, run
-  `document-review`, pause for user review, and then let the user choose
-  whether to address review findings, run `fw:deepen`, or enter `fw:work`
+  `document-review`, pause for user review, and then let the user explicitly
+  choose whether to run `fw:deepen`, address review findings, pause, or enter
+  `fw:work`
 - `fw:docs` -> produce updated project docs mapped to the right Diataxis
   quadrants -> then continue into `fw:review`, optional `fw:spin`, and
   `fw:commit`
@@ -435,8 +436,8 @@ Use these patterns to keep routing answers stable across frontier models:
 - **Plan route:** "This is ready for `fw:plan` because the intended behavior is
   already clear enough to design execution. The output should be a technical
   plan the user can review before any implementation starts. After
-  `document-review` runs on that plan, let the user choose whether to address
-  findings, `fw:deepen` it, or move into `fw:work`."
+  `document-review` runs on that plan, let the user explicitly choose whether
+  to run `fw:deepen`, address findings, pause, or move into `fw:work`."
 - **Run route:** "This belongs in `fw:run` because the task is bounded enough
   for one coordinated pass through the remaining Flywheel stages. The output
   should be the current artifact set plus a clear stop point."

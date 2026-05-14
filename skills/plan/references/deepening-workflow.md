@@ -4,6 +4,17 @@ This file contains the confidence-check execution path for strengthening a plan
 after the first draft exists on disk. Load it only when the deepening gate in
 the main skill determines that strengthening is warranted.
 
+In interactive mode, this flow is also a docs-backed plan-grilling loop. It
+should not simply polish sections; it should challenge the plan against the
+source spec, repo truth, context docs, decisions, prior solutions, vertical
+slices, tests, and rollout or support posture until the next implementer and
+user share the same understanding.
+
+Before scoring gaps in interactive mode, load
+`../../deepen/references/plan-grilling.md`. In auto mode, apply the same
+completion bar without asking user questions; use repo-grounded assumptions only
+when they are safe, and record material unknowns as open questions.
+
 ## 5.3.3 Score Confidence Gaps
 
 Use a checklist-first, risk-weighted scoring pass.
@@ -42,6 +53,23 @@ If the plan already has a `deepened:` date:
 - success criteria are missing or not reflected downstream
 - units do not clearly advance the traced requirements
 - origin requirements are not clearly carried forward
+
+**Source Spec And Scope Alignment**
+
+- the plan has an origin spec, requirements doc, PRD synonym, design doc, or
+  issue body but does not compare its problem, outcome, workflows, accepted
+  decisions, acceptance criteria, out-of-scope, or open questions against the
+  plan
+- the plan appears to invent scope not present in the source artifact
+- acceptance criteria are weakened, dropped, or replaced with generic
+  verification language
+- source open questions are hidden as assumptions or incorrectly deferred to
+  implementation
+- source terminology conflicts with plan terminology, context docs, decision
+  records, code, tests, or prior solutions
+- the source artifact itself is fuzzy enough that
+  `../../brainstorm/references/spec-grilling.md` should be applied before the
+  plan can be trusted
 
 **Context & Research / Sources & References**
 
@@ -127,6 +155,11 @@ If the plan already has a `deepened:` date:
 - dependency order is unclear or likely wrong
 - file paths or test file paths are missing where they should be explicit
 - units are too large, too vague, or broken into micro-steps
+- units are horizontal by artifact or layer instead of vertical by observable
+  behavior, workflow contract, API contract, CLI behavior, support path, or
+  verification outcome
+- horizontal prerequisite, mechanical sweep, or reconciliation units are not
+  explicitly marked as exceptions with a reason
 - units are not atomic enough to map cleanly to host-tracked execution tasks
 - `Execution mode` is missing, unjustified, or inconsistent with the unit's
   dependencies and likely write-set overlap
@@ -184,6 +217,12 @@ Strengthening [section names] — [brief reason for each]
 For each selected section, choose the smallest useful input set. Do **not** run
 every possible research or review pass.
 
+When the selected gap is user-owned and cannot be resolved from repo truth,
+source docs, context, decisions, tests, or prior solutions, ask one material
+question at a time with the recommended answer first. After the answer is
+resolved, update the strengthen queue and continue to the next material gap
+instead of stopping at a broad confirmation.
+
 When the platform supports delegated specialist passes **and** policy allows,
 use at most **1-3** bounded passes per section and usually no more than **8**
 total.
@@ -192,6 +231,8 @@ Typical section-to-pass mapping:
 
 - **Requirements Trace / Open Questions** — repo-grounded pattern or flow
   checks
+- **Source Spec And Scope Alignment** — origin spec comparison,
+  `spec-grilling` checks, terminology conflicts, and acceptance criteria trace
 - **Context & Research / Sources & References** — repo learnings, prior art,
   or official documentation
 - **Key Technical Decisions** — architecture or tradeoff analysis
@@ -281,6 +322,32 @@ No findings accepted — plan unchanged.
 
 Then proceed directly to post-generation options. If findings were accepted and
 the plan changed, continue to synthesis and document review.
+
+### 5.3.6c Interactive Plan Grilling (Interactive Mode Only)
+
+Skip this step in auto mode.
+
+Use `../../deepen/references/plan-grilling.md` as the completion bar. For each
+selected gap or accepted finding that still depends on user judgment:
+
+1. state the conflict or ambiguity using the smallest concrete repo/source
+   evidence
+2. ask exactly one material question with a recommended answer when possible
+3. wait for the answer
+4. update the plan, context artifact, or decision route immediately
+5. continue to the next material gap
+
+Ask in dependency order: source/spec intent, terminology, scope boundary,
+concrete scenario, vertical slice shape, test or verification posture, rollout
+or support posture, then downstream execution details.
+
+If a context update or decision record appears warranted, route through
+`../../decision/SKILL.md` instead of silently writing a glossary or ADR from the
+plan flow alone.
+
+If the grilling session produces a resolved, reusable repo lesson or durable
+user correction, carry it to the final handoff as an optional `$fw:spin`
+candidate. Do not spin unresolved guesses or ordinary plan content.
 
 ## 5.3.7 Synthesize and Update the Plan
 
