@@ -15,6 +15,13 @@ already decided that delegation is warranted.
 Each ideation subtask owns one starting frame only. It generates raw
 candidates. It does not critique, rank, or decide survivors.
 
+Use `architecture-deepening` as the frame when repo-grounded ideation activates
+the improve-architecture lens. That subtask should generate architecture
+improvement candidates only: shallow-module deepening, interface or seam
+cleanup, locality/leverage improvements, and testability-driven architecture
+ideas. It must not design final interfaces or turn the batch into an
+architecture brief.
+
 ### Input Envelope
 
 Pass the task using these tags:
@@ -29,6 +36,9 @@ Pass the task using these tags:
     Generate raw candidates only.
     Do not critique, rank, or merge.
     Prefer grounded, specific ideas over abstract themes.
+    If the frame is architecture-deepening, include repo-relative files,
+    module/interface friction, locality or leverage payoff, and dependency
+    shape in each candidate's grounding.
     Avoid near-duplicates of obvious defaults unless the grounding strongly
     supports them.
   </generation_requirements>

@@ -73,6 +73,12 @@ Do not load every reference by default. Load only what the current phase needs:
   brief needs targeted follow-up research.
 - Read `references/universal-ideation.md` only when the ideation topic has no
   meaningful repo surface or no software implementation surface.
+- Load `../architecture-strategy/SKILL.md` and read
+  `../references/architecture-code-quality/deepening-opportunities.md` when
+  repo-grounded ideation should include an improve-architecture lens: broad
+  leverage search, architecture improvement, testability, AI-navigability,
+  boundary friction, tightly coupled modules, or path-specific code structure
+  concerns.
 - Read `references/subagent-contract.md` only when you choose delegated
   grounding or delegated ideation.
 - Read `references/post-ideation-workflow.md` only after the raw candidate list
@@ -119,6 +125,11 @@ Core tags:
    research. When new research is needed, fold only the decision-changing
    findings into grounding and the final recommendation instead of emitting a
    detached research report.
+9. **Include architecture leverage when it fits** - repo-grounded ideation
+   should look for architecture improvements when the topic is broad, asks for
+   leverage, or points at code structure. Use the `architecture-strategy`
+   improve-architecture lens to find deepening opportunities before ranking
+   ideas.
 
 ## Execution Flow
 
@@ -200,18 +211,30 @@ Gather grounding before generating ideas. Match the grounding to the mode:
      `files_touched`, `module`, `tags`, `problem_type`, `component`, and title
      before reading full docs; prefer `doc_status: active` and follow
      `superseded_by` when present
-3. When the active repo has `docs/research/`, search that local store by
+3. If the topic is broad repo improvement, architecture improvement,
+   testability, AI-navigability, or a path whose structure may hide future-edit
+   cost, activate an **improve architecture** grounding slice through
+   `architecture-strategy`:
+   - inspect module interfaces, implementation locality, dependency direction,
+     and tests around the focus area
+   - look for shallow modules, leaky seams, tightly coupled modules, repeated
+     caller choreography, or tests that reach past useful interfaces
+   - apply the deletion test to suspected shallow modules
+   - capture candidate hooks with files, problem, plain-English solution,
+     locality/leverage/testability payoff, and dependency shape
+   Treat this slice as input to ideation, not as a final architecture brief.
+4. When the active repo has `docs/research/`, search that local store by
    frontmatter and title before broad external research. Match on `topic`,
    `keywords`, `reuse_targets`, and title. Prefer a fresh brief whose
    `reuse_targets` include `ideate`. If the brief is stale or partial, reuse it
    as context and add only the smallest follow-up research needed. Fold the
    resulting findings into the shortlist rationale and recommendation.
-4. Verify any claim about current capabilities, missing pieces, or repo
+5. Verify any claim about current capabilities, missing pieces, or repo
    boundaries against actual files before using it as grounding.
-5. If the user explicitly asked for issue, bug, or feedback themes, gather them
+6. If the user explicitly asked for issue, bug, or feedback themes, gather them
    from accessible local artifacts or issue tooling. If unavailable, say so and
    continue without blocking.
-6. Use web research when the user explicitly asks for it or when current
+7. Use web research when the user explicitly asks for it or when current
    external signals materially affect the idea quality and no matching fresh
    brief already covers the topic. Skip it when the user says
    `no external research` or equivalent.
@@ -286,6 +309,8 @@ Dispatch guidance:
 
 - use **4** ideation subtasks for standard breadth
 - use **6** ideation subtasks only for deep or clearly open-ended ideation
+- when the improve-architecture lens is active and delegation is used, reserve
+  one ideation subtask for `architecture-deepening`
 
 #### 2.2 Generate Raw Candidates
 
@@ -303,6 +328,18 @@ Use these six frames as starting biases, not hard constraints:
    elsewhere?
 6. **Constraint-flipping** - What becomes visible if the obvious constraint is
    pushed to an extreme or inverted?
+
+For repo-grounded ideation, include an **architecture deepening** frame when
+the improve-architecture lens is active:
+
+- Which shallow modules could become deeper and improve locality?
+- Which interfaces leak invariants, ordering, error modes, config, or provider
+  details to callers?
+- Which current tests indicate the wrong interface or seam?
+- Which tightly coupled modules could be consolidated or split to increase
+  leverage without adding ceremony?
+- Which architecture candidate should be rejected because it is only a
+  pass-through or speculative seam?
 
 If issue or feedback themes were explicitly requested and strong themes were
 found, those themes may replace some default frames.
@@ -351,6 +388,8 @@ Before finishing, check:
 - survivors materially beat a naive "give me ideas" list
 - if the user started from a proposed solution, the shortlist still tested
   whether a better framing exists
+- if repo-grounded architecture signals were present, the improve-architecture
+  lens was used or explicitly suppressed with a reason
 - chosen follow-up routes to `$fw:brainstorm`, not directly to implementation
 - any saved artifact uses repo-relative paths and remains portable
 

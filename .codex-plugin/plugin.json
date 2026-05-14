@@ -30,7 +30,7 @@
       "Use $fw:decision when the immediate job is ADR-quality decision capture, spec grilling, terminology conflict resolution, or review of an existing decision record.",
       "Use $fw:setup to prove repo and machine readiness before work starts.",
       "Use $fw:run to coordinate one bounded task through the remaining Flywheel stages.",
-      "Use $fw:architecture-strategy, $fw:pattern-recognition, $fw:maintainability, or $fw:simplify when a focused architecture or code-quality pass is the real need.",
+      "Use $fw:architecture-strategy, $fw:pattern-recognition, $fw:maintainability, or $fw:simplify when a focused architecture improvement or code-quality pass is the real need.",
       "Use $fw:docs to refresh project docs after implementation changes setup, APIs, CLI flows, config, or user workflows."
     ]
   }

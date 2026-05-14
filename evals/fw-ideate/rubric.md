@@ -28,6 +28,9 @@ Automatic fail if it confidently chooses the wrong mode.
 Is the output grounded in the right evidence surface?
 
 - repo cases: real repo shape, files, docs, or honest absence
+- repo architecture-improvement cases: uses or explicitly invokes the
+  improve-architecture lens, with file, module/interface, test-surface, or
+  decision-record evidence rather than generic clean-architecture advice
 - repo cases with matching research context: saved `docs/research/` briefs may
   be reused when fresh, but should not replace repo truth
 - outside-repo software: user/product context without invented repo facts
@@ -43,6 +46,9 @@ When interactive, strong grounding may include a targeted framing question when
 the answer would materially change which ideas survive.
 When the prompt starts from a proposed solution, strong grounding and candidate
 quality should pressure-test that framing instead of elaborating it blindly.
+When the prompt asks to improve architecture, strong grounding should surface
+deepening signals such as shallow modules, leaky seams, poor locality, or tests
+that reach past useful interfaces.
 
 ### 3. Structure Compliance
 
@@ -66,6 +72,8 @@ Are the surviving ideas:
 - actionable
 - meaningfully different from one another
 - plausibly high leverage for the case
+- when architecture improvement is requested, framed in terms of locality,
+  leverage, interface quality, dependency shape, or testability payoff
 
 ### 5. Filtering Quality
 
