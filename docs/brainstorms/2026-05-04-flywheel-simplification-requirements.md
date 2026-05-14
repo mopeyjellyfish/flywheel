@@ -83,7 +83,7 @@ push, and PR automation.
   when applicable.
 - R21. Horizontal plan units are allowed only for true prerequisites,
   mechanical sweeps, or final reconciliation, and must be explicitly justified.
-- R22. `fw:test-driven-development` must require vertical slices: pick one
+- R22. `fw:tdd` must require vertical slices: pick one
   public behavior, write or identify the failing test, prove the red signal,
   make the smallest green change, refactor under test, and report evidence.
 - R23. TDD guidance must discourage horizontal execution such as writing all
@@ -190,18 +190,18 @@ push, and PR automation.
 - Add a short decision-checkpoint section to `skills/shape/SKILL.md`, with
   corresponding references from `brainstorm`, `plan`, and `deepen` handoffs
   when they close material shaping artifacts.
-- Strengthen `skills/test-driven-development/SKILL.md` rather than duplicating
+- Strengthen `skills/tdd/SKILL.md` rather than duplicating
   TDD doctrine inside `skills/work/SKILL.md`.
 - Shrink `skills/work/SKILL.md` by moving detailed execution doctrine into
   references or specialist skill activation points.
 - Reduce hook installation and doctor expectations to the required risky-edge
   events.
-- Update eval suites for `fw-shape`, `fw-work`, `fw-test-driven-development`,
+- Update eval suites for `fw-shape`, `fw-work`, `fw-tdd`,
   `fw-commit`, and hook policy.
 
 ## Dependencies / Assumptions
 
-- The existing `fw:test-driven-development` skill is the right home for strict
+- The existing `fw:tdd` skill is the right home for strict
   TDD behavior.
 - The existing publish-by-default `fw:commit` direction should be preserved.
 - External inspiration comes from:

@@ -85,10 +85,13 @@ Do not preload every reference. Load only what the current phase needs:
    language, boundaries, workflow contracts, or durable product choices, carry
    existing context and decision records into execution and route conflicts to
    `decision`.
-7. **Test continuously** — run the right checks while the work is still fresh.
-8. **Keep progress visible** — maintain task state, note blockers, and finish
+7. **Use TDD for behavior work** — feature work, bug fixes, public contract
+   changes, regression-prone paths, and behavior-preserving refactors load
+   `tdd` before implementation unless an explicit exception applies.
+8. **Test continuously** — run the right checks while the work is still fresh.
+9. **Keep progress visible** — maintain task state, note blockers, and finish
    with a clean quality gate.
-9. **Prefer fewer extra visible handoffs** — use helper workflows when they add
+10. **Prefer fewer extra visible handoffs** — use helper workflows when they add
    real value beyond the default shape -> work -> review -> optional spin ->
    commit loop.
 
@@ -132,7 +135,7 @@ the same turn.
 
    | Complexity | Signals | Action |
    | --- | --- | --- |
-   | **Trivial** | 1-2 files, no behavioral change, typo, rename, narrow config edit | Proceed to Phase 1 step 2, then implement directly. Skip task-list construction and the execution strategy phase. Apply Test Discovery if the change touches behavior-bearing code. |
+   | **Trivial** | 1-2 files, no behavioral change, typo, rename, narrow config edit | Proceed to Phase 1 step 2, then implement directly. Skip task-list construction and the execution strategy phase. If discovery proves the change is behavior-bearing after all, apply the TDD default before implementation. |
    | **Small / Medium** | Clear scope, bounded change, usually under 10 files | Build a host-tracked task list from discovery and proceed to Phase 1 step 2. |
    | **Large** | Cross-cutting, architectural, high-risk, or likely 10+ files, including auth, payments, migrations, or shared infra | Explain that the work would benefit from `$fw:brainstorm` or `$fw:plan` to surface edge cases and scope boundaries. Honor the user's choice. If proceeding, build a host-tracked task list and continue to Phase 1 step 2. |
 
@@ -152,10 +155,14 @@ Skip this step when arriving from Phase 0 with a bare prompt.
   `parallel-ready` as eligible rather than mandatory, and keep `serial` units
   ordered.
 - Check for `Test posture` on each implementation unit. If it is `tdd`, load
-  the `test-driven-development` skill before writing implementation code for
-  that unit. If it is `characterization`, capture current behavior before
-  changing it. Treat `no-new-tests` as valid only when the plan gives a clear
-  exception reason.
+  the `tdd` skill before writing implementation code for that unit. If it is
+  `characterization`, capture current behavior before changing it. Treat
+  `no-new-tests` as valid only when the plan gives a clear exception reason.
+- If a behavior-bearing feature, bug fix, public contract change,
+  regression-prone path, or behavior-preserving refactor lacks an explicit
+  `Test posture`, treat it as `tdd` by default and load the `tdd` skill before
+  implementation. Use a different posture only with a recorded exception and
+  verification path.
 - Check each unit's `Vertical slice` field when present. Execute vertical
   behavior slices one at a time. If the plan is organized as horizontal artifact
   batches such as all tests, all service edits, all docs, all migrations, or all
@@ -175,8 +182,8 @@ Skip this step when arriving from Phase 0 with a bare prompt.
 - If the plan already has checked implementation-unit checkboxes, treat those
   units as already completed unless repo truth clearly contradicts them.
 - If the user explicitly asks for TDD, test-first, or red-green-refactor
-  execution in this session, load the `test-driven-development` skill and honor
-  that request even if the plan is silent.
+  execution in this session, load the `tdd` skill and honor that request even
+  if the plan is silent.
 - If the user explicitly asks for characterization-first execution in this
   session, honor that request even if the plan is silent.
 - If anything important is unclear or ambiguous, ask clarifying questions now.
@@ -423,13 +430,18 @@ checkboxes synchronized with completed slices; use host task state for
 
 When a unit carries a `Test posture`, honor it:
 
-- **tdd** — load `test-driven-development`, write the failing test before
-  implementation, verify the red failure, implement the smallest green change
-  for the current vertical slice, refactor if useful, and report
+- **tdd** — load `tdd`, write the failing test before implementation, verify
+  the red failure, implement the smallest green change for the current vertical
+  slice, refactor if useful, and report
   red/green/refactor evidence before moving to the next slice
 - **characterization-first** — capture current behavior before changing it
 - **no-new-tests** — only when the unit is truly mechanical, config-only, or
   otherwise justified
+
+For bare-prompt tasks or plan units without `Test posture`, apply the same TDD
+default to behavior-bearing feature work, bug fixes, public contracts,
+regression-prone paths, and behavior-preserving refactors before editing
+implementation code. Record the exception when TDD is not warranted.
 
 When a unit carries an `Execution note`, honor it as sequencing, rollout, or
 other execution guidance. Do not use `Execution note` as a substitute for

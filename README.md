@@ -54,7 +54,8 @@ comments, or memory.
 Flywheel keeps the loop compact:
 
 - shape the change before coding
-- work from a reviewed plan
+- work from a reviewed plan, using TDD for behavior-bearing feature work and
+  bug fixes unless an explicit exception applies
 - review the diff before commit
 - finish the branch cleanly
 - spin durable lessons back into the repo
@@ -80,6 +81,7 @@ the next step is already clear.
 | `fw` or `fw:start` | Route a repo task into the right stage. |
 | `fw:shape` | Clarify an idea, compare options, write a plan, or deepen an existing plan. |
 | `fw:work` | Implement the planned change against repo truth. |
+| `fw:tdd` | Run strict red-green-refactor for behavior-bearing implementation slices. |
 | `fw:review` | Review the finished diff for bugs, regressions, missing tests, and readiness gaps. |
 | `fw:spin` | Capture durable lessons in `docs/solutions/` when the work teaches something reusable. |
 | `fw:commit` | Verify readiness, commit, push, and create or refresh the PR. |

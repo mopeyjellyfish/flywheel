@@ -75,7 +75,7 @@ Apply the named gate for the boundary being crossed:
 - `Commit-Ready` before creating the final local commit or PR payload.
 
 Keep helper skills as helpers. `ideate`, `brainstorm`, `document-review`,
-`test-driven-development`, `commit-message`, and similar skills should enrich
+`tdd`, `commit-message`, and similar skills should enrich
 the main loop without becoming competing backbone stages.
 
 ## Why This Matters

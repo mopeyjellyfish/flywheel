@@ -83,6 +83,9 @@ mandatory visible stages:
 - `fw:run` for explicit, optional end-to-end orchestration across the remaining
   stages when the user wants one coordinated pass instead of manual stage
   handoffs
+- `fw:tdd` for strict red-green-refactor execution on behavior-bearing feature
+  work, bug fixes, public contract changes, regression-prone paths, and
+  behavior-preserving refactors
 - `fw:research` for topic investigation, current best-practice
   discovery, and reusable evidence gathering that should sharpen ideation,
   brainstorming, review, or planning
@@ -149,6 +152,10 @@ inside that blocked stage.
   `../shape/SKILL.md`.
 - If a plan exists or the user wants implementation now, use
   `../work/SKILL.md`.
+- If the user explicitly asks for TDD, test-first, or red-green-refactor while
+  implementing feature work, a bug fix, a public contract change, or a
+  behavior-preserving refactor, use `../work/SKILL.md` and preserve the
+  requirement that work loads `../tdd/SKILL.md` before implementation.
 - If the immediate job is updating project docs, running a Diataxis docs pass,
   or refreshing docs after a code change, use `../docs/SKILL.md`.
 - If the user is dealing with a failing test, regression, stack trace, or

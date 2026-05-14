@@ -1,6 +1,6 @@
 {
-  "id": "fw-test-driven-development",
-  "skill": "fw:test-driven-development",
+  "id": "fw-tdd",
+  "skill": "fw:tdd",
   "caseFile": "cases.jsonl",
   "rubricFile": "rubric.md",
   "requiredItemFields": [

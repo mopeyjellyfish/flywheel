@@ -41,7 +41,7 @@ shape -> work -> review -> optional spin -> commit
 
 The current repo has the vertical planning and TDD contracts from PR #15:
 `skills/plan/SKILL.md`, `skills/work/SKILL.md`, and
-`skills/test-driven-development/SKILL.md` now all bias toward vertical behavior
+`skills/tdd/SKILL.md` now all bias toward vertical behavior
 slices and red-green-refactor execution. The remaining gap is the shaping and
 workflow simplification layer around that execution path.
 
@@ -163,7 +163,7 @@ lenses.
 - `skills/work/SKILL.md` already loads TDD for `Test posture: tdd` units and
   rejects horizontal plan batches, but it still carries a large amount of
   execution doctrine that can move to activation-time references.
-- `skills/test-driven-development/SKILL.md` already matches the required TDD
+- `skills/tdd/SKILL.md` already matches the required TDD
   posture: public behavior, one executable test case at a time, red before
   implementation, green, refactor, repeat.
 - At plan start, `hooks/hooks.json` and `scripts/codex-refresh-local.sh`
@@ -174,7 +174,7 @@ lenses.
 - At plan start, `scripts/flywheel-doctor.js` expected all lifecycle hook
   events. Unit 7 updated doctor expectations to the reduced guardrail set.
 - `evals/fw-shape/`, `evals/flywheel/`, `evals/fw-plan/`, `evals/fw-work/`,
-  and `evals/fw-test-driven-development/` cover route and TDD behavior, but
+  and `evals/fw-tdd/` cover route and TDD behavior, but
   no suite covers direct decision behavior, context/glossary capture, shape
   decision checkpointing, or issue-slice export.
 
@@ -431,7 +431,7 @@ and skill files if parallelized.
 - Modify: `skills/architecture-strategy/SKILL.md`
 - Modify: `skills/pattern-recognition/SKILL.md`
 - Modify: `skills/debug/SKILL.md`
-- Modify: `skills/test-driven-development/SKILL.md` only if it needs a
+- Modify: `skills/tdd/SKILL.md` only if it needs a
   shorter reference to the new context/decision conventions
 - Modify: `evals/fw-plan/cases.jsonl`
 - Modify: `evals/document-review/cases.jsonl`
@@ -459,7 +459,7 @@ plans.
 **Patterns to follow:**
 - `skills/plan/SKILL.md` reference loading map.
 - `skills/references/architecture-code-quality/activation-heuristics.md`.
-- Existing TDD context language in `skills/test-driven-development/SKILL.md`.
+- Existing TDD context language in `skills/tdd/SKILL.md`.
 
 **Test scenarios:**
 - A plan for a bounded-context/API change reads existing decision records and
@@ -576,7 +576,7 @@ carefully after the shaping contracts settle.
 - Add as needed: `skills/work/references/execution-router.md`
 - Modify: `evals/fw-work/cases.jsonl`
 - Modify: `evals/fw-work/rubric.md`
-- Modify: `evals/fw-test-driven-development/cases.jsonl` only if contract
+- Modify: `evals/fw-tdd/cases.jsonl` only if contract
   assertions need to be shared
 
 **Test posture:** `tdd` -- Work routing behavior determines how agents execute
@@ -597,7 +597,7 @@ behavior changes.
 
 **Patterns to follow:**
 - Current `skills/work/SKILL.md` Phase 1 plan checks.
-- `skills/test-driven-development/SKILL.md` for the authoritative TDD loop.
+- `skills/tdd/SKILL.md` for the authoritative TDD loop.
 - `skills/references/workflow-gates.md` for completion handoff.
 
 **Test scenarios:**
@@ -611,12 +611,12 @@ behavior changes.
 **Red signal:** `fw-work` cases fail because current work guidance is too large
 or duplicates specialist behavior instead of routing at activation points.
 
-**Green signal:** `fw-work` and `fw-test-driven-development` cases pass with a
+**Green signal:** `fw-work` and `fw-tdd` cases pass with a
 smaller default work skill and the same or stronger vertical TDD behavior.
 
 **Verification:**
 - `node scripts/flywheel-eval.js validate fw-work`
-- `node scripts/flywheel-eval.js validate fw-test-driven-development`
+- `node scripts/flywheel-eval.js validate fw-tdd`
 
 - [x] **Unit 7: Reduce default hooks to risky-edge guardrails**
 

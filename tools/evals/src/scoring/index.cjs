@@ -19,6 +19,7 @@ const { deterministicRun } = require("./fw-run.cjs");
 const { deterministicSetup } = require("./fw-setup.cjs");
 const { deterministicCommit } = require("./fw-commit.cjs");
 const { deterministicSpin } = require("./fw-spin.cjs");
+const { deterministicTdd } = require("./fw-tdd.cjs");
 const { deterministicWork } = require("./fw-work.cjs");
 const { deterministicWorktree } = require("./fw-worktree.cjs");
 const { deterministicLogging } = require("./logging.cjs");
@@ -95,6 +96,9 @@ function getDeterministicSuiteScorer(suiteId) {
   }
   if (suiteId === "fw-spin") {
     return deterministicSpin;
+  }
+  if (suiteId === "fw-tdd") {
+    return deterministicTdd;
   }
   if (suiteId === "logging") {
     return deterministicLogging;

@@ -18,7 +18,7 @@ Does it rely on repo truth, commands, or patterns?
 ### Continuous Validation
 
 Does it make checks, tests, or verification part of the work loop?
-Strong passes load or follow `test-driven-development` for `tdd` units, verify
+Strong passes load or follow `$fw:tdd` for `tdd` units, verify
 the red signal before implementation, keep the green change minimal, and report
 red/green/refactor evidence.
 
