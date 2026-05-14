@@ -98,6 +98,10 @@ When relevant:
   whether to address review findings, run `$fw:deepen`, or enter `$fw:work`
 - move from `$fw:work` into `$fw:review` by default before commit;
   use inline self-review only when the narrower work contract explicitly allows it
+- preserve `$fw:work`'s TDD default for behavior-bearing feature work, bug
+  fixes, public contract changes, regression-prone paths, and
+  behavior-preserving refactors; do not let orchestration skip `$fw:tdd`
+  when a slice requires red-green-refactor proof
 - use `$fw:docs` after `$fw:work` when the change altered setup, public
   APIs, CLI flows, configuration, or user workflows and the user wants docs
   refreshed before review

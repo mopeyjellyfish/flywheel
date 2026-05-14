@@ -36,7 +36,7 @@ For each vertical slice:
 2. Read plan references, nearby implementation, and existing tests.
 3. Check existing context or decision records when terminology, boundaries, or
    workflow contracts matter.
-4. If `Test posture: tdd`, load `test-driven-development` and complete red,
+4. If `Test posture: tdd`, load `tdd` and complete red,
    green, and refactor for this one slice before starting another.
 5. If `characterization`, capture current behavior before changing it.
 6. If `no-new-tests`, verify the exception reason and remaining proof path.

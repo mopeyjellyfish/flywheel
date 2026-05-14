@@ -167,7 +167,7 @@ the red signal exists or route the work upstream.
 
 Required sequence:
 
-1. load `test-driven-development` unless the reproducer is a non-test
+1. load `tdd` unless the reproducer is a non-test
    executable proof such as a CLI command or manual fixture
 2. create or isolate the red failing test or reproducer
 3. confirm it fails for the reason your hypothesis predicts

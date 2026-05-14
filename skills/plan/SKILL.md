@@ -134,7 +134,7 @@ needs:
    reconciliation, and must be marked as exceptions with a reason.
 9. **Default behavior changes to TDD** — feature work, bug fixes, public
    contract changes, regression-prone paths, and behavior-preserving refactors
-   should plan a `tdd` posture unless an explicit exception applies. Use
+   must plan a `tdd` posture unless an explicit exception applies. Use
    `characterization` for fragile existing behavior that must be pinned first,
    and `no-new-tests` only for generated, configuration-only, documentation-
    only, trivial mechanical, or otherwise disproportionate units. State the
@@ -465,8 +465,8 @@ For each implementation unit, choose exactly one test posture:
 - `tdd` — use when the unit changes externally observable behavior, a public
   contract, a bug fix, a regression-prone code path, or a behavior-preserving
   refactor that is reasonably testable now. This posture requires explicit red
-  and green proof points and tells `$fw:work` to load the
-  `test-driven-development` skill before implementation.
+  and green proof points and tells `$fw:work` to load the `tdd` skill before
+  implementation.
 - `characterization` — use when the first planning need is to lock current
   behavior in a fragile, legacy, or poorly understood area before changing it.
   State what behavior must be pinned and why a test-first failing proof point is

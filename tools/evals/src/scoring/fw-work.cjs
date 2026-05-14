@@ -21,7 +21,7 @@ function deterministicWork(caseItem, output) {
   const verticalCase = (caseItem.special_constraints || []).some((item) => /vertical behavior slice|horizontal reconciliation|batch all tests/i.test(item));
   if (verticalCase) {
     const verticalSignal = mentionsAtLeast(output, [/vertical slice/i, /behavior slice/i, /one slice/i, /slice by slice/i], 2);
-    const tddCycleSignal = mentionsAtLeast(output, [/red/i, /green/i, /refactor/i, /test-driven-development/i, /\btdd\b/i], 3);
+    const tddCycleSignal = mentionsAtLeast(output, [/red/i, /green/i, /refactor/i, /\$fw:tdd\b/i, /\/fw:tdd\b/i, /\btdd\b/i], 3);
     const antiHorizontalSignal = mentionsAtLeast(output, [/horizontal/i, /batch/i, /all tests/i, /all service edits/i, /all docs/i, /all config/i, /generated artifacts/i, /reconciliation/i], 2);
     const score = verticalSignal && tddCycleSignal && antiHorizontalSignal ? 2 : verticalSignal || tddCycleSignal ? 1 : 0;
     scores["Vertical Slice Execution"] = score;

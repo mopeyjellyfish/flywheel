@@ -1,30 +1,78 @@
 ---
-name: test-driven-development
-description: "Enforce red-green-refactor for behavior changes. Use before implementing feature, bugfix, refactor, or test-first unit."
+name: tdd
+description: "Enforce red-green-refactor for feature work, bug fixes, refactors, and behavior changes."
 metadata:
   argument-hint: "[implementation unit, bug, or behavior change]"
 ---
 
 # Test-Driven Development
 
-`$fw:test-driven-development` is Flywheel's strict helper for behavior-bearing
-implementation. It is normally loaded by `$fw:work` or `$fw:debug`, not used as
-a separate visible lifecycle stage.
+`$fw:tdd` is Flywheel's strict helper for behavior-bearing implementation. It
+is normally loaded by `$fw:work` or `$fw:debug`, not used as a separate visible
+lifecycle stage.
 
-The goal is to prove one behavior at a time: write a failing test, watch it fail
-for the expected reason, write the smallest implementation that makes it pass,
-then refactor while the test stays green.
+Use it to prove one behavior at a time: write a failing test, watch it fail for
+the expected reason, write the smallest implementation that makes it pass, then
+refactor while the test stays green.
 
-Use vertical tracer bullets. One cycle should cover one observable behavior
-through the public interface or real chain where practical, then stop and prove
-that slice before starting the next behavior. Do not treat RED as "write every
-test" and GREEN as "write all implementation."
+## Reference Loading Map
 
-Keep a short behavior/test list, but execute only one item at a time. Let design
-pressure come from passing executable test cases or reproducers: get one
-meaningful test case green, add the next test case only when it teaches
-something new, generalize only when those executable cases force it, and
-refactor after green to remove duplication or improve the public interface.
+Do not preload every reference. Load only what the current cycle needs:
+
+- Read `references/tests.md` when choosing the test shape or repairing tests
+  that are coupled to implementation details.
+- Read `references/mocking.md` when deciding whether a mock is valid or where
+  the system boundary belongs.
+- Read `references/interface-design.md` when the public interface is hard to
+  test without changing production design.
+- Read `references/deep-modules.md` when the current cycle exposes shallow
+  modules or too much implementation detail in the interface.
+- Read `references/refactoring.md` after green when cleanup is warranted.
+
+## Philosophy
+
+Tests should verify behavior through public interfaces, not implementation
+details. Code can change entirely; behavior-focused tests should survive that
+change.
+
+Good tests are integration-style: they exercise real code paths through public
+APIs. They describe what the system does, not how it does it. A good test reads
+like a specification: "user can checkout with valid cart" names the capability
+that exists.
+
+Bad tests are coupled to implementation. They mock internal collaborators, test
+private methods, assert call counts, or verify behavior by bypassing the public
+interface. The warning sign is a test that fails after a refactor even though
+observable behavior did not change.
+
+## Anti-Pattern: Horizontal Slices
+
+Do not write all tests first, then all implementation. That is horizontal
+slicing: treating RED as "write all tests" and GREEN as "write all code."
+
+Horizontal slicing produces weak tests:
+
+- tests written in bulk test imagined behavior, not actual behavior
+- tests drift toward data structures, function signatures, and private shape
+  instead of user-facing behavior
+- tests can pass when behavior breaks and fail when behavior is fine
+- the test structure gets committed before the implementation has taught the
+  right interface
+
+Use vertical tracer bullets instead: one test -> one implementation -> repeat.
+Each test responds to what the previous cycle taught.
+
+```text
+WRONG (horizontal):
+  RED:   test1, test2, test3, test4, test5
+  GREEN: impl1, impl2, impl3, impl4, impl5
+
+RIGHT (vertical):
+  RED -> GREEN: test1 -> impl1
+  RED -> GREEN: test2 -> impl2
+  RED -> GREEN: test3 -> impl3
+  ...
+```
 
 ## When To Use
 
@@ -55,16 +103,11 @@ TDD for behavior-bearing work.
 - Implement only enough code for the current red test to pass.
 - Refactor only after the target test is green, then rerun the target test.
 - Test behavior through public interfaces, command surfaces, API contracts, or
-  real integration chains where practical. Avoid mocks of internal
-  collaborators unless the mock is at a true system boundary.
-- Do not batch tests horizontally across future behaviors. Finish the current
-  red -> green -> refactor tracer bullet before choosing the next test.
+  real integration chains where practical.
+- Mock only true system boundaries. Avoid mocks of internal collaborators.
+- Do not batch tests horizontally across future behaviors.
 - Keep tests coupled to observable behavior, not private methods, call order,
   internal data shapes, or implementation names.
-- Prefer testable public interfaces: small surface area, explicit dependencies
-  for external systems, returned results over hidden side effects where the repo
-  design allows it, and no new generic abstraction until executable test cases
-  justify it.
 - Protect user work. Never delete or revert pre-existing or user-authored dirty
   changes to enforce this skill.
 
@@ -85,21 +128,18 @@ checkout/revert commands for TDD cleanup.
 Name the behavior, public contract, bug, or preservation claim under test.
 Find the nearest existing test idiom before creating a new pattern.
 
-When the repo has a domain glossary, context file, ADR, or decision record for
-the area, use its language in the test name and respect its interface or
-boundary decisions. If the plan lists several behaviors, choose the first
-observable behavior as the tracer bullet and leave the rest for later cycles.
-If repo truth contradicts the plan's terminology or decision assumptions,
-pause the slice and route that conflict back to `fw:decision` instead of
-encoding the contradiction in tests.
+When exploring the codebase, use the project's domain glossary so test names
+and interface vocabulary match the project's language. Respect ADRs and
+decision records in the area being changed.
 
 Before RED, make or update a compact behavior/test list:
 
 - prioritize critical paths, risky logic, regressions, and public contracts
 - skip exhaustive edge-case collection until the main behavior works
+- identify opportunities for deep modules and testable interfaces
 - choose the next test because it should change the implementation or protect a
   real contract
-- note any interface question that needs user input before writing the test
+- note interface questions that need user input before writing the test
 
 If the plan already provides `Red signal` and `Green signal`, use them unless
 repo truth proves a better target. If the plan is silent, choose the narrowest
@@ -129,26 +169,18 @@ cleanup, or abstractions while the target is still red.
 Do not anticipate future tests. Future behavior gets its own red signal after
 the current tracer bullet is green.
 
-Use the simplest credible route to green:
-
-- use the obvious implementation when the design is already clear
-- use a deliberately narrow implementation when the current test case is still
-  teaching the shape
-- add another test case before generalizing when the abstraction is not yet
-  earned
-
 ### 4. REFACTOR
 
 Only after GREEN, clean the implementation if cleanup is useful.
 
 Prefer refactors that remove duplication, improve names, simplify the public
 interface, deepen a module behind a small interface, or move external-system
-complexity behind an explicit boundary. Do not refactor while red.
+complexity behind an explicit boundary. Never refactor while red.
 
 Rerun the target command after each meaningful refactor step. Run broader
 relevant checks when the unit is complete or the changed surface warrants it.
 
-### 4.5 Next Cycle Decision
+### 5. Next Cycle Decision
 
 After the current tracer bullet is green and refactored:
 
@@ -159,7 +191,7 @@ After the current tracer bullet is green and refactored:
 4. stop when the planned slice is proven instead of expanding the slice
    opportunistically
 
-### 5. Report Evidence
+### 6. Report Evidence
 
 End the unit with a compact evidence block:
 

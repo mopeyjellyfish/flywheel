@@ -1,4 +1,4 @@
-# `fw-test-driven-development` Grading Rubric
+# `fw-tdd` Grading Rubric
 
 Score each dimension `0`, `1`, or `2`.
 
