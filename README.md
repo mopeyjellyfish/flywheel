@@ -90,7 +90,7 @@ Common starts:
 
 - Vague idea or new feature: `fw`
 - Known scoped change: `fw:shape`
-- Bug with an unclear cause: `fw:debug`
+- Hard bug, stack trace, or performance regression with unclear cause: `fw:debug`
 - Durable decision, ADR, or terminology conflict: `fw:decision`
 - Architecture or pattern decision: `fw:architecture-strategy` or `fw:pattern-recognition`
 - One bounded pass through the remaining stages: `fw:run`

@@ -10,14 +10,18 @@
     "success_definition"
   ],
   "dimensions": [
+    "Feedback Loop",
     "Issue Intake",
     "Evidence Discipline",
+    "Hypothesis Discipline",
     "Causal Chain",
     "Red Signal",
+    "Architecture Prevention",
     "Upstream Routing",
     "Verification Discipline"
   ],
   "criticalDimensions": [
+    "Feedback Loop",
     "Evidence Discipline",
     "Causal Chain",
     "Red Signal"
@@ -27,6 +31,9 @@
   "suggestedFirstPass": [
     "github_issue_debug",
     "stack_trace_debug",
-    "design_problem_debug"
+    "design_problem_debug",
+    "flaky_bug_debug",
+    "performance_regression_debug",
+    "no_loop_debug"
   ]
 }

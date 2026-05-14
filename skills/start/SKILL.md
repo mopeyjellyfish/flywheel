@@ -158,9 +158,9 @@ inside that blocked stage.
   requirement that work loads `../tdd/SKILL.md` before implementation.
 - If the immediate job is updating project docs, running a Diataxis docs pass,
   or refreshing docs after a code change, use `../docs/SKILL.md`.
-- If the user is dealing with a failing test, regression, stack trace, or
-  broken behavior and the immediate job is root-cause analysis, use
-  `../debug/SKILL.md`.
+- If the user is dealing with a failing test, regression, stack trace, broken
+  behavior, or performance regression and the immediate job is root-cause
+  analysis, use `../debug/SKILL.md`.
 - If code already changed and the job is to find bugs, regressions, or missing
   tests, use `../review/SKILL.md`.
 - If the immediate job is latency, throughput, memory, query, build, or cost
@@ -226,7 +226,8 @@ Apply these routing heuristics before doing repo exploration:
 - if the input asks to update docs, README guidance, tutorials, how-to guides,
   reference pages, explanation docs, or a post-work documentation handoff,
   route to `../docs/SKILL.md`
-- if the input is a bug, regression, test failure, or stack trace, route to
+- if the input is a bug, regression, test failure, stack trace, or performance
+  regression whose immediate job is causal diagnosis, route to
   `../debug/SKILL.md`
 - if the input says the code already changed or asks for pre-merge bug finding,
   route to `../review/SKILL.md`
@@ -382,7 +383,8 @@ Preferred stage-to-handoff wording:
   `fw:verify` only when the work needs them -> then continue into
   `fw:review`, optional `fw:spin`, and `fw:commit`
 - `fw:debug` -> produce a proved causal chain and either a red-to-green fix or
-  a handoff back to `fw:brainstorm` or `fw:plan`
+  a handoff to the right design, architecture, maintainability, or planning
+  stage
 - `fw:review` -> produce findings and fix decisions from the
   diff-selected reviewer set, dispatching personas in parallel when the host
   supports it -> then update the branch, route through `fw:rollout`
@@ -464,8 +466,8 @@ Use these patterns to keep routing answers stable across frontier models:
   then continue into `fw:review` and `fw:commit`."
 - **Debug route:** "This belongs in `fw:debug` because the immediate job is to
   prove why the bug happens before changing code. The output should be a causal
-  chain plus either a red-to-green fix or a routing decision back into
-  brainstorming or planning."
+  chain plus either a red-to-green fix or a routing decision into design,
+  architecture, maintainability, or planning."
 - **Incident route:** "This belongs in `fw:incident` because the work starts
   from live evidence and the immediate job is deciding mitigate vs rollback vs
   patch. The output should be an incident brief, then the right downstream
@@ -541,7 +543,8 @@ Use these patterns to keep routing answers stable across frontier models:
 - `polish`: tightened browser-visible behavior plus a closing proof pass.
 - `work`: implemented repo changes, task progress, and the helper checks the task needed before review.
 - `debug`: a proved causal chain and a red signal for the bug, then either a
-  minimal fix or a redesign handoff.
+  minimal fix or the right design, architecture, maintainability, or planning
+  handoff.
 - `incident`: an incident brief with runtime evidence, blast radius, and the
   chosen mitigation, rollback, or patch path.
 - `review`: findings first, with severity and file references.
