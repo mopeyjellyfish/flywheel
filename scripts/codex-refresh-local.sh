@@ -10,8 +10,8 @@ Refresh the local Flywheel plugin install for Codex development by:
   1. removing standalone global Flywheel skills that Codex would expose as $start
   2. ensuring ~/.codex/plugins/fw points at this repo
   3. refreshing the local Flywheel plugin cache
-  4. ensuring ~/.codex/config.toml enables fw@fw-local and codex hooks
-  5. merging the Flywheel Codex lifecycle hook guardrails into ~/.codex/hooks.json
+  4. ensuring ~/.codex/config.toml enables fw@fw-local, hooks, and plugin hooks
+  5. removing old user-level Flywheel hook entries while preserving unrelated hooks
 
 This is a development helper for working on Flywheel itself. It does not hot
 reload an already-running Codex session.
@@ -30,8 +30,8 @@ PLUGIN_SOURCE_NAME="fw"
 PLUGIN_LINK="$CODEX_HOME_DIR/plugins/$PLUGIN_SOURCE_NAME"
 CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/${PLUGIN_SOURCE_NAME}-local"
 CACHE_PLUGIN_DIR="$CACHE_ROOT/$PLUGIN_SOURCE_NAME/local"
-LEGACY_PLUGIN_LINK="$CODEX_HOME_DIR/plugins/flywheel"
-LEGACY_CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/flywheel-local"
+STALE_PLUGIN_LINK="$CODEX_HOME_DIR/plugins/flywheel"
+STALE_CACHE_ROOT="$CODEX_HOME_DIR/plugins/cache/flywheel-local"
 CONFIG_FILE="$CODEX_HOME_DIR/config.toml"
 HOOKS_FILE="$CODEX_HOME_DIR/hooks.json"
 PLUGIN_CONFIG_SECTION='[plugins."fw@fw-local"]'
@@ -79,6 +79,11 @@ ensure_repo_shape() {
     echo "ERROR: expected hooks/flywheel-hook-policy.js under $REPO_ROOT" >&2
     exit 1
   fi
+
+  if [ ! -f "$REPO_ROOT/hooks/codex-hooks.json" ]; then
+    echo "ERROR: expected hooks/codex-hooks.json under $REPO_ROOT" >&2
+    exit 1
+  fi
 }
 
 ensure_plugin_link() {
@@ -111,15 +116,15 @@ ensure_plugin_link() {
   echo "OK  local plugin link now points at $REPO_ROOT"
 }
 
-remove_legacy_install_paths() {
-  if [ -L "$LEGACY_PLUGIN_LINK" ] || [ -e "$LEGACY_PLUGIN_LINK" ]; then
-    run rm -rf "$LEGACY_PLUGIN_LINK"
-    echo "OK  removed legacy Codex plugin link at $LEGACY_PLUGIN_LINK"
+remove_stale_install_paths() {
+  if [ -L "$STALE_PLUGIN_LINK" ] || [ -e "$STALE_PLUGIN_LINK" ]; then
+    run rm -rf "$STALE_PLUGIN_LINK"
+    echo "OK  removed old Codex plugin link at $STALE_PLUGIN_LINK"
   fi
 
-  if [ -e "$LEGACY_CACHE_ROOT" ]; then
-    run rm -rf "$LEGACY_CACHE_ROOT"
-    echo "OK  removed legacy Codex plugin cache at $LEGACY_CACHE_ROOT"
+  if [ -e "$STALE_CACHE_ROOT" ]; then
+    run rm -rf "$STALE_CACHE_ROOT"
+    echo "OK  removed old Codex plugin cache at $STALE_CACHE_ROOT"
   fi
 }
 
@@ -225,7 +230,7 @@ write_plugin_config_block() {
   run mv "$temp_file" "$CONFIG_FILE"
 }
 
-remove_legacy_plugin_config() {
+remove_old_plugin_config() {
   local outcome outcome_file
   outcome_file="$(mktemp)"
 
@@ -291,10 +296,10 @@ NODE
       return 0
       ;;
     removed:*)
-      echo "OK  removed legacy [plugins.\"flywheel@...\"] or [plugins.\"fw@flywheel-local\"] entries from $CONFIG_FILE"
+      echo "OK  removed old [plugins.\"flywheel@...\"] or [plugins.\"fw@flywheel-local\"] entries from $CONFIG_FILE"
       ;;
     *)
-      echo "ERROR: unexpected Codex legacy-plugin cleanup result: $outcome" >&2
+      echo "ERROR: unexpected Codex old-plugin cleanup result: $outcome" >&2
       exit 1
       ;;
   esac
@@ -302,7 +307,7 @@ NODE
 
 ensure_plugin_config() {
   run mkdir -p "$(dirname "$CONFIG_FILE")"
-  remove_legacy_plugin_config
+  remove_old_plugin_config
 
   if config_section_enabled; then
     echo "OK  Codex config enables [plugins.\"fw@fw-local\"]"
@@ -335,16 +340,19 @@ features_section_enabled() {
     $0 == section { in_section=1; next }
     /^\[/ {
       if (in_section) {
-        exit enabled ? 0 : 1
+        exit hooks_enabled && plugin_hooks_enabled ? 0 : 1
       }
       next
     }
-    in_section && $0 ~ /^[[:space:]]*codex_hooks[[:space:]]*=[[:space:]]*true[[:space:]]*$/ {
-      enabled=1
+    in_section && $0 ~ /^[[:space:]]*hooks[[:space:]]*=[[:space:]]*true[[:space:]]*$/ {
+      hooks_enabled=1
+    }
+    in_section && $0 ~ /^[[:space:]]*plugin_hooks[[:space:]]*=[[:space:]]*true[[:space:]]*$/ {
+      plugin_hooks_enabled=1
     }
     END {
       if (in_section) {
-        exit enabled ? 0 : 1
+        exit hooks_enabled && plugin_hooks_enabled ? 0 : 1
       }
       exit 1
     }
@@ -352,183 +360,212 @@ features_section_enabled() {
 }
 
 write_features_block() {
-  local temp_file
+  local temp_file outcome_file
   temp_file="$(mktemp)"
+  outcome_file="$(mktemp)"
 
-  awk -v section="$FEATURES_SECTION" '
-    {
-      if ($0 == section) {
-        in_section=1
-        section_found=1
-        hooks_written=0
-        print
-        next
-      }
+  CONFIG_FILE="$CONFIG_FILE" TEMP_FILE="$temp_file" node <<'NODE' > "$outcome_file"
+const fs = require("fs");
 
-      if (in_section && $0 ~ /^\[/) {
-        if (!hooks_written) {
-          print "codex_hooks = true"
-          hooks_written=1
-        }
-        in_section=0
-      }
+const configFile = process.env.CONFIG_FILE;
+const tempFile = process.env.TEMP_FILE;
+const text = fs.existsSync(configFile) ? fs.readFileSync(configFile, "utf8") : "";
+const lines = text.split(/\r?\n/);
+if (lines.length > 0 && lines[lines.length - 1] === "") {
+  lines.pop();
+}
 
-      if (in_section && $0 ~ /^[[:space:]]*codex_hooks[[:space:]]*=/) {
-        if (!hooks_written) {
-          print "codex_hooks = true"
-          hooks_written=1
-        }
-        next
-      }
+const output = [];
+let inFeatures = false;
+let foundFeatures = false;
 
-      print
-    }
+function isSection(line) {
+  return /^\s*\[.*\]\s*$/.test(line);
+}
 
-    END {
-      if (in_section && !hooks_written) {
-        print "codex_hooks = true"
-      }
+function isFeatures(line) {
+  return line.trim() === "[features]";
+}
 
-      if (!section_found) {
-        if (NR > 0) {
-          print ""
-        }
-        print section
-        print "codex_hooks = true"
-      }
-    }
-  ' "$CONFIG_FILE" > "$temp_file"
+function isManagedFeature(line) {
+  return /^\s*(?:hooks|plugin_hooks)\s*=/.test(line);
+}
+
+function appendFeatureFlags() {
+  output.push("hooks = true");
+  output.push("plugin_hooks = true");
+}
+
+for (const line of lines) {
+  if (isFeatures(line)) {
+    foundFeatures = true;
+    inFeatures = true;
+    output.push(line);
+    continue;
+  }
+
+  if (inFeatures && isSection(line)) {
+    appendFeatureFlags();
+    inFeatures = false;
+  }
+
+  if (inFeatures && isManagedFeature(line)) {
+    continue;
+  }
+
+  output.push(line);
+}
+
+if (inFeatures) {
+  appendFeatureFlags();
+}
+
+if (!foundFeatures) {
+  if (output.length > 0) {
+    output.push("");
+  }
+  output.push("[features]");
+  appendFeatureFlags();
+}
+
+fs.writeFileSync(tempFile, `${output.join("\n")}\n`);
+process.stdout.write("ok");
+NODE
+  local outcome
+  outcome="$(cat "$outcome_file")"
+  rm -f "$outcome_file"
+  if [ "$outcome" != "ok" ]; then
+    rm -f "$temp_file"
+    echo "ERROR: unexpected Codex features update result: $outcome" >&2
+    exit 1
+  fi
 
   run mv "$temp_file" "$CONFIG_FILE"
 }
 
-ensure_codex_hooks_feature() {
+ensure_hooks_features() {
   run mkdir -p "$(dirname "$CONFIG_FILE")"
 
   if features_section_enabled; then
-    echo "OK  Codex config enables [features].codex_hooks"
+    echo "OK  Codex config enables [features].hooks and [features].plugin_hooks"
     return 0
   fi
 
   if [ ! -f "$CONFIG_FILE" ]; then
     if [ "$DRY_RUN" -eq 1 ]; then
-      echo "DRY_RUN: create $CONFIG_FILE with [features] codex_hooks = true"
+      echo "DRY_RUN: create $CONFIG_FILE with [features] hooks = true and plugin_hooks = true"
     else
       cat > "$CONFIG_FILE" <<EOF
 [features]
-codex_hooks = true
+hooks = true
+plugin_hooks = true
 EOF
     fi
-    echo "OK  wrote [features] codex_hooks = true to $CONFIG_FILE"
+    echo "OK  wrote [features] hooks = true and plugin_hooks = true to $CONFIG_FILE"
     return 0
   fi
 
   write_features_block
-  echo "OK  updated $CONFIG_FILE to enable [features].codex_hooks"
+  echo "OK  updated $CONFIG_FILE to enable [features].hooks and [features].plugin_hooks"
 }
 
-merge_hooks_config() {
-  local hook_command_prefix
-  hook_command_prefix="node \"$PLUGIN_LINK/hooks/flywheel-hook-policy.js\""
+remove_user_hook_entries() {
+  local outcome outcome_file
+  outcome_file="$(mktemp)"
 
-  if [ "$DRY_RUN" -eq 1 ]; then
-    echo "DRY_RUN: merge Flywheel hooks into $HOOKS_FILE"
-    return 0
-  fi
-
-  run mkdir -p "$(dirname "$HOOKS_FILE")"
-
-  HOOKS_FILE="$HOOKS_FILE" HOOK_COMMAND_PREFIX="$hook_command_prefix" node <<'NODE'
+  HOOKS_FILE="$HOOKS_FILE" DRY_RUN="$DRY_RUN" node <<'NODE' > "$outcome_file"
 const fs = require("fs");
 
 const hooksFile = process.env.HOOKS_FILE;
-const hookCommandPrefix = process.env.HOOK_COMMAND_PREFIX;
+const dryRun = process.env.DRY_RUN === "1";
 const hookNeedle = "flywheel-hook-policy.js";
-const hookDefinitions = [
-  {
-    event: "PreToolUse",
-    matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
-    command: `${hookCommandPrefix} pre-tool codex`,
-    statusMessage: "Checking Flywheel policy",
-  },
-  {
-    event: "PermissionRequest",
-    matcher: "Bash|apply_patch|Edit|Write|mcp__.*",
-    command: `${hookCommandPrefix} permission-request codex`,
-    statusMessage: "Checking Flywheel approval request",
-  },
-  {
-    event: "Stop",
-    command: `${hookCommandPrefix} stop codex`,
-    statusMessage: "Checking Flywheel handoff",
-    timeout: 30,
-  },
-];
 
-let payload = { hooks: {} };
-if (fs.existsSync(hooksFile)) {
-  try {
-    payload = JSON.parse(fs.readFileSync(hooksFile, "utf8"));
-  } catch {
-    payload = { hooks: {} };
-  }
+if (!fs.existsSync(hooksFile)) {
+  process.stdout.write("missing");
+  process.exit(0);
+}
+
+let payload;
+try {
+  payload = JSON.parse(fs.readFileSync(hooksFile, "utf8"));
+} catch {
+  process.stdout.write("parse-error");
+  process.exit(0);
 }
 
 if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-  payload = { hooks: {} };
+  process.stdout.write("none");
+  process.exit(0);
 }
+
 if (!payload.hooks || typeof payload.hooks !== "object" || Array.isArray(payload.hooks)) {
-  payload.hooks = {};
+  process.stdout.write("none");
+  process.exit(0);
 }
+
+let removedHooks = 0;
 for (const eventName of Object.keys(payload.hooks)) {
   if (!Array.isArray(payload.hooks[eventName])) {
     continue;
   }
-  payload.hooks[eventName] = payload.hooks[eventName].flatMap((matcherGroup) => {
-    if (!matcherGroup || !Array.isArray(matcherGroup.hooks)) {
-      return [matcherGroup];
+
+  payload.hooks[eventName] = payload.hooks[eventName].flatMap((group) => {
+    if (!group || !Array.isArray(group.hooks)) {
+      return [group];
     }
-    const hooks = matcherGroup.hooks.filter((hook) => {
-      return !(hook && typeof hook.command === "string" && hook.command.includes(hookNeedle));
+
+    const hooks = group.hooks.filter((hook) => {
+      const matches = hook && typeof hook.command === "string" && hook.command.includes(hookNeedle);
+      if (matches) {
+        removedHooks += 1;
+      }
+      return !matches;
     });
-    return hooks.length > 0 ? [{ ...matcherGroup, hooks }] : [];
+
+    return hooks.length > 0 ? [{ ...group, hooks }] : [];
   });
+
   if (payload.hooks[eventName].length === 0) {
     delete payload.hooks[eventName];
   }
 }
 
-function installHook(definition) {
-  if (!Array.isArray(payload.hooks[definition.event])) {
-    payload.hooks[definition.event] = [];
-  }
-  const matcher = definition.matcher;
-  let group = payload.hooks[definition.event].find((candidate) => {
-    return (candidate?.matcher || "") === (matcher || "");
-  });
-  if (!group) {
-    group = matcher ? { matcher, hooks: [] } : { hooks: [] };
-    payload.hooks[definition.event].push(group);
-  }
-  const hook = {
-    type: "command",
-    command: definition.command,
-    statusMessage: definition.statusMessage,
-  };
-  if (definition.timeout) {
-    hook.timeout = definition.timeout;
-  }
-  group.hooks.push(hook);
+if (removedHooks === 0) {
+  process.stdout.write("none");
+  process.exit(0);
 }
 
-for (const definition of hookDefinitions) {
-  installHook(definition);
+if (!dryRun) {
+  fs.writeFileSync(hooksFile, `${JSON.stringify(payload, null, 2)}\n`);
 }
 
-fs.writeFileSync(hooksFile, `${JSON.stringify(payload, null, 2)}\n`);
+process.stdout.write(`removed:${removedHooks}`);
 NODE
+  outcome="$(cat "$outcome_file")"
+  rm -f "$outcome_file"
 
-  echo "OK  merged Flywheel hook guardrails into $HOOKS_FILE"
+  case "$outcome" in
+    missing)
+      echo "OK  no user-level Codex hook config found at $HOOKS_FILE"
+      ;;
+    none)
+      echo "OK  no user-level Flywheel Codex hook entries found in $HOOKS_FILE"
+      ;;
+    removed:*)
+      if [ "$DRY_RUN" -eq 1 ]; then
+        echo "DRY_RUN: remove ${outcome#removed:} user-level Flywheel Codex hook entries from $HOOKS_FILE"
+      else
+        echo "OK  removed ${outcome#removed:} user-level Flywheel Codex hook entries from $HOOKS_FILE"
+      fi
+      ;;
+    parse-error)
+      echo "WARN  could not parse $HOOKS_FILE; remove Flywheel hook entries manually"
+      ;;
+    *)
+      echo "ERROR: unexpected Codex hook cleanup result: $outcome" >&2
+      exit 1
+      ;;
+  esac
 }
 
 while [ "$#" -gt 0 ]; do
@@ -554,12 +591,13 @@ done
 
 ensure_repo_shape
 remove_standalone_global_skills
-remove_legacy_install_paths
+remove_stale_install_paths
 ensure_plugin_link
 refresh_plugin_cache
 ensure_plugin_config
-ensure_codex_hooks_feature
-merge_hooks_config
+ensure_hooks_features
+remove_user_hook_entries
+echo "OK  using plugin-bundled Codex hooks"
 
 echo
 echo "Next step: start a fresh Codex session."

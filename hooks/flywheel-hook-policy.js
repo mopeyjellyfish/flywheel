@@ -156,6 +156,11 @@ function get(object, dottedPath) {
   }, object);
 }
 
+function configBoolean(config, dottedPath, defaultValue) {
+  const value = get(config, dottedPath);
+  return typeof value === "boolean" ? value : defaultValue;
+}
+
 function loadPolicy(repoRoot) {
   const configPath = repoRoot ? path.join(repoRoot, ".flywheel", "config.local.yaml") : null;
   let config = {};
@@ -165,12 +170,23 @@ function loadPolicy(repoRoot) {
   }
 
   return {
-    reviewRequired: get(config, "review.require_review_before_commit") === true,
-    browserProofRequired:
-      get(config, "commit.require_browser_proof_for_browser_visible_changes") === true ||
-      get(config, "browser.require_proof_for_browser_visible_changes") === true,
-    confirmPushToDefaultBranch:
-      get(config, "commit.confirm_push_to_default_branch") === true,
+    guardrails: {
+      destructiveBash: configBoolean(config, "hooks.guardrails.destructive_bash", true),
+      sensitiveWrites: configBoolean(config, "hooks.guardrails.sensitive_writes", true),
+      installedPluginWrites: configBoolean(config, "hooks.guardrails.installed_plugin_writes", true),
+    },
+    checkpoints: {
+      commitReview: configBoolean(config, "hooks.checkpoints.commit_review", false),
+      browserProof: configBoolean(config, "hooks.checkpoints.browser_proof", false),
+      defaultBranchPush: configBoolean(config, "hooks.checkpoints.default_branch_push", true),
+      mcpWrites: configBoolean(config, "hooks.checkpoints.mcp_writes", false),
+    },
+    lifecycle: {
+      sessionContext: configBoolean(config, "hooks.lifecycle.session_context", false),
+      promptRouting: configBoolean(config, "hooks.lifecycle.prompt_routing", false),
+      postToolValidation: configBoolean(config, "hooks.lifecycle.post_tool_validation", false),
+      stopCompletionCheckpoint: configBoolean(config, "hooks.lifecycle.stop_completion_checkpoint", false),
+    },
   };
 }
 
@@ -418,11 +434,11 @@ function buildCheckpointReasons({ command, repoRoot, policy, currentBranch, defa
   const reasons = [];
 
   if (/\bgit\s+commit\b/i.test(command)) {
-    if (policy.reviewRequired && !hasReviewArtifact(repoRoot, currentBranch)) {
+    if (policy.checkpoints.commitReview && !hasReviewArtifact(repoRoot, currentBranch)) {
       reasons.push("no recent Flywheel review artifact was found for this branch");
     }
     if (
-      policy.browserProofRequired &&
+      policy.checkpoints.browserProof &&
       looksBrowserVisible(changedFiles) &&
       !hasBrowserProof(repoRoot)
     ) {
@@ -432,7 +448,7 @@ function buildCheckpointReasons({ command, repoRoot, policy, currentBranch, defa
 
   if (
     /\bgit\s+push\b/i.test(command) &&
-    policy.confirmPushToDefaultBranch &&
+    policy.checkpoints.defaultBranchPush &&
     targetsDefaultBranch(command, currentBranch, defaultBranch)
   ) {
     reasons.push(`this push targets the default branch \`${defaultBranch}\``);
@@ -441,18 +457,18 @@ function buildCheckpointReasons({ command, repoRoot, policy, currentBranch, defa
   return reasons;
 }
 
-function buildWriteDenyReason({ payload, repoRoot, cwd }) {
+function buildWriteDenyReason({ payload, repoRoot, cwd, policy }) {
   if (!isEditTool(payload)) {
     return null;
   }
 
   const targets = toolInputPaths(payload).map((filePath) => resolveHookPath(repoRoot, cwd, filePath));
-  const sensitive = targets.find(looksSensitivePath);
+  const sensitive = policy.guardrails.sensitiveWrites ? targets.find(looksSensitivePath) : null;
   if (sensitive) {
     return `Flywheel blocked a write to sensitive-looking path \`${sensitive}\`. Use an example/template file or ask for explicit approval with the secret-handling plan.`;
   }
 
-  const installed = targets.find(looksInstalledFlywheelPath);
+  const installed = policy.guardrails.installedPluginWrites ? targets.find(looksInstalledFlywheelPath) : null;
   if (installed) {
     return `Flywheel blocked a write to installed Flywheel plugin state \`${installed}\`. Edit the source checkout instead, then refresh the install.`;
   }
@@ -460,9 +476,9 @@ function buildWriteDenyReason({ payload, repoRoot, cwd }) {
   return null;
 }
 
-function buildPreToolCheckpointReasons({ payload }) {
+function buildPreToolCheckpointReasons({ payload, policy }) {
   const reasons = [];
-  if (isMcpWriteTool(payload)) {
+  if (policy.checkpoints.mcpWrites && isMcpWriteTool(payload)) {
     reasons.push(`MCP write-like tool \`${toolName(payload)}\` may modify external state`);
   }
   return reasons;
@@ -574,7 +590,7 @@ function buildPostToolContext({ payload, repoRoot, policy }) {
   }
 
   if (
-    policy?.browserProofRequired &&
+    policy?.checkpoints?.browserProof &&
     isEditTool(payload) &&
     looksBrowserVisible(paths) &&
     !hasBrowserProof(repoRoot)
@@ -613,30 +629,30 @@ function buildStopReason({ payload, changedFiles }) {
   return "Flywheel stop checkpoint: changed files remain and the last message looks like a completion claim. Continue once to report validation evidence, changed-file status, and a Flywheel handoff with the next stage.";
 }
 
-function claudeAsk(reason) {
+function claudeAsk(eventName, reason) {
   return {
     hookSpecificOutput: {
-      hookEventName: "PreToolUse",
+      hookEventName: eventName,
       permissionDecision: "ask",
       permissionDecisionReason: reason,
     },
   };
 }
 
-function claudeDeny(reason) {
+function claudeDeny(eventName, reason) {
   return {
     hookSpecificOutput: {
-      hookEventName: "PreToolUse",
+      hookEventName: eventName,
       permissionDecision: "deny",
       permissionDecisionReason: reason,
     },
   };
 }
 
-function codexDeny(reason) {
+function codexDeny(eventName, reason) {
   return {
     hookSpecificOutput: {
-      hookEventName: "PreToolUse",
+      hookEventName: eventName,
       permissionDecision: "deny",
       permissionDecisionReason: reason,
     },
@@ -694,7 +710,7 @@ function main() {
     const defaultBranch = repoRoot ? resolveDefaultBranch(repoRoot) : "";
     const changedFiles = repoRoot ? listChangedFiles(repoRoot) : [];
 
-    if (eventName === "SessionStart") {
+    if (eventName === "SessionStart" && policy.lifecycle.sessionContext) {
       const context = buildSessionContext(repoRoot, currentBranch);
       if (context) {
         process.stdout.write(JSON.stringify(additionalContext("SessionStart", context)));
@@ -702,7 +718,11 @@ function main() {
       return;
     }
 
-    if (eventName === "UserPromptSubmit") {
+    if (eventName === "SessionStart") {
+      return;
+    }
+
+    if (eventName === "UserPromptSubmit" && policy.lifecycle.promptRouting) {
       const context = buildPromptContext(payload?.prompt);
       if (context) {
         process.stdout.write(JSON.stringify(additionalContext("UserPromptSubmit", context)));
@@ -710,7 +730,11 @@ function main() {
       return;
     }
 
-    if (eventName === "PostToolUse") {
+    if (eventName === "UserPromptSubmit") {
+      return;
+    }
+
+    if (eventName === "PostToolUse" && policy.lifecycle.postToolValidation) {
       const context = repoRoot ? buildPostToolContext({ payload, repoRoot, policy }) : "";
       if (context) {
         process.stdout.write(JSON.stringify(additionalContext("PostToolUse", context)));
@@ -718,7 +742,11 @@ function main() {
       return;
     }
 
-    if (eventName === "Stop") {
+    if (eventName === "PostToolUse") {
+      return;
+    }
+
+    if (eventName === "Stop" && policy.lifecycle.stopCompletionCheckpoint) {
       const reason = buildStopReason({ payload, changedFiles });
       if (reason) {
         process.stdout.write(JSON.stringify(blockStop(reason)));
@@ -726,21 +754,25 @@ function main() {
       return;
     }
 
+    if (eventName === "Stop") {
+      return;
+    }
+
     if (eventName !== "PreToolUse" && eventName !== "PermissionRequest") {
       return;
     }
 
-    const writeDenyReason = buildWriteDenyReason({ payload, repoRoot, cwd });
+    const writeDenyReason = buildWriteDenyReason({ payload, repoRoot, cwd, policy });
     if (writeDenyReason) {
-      const response = host === "claude" ? claudeDeny(writeDenyReason) : codexDeny(writeDenyReason);
+      const response = host === "claude" ? claudeDeny(eventName, writeDenyReason) : codexDeny(eventName, writeDenyReason);
       process.stdout.write(JSON.stringify(response));
       return;
     }
 
-    if (isBashTool(payload) && command) {
+    if (policy.guardrails.destructiveBash && isBashTool(payload) && command) {
       const destructive = dangerousReason(command, currentBranch, defaultBranch);
       if (destructive) {
-        const response = host === "claude" ? claudeDeny(destructive) : codexDeny(destructive);
+        const response = host === "claude" ? claudeDeny(eventName, destructive) : codexDeny(eventName, destructive);
         process.stdout.write(JSON.stringify(response));
         return;
       }
@@ -759,12 +791,12 @@ function main() {
         defaultBranch,
         changedFiles,
       }),
-      ...buildPreToolCheckpointReasons({ payload }),
+      ...buildPreToolCheckpointReasons({ payload, policy }),
     ];
 
     if (checkpointReasons.length > 0) {
       const reason = `Flywheel checkpoint: ${checkpointReasons.join("; ")}.`;
-      const response = host === "claude" ? claudeAsk(reason) : codexWarn(reason);
+      const response = host === "claude" ? claudeAsk(eventName, reason) : codexWarn(reason);
       process.stdout.write(JSON.stringify(response));
     }
   });

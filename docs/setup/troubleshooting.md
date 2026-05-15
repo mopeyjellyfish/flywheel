@@ -73,13 +73,17 @@ node scripts/flywheel-doctor.js --host codex --codex-session-smoke
 
 Symptom:
 - dangerous Bash commands are not blocked
-- Codex does not show Flywheel policy reminders before commit, push, prompt
-  routing, post-edit validation, or final handoff checkpoints
+- Codex does not block writes to sensitive paths or installed Flywheel plugin
+  state
 
 Check:
-- `~/.codex/config.toml` contains `[features]` with `codex_hooks = true`
-- `~/.codex/hooks.json` contains Flywheel `flywheel-hook-policy.js` entries for
-  `PreToolUse`, `PermissionRequest`, and `Stop`
+- `~/.codex/config.toml` contains `[features]` with `hooks = true` and
+  `plugin_hooks = true`
+- `.codex-plugin/plugin.json` points to `./hooks/codex-hooks.json`
+- `hooks/codex-hooks.json` contains Flywheel `PreToolUse` and
+  `PermissionRequest` entries only
+- user-level Codex hook config does not contain `flywheel-hook-policy.js`
+  entries; `make install/codex/refresh` removes only those Flywheel entries
 - `node scripts/flywheel-doctor.js --host codex`
 
 Fix:
@@ -97,6 +101,10 @@ Note:
 - Codex can hard-block destructive supported tool calls, but ask-style policy
   checkpoints may degrade to warnings when the host cannot honestly enforce an
   ask gate
+- Session context, prompt routing, post-tool validation, Stop checkpoints, and
+  MCP write checks are not part of the default Codex hook pack. Wire extra hooks
+  and enable the matching `.flywheel/config.local.yaml` `hooks.lifecycle` or
+  `hooks.checkpoints` setting when a repo needs them.
 
 ### Need a clean Flywheel install state before retesting
 
@@ -262,9 +270,10 @@ Fix:
 
 Note:
 - Claude plugin hooks are bundled from the plugin root `hooks/hooks.json`
-- Flywheel keeps default hooks thin: risky-edge tool policy and incomplete-
-  completion stop checks. Session context, prompt routing, and post-tool
-  validation hints are not default hook guardrails
+- Flywheel keeps default hooks thin. Session context, prompt routing,
+  post-tool validation hints, and completion stop checks require the matching
+  `.flywheel/config.local.yaml` `hooks.lifecycle` setting before the policy
+  script emits coaching output.
 
 ### Claude direct `--plugin-dir` runs are not available
 

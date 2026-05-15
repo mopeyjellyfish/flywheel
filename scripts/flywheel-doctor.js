@@ -364,6 +364,26 @@ function checkNoStandaloneGlobalFlywheelSkillsForCodex() {
   };
 }
 
+function configFeatures(text) {
+  const features = {};
+  let inFeatures = false;
+  for (const line of String(text || "").split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (trimmed === "[features]") {
+      inFeatures = true;
+      continue;
+    }
+    if (inFeatures && /^\[.*\]$/.test(trimmed)) {
+      break;
+    }
+    const match = inFeatures && trimmed.match(/^([A-Za-z0-9_-]+)\s*=\s*(true|false)\s*$/);
+    if (match) {
+      features[match[1]] = match[2] === "true";
+    }
+  }
+  return features;
+}
+
 function checkCodexHooksFeatureEnabled() {
   const codexHome = process.env.CODEX_HOME || path.join(process.env.HOME || "", ".codex");
   const configPath = path.join(codexHome, "config.toml");
@@ -376,42 +396,76 @@ function checkCodexHooksFeatureEnabled() {
   }
 
   const text = fs.readFileSync(configPath, "utf8");
-  const ok = /\[features\][\s\S]*?^\s*codex_hooks\s*=\s*true\s*$/m.test(text);
+  const features = configFeatures(text);
+  const ok = features.hooks === true && features.plugin_hooks === true;
   return {
     name: "Codex hooks feature flag",
     ok,
-    detail: ok ? "config.toml enables codex_hooks" : "config.toml is missing [features].codex_hooks = true",
+    detail: ok
+      ? "config.toml enables hooks and plugin_hooks"
+      : "config.toml is missing [features].hooks = true or [features].plugin_hooks = true",
   };
 }
 
-function checkCodexHooksInstalled() {
+function hookEventHasCommand(payload, eventName, commandPattern) {
+  const groups = Array.isArray(payload?.hooks?.[eventName]) ? payload.hooks[eventName] : [];
+  return groups.some((group) =>
+    Array.isArray(group?.hooks) &&
+    group.hooks.some((hook) => typeof hook?.command === "string" && commandPattern.test(hook.command)),
+  );
+}
+
+function checkCodexPluginHookPackShape() {
+  const manifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
+  const manifest = fs.existsSync(manifestPath)
+    ? parseJson(fs.readFileSync(manifestPath, "utf8"))
+    : null;
+  const expectedPath = "./hooks/codex-hooks.json";
+  const hookPackPath = path.join(repoRoot, "hooks", "codex-hooks.json");
+  const payload = fs.existsSync(hookPackPath)
+    ? parseJson(fs.readFileSync(hookPackPath, "utf8"))
+    : null;
+  const events = Object.keys(payload?.hooks || {}).sort();
+  const expectedEvents = ["PermissionRequest", "PreToolUse"];
+  const hasExpectedEvents = JSON.stringify(events) === JSON.stringify(expectedEvents);
+  const hasCommands = expectedEvents.every((eventName) =>
+    hookEventHasCommand(payload, eventName, /flywheel-hook-policy\.js/),
+  );
+  const serialized = JSON.stringify(payload || {});
+  const avoidsLifecycle = !/SessionStart|UserPromptSubmit|PostToolUse|Stop/.test(serialized);
+  const avoidsMcp = !/mcp__/.test(serialized);
+  const ok = manifest?.hooks === expectedPath && hasExpectedEvents && hasCommands && avoidsLifecycle && avoidsMcp;
+
+  return {
+    name: "Codex plugin hook pack shape",
+    ok,
+    detail: ok
+      ? ".codex-plugin/plugin.json points at hooks/codex-hooks.json with safety-only Codex hooks"
+      : `expected manifest hooks ${expectedPath}, events ${expectedEvents.join(", ")}, no lifecycle/default MCP hooks`,
+  };
+}
+
+function checkNoUserLevelCodexHooks() {
   const codexHome = process.env.CODEX_HOME || path.join(process.env.HOME || "", ".codex");
   const hooksPath = path.join(codexHome, "hooks.json");
   if (!fs.existsSync(hooksPath)) {
     return {
-      name: "Flywheel Codex hook guardrails",
-      ok: false,
-      detail: `missing ${hooksPath}`,
+      name: "No user-level Flywheel Codex hooks",
+      ok: true,
+      detail: `no user-level Codex hook config found at ${hooksPath}`,
     };
   }
 
   const payload = parseJson(fs.readFileSync(hooksPath, "utf8"));
-  const expectedEvents = ["PreToolUse", "PermissionRequest", "Stop"];
-  const missing = expectedEvents.filter((eventName) => {
-    const groups = Array.isArray(payload?.hooks?.[eventName]) ? payload.hooks[eventName] : [];
-    return !groups.some((group) =>
-      Array.isArray(group?.hooks) &&
-      group.hooks.some((hook) => typeof hook?.command === "string" && hook.command.includes("flywheel-hook-policy.js")),
-    );
-  });
-  const present = missing.length === 0;
-
+  const events = Object.keys(payload?.hooks || {}).filter((eventName) =>
+    hookEventHasCommand(payload, eventName, /flywheel-hook-policy\.js/),
+  );
   return {
-    name: "Flywheel Codex hook guardrails",
-    ok: present,
-    detail: present
-      ? `hooks.json contains Flywheel hooks for ${expectedEvents.join(", ")}`
-      : `hooks.json is missing Flywheel hook(s): ${missing.join(", ")}`,
+    name: "No user-level Flywheel Codex hooks",
+    ok: events.length === 0,
+    detail: events.length === 0
+      ? `${hooksPath} has no Flywheel hook entries`
+      : `${hooksPath} contains Flywheel hook entries for ${events.sort().join(", ")}; run make install/codex/refresh to remove them`,
   };
 }
 
@@ -640,8 +694,10 @@ function main() {
 
   if (includeCodex) {
     checks.unshift(checkFile("Plugin manifest", ".codex-plugin/plugin.json"));
+    checks.unshift(checkFile("Codex hook pack", "hooks/codex-hooks.json"));
     checks.unshift(checkFile("Shared hook policy script", "hooks/flywheel-hook-policy.js"));
     checks.push(checkCodexRootRouterPrompt());
+    checks.push(checkCodexPluginHookPackShape());
     checks.push(checkNoStandaloneGlobalFlywheelSkillsForCodex());
   }
   if (includeClaude) {
@@ -700,7 +756,7 @@ function main() {
 
   if (includeCodex) {
     checks.push(checkCodexHooksFeatureEnabled());
-    checks.push(checkCodexHooksInstalled());
+    checks.push(checkNoUserLevelCodexHooks());
     checks.push(codexSessionSmokeCheck());
   }
   if (includeClaude) {

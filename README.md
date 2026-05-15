@@ -148,8 +148,9 @@ falling back to the published package when this checkout does not expose
 `skills/*/SKILL.md`.
 
 `make install/codex` now refreshes the local Flywheel plugin install shape,
-turns on the experimental Codex hooks feature, and merges Flywheel risky-edge
-guardrails into `~/.codex/hooks.json`.
+enables Codex `hooks` and `plugin_hooks`, and uses the Codex-specific hook pack
+bundled at `hooks/codex-hooks.json`. It removes old user-level Flywheel hook
+entries while preserving unrelated hooks.
 
 From another checkout or worktree:
 
@@ -220,7 +221,7 @@ Setup and troubleshooting notes:
 - `.claude-plugin/plugin.json` - Claude plugin manifest
 - `.claude-plugin/marketplace.json` - Claude marketplace manifest for this repo
 - `.flywheel/config.local.example.yaml` - local config template
-- `hooks/` - shared hook policy script and Claude plugin hook pack
+- `hooks/` - shared hook policy script plus Codex and Claude plugin hook packs
 - `skills/` - shared Flywheel workflow skills
 - `docs/setup/` - compatibility and troubleshooting notes
 - `docs/solutions/` - searchable knowledge captured by `spin`

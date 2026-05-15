@@ -31,6 +31,22 @@ commit:
   require_browser_proof_for_browser_visible_changes: true
   confirm_push_to_default_branch: true
 
+hooks:
+  guardrails:
+    destructive_bash: true
+    sensitive_writes: true
+    installed_plugin_writes: true
+  checkpoints:
+    commit_review: false
+    browser_proof: false
+    default_branch_push: true
+    mcp_writes: false
+  lifecycle:
+    session_context: false
+    prompt_routing: false
+    post_tool_validation: false
+    stop_completion_checkpoint: false
+
 workflow:
   prefer_worktrees: true
   use_setup_ledger: true
