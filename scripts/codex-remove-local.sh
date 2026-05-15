@@ -8,10 +8,10 @@ Usage:
 
 Remove Flywheel from the local Codex development install by:
   1. removing standalone global Flywheel skills that Codex would expose as $start
-  2. removing ~/.codex/plugins/fw and any legacy ~/.codex/plugins/flywheel link
-  3. removing ~/.codex/plugins/cache/fw-local and any legacy ~/.codex/plugins/cache/flywheel-local cache
+  2. removing ~/.codex/plugins/fw and any old ~/.codex/plugins/flywheel link
+  3. removing ~/.codex/plugins/cache/fw-local and any old ~/.codex/plugins/cache/flywheel-local cache
   4. removing Flywheel plugin entries from ~/.codex/config.toml
-  5. removing the Flywheel hook guardrails from ~/.codex/hooks.json
+  5. removing old user-level Flywheel hook entries if present
 
 Options:
   --dry-run     Print the actions without changing anything
@@ -221,10 +221,10 @@ NODE
       echo "OK  no Codex hooks file found at $HOOKS_FILE"
       ;;
     none)
-      echo "OK  no Flywheel Codex hook guardrails found in $HOOKS_FILE"
+      echo "OK  no user-level Flywheel Codex hook entries found in $HOOKS_FILE"
       ;;
     removed:*)
-      echo "OK  removed Flywheel Codex hook guardrails from $HOOKS_FILE"
+      echo "OK  removed user-level Flywheel Codex hook entries from $HOOKS_FILE"
       ;;
     parse-error)
       echo "WARN  could not parse $HOOKS_FILE; remove Flywheel hook entries manually"
@@ -259,14 +259,14 @@ remove_path "$PLUGIN_LINK" \
   "removed Codex plugin link at $PLUGIN_LINK" \
   "no Codex plugin link found at $PLUGIN_LINK"
 remove_path "$LEGACY_PLUGIN_LINK" \
-  "removed legacy Codex plugin link at $LEGACY_PLUGIN_LINK" \
-  "no legacy Codex plugin link found at $LEGACY_PLUGIN_LINK"
+  "removed old Codex plugin link at $LEGACY_PLUGIN_LINK" \
+  "no old Codex plugin link found at $LEGACY_PLUGIN_LINK"
 remove_path "$CACHE_ROOT" \
   "removed Codex plugin cache at $CACHE_ROOT" \
   "no Codex plugin cache found at $CACHE_ROOT"
 remove_path "$LEGACY_CACHE_ROOT" \
-  "removed legacy Codex plugin cache at $LEGACY_CACHE_ROOT" \
-  "no legacy Codex plugin cache found at $LEGACY_CACHE_ROOT"
+  "removed old Codex plugin cache at $LEGACY_CACHE_ROOT" \
+  "no old Codex plugin cache found at $LEGACY_CACHE_ROOT"
 remove_plugin_config
 remove_hooks_config
 

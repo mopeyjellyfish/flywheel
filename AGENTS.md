@@ -8,7 +8,7 @@
 skills/           Shared Flywheel stage and helper skills
 evals/            Eval suites for workflow, stage, and regression validation
 scripts/          Local install refresh, doctor, and eval helpers
-hooks/            Shared hook policy script and Claude hook pack
+hooks/            Shared hook policy script and Codex/Claude hook packs
 docs/             Brainstorms, context, decisions, plans, setup docs, solutions
 tools/evals/      Isolated eval harness workspace and CLI
 .claude-plugin/   Claude plugin manifest and marketplace metadata
@@ -18,7 +18,7 @@ tools/evals/      Isolated eval harness workspace and CLI
 ```
 
 ## Development & Verification Commands
-- `make install/codex` refreshes the local Codex install, repairs hooks, runs doctor checks, and validates eval suites.
+- `make install/codex` refreshes the local Codex install, enables plugin-bundled hooks, runs doctor checks, and validates eval suites.
 - `make install/codex/force-link` repoints the Codex install to this checkout when another repo or worktree is linked.
 - `make install/claude` refreshes the local Claude marketplace install and runs the same validation loop for Claude.
 - `make install/claude/force-source` repoints the Claude marketplace source to this checkout.

@@ -13,6 +13,7 @@
     "continuous-improvement"
   ],
   "skills": "./skills/",
+  "hooks": "./hooks/codex-hooks.json",
   "interface": {
     "displayName": "Flywheel",
     "shortDescription": "Make the next repo change faster",
