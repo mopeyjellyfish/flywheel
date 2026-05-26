@@ -1,0 +1,4 @@
+interface:
+  display_name: "$fw:architecture-strategy"
+  short_description: "Improve or choose system shape"
+  default_prompt: "Use $fw:architecture-strategy to find repo-grounded architecture improvement opportunities or compare boundary, service-shape, hexagonal, and distributed-system options, then recommend the minimum durable architecture."

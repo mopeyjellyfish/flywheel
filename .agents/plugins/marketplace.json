@@ -8,7 +8,7 @@
       "name": "fw",
       "source": {
         "source": "local",
-        "path": "./"
+        "path": "./plugins/fw"
       },
       "policy": {
         "installation": "AVAILABLE",

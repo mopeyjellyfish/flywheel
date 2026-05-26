@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Document Review Findings",
+  "description": "Structured output schema for document review reviewer passes",
+  "type": "object",
+  "required": ["reviewer", "findings", "residual_risks", "deferred_questions"],
+  "properties": {
+    "reviewer": {
+      "type": "string",
+      "description": "Reviewer name that produced this output"
+    },
+    "findings": {
+      "type": "array",
+      "description": "List of review findings. Empty array if no issues found.",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "severity",
+          "section",
+          "why_it_matters",
+          "finding_type",
+          "autofix_class",
+          "confidence",
+          "impact_score",
+          "effort_to_fix",
+          "evidence"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Short, specific issue title",
+            "maxLength": 100
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["P0", "P1", "P2", "P3"],
+            "description": "Issue severity level"
+          },
+          "section": {
+            "type": "string",
+            "description": "Document section where the issue appears"
+          },
+          "why_it_matters": {
+            "type": "string",
+            "description": "Impact statement describing what goes wrong if the issue is not addressed"
+          },
+          "autofix_class": {
+            "type": "string",
+            "enum": ["auto", "present"],
+            "description": "Whether the issue has one clear correct fix or requires judgment"
+          },
+          "finding_type": {
+            "type": "string",
+            "enum": ["error", "omission"],
+            "description": "Whether the document says something wrong or forgot to say something needed"
+          },
+          "suggested_fix": {
+            "type": ["string", "null"],
+            "description": "Concrete fix text. Required in practice for auto findings."
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Reviewer confidence in this finding before global calibration",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "impact_score": {
+            "type": "integer",
+            "description": "Value recovered by fixing the issue",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "effort_to_fix": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "description": "Estimated effort required to address the issue in the document"
+          },
+          "evidence": {
+            "type": "array",
+            "description": "Quoted text from the document that supports this finding",
+            "items": { "type": "string" },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "residual_risks": {
+      "type": "array",
+      "description": "Risks the reviewer noticed but could not confirm strongly enough as findings",
+      "items": { "type": "string" }
+    },
+    "deferred_questions": {
+      "type": "array",
+      "description": "Questions that should be resolved in a later workflow stage",
+      "items": { "type": "string" }
+    }
+  }
+}

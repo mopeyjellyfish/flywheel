@@ -69,6 +69,40 @@ To verify the restarted session now exposes Flywheel:
 node scripts/flywheel-doctor.js --host codex --codex-session-smoke
 ```
 
+### Codex marketplace cannot find `fw`
+
+Symptom:
+- `codex plugin add fw@flywheel` reports that plugin `fw` was not found in
+  marketplace `flywheel`
+- `codex plugin list --marketplace flywheel` does not list `fw@flywheel`
+
+Check:
+- `.agents/plugins/marketplace.json` points the `fw` entry at `./plugins/fw`
+- `plugins/fw/.codex-plugin/plugin.json` exists and has `"name": "fw"`
+- `plugins/fw/skills/start/SKILL.md` and `plugins/fw/hooks/codex-hooks.json`
+  are present as real files
+- `node scripts/flywheel-doctor.js --host codex`
+
+Fix from a published marketplace source:
+
+```bash
+codex plugin marketplace remove flywheel
+codex plugin marketplace add mopeyjellyfish/flywheel --ref main
+codex plugin list --marketplace flywheel
+codex plugin add fw@flywheel
+```
+
+Fix while developing from this checkout:
+
+```bash
+make install/codex
+```
+
+Note:
+- `plugins/fw/` is the Codex marketplace package. It must contain real copied
+  manifest, skill, and hook files; symlinked package contents can be dropped
+  when Codex copies the marketplace package into its cache.
+
 ### Codex hook guardrails are not active
 
 Symptom:
