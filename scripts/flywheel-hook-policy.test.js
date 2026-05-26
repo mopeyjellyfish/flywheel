@@ -39,6 +39,14 @@ function tempRepo() {
   return dir;
 }
 
+function setOriginHead(dir, branch = "main") {
+  execFileSync("git", ["update-ref", `refs/remotes/origin/${branch}`, "HEAD"], { cwd: dir, stdio: "ignore" });
+  execFileSync("git", ["symbolic-ref", "refs/remotes/origin/HEAD", `refs/remotes/origin/${branch}`], {
+    cwd: dir,
+    stdio: "ignore",
+  });
+}
+
 function writeFlywheelConfig(dir, text) {
   const configDir = path.join(dir, ".flywheel");
   fs.mkdirSync(configDir, { recursive: true });
@@ -91,6 +99,94 @@ function testPermissionRequestBlocksDestructiveBash() {
   });
   assert.strictEqual(output.hookSpecificOutput.hookEventName, "PermissionRequest");
   assert.match(output.hookSpecificOutput.permissionDecisionReason, /reset --hard/);
+  assert.strictEqual(output.hookSpecificOutput.permissionDecision, "deny");
+}
+
+function testPreToolAllowsExplicitFeatureBranchForceWithLeaseFromMain() {
+  const dir = tempRepo();
+  setOriginHead(dir);
+  const output = runHook({
+    event: "pre-tool",
+    host: "codex",
+    cwd: dir,
+    payload: {
+      cwd: dir,
+      tool_name: "Bash",
+      tool_input: {
+        command:
+          "git push origin HEAD:refs/heads/trading-game --force-with-lease=refs/heads/trading-game:abc123",
+      },
+    },
+  });
+  assert.strictEqual(output, null);
+}
+
+function testPreToolAllowsNamedFeatureBranchForceWithLease() {
+  const dir = tempRepo();
+  setOriginHead(dir);
+  execFileSync("git", ["checkout", "-b", "trading-game"], { cwd: dir, stdio: "ignore" });
+  const output = runHook({
+    event: "pre-tool",
+    host: "codex",
+    cwd: dir,
+    payload: {
+      cwd: dir,
+      tool_name: "Bash",
+      tool_input: { command: "git push --force-with-lease origin trading-game" },
+    },
+  });
+  assert.strictEqual(output, null);
+}
+
+function testPreToolBlocksDefaultBranchForceWithLease() {
+  const dir = tempRepo();
+  setOriginHead(dir);
+  const output = runHook({
+    event: "pre-tool",
+    host: "codex",
+    cwd: dir,
+    payload: {
+      cwd: dir,
+      tool_name: "Bash",
+      tool_input: { command: "git push --force-with-lease origin main" },
+    },
+  });
+  assert.match(output.hookSpecificOutput.permissionDecisionReason, /default branch `main`/);
+  assert.strictEqual(output.hookSpecificOutput.permissionDecision, "deny");
+}
+
+function testPreToolBlocksHeadToDefaultBranchForceWithLease() {
+  const dir = tempRepo();
+  setOriginHead(dir);
+  execFileSync("git", ["checkout", "-b", "feature"], { cwd: dir, stdio: "ignore" });
+  const output = runHook({
+    event: "pre-tool",
+    host: "codex",
+    cwd: dir,
+    payload: {
+      cwd: dir,
+      tool_name: "Bash",
+      tool_input: { command: "git push origin HEAD:main --force-with-lease=refs/heads/main:abc123" },
+    },
+  });
+  assert.match(output.hookSpecificOutput.permissionDecisionReason, /default branch `main`/);
+  assert.strictEqual(output.hookSpecificOutput.permissionDecision, "deny");
+}
+
+function testPreToolBlocksImplicitDefaultBranchForceWithLease() {
+  const dir = tempRepo();
+  setOriginHead(dir);
+  const output = runHook({
+    event: "pre-tool",
+    host: "codex",
+    cwd: dir,
+    payload: {
+      cwd: dir,
+      tool_name: "Bash",
+      tool_input: { command: "git push --force-with-lease" },
+    },
+  });
+  assert.match(output.hookSpecificOutput.permissionDecisionReason, /default branch `main`/);
   assert.strictEqual(output.hookSpecificOutput.permissionDecision, "deny");
 }
 
@@ -431,6 +527,11 @@ function testDoctorPrefersCodexPluginHookPosture() {
 testPreToolBlocksDestructiveBash();
 testPreToolBlocksSensitiveWrite();
 testPermissionRequestBlocksDestructiveBash();
+testPreToolAllowsExplicitFeatureBranchForceWithLeaseFromMain();
+testPreToolAllowsNamedFeatureBranchForceWithLease();
+testPreToolBlocksDefaultBranchForceWithLease();
+testPreToolBlocksHeadToDefaultBranchForceWithLease();
+testPreToolBlocksImplicitDefaultBranchForceWithLease();
 testPreToolIgnoresMissingWritePath();
 testUserPromptAddsPlanToWorkContext();
 testStopBlocksCompletionWithoutHandoff();
