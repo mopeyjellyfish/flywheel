@@ -372,16 +372,36 @@ function resolveDefaultBranch(repoRoot) {
   );
 }
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function shellWords(command) {
+  return String(command || "")
+    .match(/(?:[^\s"'`]+|"[^"]*"|'[^']*'|`[^`]*`)+/g)
+    ?.map((token) => token.replace(/^(['"`])([\s\S]*)\1$/, "$2")) || [];
 }
 
-function commandMentionsBranch(command, branch) {
-  if (!branch) {
-    return false;
+function gitPushArgs(command) {
+  const tokens = shellWords(command);
+  const gitIndex = tokens.findIndex((token, index) => token === "git" && tokens[index + 1] === "push");
+  if (gitIndex < 0) {
+    return [];
   }
-  const escaped = escapeRegExp(branch);
-  return new RegExp(`(^|\\s|:|/|=)${escaped}(?=$|\\s)`).test(command);
+
+  const args = [];
+  for (const token of tokens.slice(gitIndex + 2)) {
+    if (/^(?:&&|\|\||;|\|)$/.test(token)) {
+      break;
+    }
+    if (token === "--" || token.startsWith("-")) {
+      continue;
+    }
+    args.push(token);
+  }
+  return args;
+}
+
+function refspecDestination(refspec) {
+  const cleaned = String(refspec || "").replace(/^\+/, "");
+  const destination = cleaned.includes(":") ? cleaned.split(":").pop() : cleaned;
+  return destination.replace(/^refs\/heads\//, "");
 }
 
 function toolName(payload) {
@@ -403,11 +423,28 @@ function isMcpWriteTool(payload) {
   return /^mcp__.*__(?:create|write|update|delete|remove|upsert|merge|replace|set|add)/i.test(name);
 }
 
-function targetsDefaultBranch(command, currentBranch, defaultBranch) {
-  if (!defaultBranch) {
+function pushTargetsDefaultBranch(command, currentBranch, defaultBranch) {
+  if (!defaultBranch || !/\bgit\s+push\b/i.test(command)) {
     return false;
   }
-  return currentBranch === defaultBranch || commandMentionsBranch(command, defaultBranch);
+  if (/\s--(?:all|mirror)(?:\s|$)/i.test(command)) {
+    return true;
+  }
+
+  const args = gitPushArgs(command);
+  if (args.length === 0) {
+    return currentBranch === defaultBranch;
+  }
+
+  const firstArg = args[0];
+  if (args.length === 1) {
+    if (firstArg.includes(":")) {
+      return refspecDestination(firstArg) === defaultBranch;
+    }
+    return currentBranch === defaultBranch || firstArg === defaultBranch || firstArg === `refs/heads/${defaultBranch}`;
+  }
+
+  return args.slice(1).some((refspec) => refspecDestination(refspec) === defaultBranch);
 }
 
 function isForcePush(command) {
@@ -424,7 +461,7 @@ function dangerousReason(command, currentBranch, defaultBranch) {
   if (/\b(?:sudo\s+)?rm\b(?=[^\n]*\s-rf?\b)(?=[^\n]*\s\/(?:\s|$))/i.test(command)) {
     return "Flywheel blocked a recursive delete against the filesystem root.";
   }
-  if (targetsDefaultBranch(command, currentBranch, defaultBranch) && isForcePush(command)) {
+  if (pushTargetsDefaultBranch(command, currentBranch, defaultBranch) && isForcePush(command)) {
     return `Flywheel blocked a force push to the default branch \`${defaultBranch}\`.`;
   }
   return null;
@@ -449,7 +486,7 @@ function buildCheckpointReasons({ command, repoRoot, policy, currentBranch, defa
   if (
     /\bgit\s+push\b/i.test(command) &&
     policy.checkpoints.defaultBranchPush &&
-    targetsDefaultBranch(command, currentBranch, defaultBranch)
+    pushTargetsDefaultBranch(command, currentBranch, defaultBranch)
   ) {
     reasons.push(`this push targets the default branch \`${defaultBranch}\``);
   }
