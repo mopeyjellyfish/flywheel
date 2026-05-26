@@ -402,6 +402,24 @@ function testCodexManifestUsesDedicatedHookPack() {
   assert.strictEqual(manifest.hooks, "./hooks/codex-hooks.json");
 }
 
+function testCodexMarketplaceInstallsPackagedPlugin() {
+  const marketplacePath = path.join(repoRoot, ".agents", "plugins", "marketplace.json");
+  const marketplace = JSON.parse(fs.readFileSync(marketplacePath, "utf8"));
+  const fwEntry = marketplace.plugins.find((plugin) => plugin.name === "fw");
+  assert.strictEqual(fwEntry.source.path, "./plugins/fw");
+
+  const packageRoot = path.join(repoRoot, "plugins", "fw");
+  assert(fs.existsSync(path.join(packageRoot, ".codex-plugin", "plugin.json")));
+  assert(fs.existsSync(path.join(packageRoot, "skills", "start", "SKILL.md")));
+  assert(fs.existsSync(path.join(packageRoot, "hooks", "codex-hooks.json")));
+  assert(!fs.existsSync(path.join(repoRoot, "plugins", "flywheel")));
+
+  const packageManifest = JSON.parse(fs.readFileSync(path.join(packageRoot, ".codex-plugin", "plugin.json"), "utf8"));
+  assert.strictEqual(packageManifest.name, "fw");
+  assert.strictEqual(packageManifest.skills, "./skills/");
+  assert.strictEqual(packageManifest.hooks, "./hooks/codex-hooks.json");
+}
+
 function testCodexDefaultHookPackOnlyInstallsSafetyGuardrails() {
   const hooksPath = path.join(repoRoot, "hooks", "codex-hooks.json");
   const payload = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
@@ -543,6 +561,7 @@ testSessionStartAddsRepoContext();
 testStopAllowsReadyForConfirmationStatus();
 testClaudeDefaultHookPackOnlyInstallsRequiredGuardrails();
 testCodexManifestUsesDedicatedHookPack();
+testCodexMarketplaceInstallsPackagedPlugin();
 testCodexDefaultHookPackOnlyInstallsSafetyGuardrails();
 testCodexRefreshUsesPluginHooksAndPreservesUserHooks();
 testDoctorPrefersCodexPluginHookPosture();

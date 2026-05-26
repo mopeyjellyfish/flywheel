@@ -1,0 +1,32 @@
+version: 1
+
+id: java
+description: Java review extension for resource lifecycle, API contracts, and concurrency.
+
+match:
+  changed_files:
+    - "**/*.java"
+    - "pom.xml"
+    - "build.gradle"
+    - "build.gradle.kts"
+    - "settings.gradle"
+    - "settings.gradle.kts"
+  manifests:
+    - "pom.xml"
+    - "build.gradle"
+    - "build.gradle.kts"
+  repo_signals:
+    - "maven"
+    - "gradle"
+    - "errorprone"
+
+add_reviewers:
+  - java-reviewer
+
+references:
+  - references/stack-packs/java-review-basis.md
+
+selection_notes:
+  - Read build files first to determine Java level and static-analysis truth.
+  - Generated sources and annotation-processor outputs are not the primary review target.
+  - Do not activate from prose-only mentions of Java.

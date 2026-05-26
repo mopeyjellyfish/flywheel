@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { spawnSync } = require("child_process");
 
 const repoRoot = path.resolve(__dirname, "..");
@@ -63,6 +64,42 @@ function checkFile(name, relativePath) {
     ok: fs.existsSync(fullPath),
     detail: fs.existsSync(fullPath) ? relativePath : `missing ${relativePath}`,
   };
+}
+
+function relativeRegularFiles(root) {
+  if (!fs.existsSync(root)) {
+    return [];
+  }
+
+  const files = [];
+  const stack = [root];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const fullPath = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        stack.push(fullPath);
+        continue;
+      }
+      if (entry.isFile()) {
+        files.push(path.relative(root, fullPath).replace(/\\/g, "/"));
+      }
+    }
+  }
+  return files.sort();
+}
+
+function fileDigest(filePath) {
+  return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+}
+
+function directoriesMatch(leftRoot, rightRoot) {
+  const leftFiles = relativeRegularFiles(leftRoot);
+  const rightFiles = relativeRegularFiles(rightRoot);
+  if (leftFiles.join("\n") !== rightFiles.join("\n")) {
+    return false;
+  }
+  return leftFiles.every((file) => fileDigest(path.join(leftRoot, file)) === fileDigest(path.join(rightRoot, file)));
 }
 
 function skillDescriptions() {
@@ -445,6 +482,57 @@ function checkCodexPluginHookPackShape() {
   };
 }
 
+function checkCodexMarketplacePackageShape() {
+  const marketplacePath = path.join(repoRoot, ".agents", "plugins", "marketplace.json");
+  const marketplace = fs.existsSync(marketplacePath)
+    ? parseJson(fs.readFileSync(marketplacePath, "utf8"))
+    : null;
+  const fwEntry = Array.isArray(marketplace?.plugins)
+    ? marketplace.plugins.find((plugin) => plugin?.name === "fw")
+    : null;
+  const packageRoot = path.join(repoRoot, "plugins", "fw");
+  const packageManifestPath = path.join(packageRoot, ".codex-plugin", "plugin.json");
+  const rootManifestPath = path.join(repoRoot, ".codex-plugin", "plugin.json");
+  const packageManifest = fs.existsSync(packageManifestPath)
+    ? parseJson(fs.readFileSync(packageManifestPath, "utf8"))
+    : null;
+  const rootManifest = fs.existsSync(rootManifestPath)
+    ? parseJson(fs.readFileSync(rootManifestPath, "utf8"))
+    : null;
+  const stalePackageExists = fs.existsSync(path.join(repoRoot, "plugins", "flywheel"));
+
+  const marketplacePathOk = fwEntry?.source?.path === "./plugins/fw";
+  const manifestOk = JSON.stringify(packageManifest) === JSON.stringify(rootManifest);
+  const skillsOk = directoriesMatch(path.join(repoRoot, "skills"), path.join(packageRoot, "skills"));
+  const hooksOk = directoriesMatch(path.join(repoRoot, "hooks"), path.join(packageRoot, "hooks"));
+  const ok = marketplacePathOk && manifestOk && skillsOk && hooksOk && !stalePackageExists;
+
+  const missing = [];
+  if (!marketplacePathOk) {
+    missing.push(".agents/plugins/marketplace.json should point fw at ./plugins/fw");
+  }
+  if (!manifestOk) {
+    missing.push("plugins/fw/.codex-plugin/plugin.json should match .codex-plugin/plugin.json");
+  }
+  if (!skillsOk) {
+    missing.push("plugins/fw/skills should match root skills/");
+  }
+  if (!hooksOk) {
+    missing.push("plugins/fw/hooks should match root hooks/");
+  }
+  if (stalePackageExists) {
+    missing.push("remove stale plugins/flywheel package");
+  }
+
+  return {
+    name: "Codex marketplace package shape",
+    ok,
+    detail: ok
+      ? "fw marketplace package lives at plugins/fw with synced manifest, skills, and hooks"
+      : missing.join("; "),
+  };
+}
+
 function checkNoUserLevelCodexHooks() {
   const codexHome = process.env.CODEX_HOME || path.join(process.env.HOME || "", ".codex");
   const hooksPath = path.join(codexHome, "hooks.json");
@@ -698,6 +786,7 @@ function main() {
     checks.unshift(checkFile("Shared hook policy script", "hooks/flywheel-hook-policy.js"));
     checks.push(checkCodexRootRouterPrompt());
     checks.push(checkCodexPluginHookPackShape());
+    checks.push(checkCodexMarketplacePackageShape());
     checks.push(checkNoStandaloneGlobalFlywheelSkillsForCodex());
   }
   if (includeClaude) {

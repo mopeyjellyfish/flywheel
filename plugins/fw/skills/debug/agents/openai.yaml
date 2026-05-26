@@ -1,0 +1,4 @@
+interface:
+  display_name: "$fw:debug"
+  short_description: "Build a repro loop, prove cause, then fix or reroute"
+  default_prompt: "Use $fw:debug to build a fast faithful feedback loop, reproduce the reported bug, rank falsifiable hypotheses, prove the causal chain, and then either fix through a red signal or route the design or architecture problem upstream."

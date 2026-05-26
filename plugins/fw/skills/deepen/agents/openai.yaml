@@ -1,0 +1,4 @@
+interface:
+  display_name: "$fw:deepen"
+  short_description: "Grill and strengthen an existing plan before execution"
+  default_prompt: "Use $fw:deepen to grill this plan against source docs, repo truth, decisions, vertical slices, tests, and rollout shape before work starts."
