@@ -75,6 +75,9 @@ Tag-format spike:
   `include-v-in-tag=true` as `fw--v0.2.0`.
 - Release Please also backfills exact expected tags from the manifest, so the
   manifest must remain checked and synchronized with plugin versions.
+- The repository has no existing `fw--v*` release tag yet, so the initial
+  config includes `bootstrap-sha` at the current `main` baseline to keep the
+  first generated release PR scoped to commits after this setup lands.
 
 ## Repo Truth
 
@@ -121,6 +124,8 @@ The validator covers:
 - `.github/.release-please-manifest.json` matches the current plugin version
 - Release Please config uses `include-component-in-tag: true` and
   `tag-separator: "--"`
+- Release Please config has an initial `bootstrap-sha` while Flywheel has no
+  prior `fw--v*` tag
 - Release Please root package uses `release-type: simple`, `component: fw`, and
   `package-name: fw`
 - Release Please `extra-files` includes JSON updaters for all plugin
