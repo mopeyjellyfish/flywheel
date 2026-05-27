@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/mopeyjellyfish/flywheel/compare/fw--v0.2.0...fw--v0.2.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **ci:** prevent duplicate release notes ([be6b17b](https://github.com/mopeyjellyfish/flywheel/commit/be6b17b781ba4ad9896af0cfeb1065dbe7e179f5))
+
 ## [0.2.0](https://github.com/mopeyjellyfish/flywheel/releases/tag/fw--v0.2.0) (2026-05-27)
 
 
