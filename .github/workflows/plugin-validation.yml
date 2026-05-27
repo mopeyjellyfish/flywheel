@@ -11,18 +11,26 @@ permissions:
   contents: read
 
 jobs:
-  conventional-pr:
-    name: Conventional PR title
+  release-please-pr-title:
+    name: Release Please PR title guard
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
       pull-requests: read
     steps:
-      - name: Validate PR title
-        uses: amannn/action-semantic-pull-request@v6.1.1
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Reject releasable PR titles
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node scripts/release-please-pr-title-check.js
 
   plugin-format:
     name: Plugin formatting and package consistency
@@ -40,7 +48,9 @@ jobs:
         run: node scripts/plugin-ci-check.js --host all
 
       - name: Run validator tests
-        run: node scripts/plugin-ci-check.test.js
+        run: |
+          node scripts/plugin-ci-check.test.js
+          node scripts/release-please-pr-title-check.test.js
 
       - name: Validate eval suites
         run: node scripts/flywheel-eval.js validate

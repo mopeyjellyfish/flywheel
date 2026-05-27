@@ -196,10 +196,11 @@ node scripts/plugin-ci-check.js --host all
 
 `make verify` is the full plugin verification pass for this repo: doctor smoke
 checks plus eval-suite validation, hook-policy tests, and plugin CI contract
-tests. In broad verification it validates repo packaging for both hosts,
-requires live smoke for the hosts currently enabled from this checkout, and
-skips the Claude live invocation when this repo is not currently installed in
-Claude or Claude's API credentials are invalid. Use
+tests, including the Release Please PR title guard. In broad verification it
+validates repo packaging for both hosts, requires live smoke for the hosts
+currently enabled from this checkout, and skips the Claude live invocation when
+this repo is not currently installed in Claude or Claude's API credentials are
+invalid. Use
 `make install/claude` followed by
 `node scripts/flywheel-doctor.js --host claude --smoke` when the installed
 Claude path itself must be proven.
@@ -208,6 +209,10 @@ Claude path itself must be proven.
 validator. It emits file and field-specific failures for plugin manifest,
 marketplace, package-copy, hook-pack, Release Please, and version-sync drift
 without reading local Codex or Claude install state.
+
+Release Please reads merge-commit PR titles as release-note candidates. Keep
+Conventional Commit semantics in branch commits, and use neutral PR titles
+while this repo uses merge commits.
 
 For side-by-side local comparisons between Codex and Claude Code:
 

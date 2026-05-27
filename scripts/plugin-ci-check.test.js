@@ -42,6 +42,7 @@ function testCurrentRepoPasses() {
 
 function testVersionMismatchReportsEveryDifferingSurface() {
   const root = tempFixture();
+  const currentVersion = readJson(root, ".claude-plugin/plugin.json").version;
   const manifest = readJson(root, ".codex-plugin/plugin.json");
   manifest.version = "9.9.9";
   writeJson(root, ".codex-plugin/plugin.json", manifest);
@@ -53,7 +54,7 @@ function testVersionMismatchReportsEveryDifferingSurface() {
   assert.strictEqual(versionFailure.field, "version");
   assert.match(versionFailure.expected, /single SemVer shared by all plugin version fields/);
   assert.match(versionFailure.actual, /\.codex-plugin\/plugin\.json=9\.9\.9/);
-  assert.match(versionFailure.actual, /\.claude-plugin\/plugin\.json=0\.1\.1/);
+  assert.match(versionFailure.actual, new RegExp(`\\.claude-plugin/plugin\\.json=${currentVersion.replace(/\./g, "\\.")}`));
 }
 
 function testMissingRequiredFieldReportsFileAndField() {
@@ -111,6 +112,7 @@ function testCodexMarketplaceMissingFwEntryReportsManifest() {
 
 function testReleasePleaseManifestVersionMismatchReportsManifest() {
   const root = tempFixture();
+  const currentVersion = readJson(root, ".claude-plugin/plugin.json").version;
   writeJson(root, ".github/.release-please-manifest.json", { ".": "9.9.9" });
 
   const failures = failuresFor(root);
@@ -118,7 +120,7 @@ function testReleasePleaseManifestVersionMismatchReportsManifest() {
   assert(releaseFailure, failures.map((failure) => failure.name).join(", "));
   assert.strictEqual(releaseFailure.file, ".github/.release-please-manifest.json");
   assert.strictEqual(releaseFailure.field, ".");
-  assert.strictEqual(releaseFailure.expected, "current plugin version 0.1.1");
+  assert.strictEqual(releaseFailure.expected, `current plugin version ${currentVersion}`);
   assert.strictEqual(releaseFailure.actual, "9.9.9");
 }
 
