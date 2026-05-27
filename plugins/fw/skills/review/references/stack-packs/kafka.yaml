@@ -1,0 +1,32 @@
+version: 1
+
+id: kafka
+description: Kafka review extension for producer, consumer, stream, and topic semantics.
+
+match:
+  repo_signals:
+    - "kafka-clients"
+    - "spring-kafka"
+    - "kafka-go"
+    - "sarama"
+    - "franz-go"
+    - "confluent-kafka"
+    - "rdkafka"
+  diff_signals:
+    - "kafka"
+    - "producer"
+    - "consumer"
+    - "topic"
+    - "offset"
+    - "schema registry"
+
+add_reviewers:
+  - kafka-reviewer
+
+references:
+  - references/stack-packs/kafka-review-basis.md
+
+selection_notes:
+  - Require both repo evidence and concrete diff relevance before activation.
+  - Read producer, consumer, or stream config near the diff before making semantics claims.
+  - Keep the pack dormant for generic eventing abstractions that are not visibly Kafka-backed.

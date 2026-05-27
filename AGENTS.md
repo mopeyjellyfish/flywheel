@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`skills/` is the product. Each Flywheel stage or helper lives in `skills/<name>/SKILL.md` with optional `agents/`, `references/`, `scripts/`, or `assets/`. Shared host guidance lives in `skills/references/host-interaction-contract.md`. `scripts/` contains repo-local maintenance and validation helpers such as `flywheel-doctor.js` and `flywheel-eval.js`. `evals/` stores suite definitions as `manifest.json`, `cases.jsonl`, and `rubric.md`. `docs/` holds durable repo knowledge under `brainstorms/`, `context/`, `decisions/`, `plans/`, `setup/`, and `solutions/`. Host packaging lives in `.codex-plugin/`, `.claude-plugin/`, and `.agents/plugins/`.
+`skills/` is the product. Each Flywheel stage or helper lives in `skills/<name>/SKILL.md` with optional `agents/`, `references/`, `scripts/`, or `assets/`. Shared host guidance lives in `skills/references/host-interaction-contract.md`. `scripts/` contains repo-local maintenance and validation helpers such as `flywheel-doctor.js` and `flywheel-eval.js`. `evals/` stores suite definitions as `manifest.json`, `cases.jsonl`, and `rubric.md`. `docs/` holds durable repo knowledge under `brainstorms/`, `context/`, `decisions/`, `plans/`, `setup/`, and `solutions/`. Host packaging lives in `.codex-plugin/`, `.claude-plugin/`, `.agents/plugins/`, and `plugins/fw/`.
 
 ## Directory Layout
 ```text
@@ -12,8 +12,9 @@ hooks/            Shared hook policy script and Codex/Claude hook packs
 docs/             Brainstorms, context, decisions, plans, setup docs, solutions
 tools/evals/      Isolated eval harness workspace and CLI
 .claude-plugin/   Claude plugin manifest and marketplace metadata
-.codex-plugin/    Codex plugin manifest reused by the repo marketplace
+.codex-plugin/    Codex plugin manifest used by local development installs
 .agents/plugins/  Repo marketplace metadata used by Codex
+plugins/fw/       Codex marketplace package with synced skills and hooks
 .flywheel/        Local config example and repo-level Flywheel settings
 ```
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "$fw:maintainability"
+  short_description: "Keep future edits cheap and clear"
+  default_prompt: "Use $fw:maintainability to assess future edit cost, naming, cohesion, ownership, and helper sprawl, then recommend the smallest structural change that improves this repo."

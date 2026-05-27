@@ -217,7 +217,8 @@ Setup and troubleshooting notes:
 ### Repository layout
 
 - `.agents/plugins/marketplace.json` - Codex marketplace manifest for this repo
-- `.codex-plugin/plugin.json` - Codex plugin manifest used directly and by the repo marketplace
+- `.codex-plugin/plugin.json` - Codex plugin manifest used by local development installs
+- `plugins/fw/` - Codex marketplace package with synced manifest, skills, and hooks
 - `.claude-plugin/plugin.json` - Claude plugin manifest
 - `.claude-plugin/marketplace.json` - Claude marketplace manifest for this repo
 - `.flywheel/config.local.example.yaml` - local config template

@@ -1,0 +1,30 @@
+version: 1
+
+id: redis
+description: Redis review extension for TTL, atomicity, cache coherence, and keyspace behavior.
+
+match:
+  repo_signals:
+    - "redis"
+    - "ioredis"
+    - "go-redis"
+    - "jedis"
+    - "lettuce"
+  diff_signals:
+    - "redis"
+    - "ttl"
+    - "expire"
+    - "cache"
+    - "watch"
+    - "scan"
+
+add_reviewers:
+  - redis-reviewer
+
+references:
+  - references/stack-packs/redis-review-basis.md
+
+selection_notes:
+  - Require both repo evidence and concrete diff relevance before activation.
+  - Inspect TTL, transaction, or scripting behavior before making atomicity claims.
+  - Keep this pack dormant for generic caching abstractions not visibly backed by Redis.

@@ -13,16 +13,20 @@ product choice while the workflow and operational surfaces are still evolving.
 | Surface | Codex CLI | Claude Code | Notes |
 | --- | --- | --- | --- |
 | Core Flywheel skill workflow | Supported | Supported | Skills are authored to stay host-compatible and low-context |
-| Repeatable installed usage from this checkout | Supported | Supported | Codex installs from `.codex-plugin/plugin.json`; Claude installs from this repo through `.claude-plugin/marketplace.json` |
+| Repeatable installed usage from this checkout | Supported | Supported | Codex local development installs use `.codex-plugin/plugin.json`; Codex marketplace installs use `.agents/plugins/marketplace.json` and `plugins/fw/`; Claude installs from this repo through `.claude-plugin/marketplace.json` |
 | `npx skills` package install | Not the Codex path | Supported | Codex should use the plugin install because standalone global skills appear as unnamespaced commands such as `$start`. `make install/skills/global` wraps the local `skills add` flow for non-Codex skills-CLI hosts. Repo-root project scope is a safe no-op because project scope writes to `./skills` |
 | Dev-only direct loading from this checkout | Supported | Supported | Codex uses the local plugin config + cache refresh loop; Claude also supports `--plugin-dir` for direct local runs |
 | Risky-edge hook guardrails | Supported with bundled `hooks/codex-hooks.json` | Supported with bundled `hooks/hooks.json` | Codex uses plugin hooks when `[features].hooks` and `[features].plugin_hooks` are enabled. The Codex pack installs safety-only `PreToolUse` and `PermissionRequest` hooks for Bash and file-write tools. Session, prompt, post-tool, Stop, and MCP hooks are not default Codex guardrails |
 | Eval harness validation | Supported | Supported | Requires local CLI install and auth for the relevant runner |
 | Side-by-side live comparison | Supported | Supported | Run from `tools/evals/` after installing workspace deps |
 
-Flywheel is authored once in the repo-root `skills/` tree. `.codex-plugin/`
-and `.claude-plugin/` package that same workflow for different hosts; they are
-not separate workflow forks.
+Flywheel is authored once in the repo-root `skills/` tree. `.codex-plugin/`,
+`.claude-plugin/`, and the Codex marketplace package under `plugins/fw/`
+package that same workflow for different hosts; they are not separate workflow
+forks. `plugins/fw/` deliberately carries real copied `skills/` and `hooks/`
+files because Codex marketplace cache installation copies the package contents
+and does not follow package-internal symlink targets. Keep it synced with the
+root manifest, skills, and hooks; `make verify` checks that shape.
 
 The interaction contract is also shared: Claude Code should use
 `AskUserQuestion`, Codex should use `request_user_input` when the active

@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/flywheel-hook-policy.js\" pre-tool claude",
+            "statusMessage": "Checking Flywheel policy"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/flywheel-hook-policy.js\" stop claude",
+            "statusMessage": "Checking Flywheel handoff"
+          }
+        ]
+      }
+    ]
+  }
+}

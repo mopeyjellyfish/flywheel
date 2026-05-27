@@ -1,0 +1,29 @@
+version: 1
+
+id: otel
+description: OpenTelemetry review extension for trace context, correlated logs, and signal consistency.
+
+match:
+  changed_files:
+    - "**/*otel*"
+    - "**/*opentelemetry*"
+    - "**/*otlp*"
+    - "otel*.{yaml,yml,json}"
+    - "**/collector*.{yaml,yml}"
+  repo_signals:
+    - "@opentelemetry/"
+    - "opentelemetry"
+    - "otel"
+    - "OTEL_"
+    - "traceparent"
+
+add_reviewers:
+  - otel-reviewer
+
+references:
+  - references/stack-packs/otel-review-basis.md
+
+selection_notes:
+  - Treat OTel as the instrumentation path when the repo already exports through
+    it, even if a vendor backend also exists.
+  - Do not activate the pack from prose-only mentions of OTel.

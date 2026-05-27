@@ -1,0 +1,575 @@
+---
+name: start
+description: "Route project work through Flywheel. Use to pick the earliest useful stage from shape, work, review, spin, or commit."
+---
+
+# Flywheel
+
+## Overview
+
+Use this skill as the umbrella entrypoint for the Flywheel development flow.
+Invoke it as `fw:start` using the current host's native syntax:
+
+- Codex: `$fw` or `$fw:start`
+- Claude Code: `/fw:start`
+
+Root alias: when the host invokes Flywheel without a stage, or the user writes
+a bare `$fw` or `$flywheel`, treat that request exactly like `fw:start`. Route
+the task into the earliest useful stage in the visible backbone, then render
+follow-up commands with canonical `fw:<stage>` names.
+
+The goal is not just to finish the current repo task. The goal is to leave
+behind better context, sharper decisions, and reusable artifacts so future work
+in that repo gets cheaper and faster.
+
+If the active repo has `docs/solutions/`, treat that local directory as the
+knowledge store for solved problems and durable practices. When a stage touches
+an area that may already be documented, search that local store by frontmatter
+before assuming the current session is the first time the problem has
+appeared. Prefer docs with `doc_status: active`, and if a strong hit has
+`superseded_by`, follow that path first.
+
+## Flow Map
+
+For software-project work, Flywheel's critical path is:
+
+1. `fw:shape`
+2. `fw:work`
+3. `fw:review`
+4. conditional `fw:spin`
+5. `fw:commit`
+
+`fw:start` is not itself a backbone stage. It is the root router for choosing
+the earliest useful stage on that path or a focused helper when the task clearly
+starts outside the path.
+
+`fw:shape` is the first main workflow stage. It chooses the smallest shaping
+mode that can produce the next useful artifact:
+
+- `fw:ideate` for choosing among multiple possible bets
+- `fw:brainstorm` for clarifying one fuzzy direction
+- `fw:plan` for producing a reviewed technical implementation plan
+- `fw:deepen` for strengthening an existing reviewed plan before execution
+
+`fw:plan` is read-only. It should produce a plan, run `document-review` on
+that plan, and then pause for the user to choose whether to run `fw:deepen`,
+address review findings, pause, or begin `fw:work`.
+
+For known-scoped repo changes, `fw:shape` usually collapses to plan mode plus
+that reviewed-plan handoff.
+
+When multiple materially different routes or artifacts are plausible, ask one
+material challenge question before final handoff so the user can correct the
+framing early.
+
+After `fw:review` and before `fw:commit`, offer `fw:spin` only when the
+completed work revealed durable project-specific guidance worth preserving. This
+keeps the captured solution entry in the same branch and commit set.
+
+Shape-mode helper surfaces, used inside `fw:shape` or as direct expert
+entrypoints when the user names them:
+
+- `fw:ideate` for ranked next-bet discovery
+- `fw:brainstorm` for requirements shaping
+- `fw:plan` for read-only technical implementation planning
+- `fw:deepen` for strengthening a reviewed plan before implementation
+
+Other helper and alternate-entry surfaces, used when needed rather than as
+mandatory visible stages:
+
+- `fw:setup` for repo and machine readiness, first-run bootstrap, and
+  update-time recovery when a later stage discovers a missing requirement,
+  including trusted MCP posture and sandbox or devcontainer readiness
+- `fw:run` for explicit, optional end-to-end orchestration across the remaining
+  stages when the user wants one coordinated pass instead of manual stage
+  handoffs
+- `fw:tdd` for strict red-green-refactor execution on behavior-bearing feature
+  work, bug fixes, public contract changes, regression-prone paths, and
+  behavior-preserving refactors
+- `fw:research` for topic investigation, current best-practice
+  discovery, and reusable evidence gathering that should sharpen ideation,
+  brainstorming, review, or planning
+- `fw:decision` for ADR-quality decision grilling, terminology conflicts,
+  spec or plan decision review, and durable decision/context capture
+- `fw:incident` for production or runtime incidents that begin with live
+  evidence and need mitigation vs rollback vs patch framing
+- `fw:docs` for post-work or direct documentation passes that should write
+  or refresh Diataxis-shaped project docs before review and commit
+- `fw:worktree` for isolated parallel checkouts
+- `fw:optimize` for measurement-driven performance, throughput, or cost work
+- `fw:rollout` for runtime-risky change-management, validation windows, and
+  rollback posture after review and before commit
+- `fw:browser-test` for browser acceptance proof with playwright-cli
+- `fw:polish` for interactive browser-visible tightening before review or commit
+- `fw:document-review` for requirements, plan, or design-doc review before execution,
+  including the default plan-review pass at the end of shaping
+- `fw:observability` for runtime signal, blast radius, and rollout validation design
+- `fw:logging` for structured event and log-shape design
+- `fw:architecture-strategy` for architecture improvement, boundary,
+  service-shape, hexagonal, or distributed-system decisions that need a focused
+  architecture brief
+- `fw:pattern-recognition` for repo-grounded pattern fit decisions such
+  as DTO, repository, ports/adapters, builder, DDD, or distributed reliability
+  posture
+- `fw:maintainability` for future-edit-cost checks around naming,
+  cohesion, ownership, and helper sprawl
+- `fw:simplify` for bounded removal of accidental complexity in recent or
+  changed work
+- `fw:verify` for fresh proof before claiming a task is done
+- `fw:commit` for the pre-commit spin checkpoint, finish-stage commit, push, and
+  PR creation or refresh
+- `fw:commit-message` for conventional commit-message drafting and breaking-change checks
+
+Do not force every request through every stage. Route to the earliest missing
+stage, then carry forward the artifacts from there. For normal project work,
+prefer the fewest visible stages that still fit the task.
+
+If a later stage is blocked because a required CLI, local config, browser
+surface, review surface, or telemetry surface is missing, route to
+`../setup/SKILL.md` with the nearest focus instead of improvising setup
+inside that blocked stage.
+
+## Routing Rules
+
+- If the user has one idea, request, or vague direction and needs to refine
+  that chosen direction, start with `../shape/SKILL.md`.
+- If the direction is mostly decided and the user wants concrete execution
+  steps, use `../shape/SKILL.md`.
+- If the user wants a better next bet, backlog shaping, or project leverage
+  before entering the main loop, use `../shape/SKILL.md`.
+- If the immediate job is researching a topic, gathering current published
+  guidance, or collecting evidence that should sharpen ideation, requirements,
+  review judgment, or a plan, use `../research/SKILL.md`.
+- If the immediate job is an ADR, durable decision record, spec grilling,
+  terminology conflict, or review of whether a plan contradicts an existing
+  decision, use `../decision/SKILL.md`.
+- If the user is shaping the current repo's development workflow, stage
+  boundaries, or operating contract and the solution direction is not yet
+  fixed, use
+  `../shape/SKILL.md`.
+- If the user wants a coordinated pass through the remaining stages rather than
+  invoking them one by one, use `../run/SKILL.md`.
+- If the user wants to strengthen an existing plan before implementation, use
+  `../shape/SKILL.md`.
+- If a plan exists or the user wants implementation now, use
+  `../work/SKILL.md`.
+- If the user explicitly asks for TDD, test-first, or red-green-refactor while
+  implementing feature work, a bug fix, a public contract change, or a
+  behavior-preserving refactor, use `../work/SKILL.md` and preserve the
+  requirement that work loads `../tdd/SKILL.md` before implementation.
+- If the immediate job is updating project docs, running a Diataxis docs pass,
+  or refreshing docs after a code change, use `../docs/SKILL.md`.
+- If the user is dealing with a failing test, regression, stack trace, broken
+  behavior, or performance regression and the immediate job is root-cause
+  analysis, use `../debug/SKILL.md`.
+- If code already changed and the job is to find bugs, regressions, or missing
+  tests, use `../review/SKILL.md`.
+- If the immediate job is latency, throughput, memory, query, build, or cost
+  tuning that must be proven with measurement, use `../optimize/SKILL.md`.
+- If the immediate job is incident handling from alerts, logs, traces, metrics,
+  or live degradation, use `../incident/SKILL.md`.
+- If the immediate job is staged release planning, canary posture, activation
+  sequencing, rollback criteria, or safe release of a runtime-risky change, use
+  `../rollout/SKILL.md`.
+- If the immediate job is proving a browser-visible change, smoke-testing a web
+  flow, or gathering browser acceptance evidence, use
+  `../browser-test/SKILL.md`.
+- If the immediate job is tightening browser-visible behavior interactively
+  before review or commit, use `../polish/SKILL.md`.
+- If the immediate job is reviewing a requirements doc, plan, spec, ADR, or
+  similar design artifact before implementation, use
+  `../document-review/SKILL.md`.
+- If the immediate job is commit, push, PR creation, PR refresh, or branch
+  finishing, use `../commit/SKILL.md`.
+- If the work is done and the value should be preserved in docs, scripts,
+  skills, or checklists, use `../spin/SKILL.md`.
+- If the user wants help choosing or validating a commit message, or a workflow
+  is about to commit, use `../commit-message/SKILL.md`.
+- If the user is onboarding a repo, checking machine readiness, or proving
+  which tools and commands are actually available, use
+  `../setup/SKILL.md`.
+- If the user wants isolated branch work, parallel checkouts, or worktree
+  cleanup, use `../worktree/SKILL.md`.
+- If the work is primarily about measured optimization and not just generic
+  instrumentation, use `../optimize/SKILL.md`.
+- If the work is about telemetry, dashboards, traces, metrics, or operational
+  validation, use `../observability/SKILL.md`.
+- If the work is specifically about structured application logs and event
+  design, use `../logging/SKILL.md`.
+- If the user explicitly asks how to size a boundary, bounded context, service,
+  or hexagonal or distributed-system posture, use
+  `../architecture-strategy/SKILL.md`.
+- If the user explicitly asks whether a named pattern fits, or which existing
+  repo pattern to follow, use `../pattern-recognition/SKILL.md`.
+- If the user explicitly asks for maintainability guidance around structure,
+  naming, cohesion, or future edit cost, use `../maintainability/SKILL.md`.
+- If the user explicitly asks to simplify or remove accidental complexity from
+  recent work, use `../simplify/SKILL.md`.
+- If the user is about to claim completion and the main need is evidence for
+  that claim, use `../verify/SKILL.md`.
+
+Apply these routing heuristics before doing repo exploration:
+
+- if the input is about how the current repo's development workflow should
+  route, question, or present stage boundaries and the exact solution is not
+  yet chosen, route to
+  `../shape/SKILL.md`
+- if the input is a vague feature, problem, or request and the immediate job is
+  clarifying one chosen direction, route to `../shape/SKILL.md`
+- if the input explicitly points at `docs/brainstorms/` or an existing
+  requirements doc, route to `../shape/SKILL.md`
+- if the input explicitly asks to deepen, strengthen, or harden an existing
+  plan, route to `../shape/SKILL.md`
+- if the input asks to review a requirements doc, plan, spec, ADR, or other
+  design artifact, route to `../document-review/SKILL.md`
+- if the input explicitly points at `docs/plans/` or asks to implement a plan,
+  route to `../work/SKILL.md`
+- if the input asks to update docs, README guidance, tutorials, how-to guides,
+  reference pages, explanation docs, or a post-work documentation handoff,
+  route to `../docs/SKILL.md`
+- if the input is a bug, regression, test failure, stack trace, or performance
+  regression whose immediate job is causal diagnosis, route to
+  `../debug/SKILL.md`
+- if the input says the code already changed or asks for pre-merge bug finding,
+  route to `../review/SKILL.md`
+- if the input is performance tuning, latency reduction, throughput work, query
+  optimization, or measured efficiency work, route to `../optimize/SKILL.md`
+- if the input starts from a live incident, alert, production degradation, or
+  runtime evidence and the immediate job is choosing mitigation vs rollback vs
+  patch, route to `../incident/SKILL.md`
+- if the input is rollout planning, canary strategy, staged enablement,
+  rollback planning, or safe release of a risky runtime change, route to
+  `../rollout/SKILL.md`
+- if the input asks for smoke testing, browser proof, UI acceptance, or local
+  web-flow verification, route to `../browser-test/SKILL.md`
+- if the input asks to polish, tighten, or iterate on a browser-visible surface
+  with live feedback, route to `../polish/SKILL.md`
+- if the input says commit, push, PR, refresh the PR description, or finish the
+  branch, route to `../commit/SKILL.md`
+- if the input says the work is done and the goal is preserving lessons or
+  solved problems, route to `../spin/SKILL.md`
+- if the input asks for the best next bets before choosing one problem, route
+  to `../shape/SKILL.md`
+- if the input explicitly asks to research a topic, gather current best
+  practices, or compare published approaches that should feed shaping or
+  review, route to `../research/SKILL.md`
+- if the input explicitly asks for an ADR, decision record, spec grilling,
+  domain terminology clarification, or review of an existing decision artifact,
+  route to `../decision/SKILL.md`
+- if the input is environment bootstrap, onboarding, or repo readiness, route
+  to `../setup/SKILL.md`
+- if the input asks for isolated branch work, parallel checkouts, or worktree
+  cleanup, route to `../worktree/SKILL.md`
+- if the input explicitly asks to improve architecture, find architecture
+  refactoring opportunities, improve module depth or testability, size
+  boundaries, choose service shape, apply hexagonal architecture, define bounded
+  contexts, or set distributed-system posture, route to
+  `../architecture-strategy/SKILL.md`
+- if the input explicitly asks whether DTOs, repositories, ports/adapters,
+  builders, DDD, or other named patterns are justified, route to
+  `../pattern-recognition/SKILL.md`
+- if the input explicitly asks for maintainability or clean-code structure
+  guidance, route to `../maintainability/SKILL.md`
+- if the input explicitly asks to simplify recent or changed work, route to
+  `../simplify/SKILL.md`
+
+Do not do a broad repo scan just to choose between these routes. Read files or
+search the repo only when:
+
+- the route depends on confirming a referenced document exists
+- the user explicitly asks for repo-grounded routing
+- the request is ambiguous enough that a quick check materially changes the
+  stage choice
+
+## Routing Dialogue
+
+For fuzzy, product-shaping, or workflow-shaping requests:
+
+- call the exact host question tool named in
+  `../references/host-interaction-contract.md` when that tool is available
+- ask one material challenge question when the answer could change the chosen
+  stage or artifact
+- prefer 2-3 portable answer options, with the recommended option first and a
+  host-native freeform final path when it exists, when the likely answer space
+  is predictable
+- when routing expands into a multi-step pass because repo checks materially
+  affect the answer, use the host task-tracking tool named in
+  `../references/host-interaction-contract.md`; otherwise keep the router
+  lightweight and skip task tracking
+- ask an open question only when the answer space cannot be predicted
+  responsibly
+- do not ask a question just to add ceremony when the route is already obvious
+
+## Router Response Contract
+
+When this skill routes a task, the response should make the immediate stage and
+handoff explicit. Keep it short, but do not omit the artifact or next step.
+For material stage boundaries, use the canonical handoff fields from
+`../references/workflow-gates.md`: Stage, Artifact, Ready, Open decisions,
+Evidence, and Next. Compress `Artifact` or `Evidence` to `none` or `n/a` when
+the router has not produced a durable artifact yet.
+
+This skill is a router. It should select the next Flywheel stage, explain the
+handoff, and then stop. Do not silently perform the downstream stage inside the
+same response.
+
+In user-facing output, use the current host's native Flywheel invocation
+syntax:
+
+- Codex: `$fw:<stage-or-skill>`
+- Claude Code: `/fw:<stage-or-skill>`
+
+Do not emit prior long-namespace command forms.
+
+When this document refers to a stage as `fw:<stage-or-skill>`, treat that
+as the shared stage id and adapt the prefix to the current host.
+Do not leave a bare `fw:<stage-or-skill>` id in the final user-facing
+route; render the host-native full invocation instead.
+
+In particular:
+
+- do not start writing a brainstorm requirements doc inside the router
+- do not start drafting a technical plan inside the router
+- do not start implementing inside the router
+- do not emit review findings inside the router
+- do not commit, push, create, or refresh a PR inside the router
+- do not write or draft a spin entry inside the router
+
+If the user clearly wants the downstream stage executed immediately, route to
+that stage explicitly and hand off. The router may ask one focused question,
+but it should not collapse the stage boundary by doing the stage's full work.
+
+Always include, in plain language:
+
+1. the selected stage
+2. why that stage is the earliest missing stage
+3. what artifact or outcome that stage should produce
+4. the next stage after that artifact exists
+5. what input or correction is needed from the user now, when any
+
+When the route depends on unresolved product, scope, or workflow-framing
+questions, ask one focused challenge question after stating the stage and
+handoff. Prefer 2-3 portable options with the recommended option first and a
+host-native freeform final path when the likely answer space is predictable.
+
+Preferred stage-to-handoff wording:
+
+- `fw:shape` -> produce the smallest useful shaping artifact: ranked shortlist,
+  requirements doc, reviewed technical plan, or strengthened reviewed plan ->
+  then move into `fw:work`
+- `fw:ideate` -> produce a ranked shortlist -> then move the selected idea into
+  `fw:brainstorm`
+- `fw:brainstorm` -> produce a requirements doc or requirements plan -> then
+  move into `fw:plan`
+- `fw:run` -> optional wrapper, not a backbone stage -> produce the remaining
+  stage artifacts through a bounded coordinated pass -> then stop at a
+  pre-commit spin checkpoint, commit, or an approval gate
+- `fw:deepen` -> produce a stronger reviewed technical plan -> then let
+  the user choose between another deepen pass and `fw:work`
+- `fw:plan` -> produce a technical implementation plan, run
+  `document-review`, pause for user review, and then let the user explicitly
+  choose whether to run `fw:deepen`, address review findings, pause, or enter
+  `fw:work`
+- `fw:docs` -> produce updated project docs mapped to the right Diataxis
+  quadrants -> then continue into `fw:review`, optional `fw:spin`, and
+  `fw:commit`
+- `document-review` -> produce prioritized document findings and fix direction
+  -> then revise the doc, continue into `fw:plan`, continue into
+  `fw:deepen` if the reviewed document is a plan that needs
+  strengthening, or continue into `fw:work` if the reviewed plan is
+  accepted
+- `fw:browser-test` -> produce fresh browser-proof artifacts -> then continue
+  into `fw:review`, optional `fw:spin`, and `fw:commit`
+- `fw:polish` -> produce tightened browser-visible behavior plus fresh browser
+  proof -> then continue into `fw:review`, optional `fw:spin`, and `fw:commit`
+- `fw:work` -> produce implemented, validated repo changes, pulling in
+  `fw:docs`, `fw:browser-test`, `fw:rollout`, or
+  `fw:verify` only when the work needs them -> then continue into
+  `fw:review`, optional `fw:spin`, and `fw:commit`
+- `fw:debug` -> produce a proved causal chain and either a red-to-green fix or
+  a handoff to the right design, architecture, maintainability, or planning
+  stage
+- `fw:review` -> produce findings and fix decisions from the
+  diff-selected reviewer set, dispatching personas in parallel when the host
+  supports it -> then update the branch, route through `fw:rollout`
+  when the change is runtime-risky, run the pre-commit `fw:spin` checkpoint when
+  durable lessons surfaced, then push or create/update the PR through `fw:commit`
+- `fw:rollout` -> produce a rollout brief with activation, validation, and
+  rollback posture -> then continue through optional `fw:spin` into `fw:commit`
+- `fw:incident` -> produce an incident brief with blast radius, evidence, and
+  mitigation or rollback posture -> then continue into `fw:debug`,
+  `fw:rollout`, `fw:plan`, or `fw:commit`
+- `fw:optimize` -> produce a measured optimization brief and winning change set
+  -> then route through `fw:review` and `fw:commit` when code changed
+- `observability` -> produce a concrete signal and validation plan -> then feed
+  `fw:plan`, `fw:work`, or `fw:commit` depending on stage
+- `logging` -> produce a concrete logging design or gap report -> then feed
+  `fw:plan`, `fw:work`, or `fw:review`
+- `verify` -> produce fresh proof and honest status ->
+  then either continue through `fw:review`, optional `fw:spin`, `fw:commit`, or
+  back to `fw:work`
+- `commit-message` -> produce a conventional commit message -> then
+  continue through `fw:commit` or the user's chosen git step
+- `fw:commit` -> run the pre-commit spin checkpoint when warranted, then produce
+  a committed branch or PR with testing and operational validation notes
+- `fw:spin` -> produce or update an active-repo `docs/solutions/` entry
+  -> then return to `fw:commit` when called from the finish path
+
+If the user asks for routing help only, do not dump every stage. Name the
+current stage, its artifact, and the immediate next handoff.
+
+## Response Patterns
+
+Use these patterns to keep routing answers stable across frontier models:
+
+- **Research route:** "This belongs in `fw:research` because the
+  immediate job is topic investigation and evidence gathering that should
+  sharpen the next stage's real output. The output should be a compact
+  recommendation-bearing research brief by default, with durable storage only
+  when reuse is warranted, then the relevant handoff into `fw:ideate`,
+  `fw:brainstorm`, `fw:review`, or `fw:plan`."
+- **Shape route:** "This belongs in `fw:shape` because the work needs the
+  first main workflow stage before implementation. The output should be the
+  smallest useful shaping artifact: a ranked shortlist, requirements doc,
+  reviewed technical plan, or strengthened reviewed plan. Once that exists,
+  move into `fw:work`."
+- **Brainstorm route:** "This should go through `fw:brainstorm` first because
+  behavior or scope is still unclear. The output should be a short requirements
+  doc or requirements plan. Once that exists, move into `fw:plan`."
+- **Plan route:** "This is ready for `fw:plan` because the intended behavior is
+  already clear enough to design execution. The output should be a technical
+  plan the user can review before any implementation starts. After
+  `document-review` runs on that plan, let the user explicitly choose whether
+  to run `fw:deepen`, address findings, pause, or move into `fw:work`."
+- **Run route:** "This belongs in `fw:run` because the task is bounded enough
+  for one coordinated pass through the remaining Flywheel stages. The output
+  should be the current artifact set plus a clear stop point."
+- **Deepen route:** "This belongs in `fw:deepen` because a plan
+  already exists and the immediate job is to make it more execution-ready. The
+  output should be a stronger reviewed plan, then a user choice between
+  another deepen pass and `fw:work`."
+- **Docs route:** "This belongs in `fw:docs` because the immediate job is
+  refreshing project docs from repo truth, not changing code. The output
+  should be Diataxis-shaped docs updates, then `fw:review` and
+  `fw:commit` if the branch is otherwise ready."
+- **Document-review route:** "This belongs in `document-review` because the
+  immediate job is to harden a requirements or plan artifact before execution.
+  The output should be a prioritized fix queue or a clean pass. From there,
+  revise the document, continue into `fw:plan`, continue into
+  `fw:deepen`, or continue into work."
+- **Browser-test route:** "This belongs in `fw:browser-test` because the
+  immediate job is to prove browser-visible behavior with fresh evidence. The
+  output should be a browser-proof brief plus artifacts that review and
+  commit can reuse."
+- **Polish route:** "This belongs in `fw:polish` because the feature is already
+  runnable and the immediate job is short browser-visible tightening loops. The
+  output should be tightened behavior plus a final browser-proof pass."
+- **Work route:** "This is ready for `fw:work` because the scope is already
+  concrete enough to execute. The output should be implemented, validated repo
+  changes. During work, pull in helper stages only when the change needs them,
+  then continue into `fw:review` and `fw:commit`."
+- **Debug route:** "This belongs in `fw:debug` because the immediate job is to
+  prove why the bug happens before changing code. The output should be a causal
+  chain plus either a red-to-green fix or a routing decision into design,
+  architecture, maintainability, or planning."
+- **Incident route:** "This belongs in `fw:incident` because the work starts
+  from live evidence and the immediate job is deciding mitigate vs rollback vs
+  patch. The output should be an incident brief, then the right downstream
+  handoff into debug, rollout, planning, work, or commit."
+- **Review route:** "This belongs in `fw:review` because code already changed
+  and the immediate job is risk finding before merge. The output should be a
+  review verdict and concrete findings from the selected diff-based reviewer
+  personas. After that, fix the branch if needed, hand off to
+  `fw:rollout` for runtime-risky changes, and then continue into
+  `fw:commit` when the branch should be published."
+- **Rollout route:** "This belongs in `fw:rollout` because the code is already
+  changed and the immediate job is safe release planning for a runtime-risky
+  change. The output should be a rollout brief with activation, validation, and
+  rollback posture, then `fw:commit`."
+- **Optimize route:** "This belongs in `fw:optimize` because the immediate job
+  is measured tuning, not general feature implementation. The output should be
+  a baseline, guardrails, chosen measurement path, and a proven improvement or
+  next experiment."
+- **Observability route:** "This belongs in `observability` because the
+  immediate job is to make runtime behavior supportable, measurable, and safe
+  to validate. The output should be a concrete logs, metrics, traces, and
+  validation plan."
+- **Logging route:** "This belongs in `logging` because the immediate job is to
+  improve event shape and log usefulness rather than implement product
+  behavior. The output should be a concrete logging design or gap report."
+- **Verification route:** "This belongs in `fw:verify`
+  because the immediate job is to prove a completion claim with fresh evidence.
+  The output should be an honest status against the claim."
+- **Commit route:** "This belongs in `fw:commit` because the code is ready to leave
+  the workstation. The output should be a committed branch or PR with testing
+  notes and post-deploy validation, after a pre-commit spin checkpoint if the
+  finished work surfaced a durable project lesson."
+- **Spin route:** "This belongs in `fw:spin` because the work is complete and
+  the value now is preserving what was learned. The output should be a durable
+  active-repo `docs/solutions/` entry."
+
+## Operating Principles
+
+- Prefer stored-repo improvements over novelty.
+- Treat `fw:shape -> fw:work -> fw:review -> optional fw:spin -> fw:commit` as the
+  compact backbone for software-project work, where `fw:shape` selects
+  `fw:ideate`, `fw:brainstorm`, `fw:plan`, or `fw:deepen` as needed.
+- Use `fw:brainstorm` before `fw:plan` only when behavior or scope is
+  still unclear, and `fw:ideate` only when the immediate job is choosing
+  the right problem first.
+- Route decisively. This skill is primarily a stage selector and handoff
+  generator, but it should use one material question when that prevents the
+  wrong stage or artifact.
+- Carry assumptions, open questions, and decisions forward explicitly.
+- Reuse durable learnings from the active repo's `docs/solutions/` when the
+  current area has already been documented.
+- Keep artifacts lean. Document only what will matter again.
+- Let evidence beat optimism. Plans, implementation, and review should all be
+  grounded in the codebase and actual checks.
+- End each stage with a clear handoff to the next one, and treat `fw:spin`
+  as a conditional pre-commit capture step rather than default extra ceremony.
+- Use the shared readiness gates in `../references/workflow-gates.md` when
+  deciding whether a stage may advance or must pause for approval.
+
+## Expected Outputs
+
+- `shape`: the smallest useful pre-work artifact: ranked shortlist,
+  requirements doc, reviewed technical plan, or strengthened reviewed plan.
+- `ideate`: a ranked shortlist with why each option matters now.
+- `brainstorm`: a requirements plan with only as much Q&A as the task needs.
+- `run`: the remaining Flywheel artifacts plus a clear stop point or finish-stage state.
+- `deepen`: a stronger, more execution-ready plan.
+- `plan`: a technical execution plan with validation and risk notes.
+- `docs`: updated tutorial, how-to, reference, or explanation docs grounded in
+  the repo's actual behavior.
+- `document-review`: ranked findings on a requirements, plan, or design doc.
+- `browser-test`: fresh browser-proof evidence for a browser-visible change.
+- `polish`: tightened browser-visible behavior plus a closing proof pass.
+- `work`: implemented repo changes, task progress, and the helper checks the task needed before review.
+- `debug`: a proved causal chain and a red signal for the bug, then either a
+  minimal fix or the right design, architecture, maintainability, or planning
+  handoff.
+- `incident`: an incident brief with runtime evidence, blast radius, and the
+  chosen mitigation, rollback, or patch path.
+- `review`: findings first, with severity and file references.
+- `rollout`: a rollout brief with activation, validation window, and rollback
+  posture.
+- `optimize`: a measured baseline, experiment loop, and proven best change.
+- `observability`: a concrete signal, failure-mode, and rollout-validation plan.
+- `logging`: a structured logging design, migration sketch, or audit gap report.
+- `verify`: a claim, a fresh proof run, and honest status.
+- `commit`: a pre-commit spin decision when warranted, then a commit, push, PR,
+  or PR refresh with operational validation notes.
+- `spin`: a new or updated active-repo `docs/solutions/` entry that reduces
+  repeated future effort.
+- `commit-message`: a commit header, optional body or footers, and an
+  explicit user check before marking breaking changes.
+- `setup`: a repo-grounded readiness report with required vs optional tooling.
+- `worktree`: an isolated checkout path and the next exact command to use it.
+
+## Example Prompts
+
+- "Use the `fw:start` router to route this feature request through the right Flywheel stage."
+- "Use the `fw:start` router to decide whether this repo needs ideation, planning, or direct work."
+- "Use the `fw:start` router to finish this task and capture the reusable learnings."
+- "Use the `fw:start` router to decide whether this branch needs a docs pass before review."
