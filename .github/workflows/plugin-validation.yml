@@ -1,0 +1,93 @@
+name: Plugin validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conventional-pr:
+    name: Conventional PR title
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+  plugin-format:
+    name: Plugin formatting and package consistency
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Run plugin formatter checks
+        run: node scripts/plugin-ci-check.js --host all
+
+      - name: Run validator tests
+        run: node scripts/plugin-ci-check.test.js
+
+      - name: Validate eval suites
+        run: node scripts/flywheel-eval.js validate
+
+      - name: Run hook policy tests
+        run: node scripts/flywheel-hook-policy.test.js
+
+  claude-plugin:
+    name: Claude plugin validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate Claude plugin
+        run: claude plugin validate .
+
+      - name: Validate Claude release tag shape
+        run: claude plugin tag --dry-run --force .
+
+  codex-plugin:
+    name: Codex plugin validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+
+      - name: Validate Codex marketplace install
+        run: |
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+          CODEX_HOME="$tmpdir" codex plugin marketplace add "$PWD"
+          CODEX_HOME="$tmpdir" codex plugin list --marketplace flywheel
+          CODEX_HOME="$tmpdir" codex plugin add fw@flywheel

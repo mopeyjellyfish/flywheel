@@ -816,6 +816,26 @@ function main() {
         : (hookPolicyTest.stdout || hookPolicyTest.stderr).trim() || "hook policy tests failed",
   });
 
+  const pluginCiCheck = run(process.execPath, ["scripts/plugin-ci-check.js", "--host", host]);
+  checks.push({
+    name: "Plugin CI contract checks",
+    ok: pluginCiCheck.status === 0,
+    detail:
+      pluginCiCheck.status === 0
+        ? "plugin manifest, marketplace, package, and version contracts passed"
+        : (pluginCiCheck.stdout || pluginCiCheck.stderr).trim() || "plugin CI contract checks failed",
+  });
+
+  const pluginCiTests = run(process.execPath, ["scripts/plugin-ci-check.test.js"]);
+  checks.push({
+    name: "Plugin CI contract tests",
+    ok: pluginCiTests.status === 0,
+    detail:
+      pluginCiTests.status === 0
+        ? "plugin CI contract tests passed"
+        : (pluginCiTests.stdout || pluginCiTests.stderr).trim() || "plugin CI contract tests failed",
+  });
+
   const evalWorkspaceReady = fs.existsSync(path.join(repoRoot, "tools/evals/node_modules"));
   checks.push({
     name: "Eval workspace dependencies",

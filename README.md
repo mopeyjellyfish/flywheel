@@ -191,15 +191,23 @@ make doctor
 make validate
 node scripts/flywheel-doctor.js --host codex --codex-session-smoke
 node scripts/flywheel-doctor.js --host claude --smoke
+node scripts/plugin-ci-check.js --host all
 ```
 
 `make verify` is the full plugin verification pass for this repo: doctor smoke
-checks plus eval-suite validation. In broad verification it validates repo
-packaging for both hosts, requires live smoke for the hosts currently enabled
-from this checkout, and skips the Claude live invocation when this repo is not
-currently installed in Claude or Claude's API credentials are invalid. Use
-`make install/claude` followed by `node scripts/flywheel-doctor.js --host claude --smoke`
-when the installed Claude path itself must be proven.
+checks plus eval-suite validation, hook-policy tests, and plugin CI contract
+tests. In broad verification it validates repo packaging for both hosts,
+requires live smoke for the hosts currently enabled from this checkout, and
+skips the Claude live invocation when this repo is not currently installed in
+Claude or Claude's API credentials are invalid. Use
+`make install/claude` followed by
+`node scripts/flywheel-doctor.js --host claude --smoke` when the installed
+Claude path itself must be proven.
+
+`node scripts/plugin-ci-check.js --host all` is the CI-safe manifest and package
+validator. It emits file and field-specific failures for plugin manifest,
+marketplace, package-copy, hook-pack, Release Please, and version-sync drift
+without reading local Codex or Claude install state.
 
 For side-by-side local comparisons between Codex and Claude Code:
 
@@ -221,6 +229,8 @@ Setup and troubleshooting notes:
 - `plugins/fw/` - Codex marketplace package with synced manifest, skills, and hooks
 - `.claude-plugin/plugin.json` - Claude plugin manifest
 - `.claude-plugin/marketplace.json` - Claude marketplace manifest for this repo
+- `.github/release-please-config.json` - release automation config for changelog, manifest version bumps, and `fw--vX.Y.Z` tags
+- `.github/.release-please-manifest.json` - Release Please's current released version record
 - `.flywheel/config.local.example.yaml` - local config template
 - `hooks/` - shared hook policy script plus Codex and Claude plugin hook packs
 - `skills/` - shared Flywheel workflow skills
