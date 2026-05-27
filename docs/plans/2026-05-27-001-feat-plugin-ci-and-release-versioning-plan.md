@@ -75,9 +75,11 @@ Tag-format spike:
   `include-v-in-tag=true` as `fw--v0.2.0`.
 - Release Please also backfills exact expected tags from the manifest, so the
   manifest must remain checked and synchronized with plugin versions.
-- The repository has no existing `fw--v*` release tag yet, so the initial
-  config includes `bootstrap-sha` at the current `main` baseline to keep the
-  first generated release PR scoped to commits after this setup lands.
+- The first `fw--v0.2.0` tag now exists, so the one-time `bootstrap-sha` was
+  removed after the initial release.
+- Plain merge commits can duplicate changelog entries when the PR title is also
+  a releasable Conventional Commit. Keep release semantics in branch commits
+  and use neutral PR titles while this repo uses merge commits.
 
 ## Repo Truth
 
@@ -124,8 +126,6 @@ The validator covers:
 - `.github/.release-please-manifest.json` matches the current plugin version
 - Release Please config uses `include-component-in-tag: true` and
   `tag-separator: "--"`
-- Release Please config has an initial `bootstrap-sha` while Flywheel has no
-  prior `fw--v*` tag
 - Release Please root package uses `release-type: simple`, `component: fw`, and
   `package-name: fw`
 - Release Please `extra-files` includes JSON updaters for all plugin
@@ -175,13 +175,16 @@ Triggers:
 
 Jobs:
 
-- `conventional-pr`
-  - validate PR title as a Conventional Commit subject
+- `release-please-pr-title`
+  - reject releasable PR titles such as `feat:`, `fix:`, or `deps:` so Release
+    Please does not count both the merge commit and the branch commit
+  - run `node scripts/release-please-pr-title-check.js`
 - `plugin-format`
   - checkout repo
   - set up Node
   - run `node scripts/plugin-ci-check.js --host all`
   - run `node scripts/plugin-ci-check.test.js`
+  - run `node scripts/release-please-pr-title-check.test.js`
   - run `node scripts/flywheel-eval.js validate`
   - run `node scripts/flywheel-hook-policy.test.js`
 - `claude-plugin`
@@ -282,7 +285,8 @@ Done when:
 - PRs fail on invalid plugin formatting with precise error output.
 - PRs fail when Claude rejects the plugin.
 - PRs fail when Codex cannot install the plugin from the repo marketplace.
-- PRs fail when the PR title is not a Conventional Commit subject.
+- PRs fail when a merge-commit PR title is itself a releasable Conventional
+  Commit subject.
 - `main` release automation runs the same checks before release work.
 - Release Please bumps semver from Conventional Commits.
 - Release Please updates plugin manifests and `CHANGELOG.md`.

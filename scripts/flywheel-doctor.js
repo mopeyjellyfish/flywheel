@@ -836,6 +836,16 @@ function main() {
         : (pluginCiTests.stdout || pluginCiTests.stderr).trim() || "plugin CI contract tests failed",
   });
 
+  const releaseTitleTests = run(process.execPath, ["scripts/release-please-pr-title-check.test.js"]);
+  checks.push({
+    name: "Release Please PR title tests",
+    ok: releaseTitleTests.status === 0,
+    detail:
+      releaseTitleTests.status === 0
+        ? "release PR title tests passed"
+        : (releaseTitleTests.stdout || releaseTitleTests.stderr).trim() || "release PR title tests failed",
+  });
+
   const evalWorkspaceReady = fs.existsSync(path.join(repoRoot, "tools/evals/node_modules"));
   checks.push({
     name: "Eval workspace dependencies",
